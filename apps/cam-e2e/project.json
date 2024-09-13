@@ -1,0 +1,8 @@
+{
+  "name": "cam-e2e",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/cam-e2e/src",
+  "implicitDependencies": ["cam"],
+  "// targets": "to see all targets run: nx show project cam-e2e --web",
+  "targets": {}
+}
