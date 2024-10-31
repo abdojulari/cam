@@ -1,0 +1,8 @@
+{
+  "name": "online-registration-e2e",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/online-registration-e2e/src",
+  "implicitDependencies": ["online-registration"],
+  "// targets": "to see all targets run: nx show project online-registration-e2e --web",
+  "targets": {}
+}

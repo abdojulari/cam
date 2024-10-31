@@ -1,0 +1,15 @@
+{
+  "name": "registration-portal",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "sourceRoot": "apps/registration-portal/src",
+  "// targets": "to see all targets run: nx show project registration-portal --web",
+  "targets": {
+    "build": {
+      "executor": "@nx/webpack:webpack",
+      "options": {
+        "postcssConfig": "apps/registration-portal/postcss.config.js"
+      }
+    }
+  }
+}

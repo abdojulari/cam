@@ -1,0 +1,14 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "plugins": [],
+    "composite": true,
+    "declaration": true,       
+    "declarationMap": true,
+    "types": [
+      "@nuxt/types"
+    ]
+  },
+  "include": [".nuxt/nuxt.d.ts", "src/**/*"],
+  "exclude": []
+}
