@@ -11,7 +11,6 @@
             >
             </v-text-field>
             <v-text-field
-                v-if="page === 'registration-portal'"
                 label="Middle name"
                 v-model="formData.middlename"
                 variant="outlined"
@@ -46,7 +45,7 @@
                     </v-text-field>
                 </template>
                 <v-date-picker
-                    v-model="formData.dateOfBirth"
+                    v-model="formData.dateofBirth"
                     @update:model-value="isMenuOpen = false"
                     hide-actions
                     :min="new Date(1900, 0, 1)"
@@ -66,12 +65,12 @@
     const props = defineProps(['formData', 'rules', 'page']);
     const isMenuOpen = ref(false);
     const formattedDate = computed(() => {
-    if (!props.formData.dateOfBirth) return '';
+    if (!props.formData.dateofBirth) return '';
         return new Intl.DateTimeFormat('en-US', {
             month: 'long',
             day: 'numeric',
             year: 'numeric',
-        }).format(props.formData.dateOfBirth);
+        }).format(props.formData.dateofBirth);
     });
  
     const selectedRadio = computed(() => radioSelection.getRadioSelection);

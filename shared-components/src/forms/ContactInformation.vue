@@ -60,8 +60,6 @@
         density="compact"
       ></v-text-field>
       </div>
-      
-     
     </v-container>
   </template>
   

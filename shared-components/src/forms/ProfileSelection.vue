@@ -2,8 +2,6 @@
   <v-container fluid>
     <p class="my-5 text-h6"> Create your account and enjoy the endless possibilities!</p>
     <p class="my-5 text-body-1"> Have any questions about signing up? Check out our <NuxtLink  to="https://www.epl.ca/faq/library-cards/"> frequently asked questions. </NuxtLink> </p>
-    <p>Selected Button: {{ formData.radios }}</p>
-    
     <v-radio-group v-model="formData.radios" @change="emitRadios">
       <v-radio label="Adult" value="Adult"></v-radio>
       <v-radio label="Minor" value="Minor"></v-radio>
