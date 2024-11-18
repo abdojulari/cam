@@ -1,6 +1,8 @@
 <template>
-    <div>
-        <v-stepper v-model="step" show-actions="true" elevation="0" width="100%" min-width="620">
+    <v-container class="">
+        <v-row class="mx-auto px-10">
+            <v-col cols="8">
+                <v-stepper v-model="step" show-actions="true" elevation="0" width="100%">
             <template v-slot:default>
             <v-stepper-header>
                 <template v-for="(item, index) in filteredSteps" :key="index">
@@ -27,7 +29,7 @@
                         <h3>{{ item.title }}</h3>
                     </v-card-title>
                     <v-card-text>
-                        <component :is="item.component" :formData="formData" :rules="item.rules" :page="props.page" />
+                        <component :is="item.component" :formData="formData" :rules="item.rules" :page="props.page" v-model="biodataFormValid"/>
                     </v-card-text>
                     </v-card>
                 </v-stepper-window-item>
@@ -35,7 +37,8 @@
             </v-stepper-window>
     
                 <v-stepper-actions
-                    :disabled="!formData.radios && page !== 'registration-portal' || disabled"
+                    color="primary"
+                    :disabled="!formData.radios && page !== 'registration-portal' || disabled || isNextDisabled"
                     @click:next="next"
                     @click:prev="prev"
                 >
@@ -57,20 +60,21 @@
                 </v-container>
                
             </template>
-        </v-stepper>
-    </div>
+                </v-stepper>
+            </v-col>
+            <v-col cols="4">
+                <v-img src="https://www2.epl.ca/register/images/EPLCards.svg" alt="registration"></v-img>
+            </v-col>
+        </v-row>     
+    </v-container>
 </template>
   
 <script setup>
     import { ref, computed } from 'vue';
-    import BioData from './BioData.vue';
-    import ContactInfo from './ContactInformation.vue';
-    import ProfileSelection from './ProfileSelection.vue';
-    import Minor from './Minor.vue';
     import { useRegistrationStore } from '../store/registration-store';
-    import Privilege from './Privilege.vue';
-    import CreatePin from './CreatePin.vue';
     import { useRouter } from 'vue-router'
+    import { apiService } from '../services/api-service';
+    import { rules } from '../composables/rules';
     
     const userRegistration = useRegistrationStore();
     const router = useRouter();
@@ -80,9 +84,9 @@
         required: true,
         },
     });
-    // Stepper state
+    const biodataFormValid = ref(false);
+    const form = useTemplateRef("form");
     const step = ref(1);
-    // Single reactive formData object
     const formData = ref({
         radios: '',
         firstname: '',
@@ -91,7 +95,7 @@
         dateofBirth: null,
         address: '',
         city: '',
-        province: '',
+        province: 'Alberta',
         phone: '',
         email: '',
         postalCode: '',
@@ -111,86 +115,20 @@
         minorMiddlename: '',
         minorDateOfBirth: null,
         acceptTerms: false,
+        adultProvince: 'Alberta',
     });
   
     // Step list
-    const stepList = [
-        {
-        title: 'Profile ',
-        component: ProfileSelection,
-        props: {
-            formData: formData,
-            rules: {
-            required: (value) => !!value || 'Required.',
-            }
-        },
-        },
-        {
-        title: 'Bio Data',
-        component: BioData,
-        props: {
-            formData: formData,
-            rules: {
-            required: (value) => !!value || 'Required.',
-            },
-        },
-        rules: {
-            required: (value) => !!value || 'Required.',
-        },
-        },
-        {
-        title: 'Contacts',
-        component: ContactInfo,
-        rules: {
-            required: (value) => !!value || 'Required.',
-            email: (value) => {
-            const emailPattern = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
-            return emailPattern.test(value) || 'Invalid e-mail.';
-            },
-            phone: (value) => {
-            const phonePattern = /^\d{10}$/;
-            return phonePattern.test(value) || 'Invalid phone number.';
-            },
-            postalCode: (value) => {
-                
-            const postalCodePattern = /^[A-Za-z]\d[A-Za-z] \d[A-Za-z]\d$/;
-            return postalCodePattern.test(value) || 'Invalid postal code. Format: A1A 1A1';
-            },
-        },
-        },
-        {
-        title: 'Choose your password',
-        component: CreatePin,
-        rules: {
-            required: (value) => !!value || 'Required.',
-        },
-        },
-        {
-        title: 'Minor',
-        component: Minor,
-        rules: [
-            (value) => !!value || 'Required.',
-            (value) => {
-            const emailPattern = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
-            return emailPattern.test(value) || 'Invalid e-mail.';
-            },
-        ],
-        },
-        {
-            title: 'Privilege',
-            component: Privilege,
-            rules: {
-                required: (value) => !!value || 'Required.',
-            },
-        },
-    ];
-
+    const stepList = rules(formData);
     const selectedRadio = computed(() => userRegistration.getRadioSelection);
     watch(selectedRadio, (newValue) => {
         return formData.radios = newValue;
     });
-    onMounted(() => { 
-        console.log('Selected Radio on load:', selectedRadio.value);
+
+    onMounted(async () => {
+        apiService.initializeToken().then((response) => {
+            return response;
+        });
         return formData.radios = selectedRadio.value;
     });
     // Filter items based on the current page
@@ -203,8 +141,7 @@
             }
             return stepList.slice(0, 4); 
         }
-        if (selected === "Minor") {
-            
+        if (selected === "Minor") {       
             return [stepList[0], stepList[4],stepList[3]]; 
         }
         if (props.page === 'registration-portal') {
@@ -217,13 +154,25 @@
     const next = () => {
           // Handle submission based on current step
         if (filteredSteps.value[step.value - 1].title === 'Bio Data') {
+            // Validate the form before proceeding
+            form.value?.validate();
+            if (!biodataFormValid.value) {
+                console.log("Form is invalid! Please fill the form.");
+                return;
+            }
             userRegistration.adult.biodata = {
                 firstname: formData.value.firstname,
                 lastname: formData.value.lastname,
                 middlename: formData.value.middlename,
                 dateofbirth: (formData.value.dateofBirth).toISOString().split('T')[0],
             };
+            
         } else if (filteredSteps.value[step.value - 1].title === 'Contacts') {
+            if (formData.value.street === '' || formData.value.city === '' 
+            || formData.value.province === '' || formData.value.postalCode === null
+            || formData.value.phone === '' || formData.value.email === '') {
+                return isNextDisabled;
+            }
             userRegistration.adult.contact = {
                 street: formData.value.street,
                 city: formData.value.city,
@@ -232,24 +181,19 @@
                 phone: formData.value.phone,
                 email: formData.value.email,
             };
-        } else if (filteredSteps.value[step.value - 1].title === 'Profile') {
-            userRegistration.adult.profile = formData.value.radios; // Assuming profile is based on radios
-            
-        } else if (filteredSteps.value[step.value - 1].title === 'Minor') {
-            userRegistration.addBioData({
-                firstname: formData.value.minorFirstname,
-                lastname: formData.value.minorLastname,
-                middlename: formData.value.minorMiddlename,
-                dateofbirth: formData.value.minorDateOfBirth,
-            });
-        }
 
+            console.log(userRegistration.adult.contact);
+        } else if (filteredSteps.value[step.value - 1].title === 'Profile') {
+            userRegistration.adult.profile = formData.value.radios; 
+            userRegistration.adult.consent = userRegistration.getConsent;
+        } 
+       
         if (step.value < filteredSteps.value.length) {
-        step.value++;
+            step.value++;
         }
         // disable if there is no more steps
         if (step.value === filteredSteps.value.length) {
-        return isNextDisabled;
+            return isNextDisabled;
         }
     };
     
@@ -258,43 +202,35 @@
         step.value--;
         }
     };
-
-    const isValidStep = (stepIndex) => {
-        const rules = filteredSteps.value[stepIndex].rules;
-        const data = formData.value;
-
-        // Iterate over the rules and check if each required field is filled
-        for (const [key, rule] of Object.entries(rules)) {
-            if (Array.isArray(rule)) {
-                // Handle array of rules (if applicable)
-                for (const validate of rule) {
-                    const validationResult = validate(data[key]);
-                    if (typeof validationResult === 'string') {
-                        return false; // Return false if any rule fails
-                    }
-                }
-            } else {
-                const validationResult = rule(data[key]);
-                if (typeof validationResult === 'string') {
-                    return false;
-                }
-            }
-        }
-        return true; 
-    };
     // Check if the next button should be disabled
     const isNextDisabled = computed(() => {
-        //return step.value >= filteredSteps.value.length;
-        const currentStepIndex = step.value - 1; // Adjust for zero-based index
-        return !isValidStep(currentStepIndex) || step.value >= filteredSteps.value.length;
+        //const currentStepIndex = step.value - 1;
+        return step.value >= filteredSteps.value.length;
+    })
+    const disabled = computed(() => {
+        if (filteredSteps.value.length === 1) return 'prev'
+        if (filteredSteps.value.length === step.value) return 'next'
+        return undefined
     })
    
-    const submitForm = () => {
+    const submitForm = async () => {
         setTimeout(async () => {
-            console.log('Form submitted:', userRegistration.registration);
-            // Navigate to the "/preview" route
+            let registrationData;
+            for (const data of userRegistration.registration) {
+                await apiService.registration(data).then((response) => {
+                    registrationData = response;
+                });
+            }
+            // Once all submissions are done, check for errors in the data
+            if (registrationData && registrationData.error === '[POST] \"http://cre.test/api/duplicates\": 409 Conflict' || registrationData?.message !== 'Record added successfully.') {
+                alert('Please can you visit the library to resolve the issue?');
+                return;
+            }
+            // Proceed to next page if no errors
             router.push('/preview');
+            return registrationData;
         }, 1000);  
-};
+    };
+
 </script>
   

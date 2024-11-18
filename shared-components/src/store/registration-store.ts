@@ -26,6 +26,7 @@ interface Adult  {
     password?: string;
     confirmPassword?: string;
     barcode?: string;
+    consent?: string;
 }
 interface Minor {
     biodata: BioData;
@@ -36,6 +37,7 @@ interface Minor {
     password?: string;
     confirmPassword?: string;
     barcode?: string;
+    consent?: string;
 }
 interface Password {
     password: string;
@@ -54,9 +56,18 @@ export const useRegistrationStore = defineStore({
     minor: {} as Minor,
     additionalMinor:false,
     addMinor:false,
-    password: {} as Password
+    consent: '',
+    password: {} as Password,
+    step: 1
   }),
   actions: {
+    async setStep(step: number) {
+        try {
+          this.step = step;
+        } catch (error) {
+          console.error(error + 'error in setStep');
+        }
+    },
     async addBioData(bioData: BioData) {
         try {
           this.biodata = bioData;
@@ -92,6 +103,13 @@ export const useRegistrationStore = defineStore({
       async setCareOf(careof: string) {
         try {
           this.careof = careof;
+        } catch (error) {
+          console.error(error);
+        }
+      },
+      async setConsent(consent: string) {
+        try {
+          this.consent = consent;
         } catch (error) {
           console.error(error);
         }
@@ -172,6 +190,12 @@ export const useRegistrationStore = defineStore({
     },
     getPassword(): Password {
         return this.password;
+    },
+    getConsent(): string {
+        return this.consent;
+    },
+    getStep(): number {
+        return this.step;
     }
   },
 

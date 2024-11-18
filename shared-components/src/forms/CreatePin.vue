@@ -37,16 +37,22 @@
 </template>
   
 <script setup lang="ts">
-  import { computed, ref } from 'vue';
+  import { computed, onMounted, ref } from 'vue';
   import TermAndCondition from './TermAndCondition.vue';
   import { useRegistrationStore } from '../store/registration-store';
+  import { apiService } from '../services/api-service';
 
   const props = defineProps(['formData', 'rules']);
-
+  const barcode = ref('');
   const userRegistration = useRegistrationStore();
   const dialogVisible = ref(false);
   const confirmPinRules = computed(() => {
     return props.formData.confirmPassword !== props.formData.password ? 'Pins do not match' : true;
+  });
+  onMounted(() => {
+    apiService.fetchBarcode().then((item) => {
+      barcode.value = item;
+    });
   });
   const onCheckboxChange = (value: boolean) => {
     if (value) {
@@ -55,10 +61,12 @@
         userRegistration.getRadioSelection === 'Adult' && 
             userRegistration.getAdditionalMinor === true 
             && props.formData.addMinor === true) {
+        userRegistration.adult.profile = 'EPL_JONLIN'
         userRegistration.addRegistration({data:userRegistration.minor})
       }
       if (userRegistration.getRadioSelection === 'Adult') {
         userRegistration.addRegistration({data:userRegistration.adult})
+        console.log(userRegistration.getConsent)
       }
       
       // Check if the pins match before setting the password
@@ -66,7 +74,9 @@
         if (props.formData.radios === 'Adult') {
           userRegistration.adult.password = props.formData.password;
           userRegistration.adult.confirmPassword = props.formData.confirmPassword;
-          userRegistration.adult.barcode = props.formData.barcode
+          userRegistration.adult.profile = 'EPL_ONLIN'
+          userRegistration.adult.barcode = barcode.value
+          userRegistration.adult.consent = userRegistration.getConsent
         }
       } else {
         // Optionally, handle the case where pinpins do not match

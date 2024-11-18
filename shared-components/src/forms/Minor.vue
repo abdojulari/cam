@@ -8,7 +8,7 @@
             <v-text-field 
               v-model="formData.minorFirstname" 
               label="First Name" 
-              :rules="rules.required"
+              :error-messages="erroMessage"
               density="compact"
               variant="outlined"
             >
@@ -16,7 +16,7 @@
             <v-text-field 
               v-model="formData.minorLastname" 
               label="Last Name" 
-              :rules="rules.required"
+              :error-messages="erroMessage"
               density="compact"
               variant="outlined"
             >
@@ -26,7 +26,7 @@
           <v-text-field 
             v-model="formData.minorMiddlename" 
             label="Middle Name"
-            :rules="rules.required"
+            :error-messages="erroMessage"
             density="compact"
             variant="outlined"
           >
@@ -42,14 +42,16 @@
               rounded-0
               density="compact"
               label="Date of Birth"
-              prepend-inner-icon="fa-solid fa-calendar-days"
+              prepend-inner-icon="mdi-calendar"
+              :error-messages="erroMessage"
             />
           </template>
           <v-date-picker
             v-model="formData.minorDateOfBirth"
             @update:model-value="isMenuOpen = false"
             hide-actions
-            :min="new Date(1900, 0, 1)"
+            :min="minDate"
+            :max="new Date().toISOString().split('T')[0]"
           ></v-date-picker>
           </v-menu>
         </div>
@@ -59,21 +61,65 @@
             v-model="formData.password"
             label="Pin/Password"        
             variant="outlined"
-            :rules="[rules.required]"
+            :error-messages="erroMessage"
             type="password"
             density="compact"
-            required
           ></v-text-field>
           <v-text-field
             v-model="formData.confirmPassword"
             label="Confirm Pin/Password"
             variant="outlined"
-            :rules="[rules.required, confirmPinRules]"
+            :error-messages="erroMessage"
+            :rules="[confirmPinRules]"
             type="password"
-            density="compact"
-            required
+            density="compact"   
           ></v-text-field>
         </div>
+      </v-card-text>
+    </v-card> 
+    <v-container>
+      <!-- Add minor button-->
+      <v-row>
+        <v-col class="d-flex justify-end">
+          <v-btn  
+            variant="flat" 
+            color="primary" 
+            :disabled="disabled"
+            class="ml-2"
+            text="Add another minor"
+            @click="addMinor"     
+          >
+          </v-btn>
+        </v-col>
+      </v-row>
+      <!-- Minor list-->
+      <v-row v-if="minors.length > 0"><h3 class="text-uppercase">Minors List</h3></v-row>
+      <v-row>
+        <v-card flat variant="tonal"  v-if="minors.length > 0">
+          <v-card-text>
+            <v-data-table
+              :headers="headers"
+              :items="minors"
+              item-key="id"
+              :hide-default-footer="true"
+            > 
+              <template v-slot:headers="{ columns,toggleSort }">
+                <tr>
+                  <template v-for="column in columns" :key="column.key">
+                    <th>
+                      <span class="mr-2 cursor-pointer" @click="() => toggleSort(column)">{{ column.title }}</span>
+                    </th>
+                  </template>
+                </tr>
+              </template>
+              <template v-slot:item.actions="{ item }">
+                <v-btn @click="deleteMinor(item.id)" density="compact" icon="mdi-delete"></v-btn>
+              </template>
+            </v-data-table>
+          </v-card-text>
+        </v-card>
+      </v-row>
+      <!-- End of minor list-->
         <v-checkbox 
           v-model="minorsContact" 
           @click="sameAsAdult"
@@ -83,11 +129,9 @@
             <div class="text-body-2">
               Contact Information same as Adult
             </div>
-            <span class="text-body-2"> Note: Each time you add a minor, you have to check "Contact Information same as Adult" </span>
           </template>
         </v-checkbox>
-      </v-card-text>
-    </v-card>  
+    </v-container> 
     <div v-if="props.formData.radios !== 'Adult'"> 
       <v-switch
         label="Attach minor(s) to your profile"
@@ -107,34 +151,32 @@
           <v-text-field 
             v-model="formData.barcode" 
             label="Barcode" 
-            :rules="rules.required"
+            :rules="[props.rules.required]"
             density="compact"
             variant="outlined"
-            
           ></v-text-field>
           <v-text-field 
             v-model="formData.pin" 
             label="Pin/Password" 
-            :rules="rules.required"
+            :rules="[props.rules.required]"
             density="compact"
             variant="outlined"
             type="password"
-            width="35%">
+            width="35">
           </v-text-field>
         </div>
         </v-card-text>
-        <v-card-actions>
+        <v-card-actions class="d-flex flex-column align-start justify-start">
           <v-btn 
             variant="flat" 
             color="primary" 
-            class="ml-2 text-none text-uppercase"
+            class="me-2  text-none text-uppercase"
             :disabled="loading"
             :loading="loading"
             @click="loading = !loading"
             >
-              Link
+              Save Changes
             </v-btn>
-            <span class="text-body-2"> Note: Each time you add a minor, you have to click on Link button</span>
         </v-card-actions>
       </v-card>
       <v-card flat v-if="!linkMinor">
@@ -146,14 +188,14 @@
               <v-text-field 
               v-model="formData.adultFirstname" 
               label="First Name" 
-              :rules="rules.required"
+              :rules="[props.rules.required, props.rules.firstname]"
               density="compact"
               variant="outlined"
             ></v-text-field>
             <v-text-field 
               v-model="formData.adultLastname" 
               label="Last Name" 
-              :rules="rules.required"
+              :rules="[props.rules.required, props.rules.lastname]"
               density="compact"
               variant="outlined"
             ></v-text-field>
@@ -162,14 +204,15 @@
                 <v-text-field 
                 v-model="formData.adultEmail" 
                 label="Email" 
-                :rules="[rules.required, rules.email]"
+                :rules="[props.rules.required, props.rules.email]"
                 density="compact"
                 variant="outlined"
               ></v-text-field>
               <v-text-field 
                 v-model="formData.adultPhone" 
                 label="Phone Number" 
-                :rules="rules.required"
+                v-maska="'(###) ###-####'"
+                :rules="[props.rules.required, props.rules.phone]"
                 density="compact"
                 variant="outlined"
               ></v-text-field>
@@ -178,92 +221,74 @@
             <v-text-field 
             v-model="formData.adultStreet" 
             label="Street" 
-            :rules="rules.required"
+            :rules="[props.rules.required]"
             density="compact"
             variant="outlined"
           ></v-text-field>
-          <v-text-field 
+          <v-select
+            label="City"
+            :items="['Edmonton', 'Enoch']"
             v-model="formData.adultCity" 
-            label="City" 
-            :rules="rules.required"
-            density="compact"
             variant="outlined"
-          ></v-text-field>
+            :rules="[props.rules.city]"
+            required
+            density="compact"
+            prepend-inner-icon="mdi-city"
+          ></v-select>
           <v-text-field 
             v-model="formData.adultProvince" 
             label="Province" 
-            :rules="rules.required"
+            :rules="[props.rules.required, props.rules.province]"
             density="compact"
             variant="outlined"
+            readonly
           ></v-text-field>
           </div>
           
           <v-text-field 
             v-model="formData.adultPostalCode" 
             label="Postcode" 
-            :rules="rules.required"
+            :rules="[props.rules.required, props.rules.postalCode]"
             density="compact"
             variant="outlined"
             width="100"
           ></v-text-field>
         </v-card-text>
-        <v-card-actions>
+        <v-card-actions class="d-flex flex-column align-start justify-start">
           <v-btn 
+            :loading="loader"
             variant="flat" 
             color="primary" 
             class="ml-2"
-            text="Link Unregistered Adult"
+            :text="disabled ? 'Saved' : 'Save Changes'"
+            :disabled="disabled"
             @click="linkAdult"
           >
           </v-btn>
-          <span class="text-body-2"> Note: Each time you add a minor, you have to click on "Link unregistered Adult" button</span>
         </v-card-actions> 
       </v-card>
     </div>
-    <v-container>
-      <!-- Add minor button-->
-      <v-row>
-        <v-col class="d-flex justify-end">
-          <v-btn  
-            variant="flat" 
-            color="primary" 
-            class="ml-2"
-            text="Add additional minor"
-            @click="addMinor"
-            :disabled="!isClicked"
-          >
-          </v-btn>
-        </v-col>
-      </v-row>
-      <!-- Minor list-->
-      <v-row>
-        <v-card flat  v-if="minors.length > 0">
-      <v-card-title>
-        <h3 class="text-uppercase">Minors List</h3>
-      </v-card-title>
-      <v-card-text>
-        <v-data-table
-          :headers="headers"
-          :items="minors"
-          item-key="id"
-          :hide-default-footer="true"
-        >
-          <template v-slot:item.actions="{ item }">
-            <v-btn icon @click="deleteMinor(item.id)">
-              <v-icon>mdi-delete</v-icon>
-            </v-btn>
-          </template>
-        </v-data-table>
-      </v-card-text>
-        </v-card>
-      </v-row>
-      <!-- End of minor list-->
-    </v-container>
+    
 </template>
   
 <script setup lang="ts">
-  import { computed, onMounted, ref, watch } from 'vue';
+  import { 
+    computed, 
+    onMounted, 
+    defineProps, 
+    ref, 
+    watch 
+  } from 'vue';
   import { useRegistrationStore } from '../store/registration-store';
+  import { apiService } from '../services/api-service';
+  import { minDate } from '../composables/minDate';
+  import { vMaska } from "maska/vue"
+  import { rules } from '../composables/rules';
+  import { 
+    createMinorRegistrationData, 
+    createRegistrationData, 
+    sameAsAdultData
+  } from '../constants/minor-form-data';
 
   interface Minor {
     id: number;
@@ -271,6 +296,8 @@
     lastname: string;
     middlename: string;
     dateOfBirth: string;
+    password: string;
+    confirmPassword: string;
   }
   const userRegistration = useRegistrationStore();
   const minors = ref<Minor[]>([]);
@@ -278,16 +305,20 @@
   const minorsContact = ref(false);
   const isClicked =ref(false);
   const loading = ref(false);
-  const props = defineProps({
-    formData: {
-      type: Object,
-      required: true,
-    },
-    rules: {
-      type: Object,
-      required: true,
-    },
-  });
+  const isLoading = ref(false);
+  const loader = ref(false);
+  const barcode = ref('');
+  const erroMessage = ref('');
+  const disabled = ref(false);
+ 
+  const props = defineProps(['formData', 'rules', 'page', 'bioDataFormValid', 'form']);
+  const formValid = ref(false);
+    const emit = defineEmits(['update:formData', 'update:modelValue']);
+    // Update the parent when form validation changes
+    const updateFormValid = (isValid: boolean) => {
+        formValid.value = isValid;  
+        emit('update:modelValue', isValid); 
+    };
   let minorId = 0;
   const confirmPinRules = computed(() => {
     return props.formData.confirmPassword !== props.formData.password ? 'Pins do not match' : true;
@@ -295,6 +326,9 @@
   onMounted(() => {
     props.formData.confirmPassword = '';
     props.formData.password = '';
+    apiService.fetchBarcode().then((item) => {
+      barcode.value = item;
+    });
   });
   // create watch for loading 
   watch(loading, (value) => {
@@ -305,42 +339,20 @@
           barcode: props.formData.barcode,
           password: props.formData.pin,
         } as any;
-        // Send a POST request to the external API route
-       const response = await fetch('/api/authenticate', {
-            method: 'POST',
-            body: JSON.stringify(body), 
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json', 
-            },
-        });
-        const data = await response.json();
-        userRegistration.setMinor({  
-            biodata: {
-              firstname: props.formData.minorFirstname,
-              lastname: props.formData.minorLastname,
-              middlename: props.formData.minorMiddlename,
-              dateofbirth: (props.formData.minorDateOfBirth).toISOString().split('T')[0],
-            },
-            contact: {
-              street: data.address?.street,
-              city: data.address?.city,
-              province: data.address?.province,
-              phone: data.address?.phone,
-              email: data.address?.email,
-              postalcode: data.address?.postalCode,
-            },
-            careof: data.address?.careOf,
-            profile: props.formData.radios,
-            radioSelection: props.formData.radios,
-            password: props.formData.password,
-            confirmPassword: props.formData.confirmPassword,
-            barcode: props.formData.barcode,
-        })
-        loading.value = false; 
+      
+        const data = await apiService.authenticate(body);
+        if (minors.value.length > 0) {
+          minors.value.map(minor => {
+            userRegistration.setMinor(createRegistrationData(barcode.value,props.formData, minor, data));
+            userRegistration.addRegistration({data:userRegistration.minor});
+          });
+        }
+        userRegistration.setMinor(createRegistrationData(barcode.value,props.formData, undefined, data));
         userRegistration.addRegistration({data:userRegistration.minor});
         isClicked.value = true;   
-        return await response.json(); 
+        loading.value = false; 
+        console.log(userRegistration.getRegistration)
+        return data; 
         } catch (err) {
             return (err as any).message;
         }
@@ -357,45 +369,41 @@
         year: 'numeric',
       }).format(props.formData.minorDateOfBirth);
     });
+
     const sameAsAdult = () => {
-      userRegistration.setMinor({
-          biodata: {
-            firstname: props.formData.minorFirstname,
-            lastname: props.formData.minorLastname,
-            middlename: props.formData.minorMiddlename,
-            dateofbirth: (props.formData.minorDateOfBirth).toISOString().split('T')[0],
-          },
-          contact: {
-            street: props.formData.street,
-            city: props.formData.city,
-            province: props.formData.province,
-            phone: props.formData.phone,
-            email: props.formData.email,
-            postalcode: props.formData.postalCode,
-          },
-          careof: `${props.formData.firstname} ${props.formData.lastname}`,
-          profile: props.formData.radios,
-          radioSelection: props.formData.radios,
-          password: props.formData.password,
-          confirmPassword: props.formData.confirmPassword,
-          barcode: props.formData.barcode,
-      });
-    
-      isClicked.value = true;
-      userRegistration.addRegistration({data:userRegistration.minor});
-      console.log('same as adult:', userRegistration.minor);
+      isLoading.value = true
+      setTimeout(() => {
+        isLoading.value = false
+        if (minors.value.length> 0) {
+          minors.value.map(minor => {
+            userRegistration.setMinor(sameAsAdultData(props.formData, barcode.value, minor));
+            userRegistration.addRegistration({data:userRegistration.minor});
+          });
+        }
+      
+        userRegistration.setMinor(sameAsAdultData(props.formData, barcode.value));
+        userRegistration.addRegistration({data:userRegistration.minor});
+        isClicked.value = true;
+        disabled.value = true
+      }, 2000)
+      
+      console.log(userRegistration.getRegistration)
     };
     // Add minor to the list
     const addMinor = () => {
       if (!props.formData.minorFirstname || !props.formData.minorLastname || !props.formData.minorMiddlename || !props.formData.minorDateOfBirth) {
+        erroMessage.value = 'Please fill in all the fields';
         return;
       }  
+      erroMessage.value = '';
       minors.value.push({
         id: ++minorId,
         firstname: props.formData.minorFirstname,
         lastname: props.formData.minorLastname,
         middlename: props.formData.minorMiddlename,
         dateOfBirth: formattedDate.value,
+        password: props.formData.password,
+        confirmPassword: props.formData.confirmPassword,
       });
 
       userRegistration.setAdditionalMinor(true);
@@ -418,31 +426,21 @@
         !props.formData.adultPostalCode) {
           return;
       }
-      userRegistration.setMinor({
-        biodata: {
-          firstname: props.formData.minorFirstname,
-          lastname: props.formData.minorLastname,
-          middlename: props.formData.minorMiddlename,
-          dateofbirth: (props.formData.minorDateOfBirth).toISOString().split('T')[0],
-        },
-        contact: {
-          street: props.formData.adultStreet,
-          city: props.formData.adultCity,
-          province: props.formData.adultProvince,
-          phone: props.formData.adultPhone,
-          email: props.formData.adultEmail,
-          postalcode: props.formData.adultPostalCode,
-        },
-        careof: `${props.formData.adultFirstname} ${props.formData.adultLastname}`,
-        profile: props.formData.radios,
-        radioSelection: props.formData.radios,
-        password: props.formData.password,
-        confirmPassword: props.formData.confirmPassword,
-        barcode: props.formData.barcode,
-      });
+      loader.value = true
+      setTimeout(() => {
+        loader.value = false
+        disabled.value = true
+      }, 2000)
+      if (minors.value.length> 0) {
+        minors.value.map(minor => {
+          userRegistration.setMinor(createMinorRegistrationData(barcode.value,props.formData,  minor,));
+          userRegistration.addRegistration({data:userRegistration.minor});
+        });
+      }
+      userRegistration.setMinor(createMinorRegistrationData(barcode.value,props.formData, undefined));
       isClicked.value = true;
       userRegistration.addRegistration({data:userRegistration.minor});
-      console.log('Link unregistered Adult:', userRegistration.minor);
+      console.log(userRegistration.getRegistration)
     }
     // Delete minor from the list
     const deleteMinor = (id: any) => {
@@ -450,27 +448,14 @@
     };
     // Define headers for the data table
     const headers = [
-      { text: 'First Name', value: 'firstname' },
-      { text: 'Middle Name', value: 'middlename' },
-      { text: 'Last Name', value: 'lastname' },
-      { text: 'Gender', value: 'gender' },
-      { text: 'Date of Birth', value: 'dateOfBirth' },
-      { text: 'Actions', value: 'actions', sortable: false },
+      { title: 'First Name', value: 'firstname' },
+      { title: 'Last Name', value: 'lastname' },
+      { title: 'Middle Name', value: 'middlename' },
+      { title: 'Date of Birth', value: 'dateOfBirth' },
+      { title: 'Actions', value: 'actions', sortable: false },
     ];
     
-    const connectionHandler = () => {
-      try {
-          fetch('/api/external-api', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-          });
-      } catch (err) {
-            const error = (err as any).message; // Handle errors
-            console.log('ERROR:', error);
-      }
-    }
+    const connectionHandler = apiService.externalApiCall();
 
 </script>
   

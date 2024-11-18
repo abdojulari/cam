@@ -2,41 +2,48 @@
     <v-container class="pt-8">
       <div class="d-flex ga-5">
          <v-text-field
-        label="Street"
+        label="Address"
         v-model="formData.street"
         variant="outlined"
         :rules="[rules.required]"
         required
         width="60"
         density="compact"
+        prepend-inner-icon="mdi-home"
       ></v-text-field>
-      <v-text-field
+      <v-select
         label="City"
+        :items="['Edmonton', 'Enoch']"
         v-model="formData.city"
         variant="outlined"
-        :rules="[rules.required]"
+        :rules="[rules.required, rules.city]"
         required
         width="40"
         density="compact"
-      ></v-text-field>
+        prepend-inner-icon="mdi-city"
+      ></v-select>
       </div>
      
       <div class="d-flex ga-5">
-        <v-text-field
+        <v-combobox
           label="Province"
           v-model="formData.province"
           variant="outlined"
-          :rules="[rules.required]"
+          :rules="[rules.required, rules.province]"
           required
           density="compact"
-        ></v-text-field>
+          prepend-inner-icon="mdi-home-group"
+          :items="['Alberta', 'British Columbia', 'Manitoba', 'New Brunswick', 'Newfoundland and Labrador', 'Northwest Territories', 'Nova Scotia', 'Nunavut']"
+        >
+        </v-combobox>
         <v-text-field
-        label="Postal Code"
-        v-model="formData.postalCode"
-        variant="outlined"
-        :rules="[rules.required, rules.postalCode]"
-        required
-        density="compact"
+          label="Postal Code"
+          v-model="formData.postalCode"
+          variant="outlined"
+          :rules="[rules.required, rules.postalCode]"
+          required
+          density="compact"
+          prepend-inner-icon="mdi-map-marker"
       ></v-text-field>
         
       </div>
@@ -44,11 +51,13 @@
         <v-text-field
           label="Phone Number"
           v-model="formData.phone"
+          v-maska="'(###) ###-####'"
           variant="outlined"
           :rules="[rules.required, rules.phone]"
           required
           density="compact"
-          width="30"
+          width="40"
+          prepend-inner-icon="mdi-phone"
         ></v-text-field>
       <v-text-field
         label="Email"
@@ -56,14 +65,16 @@
         variant="outlined"
         :rules="[rules.required, rules.email]"
         required
-        width="70"
+        width="60"
         density="compact"
+        prepend-inner-icon="mdi-email"
       ></v-text-field>
       </div>
     </v-container>
   </template>
   
   <script setup>
-  const props = defineProps(['formData', 'rules']);
+    import { vMaska } from "maska/vue"
+    const props = defineProps(['formData', 'rules']);
   </script>
   

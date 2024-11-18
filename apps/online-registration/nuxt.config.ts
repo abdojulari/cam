@@ -20,6 +20,12 @@ export default defineNuxtConfig({
       user: process?.env.USER_ENDPOINT,
       PATRON_USER: process?.env.PATRON_USER,
       LOGIN_USER: process?.env.LOGIN_USER,
+      CRE_BASE_URL: process?.env.CRE_BASE_URL,
+      CLIENT_ID: process?.env.CLIENT_ID,
+      CLIENT_SECRET: process?.env.CLIENT_SECRET,
+      tokenUrl: process.env.NUXT_CRE_TOKEN,
+      CRE_BARCODE_URL: process?.env.CRE_BARCODE_URL,
+      CRE_DUPLICATE_URL: process?.env.CRE_DUPLICATE_URL,
     }
   },
   modules:[
