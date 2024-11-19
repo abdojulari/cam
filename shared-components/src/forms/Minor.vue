@@ -44,6 +44,7 @@
               label="Date of Birth"
               prepend-inner-icon="mdi-calendar"
               :error-messages="erroMessage"
+              width="50"
             />
           </template>
           <v-date-picker
@@ -162,7 +163,7 @@
             density="compact"
             variant="outlined"
             type="password"
-            width="35">
+            >
           </v-text-field>
         </div>
         </v-card-text>

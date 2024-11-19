@@ -7,15 +7,17 @@
             <v-stepper-header>
                 <template v-for="(item, index) in filteredSteps" :key="index">
                     <v-stepper-item
+                        
                         :complete="step > index + 1"
                         :step="item.title"
                         :value="index + 1"
-                        :title="item.title"                    
+                        :title="item.title" 
+                        class="text-body-1 font-weight-bold"              
                     ></v-stepper-item>
                     <v-divider 
-                    :thickness="2"
+                    :thickness="3"
                     class="border-opacity-100"
-                    color="info"
+                    color="success"
                     v-if="index !== filteredSteps.length - 1">
                     </v-divider>
                 </template>
@@ -233,4 +235,8 @@
     };
 
 </script>
-  
+<style scoped>
+.v-stepper-item {
+    transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+}
+</style>

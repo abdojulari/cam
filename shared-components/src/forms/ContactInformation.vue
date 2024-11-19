@@ -7,7 +7,6 @@
         variant="outlined"
         :rules="[rules.required]"
         required
-        width="60"
         density="compact"
         prepend-inner-icon="mdi-home"
       ></v-text-field>
@@ -18,7 +17,6 @@
         variant="outlined"
         :rules="[rules.required, rules.city]"
         required
-        width="40"
         density="compact"
         prepend-inner-icon="mdi-city"
       ></v-select>
@@ -33,7 +31,7 @@
           required
           density="compact"
           prepend-inner-icon="mdi-home-group"
-          :items="['Alberta', 'British Columbia', 'Manitoba', 'New Brunswick', 'Newfoundland and Labrador', 'Northwest Territories', 'Nova Scotia', 'Nunavut']"
+          :items="['Alberta']"
         >
         </v-combobox>
         <v-text-field
@@ -56,7 +54,6 @@
           :rules="[rules.required, rules.phone]"
           required
           density="compact"
-          width="40"
           prepend-inner-icon="mdi-phone"
         ></v-text-field>
       <v-text-field
@@ -65,7 +62,6 @@
         variant="outlined"
         :rules="[rules.required, rules.email]"
         required
-        width="60"
         density="compact"
         prepend-inner-icon="mdi-email"
       ></v-text-field>

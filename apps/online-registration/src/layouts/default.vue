@@ -33,20 +33,33 @@ onMounted(async () => {
         const scripts = extractUrls(scriptTags, scriptRegex);
 
         useHead({
-            link: [ ...href.value.map(href => ({
-                rel: 'stylesheet',
-                href: `https:${href}`,
-                type: 'text/css',
-            })),
-              {
+            link: [ 
+                // {
+                //     rel: 'stylesheet',
+                //     href: 'https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css',
+                //     type: 'text/css',
+                // },
+                {
                     rel: 'stylesheet',
                     href: 'https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css',
                     type: 'text/css',
-                }, {
+                },
+                {
+                    rel: 'stylesheet',
+                    href: 'https://cor-cdn-static.bibliocommons.com/assets/responsive_external_header-c60fcf3650be665b532bd462de3f54a7.css',
+                    type: 'text/css',
+                },
+                {
+                    rel: 'stylesheet',
+                    href: 'https://epl.bibliocommons.com/cor-cdn-static.bibliocommons.com/assets/responsive_external_header-c60fcf3650be665b532bd462de3f54a7.css',
+                    type: 'text/css',
+                }, 
+            ...href.value.map(href => ({
                 rel: 'stylesheet',
-                href: 'https://cor-cdn-static.bibliocommons.com/assets/responsive_external_header-c60fcf3650be665b532bd462de3f54a7.css',
+                href: `https:${href}`,
                 type: 'text/css',
-            }],
+            }))
+        ],
             style: [
                     {
               innerHTML: `
@@ -56,15 +69,21 @@ onMounted(async () => {
                   visibility: visible !important;
                   transition: opacity 0.3s;
                 },
-                    div.bc_core_external select.bs-select-hidden, div.bc_core_external select.selectpicker {
+                
+                    div.bc_core_external select.selectpicker {
                         display: inline-block !important;
-                    }
+                    } 
               `,
             },
             ],
             script: [
                 {
                     src: 'https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js',
+                    type: 'text/javascript',
+                    defer: true,
+                },
+                {
+                    src: 'https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/js/bootstrap.min.js',
                     type: 'text/javascript',
                     defer: true,
                 },
@@ -110,11 +129,12 @@ onMounted(async () => {
             const scripts = extractUrls(scriptTags, scriptRegex);
 
             useHead({
-                link: [ ...href.value.map(href => ({
-                    rel: 'stylesheet',
-                    href: `https:${href}`,
-                    type: 'text/css',
-                })), 
+                link: [ 
+                // {
+                //     rel: 'stylesheet',
+                //     href: 'https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css',
+                //     type: 'text/css',
+                // },
                 {
                     rel: 'stylesheet',
                     href: 'https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css',
@@ -124,7 +144,17 @@ onMounted(async () => {
                     rel: 'stylesheet',
                     href: 'https://cor-cdn-static.bibliocommons.com/assets/responsive_external_header-c60fcf3650be665b532bd462de3f54a7.css',
                     type: 'text/css',
-                }],
+                },    
+                {
+                    rel: 'stylesheet',
+                    href: 'https://epl.bibliocommons.com/cor-cdn-static.bibliocommons.com/assets/responsive_external_header-c60fcf3650be665b532bd462de3f54a7.css',
+                    type: 'text/css',
+                },
+                ...href.value.map(href => ({
+                    rel: 'stylesheet',
+                    href: `https:${href}`,
+                    type: 'text/css',
+                }))],
                 style: [{
                   innerHTML: `
                     .cp_header_wrapper .header_collapsible_search_wrapper .header_search_wrapper_desktop .cp_header_search {
@@ -133,7 +163,8 @@ onMounted(async () => {
                       visibility: visible !important;
                       transition: opacity 0.3s;
                     },
-                    div.bc_core_external select.bs-select-hidden, div.bc_core_external select.selectpicker {
+                    {
+                    div.bc_core_external select.selectpicker {
                         display: inline-block !important;
                     }
                   `,
@@ -144,6 +175,11 @@ onMounted(async () => {
                         type: 'text/javascript',
                         defer: true,
                     },
+                    {
+                    src: 'https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/js/bootstrap.min.js',
+                    type: 'text/javascript',
+                    defer: true,
+                },
                     {
                         src: 'https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js',
                         type: 'text/javascript',
@@ -185,16 +221,42 @@ const extractUrls = (tags: any, regex: any) => {
     }
     return matches;
 };
-</script>
 
-<style scoped>
-  .cp_header_wrapper .header_collapsible_search_wrapper .header_search_wrapper_desktop .cp_header_search {
-    width: auto;
-    opacity: 1 !important;
-    visibility: visible !important;
-    transition: opacity 0.3s;
-  }
-  .div.bc_core_external select.bs-select-hidden, div.bc_core_external select.selectpicker {
-      display: inline-block !important;
-  }
-</style>
+onMounted(() => {
+    const loadScript = (src) => {
+        return new Promise((resolve, reject) => {
+            const script = document.createElement('script');
+            script.src = src;
+            script.onload = resolve;
+            script.onerror = reject;
+            document.body.appendChild(script);
+        });
+    };
+
+    const loadStylesheet = (href) => {
+        return new Promise((resolve, reject) => {
+            const link = document.createElement('link');
+            link.rel = 'stylesheet';
+            link.href = href;
+            link.onload = resolve;
+            link.onerror = reject;
+            document.head.appendChild(link);
+        });
+    };
+
+    const loadResources = async () => {
+        try {
+            await loadStylesheet('https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css');
+            await loadScript('https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js');
+            await loadScript('https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js');
+            // Initialize the selectpicker
+            $('.selectpicker').selectpicker('refresh');
+        } catch (error) {
+            console.error('Failed to load resources:', error);
+        }
+    };
+
+    loadResources();
+});
+
+</script>

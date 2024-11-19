@@ -61,7 +61,7 @@
         userRegistration.getRadioSelection === 'Adult' && 
             userRegistration.getAdditionalMinor === true 
             && props.formData.addMinor === true) {
-        userRegistration.adult.profile = 'EPL_JONLIN'
+        userRegistration.adult.profile = 'EPL_SELF'
         userRegistration.addRegistration({data:userRegistration.minor})
       }
       if (userRegistration.getRadioSelection === 'Adult') {
@@ -74,7 +74,7 @@
         if (props.formData.radios === 'Adult') {
           userRegistration.adult.password = props.formData.password;
           userRegistration.adult.confirmPassword = props.formData.confirmPassword;
-          userRegistration.adult.profile = 'EPL_ONLIN'
+          userRegistration.adult.profile = 'EPL_SELF'
           userRegistration.adult.barcode = barcode.value
           userRegistration.adult.consent = userRegistration.getConsent
         }
