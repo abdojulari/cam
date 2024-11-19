@@ -223,7 +223,7 @@ const extractUrls = (tags: any, regex: any) => {
 };
 
 onMounted(() => {
-    const loadScript = (src) => {
+    const loadScript = (src: string) => {
         return new Promise((resolve, reject) => {
             const script = document.createElement('script');
             script.src = src;
@@ -233,7 +233,7 @@ onMounted(() => {
         });
     };
 
-    const loadStylesheet = (href) => {
+    const loadStylesheet = (href: string) => {
         return new Promise((resolve, reject) => {
             const link = document.createElement('link');
             link.rel = 'stylesheet';
