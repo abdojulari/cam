@@ -1,4 +1,10 @@
 <template>
+  <v-container>
+    <v-row>
+        <v-col>
+        <span class="text-body-1 font-weight-light">Fields marked with an asterisk (*) are required</span>
+        </v-col>
+    </v-row>
     <v-card class="" flat >
       <v-card-title>
         <h3>Minor Details</h3>
@@ -7,7 +13,7 @@
         <div class="d-flex ga-5">
             <v-text-field 
               v-model="formData.minorFirstname" 
-              label="First Name" 
+              label="First Name *" 
               :error-messages="erroMessage"
               density="compact"
               variant="outlined"
@@ -15,7 +21,7 @@
             </v-text-field>
             <v-text-field 
               v-model="formData.minorLastname" 
-              label="Last Name" 
+              label="Last Name *" 
               :error-messages="erroMessage"
               density="compact"
               variant="outlined"
@@ -269,7 +275,7 @@
         </v-card-actions> 
       </v-card>
     </div>
-    
+  </v-container>
 </template>
   
 <script setup lang="ts">
@@ -332,34 +338,34 @@
     });
   });
   // create watch for loading 
-  watch(loading, (value) => {
-    if (!value) return;  
-    setTimeout(async () => {
-      try {
-        const body = {
-          barcode: props.formData.barcode,
-          password: props.formData.pin,
-        } as any;
+    watch(loading, (value) => {
+      if (!value) return;  
+      setTimeout(async () => {
+        try {
+          const body = {
+            barcode: props.formData.barcode,
+            password: props.formData.pin,
+          } as any;
+        
+          const data = await apiService.authenticate(body);
+          if (minors.value.length > 0) {
+            minors.value.map(minor => {
+              userRegistration.setMinor(createRegistrationData(barcode.value,props.formData, minor, data));
+              userRegistration.addRegistration({data:userRegistration.minor});
+            });
+          }
+          userRegistration.setMinor(createRegistrationData(barcode.value,props.formData, undefined, data));
+          userRegistration.addRegistration({data:userRegistration.minor});
+          isClicked.value = true;   
+          loading.value = false; 
+          console.log(userRegistration.getRegistration)
+          return data; 
+          } catch (err) {
+              return (err as any).message;
+          }
+      }, 2000);
       
-        const data = await apiService.authenticate(body);
-        if (minors.value.length > 0) {
-          minors.value.map(minor => {
-            userRegistration.setMinor(createRegistrationData(barcode.value,props.formData, minor, data));
-            userRegistration.addRegistration({data:userRegistration.minor});
-          });
-        }
-        userRegistration.setMinor(createRegistrationData(barcode.value,props.formData, undefined, data));
-        userRegistration.addRegistration({data:userRegistration.minor});
-        isClicked.value = true;   
-        loading.value = false; 
-        console.log(userRegistration.getRegistration)
-        return data; 
-        } catch (err) {
-            return (err as any).message;
-        }
-    }, 2000);
-    
-  });
+    });
 
     const isMenuOpen = ref(false);
     const formattedDate = computed(() => {

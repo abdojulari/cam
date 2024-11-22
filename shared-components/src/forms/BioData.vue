@@ -1,44 +1,52 @@
 <template>
     <v-container class="pt-8">
+        <v-row>
+            <v-col>
+            <span class="text-body-1 font-weight-light">Fields marked with an asterisk (*) are required</span>
+            </v-col>
+        </v-row>
         <v-form 
             ref="form" 
             v-model="formValid" 
             @update:model-value="updateFormValid" 
             lazy-validation
         >
-            <div class="d-flex ga-5">
-                <v-text-field
+            <v-row>
+                <v-col>
+                   <v-text-field
                     class="text-capitalize"
-                    label="First name"
+                    label="First name *"
                     v-model="formData.firstname"
                     variant="outlined"
                     density="compact"
                     :rules="[rules.required, props.rules.firstname]"
                     required
-                >
-                </v-text-field>
-                <v-text-field
-                    class="text-capitalize" 
-                    label="Middle name"
-                    v-model="formData.middlename"
-                    variant="outlined"
-                    density="compact"
-                    :rules="[props.rules.middlename]"
-                >
-                </v-text-field>
-            </div>
-            <div class="d-flex ga-5">
-                <v-text-field
+                    />
+                </v-col>
+                <v-col>
+                    <v-text-field
                     class="text-capitalize"
-                    label="Last name"
+                    label="Last name *"
                     v-model="formData.lastname"
                     variant="outlined"
                     density="compact"
                     :rules="[rules.required, props.rules.lastname]"
                     required
-                >
-                </v-text-field>
-                <v-menu v-model="isMenuOpen" :close-on-content-click="false">
+                    />
+                </v-col>
+            </v-row>
+            <v-row> 
+                <v-col>
+                   <v-text-field
+                    class="text-capitalize" 
+                    label="Middle name"
+                    v-model="formData.middlename"
+                    variant="outlined"
+                    density="compact"
+                    />
+                </v-col>
+                <v-col>
+                    <v-menu v-model="isMenuOpen" :close-on-content-click="false">
                     <template v-slot:activator="{ props }">
                         <v-text-field
                             :model-value="formattedDate"
@@ -49,8 +57,7 @@
                             density="compact"
                             label="Date of Birth"
                             prepend-inner-icon="mdi-calendar"
-                        >
-                        </v-text-field>
+                        />
                     </template>
                     <v-date-picker
                         v-model="formData.dateofBirth"
@@ -60,13 +67,14 @@
                     >
                     </v-date-picker>
                 </v-menu>
-            </div>
+                </v-col>
+            </v-row>
         </v-form>
     </v-container>
 </template>
   
 <script setup lang="ts">
-    import { ref, computed, defineProps, defineEmits, onMounted, useTemplateRef } from 'vue';
+    import { ref, computed, defineProps, defineEmits } from 'vue';
     import { useRegistrationStore } from '../store/registration-store';
     import { minDate } from '../composables/minDate';
    
@@ -77,7 +85,7 @@
         formValid.value = isValid;  
         emit('update:modelValue', isValid); 
     };
-    const radioSelection = useRegistrationStore();
+    
     const props = defineProps(['formData', 'rules', 'page', 'bioDataFormValid', 'form']);
     const isMenuOpen = ref(false);
     const formattedDate = computed(() => {
@@ -88,19 +96,4 @@
             year: 'numeric',
         }).format(props.formData.dateofBirth);
     });
- 
-    //const selectedRadio = computed(() => radioSelection.getRadioSelection);
-    
-    // watch(selectedRadio, (newValue) => {
-    //     console.log('Selected Radio:', newValue);
-    // });
-    // onMounted(() => {
-    //     console.log('Selected Radio on load:', selectedRadio.value);
-    // });
-
-    // const minDate = computed(() => {
-    //     const today = new Date()
-    //     const minAgeDate = new Date(today.setFullYear(today.getFullYear() - 18))
-    //     return minAgeDate.toISOString().split('T')[0]
-    // })
 </script>

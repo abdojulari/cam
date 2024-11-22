@@ -1,13 +1,23 @@
 <template>
-    <v-layout class="d-flex flex-column  rounded rounded-md">
-      <div v-if="header" v-html="header"></div>
-      <v-main class="d-flex align-center justify-center" style="min-height: 700px;">
-        <nuxt-page />
-      </v-main>
-      <v-footer class="d-flex flex-column">
-        <div class="w-100" v-if="footer" v-html="footer"></div>
-      </v-footer>
-    </v-layout>
+  <v-layout class="d-flex flex-column  rounded rounded-md">
+    <div
+      v-if="header"
+      v-html="header"
+    />
+    <v-main
+      class="d-flex align-center justify-center"
+      style="min-height: 700px;"
+    >
+      <slot />
+    </v-main>
+    <v-footer class="d-flex flex-column">
+      <div
+        v-if="footer"
+        class="w-100"
+        v-html="footer"
+      />
+    </v-footer>
+  </v-layout>
 </template>
 <script setup lang="ts">
 const href = ref([]);
@@ -34,11 +44,6 @@ onMounted(async () => {
 
         useHead({
             link: [ 
-                // {
-                //     rel: 'stylesheet',
-                //     href: 'https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css',
-                //     type: 'text/css',
-                // },
                 {
                     rel: 'stylesheet',
                     href: 'https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css',
@@ -130,11 +135,6 @@ onMounted(async () => {
 
             useHead({
                 link: [ 
-                // {
-                //     rel: 'stylesheet',
-                //     href: 'https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css',
-                //     type: 'text/css',
-                // },
                 {
                     rel: 'stylesheet',
                     href: 'https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css',
