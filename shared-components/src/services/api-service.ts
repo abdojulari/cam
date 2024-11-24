@@ -17,7 +17,9 @@ export const apiService = {
               mode: 'cors'
           });
           const data = await response.json();
+          console.log(data);
           return data.barcode;
+
       } catch (error) {
           return { error: (error as Error).message }; 
       }
