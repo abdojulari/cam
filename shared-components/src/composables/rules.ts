@@ -49,7 +49,7 @@ export const rules = (formData: any) => {
             },
         },
         {
-            title: 'Choose your password',
+            title: formData.radios === "Adult" ? 'Choose your password' : 'Confirmation',
             component: CreatePin,
             rules: {
                 required: (value: any) => !!value || 'Required.',

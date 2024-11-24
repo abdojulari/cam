@@ -1,61 +1,69 @@
 // services/api-service.ts
+import { getCookie } from '../composables/get-cookies';
 
 export const apiService = {
     async fetchBarcode() {
+      const config = useRuntimeConfig();
+      const url = `${config.public.CRE_BARCODE_URL}`;
+      const headers = {
+          'Content-Type': 'application/json'
+      };
+  
       try {
-        const response = await fetch('/api/barcode', {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        });
-        const data = await response.json();
-        return data.barcode;
-      } catch (err) {
-        console.error('Error fetching barcode:', err);
-        throw new Error('Failed to fetch barcode');
+          const response = await fetch(url, {
+              method: 'GET',
+              headers,
+              credentials: 'include',
+              mode: 'cors'
+          });
+          const data = await response.json();
+          return data.barcode;
+      } catch (error) {
+          return { error: (error as Error).message }; 
       }
     },
     async registration(payload: any) {
-      try {
-        const response = await fetch('/api/registration', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                firstname: payload.data.biodata.firstname,
-                lastname: payload.data.biodata.lastname,
-                middlename: payload.data.biodata.middlename,
-                dateofbirth: payload.data.biodata.dateofbirth,
-                address: payload.data.contact.street,
-                city: payload.data.contact.city,
-                province: payload.data.contact.province,
-                postalcode: payload.data.contact.postalcode,
-                phone: payload.data.contact.phone,
-                email: payload.data.contact.email,
-                profile: payload.data.profile,
-                password: payload.data.password,
-                confirmPassword: payload.data.confirmPassword,
-                barcode: payload.data.barcode,
-                careof: payload.data.careof,
-                category5: payload.data.consent
-            }),
-        });
+      const config = useRuntimeConfig();
+      const url = `${config.public.CRE_DUPLICATE_URL}`;
+      const access_token = getCookie('access_token');
+      const body  =JSON.stringify({
+          firstname: payload.data.biodata.firstname,
+          lastname: payload.data.biodata.lastname,
+          middlename: payload.data.biodata.middlename,
+          dateofbirth: payload.data.biodata.dateofbirth,
+          address: payload.data.contact.street,
+          city: payload.data.contact.city,
+          province: payload.data.contact.province,
+          postalcode: payload.data.contact.postalcode,
+          phone: payload.data.contact.phone,
+          email: payload.data.contact.email,
+          profile: payload.data.profile,
+          password: payload.data.password,
+          confirmPassword: payload.data.confirmPassword,
+          barcode: payload.data.barcode,
+          careof: payload.data.careof,
+          category5: payload.data.consent
+      });
+    
+      const headers = {
+          'Accept': 'application/json',
+          'Authorization' :`Bearer ${access_token}`,
+          'Content-Type': 'application/json',
+      };
 
-        if (!response.ok) {
-            throw new Error('Failed to submit form');
-        }
-        
-        return await response.json();
-        
+      try {
+          const response = await fetch(url, {
+              method: 'POST',
+              headers,
+              body
+          });
+          const data = await response.json();
+          return data;
       } catch (error) {
-          console.error('Error during form submission:', error);
-          alert('There was an issue submitting the form.');
-          return;
-      }
+            return { error: (error as Error).message };
+        }
     },
-    async authenticate(body: any) {
+    async authenticate(body: unknown) {
       try {
         const response = await fetch('/api/authenticate', {
           method: 'POST',
@@ -72,21 +80,38 @@ export const apiService = {
       }
     },
     async initializeToken() {
-      try {
-        const response = await fetch('/api/getToken', {
-        method: 'POST',
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/x-www-form-urlencoded'
-        }
-        });
+      const config = useRuntimeConfig();
+      const body = new URLSearchParams({
+        client_id: config.public.CLIENT_ID,
+        client_secret: config.public.CLIENT_SECRET,
+        grant_type: "client_credentials"
+      }).toString();
+      
+      const url = `${config.public.tokenUrl}`;
+      const headers = {
+        'Accept': 'application/json',
+        'Content-Type': 'application/x-www-form-urlencoded'
+       };
 
-        if (!response.ok) {
-        throw new Error('Failed to fetch token');
-        }
-        return await response.json();
-      } catch (err: any) {
-          console.log(err.message as string);
+      try {
+          const response = await fetch(url, {
+              method: 'POST',
+              headers,
+              body,
+              credentials: 'include',
+              mode: 'cors'
+          });
+          const data = await response.json()
+          
+          if (data.access_token) {
+              document.cookie = `access_token=${data.access_token}; path=/;`;
+          }
+          return data;
+      }
+      catch (error) {
+        console.error(
+          'Request failed:', 
+          {error });
       }
     },
     async externalApiCall() {

@@ -3,69 +3,69 @@
         <v-row class="mx-auto px-10">
             <v-col cols="8">
                 <v-stepper v-model="step" show-actions="true" elevation="0" width="100%">
-            <template v-slot:default>
-            <v-stepper-header>
-                <template v-for="(item, index) in filteredSteps" :key="index">
-                    <v-stepper-item
-                        
-                        :complete="step > index + 1"
-                        :step="item.title"
-                        :value="index + 1"
-                        :title="item.title" 
-                        class="text-body-1 font-weight-bold"              
-                    ></v-stepper-item>
-                    <v-divider 
-                    :thickness="3"
-                    class="border-opacity-100"
-                    color="success"
-                    v-if="index !== filteredSteps.length - 1">
-                    </v-divider>
-                </template>
-            </v-stepper-header>
-    
-            <v-stepper-window>
-                <template v-for="(item, index) in filteredSteps" :key="index">
-                <v-stepper-window-item :value="index + 1">
-                    <v-card>
-                    <v-card-title>
-                        <h3>{{ item.title }}</h3>
-                    </v-card-title>
-                    <v-card-text>
-                        <component :is="item.component" :formData="formData" :rules="item.rules" :page="props.page" v-model="biodataFormValid"/>
-                    </v-card-text>
-                    </v-card>
-                </v-stepper-window-item>
-                </template>
-            </v-stepper-window>
-    
-                <v-stepper-actions
-                    color="primary"
-                    :disabled="!formData.radios && page !== 'registration-portal' || disabled || isNextDisabled"
-                    @click:next="next"
-                    @click:prev="prev"
-                >
-                </v-stepper-actions>
-                <v-container>
-                    <v-row>
-                    <v-col class="d-flex justify-end">
-                        <v-btn
-                            v-if="step === filteredSteps.length && step !== 1"
-                            :disabled="!formData.acceptTerms"
+                    <template v-slot:default>
+                    <v-stepper-header>
+                        <template v-for="(item, index) in filteredSteps" :key="index">
+                            <v-stepper-item
+                                
+                                :complete="step > index + 1"
+                                :step="item.title"
+                                :value="index + 1"
+                                :title="item.title" 
+                                class="text-body-1 font-weight-bold"              
+                            ></v-stepper-item>
+                            <v-divider 
+                            :thickness="3"
+                            class="border-opacity-100"
+                            color="success"
+                            v-if="index !== filteredSteps.length - 1">
+                            </v-divider>
+                        </template>
+                    </v-stepper-header>
+            
+                    <v-stepper-window>
+                        <template v-for="(item, index) in filteredSteps" :key="index">
+                        <v-stepper-window-item :value="index + 1">
+                            <v-card>
+                            <v-card-title>
+                                <h3>{{ item.title }}</h3>
+                            </v-card-title>
+                            <v-card-text>
+                                <component :is="item.component" :formData="formData" :rules="item.rules" :page="props.page" v-model="biodataFormValid"/>
+                            </v-card-text>
+                            </v-card>
+                        </v-stepper-window-item>
+                        </template>
+                    </v-stepper-window>
+            
+                        <v-stepper-actions
                             color="primary"
-                            @click="submitForm"
-                            class="me-2"
+                            :disabled="!formData.radios && page !== 'registration-portal' || disabled || isNextDisabled"
+                            @click:next="next"
+                            @click:prev="prev"
                         >
-                            Submit
-                        </v-btn>
-                    </v-col>
-                    </v-row>
-                </v-container>
-               
-            </template>
+                        </v-stepper-actions>
+                        <v-container>
+                            <v-row>
+                            <v-col class="d-flex justify-end">
+                                <v-btn
+                                    v-if="step === filteredSteps.length && step !== 1"
+                                    :disabled="!formData.acceptTerms"
+                                    color="primary"
+                                    @click="submitForm"
+                                    class="me-2"
+                                >
+                                    Submit
+                                </v-btn>
+                            </v-col>
+                            </v-row>
+                        </v-container>
+                    
+                    </template>
                 </v-stepper>
             </v-col>
             <v-col cols="4">
-                <v-img src="https://www2.epl.ca/register/images/EPLCards.svg" alt="registration"></v-img>
+                <v-img src="~/assets/images/EPLCards.svg" alt="registration"></v-img>
             </v-col>
         </v-row>     
     </v-container>
@@ -97,7 +97,7 @@
         dateofBirth: null,
         address: '',
         city: '',
-        province: 'Alberta',
+        province: 'AB',
         phone: '',
         email: '',
         postalCode: '',
@@ -117,7 +117,7 @@
         minorMiddlename: '',
         minorDateOfBirth: null,
         acceptTerms: false,
-        adultProvince: 'Alberta',
+        adultProvince: 'AB',
     });
   
     // Step list
@@ -229,7 +229,7 @@
                 return;
             }
             // Proceed to next page if no errors
-            router.push('/preview');
+            router.push('/success-page');
             return registrationData;
         }, 1000);  
     };
