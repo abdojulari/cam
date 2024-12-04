@@ -87,3 +87,25 @@ And join the Nx community:
 *Run*
 - `npm install`
 - `pm2 start ecosystem.config.cjs`
+
+To run the entire process (clean, reset, build, start):
+`make`
+
+To run only specific steps:
+
+Clean up .output:
+`make clean`
+Reset the Nx workspace:
+
+`make reset`
+Build the project:
+
+`make build`
+Start the app:
+
+`make start`
+To reset and clean:
+`make clean-reset`
+To build and start:
+
+`make build-start`

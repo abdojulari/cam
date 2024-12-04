@@ -1,5 +1,5 @@
 <template>
-  <v-container class="pa-6 bg-white rounded-lg shadow-md max-width-4xl mt-10 mx-auto">
+  <v-container class="pa-6 bg-white  max-width-4xl mt-10 mx-auto">
     <v-row>
       <v-col cols="12">
         <div class="text-h4 font-weight-semibold mb-4">
@@ -18,7 +18,7 @@
           You have successfully completed your account registration.
         </p>
         <p class="text-body-1 font-weight-bold mb-4">
-          Please check your inbox for your library card and PIN number.
+          Please check your inbox for your library card.
         </p>
         <a 
           class="font-weight-bold text-body-1 text-primary" 
@@ -29,22 +29,36 @@
       </v-col>
 
       <v-col cols="12">
-        <div variant="body1" class="text-body-1 mb-4">
-          Prepare your baby for a lifetime of learning with 
-          <span class="font-weight-bold">FREE early literacy programs</span> 
-          at all EPL locations and through the EPL 
+        <div 
+          variant="body1" 
+          class="text-body-1 mb-4"
+        >
+          Start placing holds before coming in by registering with 
           <a 
-            href="" 
+            href="https://epl.bibliocommons.com/user/registration" 
             class="text-body-1 font-weight-bold text-primary"
+            target="_blank"
           >
-            Welcome Baby Program
-          </a>.
+            My EPL Account
+          </a>
         </div>
       </v-col>
 
       <v-col cols="12">
-        <div variant="body1" class="text-body-1 mb-6">
-          Visit any EPL Location to receive a <span class="font-weight-bold">FREE tote bag</span>. Simply show your picture ID and your library card (a printed copy or via the EPL Mobile app). A picture ID is also required the first time you borrow a video game with your online card.
+        <div 
+          variant="body1" 
+          class="text-body-1 mb-6"
+        >
+          You will need to bring proof of address and picture ID to an 
+          <a 
+            class="text-body-1 font-weight-bold text-primary"
+            href="https://epl.bibliocommons.com/v2/locations"
+            target="_blank"
+          >
+            EPL location
+          </a> to begin 
+          physical borrowing and to extend your membership from 90 days to as long as you live 
+          in Edmonton. As a bonus, you'll receive a FREE tote bag when you visit us the first time!
         </div>
       </v-col>
 

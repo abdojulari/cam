@@ -1,23 +1,36 @@
 <template>
-    <v-container class="">
+    <v-container>
+        <v-row class="mx-auto py-5 border-b-md	border-primary">
+            <h2 class="text-h4 text-primary font-weight-bold">Get Your FREE Library Card</h2>
+        </v-row>
         <v-row class="mx-auto px-10">
-            <v-col cols="8">
-                <v-stepper v-model="step" show-actions="true" elevation="0" width="100%">
+            <v-col cols="12">
+                <v-progress-circular
+                    v-if="isLoading"
+                    :size="50"
+                    :width="4"
+                    indeterminate
+                    color="primary"
+                    class="mx-auto"
+                    style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);"
+                />
+            </v-col>
+            <v-col cols="12" sm="8">
+                <v-stepper v-model="step" show-actions="true" elevation="0" width="100%" mobile>
                     <template v-slot:default>
-                    <v-stepper-header>
+                    <v-stepper-header class="elevation-0 border-b">
                         <template v-for="(item, index) in filteredSteps" :key="index">
                             <v-stepper-item
-                                
                                 :complete="step > index + 1"
                                 :step="item.title"
                                 :value="index + 1"
-                                :title="item.title" 
-                                class="text-body-1 font-weight-bold"              
+                                :title="item.title"
+                                :color="step === index + 1 ? 'primary' : 'green'" 
+                                class="text-body-1 font-weight-bold"            
                             ></v-stepper-item>
                             <v-divider 
                             :thickness="3"
-                            class="border-opacity-100"
-                            color="success"
+                            class="border-opacity-100 border-warning"
                             v-if="index !== filteredSteps.length - 1">
                             </v-divider>
                         </template>
@@ -28,10 +41,17 @@
                         <v-stepper-window-item :value="index + 1">
                             <v-card>
                             <v-card-title>
-                                <h3>{{ item.title }}</h3>
+                                <h3 class="text-primary text-h6 font-weight-bold">{{ item.title }}</h3>
                             </v-card-title>
                             <v-card-text>
-                                <component :is="item.component" :formData="formData" :rules="item.rules" :page="props.page" v-model="biodataFormValid"/>
+                                <component 
+                                    :is="item.component" 
+                                    :formData="formData" 
+                                    :rules="item.rules" 
+                                    :page="props.page" 
+                                    v-model="formValid"
+                                    :form="form"
+                                />
                             </v-card-text>
                             </v-card>
                         </v-stepper-window-item>
@@ -60,11 +80,10 @@
                             </v-col>
                             </v-row>
                         </v-container>
-                    
                     </template>
                 </v-stepper>
             </v-col>
-            <v-col cols="4">
+            <v-col cols="12" sm="4">
                 <v-img src="~/assets/images/EPLCards.svg" alt="registration"></v-img>
             </v-col>
         </v-row>     
@@ -86,8 +105,8 @@
         required: true,
         },
     });
-    const biodataFormValid = ref(false);
-    const form = useTemplateRef("form");
+    const formValid = ref(false);
+    const form = ref();
     const step = ref(1);
     const formData = ref({
         radios: '',
@@ -119,19 +138,20 @@
         acceptTerms: false,
         adultProvince: 'AB',
     });
-  
+    const isLoading = ref(false);
     // Step list
     const stepList = rules(formData);
     const selectedRadio = computed(() => userRegistration.getRadioSelection);
     watch(selectedRadio, (newValue) => {
-        return formData.radios = newValue;
+        return formData.value.radios = newValue;
     });
 
+    
     onMounted(async () => {
         apiService.initializeToken().then((response) => {
             return response;
         });
-        return formData.radios = selectedRadio.value;
+        return formData.value.radios = selectedRadio.value;
     });
     // Filter items based on the current page
     const filteredSteps = computed(() => {
@@ -155,11 +175,10 @@
     // Navigation methods
     const next = () => {
           // Handle submission based on current step
-        if (filteredSteps.value[step.value - 1].title === 'Bio Data') {
-            // Validate the form before proceeding
+        if (filteredSteps.value[step.value - 1].title === 'About You') {
             form.value?.validate();
-            if (!biodataFormValid.value) {
-                console.log("Form is invalid! Please fill the form.");
+            
+            if (!formValid.value) {
                 return;
             }
             userRegistration.adult.biodata = {
@@ -169,7 +188,7 @@
                 dateofbirth: (formData.value.dateofBirth).toISOString().split('T')[0],
             };
             
-        } else if (filteredSteps.value[step.value - 1].title === 'Contacts') {
+        } else if (filteredSteps.value[step.value - 1].title === 'Contact') {
             if (formData.value.street === '' || formData.value.city === '' 
             || formData.value.province === '' || formData.value.postalCode === null
             || formData.value.phone === '' || formData.value.email === '') {
@@ -207,6 +226,23 @@
     // Check if the next button should be disabled
     const isNextDisabled = computed(() => {
         //const currentStepIndex = step.value - 1;
+        if (filteredSteps.value[step.value - 1].title === 'About You' && !formValid.value) {
+            return true;
+        }
+        if (filteredSteps.value[step.value - 1].title === 'Contact') {
+            if (formData.value.street === '' || formData.value.city === '' 
+            || formData.value.province === '' || formData.value.postalCode === null
+            || formData.value.phone === '' || formData.value.email === '') {
+                return true;
+            }
+        }
+        if (filteredSteps.value[step.value - 1].title === 'Minor') {
+            if (formData.value.minorFirstname === '' || formData.value.minorLastname === '' 
+            || formData.value.minorMiddlename === '' || formData.value.minorDateOfBirth === null) {
+                return true;
+            }
+        }
+
         return step.value >= filteredSteps.value.length;
     })
     const disabled = computed(() => {
@@ -216,9 +252,10 @@
     })
    
     const submitForm = async () => {
-        setTimeout(async () => {
+        isLoading.value = true;
             let registrationData;
-            for (const data of userRegistration.registration) {
+            try {
+                for (const data of userRegistration.registration) {
                 await apiService.registration(data).then((response) => {
                     registrationData = response;
                 });
@@ -230,8 +267,14 @@
             }
             // Proceed to next page if no errors
             router.push('/success-page');
-            return registrationData;
-        }, 1000);  
+            //return registrationData;
+        } catch (error) {
+            console.error('Error during registration:', error);
+            alert('There was an error during registration.');
+        } finally {
+            isLoading.value = false; // Hide loading animation once the process is complete
+        }
+        return registrationData;
     };
 
 </script>

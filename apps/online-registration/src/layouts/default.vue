@@ -179,7 +179,7 @@ onMounted(async () => {
                     src: 'https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/js/bootstrap.min.js',
                     type: 'text/javascript',
                     defer: true,
-                },
+                    },
                     {
                         src: 'https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js',
                         type: 'text/javascript',

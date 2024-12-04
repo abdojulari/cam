@@ -1,7 +1,7 @@
 <template>
-  <StepperForm :page="'online-registration'" />
+  <Stepper :page="'online-registration'" />
 </template>
 
 <script setup lang="ts">
-  import StepperForm from 'shared-components/src/forms/StepperForm.vue'
+  import Stepper from 'shared-components/src/forms/Stepper.vue'
 </script>

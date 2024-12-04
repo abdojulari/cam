@@ -9,10 +9,10 @@
             ref="form" 
             v-model="formValid" 
             @update:model-value="updateFormValid" 
-            lazy-validation
+            fast-fail
         >
             <v-row>
-                <v-col>
+                <v-col cols="12" sm="6">
                    <v-text-field
                     class="text-capitalize"
                     label="First name *"
@@ -20,10 +20,11 @@
                     variant="outlined"
                     density="compact"
                     :rules="[rules.required, props.rules.firstname]"
+                    :error-messages="formValid && !formData.firstname ? ['First name is required'] : []" 
                     required
                     />
                 </v-col>
-                <v-col>
+                <v-col cols="12" sm="6">
                     <v-text-field
                     class="text-capitalize"
                     label="Last name *"
@@ -33,10 +34,8 @@
                     :rules="[rules.required, props.rules.lastname]"
                     required
                     />
-                </v-col>
-            </v-row>
-            <v-row> 
-                <v-col>
+                </v-col> 
+                <v-col cols="12" sm="6">
                    <v-text-field
                     class="text-capitalize" 
                     label="Middle name"
@@ -45,7 +44,7 @@
                     density="compact"
                     />
                 </v-col>
-                <v-col>
+                <v-col cols="12" sm="6">
                     <v-menu v-model="isMenuOpen" :close-on-content-click="false">
                     <template v-slot:activator="{ props }">
                         <v-text-field
@@ -56,6 +55,8 @@
                             rounded-0
                             density="compact"
                             label="Date of Birth"
+                            :rules="[rules.required]"
+                            required
                             prepend-inner-icon="mdi-calendar"
                         />
                     </template>
@@ -75,9 +76,13 @@
   
 <script setup lang="ts">
     import { ref, computed, defineProps, defineEmits } from 'vue';
-    import { useRegistrationStore } from '../store/registration-store';
     import { minDate } from '../composables/minDate';
-   
+
+    const props = defineProps(['formData', 'rules', 'page', 'bioDataFormValid', 'form']);
+    // create a local formData and set it to the props
+    const formData = ref(props.formData);
+    const isMenuOpen = ref(false);
+
     const formValid = ref(false);
     const emit = defineEmits(['update:formData', 'update:modelValue']);
     // Update the parent when form validation changes
@@ -85,9 +90,7 @@
         formValid.value = isValid;  
         emit('update:modelValue', isValid); 
     };
-    
-    const props = defineProps(['formData', 'rules', 'page', 'bioDataFormValid', 'form']);
-    const isMenuOpen = ref(false);
+
     const formattedDate = computed(() => {
     if (!props.formData.dateofBirth) return '';
         return new Intl.DateTimeFormat('en-US', {

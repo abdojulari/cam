@@ -1,11 +1,11 @@
 <template>
   <v-container>
     <v-row>
-        <v-col>
-        <span class="text-body-1 font-weight-light">Fields marked with an asterisk (*) are required</span>
+        <v-col cols="12">
+          <span class="text-body-1 font-weight-light">Fields marked with an asterisk (*) are required</span>
         </v-col>
     </v-row>
-    <v-card class="" flat >
+    <v-card class="" variant="flat" >
       <v-card-title>
         <h3>Minor Details</h3>
       </v-card-title>
@@ -66,7 +66,7 @@
         <div class="d-flex ga-5">
           <v-text-field
             v-model="formData.password"
-            label="Pin/Password"        
+            label="Password"        
             variant="outlined"
             :error-messages="erroMessage"
             type="password"
@@ -74,7 +74,7 @@
           ></v-text-field>
           <v-text-field
             v-model="formData.confirmPassword"
-            label="Confirm Pin/Password"
+            label="Confirm Password"
             variant="outlined"
             :error-messages="erroMessage"
             :rules="[confirmPinRules]"
@@ -149,12 +149,12 @@
     </div>
     <div class="" v-if="props.formData.radios !== 'Adult'">
         <v-card flat v-if="linkMinor">
-        <v-card-title>
-          <h3 class="text-uppercase">Link your child(ren) to your profile</h3>
+        <v-card-title class="mb-2">
+          <h3>Link your child(ren) to your profile</h3>
         </v-card-title>
         <v-card-text>
           
-        <div class="d-flex ga-5">
+        <v-row class="d-flex ga-5">
           <v-text-field 
             v-model="formData.barcode" 
             label="Barcode" 
@@ -164,21 +164,21 @@
           ></v-text-field>
           <v-text-field 
             v-model="formData.pin" 
-            label="Pin/Password" 
+            label="Password" 
             :rules="[props.rules.required]"
             density="compact"
             variant="outlined"
             type="password"
             >
           </v-text-field>
-        </div>
+        </v-row>
         </v-card-text>
         <v-card-actions class="d-flex flex-column align-start justify-start">
           <v-btn 
             variant="flat" 
             color="primary" 
             class="me-2  text-none text-uppercase"
-            :disabled="loading"
+            :disabled="loading || formData.barcode === '' || formData.pin === ''"
             :loading="loading"
             @click="loading = !loading"
             >
@@ -268,7 +268,7 @@
             color="primary" 
             class="ml-2"
             :text="disabled ? 'Saved' : 'Save Changes'"
-            :disabled="disabled"
+            :disabled="disabled || adultFormData.isInvalid"
             @click="linkAdult"
           >
           </v-btn>
@@ -290,7 +290,7 @@
   import { apiService } from '../services/api-service';
   import { minDate } from '../composables/minDate';
   import { vMaska } from "maska/vue"
-  import { rules } from '../composables/rules';
+
   import { 
     createMinorRegistrationData, 
     createRegistrationData, 
@@ -319,20 +319,14 @@
   const disabled = ref(false);
  
   const props = defineProps(['formData', 'rules', 'page', 'bioDataFormValid', 'form']);
-  const formValid = ref(false);
-    const emit = defineEmits(['update:formData', 'update:modelValue']);
-    // Update the parent when form validation changes
-    const updateFormValid = (isValid: boolean) => {
-        formValid.value = isValid;  
-        emit('update:modelValue', isValid); 
-    };
+  const formData = ref(props.formData);
   let minorId = 0;
   const confirmPinRules = computed(() => {
     return props.formData.confirmPassword !== props.formData.password ? 'Pins do not match' : true;
   });
   onMounted(() => {
-    props.formData.confirmPassword = '';
-    props.formData.password = '';
+    formData.value.confirmPassword = '';
+    formData.value.password = '';
     apiService.fetchBarcode().then((item) => {
       barcode.value = item;
     });
@@ -415,22 +409,26 @@
 
       userRegistration.setAdditionalMinor(true);
     
-      props.formData.minorFirstname = '';
-      props.formData.minorLastname = '';
-      props.formData.minorMiddlename = '';
-      props.formData.minorDateOfBirth = null;
-      props.formData.password = '';
-      props.formData.confirmPassword = '';
+      formData.value.minorFirstname = '';
+      formData.value.minorLastname = '';
+      formData.value.minorMiddlename = '';
+      formData.value.minorDateOfBirth = null;
+      formData.value.password = '';
+      formData.value.confirmPassword = '';
       minorsContact.value = false;
       isClicked.value = false;
     };
-    // Link adult to the minor
-    const linkAdult = () => {
-      if (!props.formData.adultFirstname || 
+    
+    const adultFormData = {
+      isInvalid: !props.formData.adultFirstname || 
         !props.formData.adultLastname || !props.formData.adultEmail || 
         !props.formData.adultPhone || !props.formData.adultStreet || 
         !props.formData.adultCity || !props.formData.adultProvince ||
-        !props.formData.adultPostalCode) {
+        !props.formData.adultPostalCode
+    }
+    // Link adult to the minor
+    const linkAdult = () => {
+      if (adultFormData.isInvalid) {
           return;
       }
       loader.value = true

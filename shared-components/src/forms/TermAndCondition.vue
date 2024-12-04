@@ -74,13 +74,6 @@
   
             <v-card-actions>
               <v-spacer></v-spacer>
-  
-              <v-btn
-                text="Disagree"
-                variant="text"
-                @click="!isActive.value"
-              ></v-btn>
-  
               <v-btn
                 color="surface-variant"
                 text="Agree"

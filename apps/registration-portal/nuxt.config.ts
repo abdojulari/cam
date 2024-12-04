@@ -21,12 +21,6 @@ export default defineNuxtConfig({
     '@pinia/nuxt'
   ],
   css: ['~/assets/css/styles.scss'],
-  postcss: {
-    plugins: {
-      tailwindcss: {},
-      autoprefixer: {},
-    },
-  },
   devServer: {
     host: 'localhost',
     port: 4200,

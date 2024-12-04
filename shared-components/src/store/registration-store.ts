@@ -1,4 +1,3 @@
-import { get, set } from '@dotenvx/dotenvx';
 import { defineStore } from 'pinia'
 interface BioData {
     firstname: string;

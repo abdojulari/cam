@@ -3,26 +3,36 @@
       <div v-if="formData.radios === 'Adult'">
         <v-text-field
           v-model="formData.password"
-          label="Pin/Password"        
+          label="Password"        
           variant="outlined"
-          :rules="[rules.required]"
+          :rules="[rules.required, rules.password]"
+          hint="Password must be 6-20 characters long, alphanumeric, and cannot contain spaces or special characters."
+          persistent-hint
           type="password"
+          density="compact"
           required
-        ></v-text-field>
+        />
         <v-text-field
           v-model="formData.confirmPassword"
-          label="Confirm Pin/Password"
+          label="Confirm Password"
           variant="outlined"
           :rules="[rules.required, confirmPinRules]"
           type="password"
+          density="compact"
           required
-        ></v-text-field>
+          class="mt-5"
+        />
       </div>
+      <NuxtTurnstile
+        v-model="token"
+        ref="turnstile"
+      />
       <v-checkbox
         label="I accept the terms and conditions"
         v-model="formData.acceptTerms"
         :rules="[rules.required]"
         @change="onCheckboxChange"
+        @click="onNativeSubmit"
         required
       ></v-checkbox>
       
@@ -42,10 +52,16 @@
   import { useRegistrationStore } from '../store/registration-store';
   import { apiService } from '../services/api-service';
 
+  const turnstile = ref()
+  const token = ref('')
+  const response = ref()
+
   const props = defineProps(['formData', 'rules']);
   const barcode = ref('');
   const userRegistration = useRegistrationStore();
   const dialogVisible = ref(false);
+  // create a local formData and set it to the props
+  const formData = ref(props.formData);
   const confirmPinRules = computed(() => {
     return props.formData.confirmPassword !== props.formData.password ? 'Pins do not match' : true;
   });
@@ -54,6 +70,18 @@
       barcode.value = item;
     });
   });
+
+  // Submit the token to your server for validation
+  const onNativeSubmit = async () => {
+    response.value = await $fetch('/api/validate-turnstile', {
+      method: 'POST',
+      body: {
+        token: token.value,
+      }
+    })
+  }
+
+  // Ensure widget is rendered on component mount
   const onCheckboxChange = (value: boolean) => {
     if (value) {
       dialogVisible.value = true;
@@ -84,7 +112,7 @@
       }
     } else {
       dialogVisible.value = false;
-      props.formData.acceptTerms = false;
+      formData.value.acceptTerms = false;
     }
   };
 </script>

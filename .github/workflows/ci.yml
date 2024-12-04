@@ -1,38 +1,124 @@
+#name: CI
+
+# on:
+#   push:
+#     branches:
+#       - main
+#   pull_request:
+
+# permissions:
+#   actions: read
+#   contents: read
+
+# jobs:
+#   main:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - uses: actions/checkout@v4
+#         with:
+#           fetch-depth: 0
+
+#       # This enables task distribution via Nx Cloud
+#       # Run this command as early as possible, before dependencies are installed
+#       # Learn more at https://nx.dev/ci/reference/nx-cloud-cli#npx-nxcloud-startcirun
+#       - run: npx nx-cloud start-ci-run --distribute-on="3 linux-medium-js" --stop-agents-after="e2e-ci"
+
+#       # Cache node_modules
+#       - uses: actions/setup-node@v4
+#         with:
+#           node-version: 20
+#           cache: 'npm'
+
+#       - run: npm ci --legacy-peer-deps
+#       - uses: nrwl/nx-set-shas@v4
+
+#       # Prepend any command with "nx-cloud record --" to record its logs to Nx Cloud
+#       # - run: npx nx-cloud record -- echo Hello World
+#       # Nx Affected runs only tasks affected by the changes in this PR/commit. Learn more: https://nx.dev/ci/features/affected
+#       - run: npx nx affected -t lint test build e2e-ci
+
 name: CI
 
 on:
   push:
     branches:
       - main
+      - develop
   pull_request:
+    branches:
+      - main
+      - develop
 
 permissions:
   actions: read
   contents: read
 
 jobs:
-  main:
-    runs-on: ubuntu-latest
+  ci:
+    runs-on: ubuntu-22.04
+
     steps:
-      - uses: actions/checkout@v4
+      # Step 1: Checkout repository
+      - name: Checkout repository
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      # This enables task distribution via Nx Cloud
-      # Run this command as early as possible, before dependencies are installed
-      # Learn more at https://nx.dev/ci/reference/nx-cloud-cli#npx-nxcloud-startcirun
-      - run: npx nx-cloud start-ci-run --distribute-on="3 linux-medium-js" --stop-agents-after="e2e-ci"
-
-      # Cache node_modules
-      - uses: actions/setup-node@v4
+      # Step 2: Set up Node.js 22.5.1
+      - name: Set up Node.js 22.5.1
+        uses: actions/setup-node@v4
         with:
-          node-version: 20
-          cache: 'npm'
+          node-version: '22.5.1'
 
-      - run: npm ci --legacy-peer-deps
-      - uses: nrwl/nx-set-shas@v4
+      # Step 3: Install PM2 and NGINX
+      - name: Install PM2 and NGINX
+        run: |
+          npm install -g pm2
+          sudo apt update
+          sudo apt install -y nginx
 
-      # Prepend any command with "nx-cloud record --" to record its logs to Nx Cloud
-      # - run: npx nx-cloud record -- echo Hello World
-      # Nx Affected runs only tasks affected by the changes in this PR/commit. Learn more: https://nx.dev/ci/features/affected
-      - run: npx nx affected -t lint test build e2e-ci
+      # Step 4: Install app dependencies
+      - name: Install app dependencies
+        run: |
+          npm ci --legacy-peer-deps
+
+      # Step 5: Copy .env file (ensure env is set correctly in CI)
+      - name: Copy .env file
+        run: cp .env /var/www/cam/.env
+
+      # Step 6: Clean Nx build outputs and reset Nx cache
+      - name: Clean Nx build outputs and reset Nx cache
+        run: |
+          cd /var/www/cam/apps/online-registration
+          rm -rf .output
+          npx nx reset
+
+      # Step 7: Build the project
+      - name: Build the online-registration project
+        run: |
+          cd /var/www/cam
+          npx nx build online-registration --prod
+
+      # Step 8: Start the application using PM2 (simulate prod environment)
+      - name: Start the application with PM2
+        run: |
+          cd /var/www/cam/apps/online-registration
+          pm2 start ecosystem.config.cjs
+
+      # Step 9: Optional - Save PM2 process list
+      - name: Save PM2 process list
+        run: pm2 save
+
+      # Step 10: Optional - Output PM2 logs for debugging
+      - name: Display PM2 logs
+        run: pm2 logs
+
+      # Optional: Test NGINX configuration (if you're doing this for testing)
+      - name: Test NGINX configuration
+        run: |
+          sudo nginx -t
+
+      # Optional: Start NGINX to serve content (if needed in CI)
+      - name: Start NGINX service
+        run: |
+          sudo systemctl start nginx

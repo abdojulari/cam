@@ -3,6 +3,17 @@ import { defineNuxtConfig } from 'nuxt/config';
 import vuetify, { transformAssetUrls } from 'vite-plugin-vuetify'
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
+  app: {
+    head: {
+      script: [
+        {
+          src: '',
+          async: true,
+          defer: true,
+        },
+      ],
+    },
+  },
   workspaceDir: '../../',
   build: {
     transpile: ['vuetify','@nuxt/types'],
@@ -10,6 +21,11 @@ export default defineNuxtConfig({
   srcDir: 'src',
   devtools: { enabled: true },
   runtimeConfig:{
+    turnstile: {
+      // This can be overridden at runtime via the NUXT_TURNSTILE_SECRET_KEY
+      // environment variable.
+      secretKey: '0x4AAAAAAA0-MZhr0hHUmpk6sBToSES7Jvs',
+    },
     public:{
       apiBase: process?.env.NUXT_PUBLIC_ILS_URL,
       SYMWS_USER: process?.env.SYMWS_USER,
@@ -36,14 +52,19 @@ export default defineNuxtConfig({
         config.plugins.push(vuetify({ autoImport: true }))
       })
     },
+    '@nuxtjs/turnstile'
   ],
-  css: ['~/assets/css/styles.scss'],
-  postcss: {
-    plugins: {
-      tailwindcss: {},
-      autoprefixer: {},
-    },
+  turnstile: {
+    siteKey: '0x4AAAAAAA0-MfbU2F9tiUGq',
+    appearance: 'execute',
+    mode: 'visible',
+    autoResetOnSuccess: true,
+    scriptOptions: {
+      async: true,
+      defer: true
+    }
   },
+  css: ['~/assets/css/styles.scss'],
   devServer: {
     host: 'localhost',
     port: 4500,
@@ -68,5 +89,5 @@ export default defineNuxtConfig({
     },
   },
 
-  compatibilityDate: '2024-09-14',
+  compatibilityDate: '2024-04-03',
 });
