@@ -83,9 +83,9 @@ jobs:
           npm ci --legacy-peer-deps
 
       # Step 5: Copy .env file (ensure env is set correctly in CI)
-      - name: Copy .env file
+      - name: create .env file
         run: |
-          cd /var/www/cam
+          cd
           echo "NUXT_PUBLIC_ILS_URL=${{ secrets.NUXT_PUBLIC_ILS_URL }}" >> .env
           echo "ILS_URL_DEV=${{ secrets.ILS_URL_DEV }}" >> .env
           echo "SYMWS_USER=${{ secrets.SYMWS_USER }}" >> .env
@@ -105,20 +105,20 @@ jobs:
       # Step 6: Clean Nx build outputs and reset Nx cache
       - name: Clean Nx build outputs and reset Nx cache
         run: |
-          cd /var/www/cam/apps/online-registration
+          cd /apps/online-registration
           rm -rf .output
           npx nx reset
 
       # Step 7: Build the project
       - name: Build the online-registration project
         run: |
-          cd /var/www/cam
+          cd
           npx nx build online-registration --prod
 
       # Step 8: Start the application using PM2 (simulate prod environment)
       - name: Start the application with PM2
         run: |
-          cd /var/www/cam/apps/online-registration
+          cd /apps/online-registration
           pm2 start ecosystem.config.cjs
 
       # Step 9: Optional - Save PM2 process list
