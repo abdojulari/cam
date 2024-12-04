@@ -84,8 +84,24 @@ jobs:
 
       # Step 5: Copy .env file (ensure env is set correctly in CI)
       - name: Copy .env file
-        run: cp .env /var/www/cam/.env
-
+        run: |
+          cd /var/www/cam
+          echo "NUXT_PUBLIC_ILS_URL=${{ secrets.NUXT_PUBLIC_ILS_URL }}" >> .env
+          echo "ILS_URL_DEV=${{ secrets.ILS_URL_DEV }}" >> .env
+          echo "SYMWS_USER=${{ secrets.SYMWS_USER }}" >> .env
+          echo "SYMWS_PASS=${{ secrets.SYMWS_PASS }}" >> .env
+          echo "SYMWSCLIENTID=${{ secrets.SYMWSCLIENTID }}" >> .env
+          echo "APPS_ID=${{ secrets.APPS_ID }}" >> .env
+          echo "ENDPOINT=${{ secrets.ENDPOINT }}" >> .env
+          echo "USER_ENDPOINT=${{ secrets.USER_ENDPOINT }}" >> .env
+          echo "PATRON_USER=${{ secrets.PATRON_USER }}" >> .env
+          echo "LOGIN_USER=${{ secrets.LOGIN_USER }}" >> .env
+          echo "CRE_BARCODE_URL=${{ secrets.CRE_BARCODE_URL }}" >> .env
+          echo "NUXT_CRE_TOKEN=${{ secrets.NUXT_CRE_TOKEN }}" >> .env
+          echo "CLIENT_ID=${{ secrets.CLIENT_ID }}" >> .env
+          echo "CLIENT_SECRET=${{ secrets.CLIENT_SECRET }}" >> .env
+          echo "CRE_DUPLICATE_URL=${{ secrets.CRE_DUPLICATE_URL }}" >> .env
+          
       # Step 6: Clean Nx build outputs and reset Nx cache
       - name: Clean Nx build outputs and reset Nx cache
         run: |
