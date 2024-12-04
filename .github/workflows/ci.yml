@@ -105,7 +105,7 @@ jobs:
       # Step 6: Clean Nx build outputs and reset Nx cache
       - name: Clean Nx build outputs and reset Nx cache
         run: |
-          cd /apps/online-registration
+          cd apps/online-registration
           rm -rf .output
           npx nx reset
 
@@ -118,7 +118,7 @@ jobs:
       # Step 8: Start the application using PM2 (simulate prod environment)
       - name: Start the application with PM2
         run: |
-          cd /apps/online-registration
+          cd apps/online-registration
           pm2 start ecosystem.config.cjs
 
       # Step 9: Optional - Save PM2 process list
