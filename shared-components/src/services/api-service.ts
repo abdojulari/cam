@@ -17,7 +17,6 @@ export const apiService = {
               mode: 'cors'
           });
           const data = await response.json();
-          console.log(data);
           return data.barcode;
 
       } catch (error) {
@@ -28,7 +27,7 @@ export const apiService = {
       const config = useRuntimeConfig();
       const url = `${config.public.CRE_DUPLICATE_URL}`;
       const access_token = getCookie('access_token');
-      const body  =JSON.stringify({
+      const body = JSON.stringify({
           firstname: payload.data.biodata.firstname,
           lastname: payload.data.biodata.lastname,
           middlename: payload.data.biodata.middlename,

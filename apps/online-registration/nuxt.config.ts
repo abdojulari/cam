@@ -7,9 +7,7 @@ export default defineNuxtConfig({
     head: {
       script: [
         {
-          src: '',
-          async: true,
-          defer: true,
+          src: 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit',
         },
       ],
     },
@@ -21,11 +19,6 @@ export default defineNuxtConfig({
   srcDir: 'src',
   devtools: { enabled: true },
   runtimeConfig:{
-    turnstile: {
-      // This can be overridden at runtime via the NUXT_TURNSTILE_SECRET_KEY
-      // environment variable.
-      secretKey: '0x4AAAAAAA0-MZhr0hHUmpk6sBToSES7Jvs',
-    },
     public:{
       apiBase: process?.env.NUXT_PUBLIC_ILS_URL,
       SYMWS_USER: process?.env.SYMWS_USER,
@@ -42,28 +35,20 @@ export default defineNuxtConfig({
       tokenUrl: process.env.NUXT_CRE_TOKEN,
       CRE_BARCODE_URL: process?.env.CRE_BARCODE_URL,
       CRE_DUPLICATE_URL: process?.env.CRE_DUPLICATE_URL,
+      secret_key: process?.env.NUXT_PUBLIC_TURNSTILE_SECRET_KEY,
+      site_key: process?.env.NUXT_PUBLIC_TURNSTILE_SITE_KEY,
+      turnstile_url: process?.env.NUXT_TURNSTILE_VERIFY_URL,
     }
   },
   modules:[
     '@nuxtjs/tailwindcss',
     (_options, nuxt) => {
       nuxt.hooks.hook('vite:extendConfig', (config) => {
-        // @ts-expect-error
+        // @ts-expect-error Description of why the error is expected
         config.plugins.push(vuetify({ autoImport: true }))
       })
-    },
-    '@nuxtjs/turnstile'
-  ],
-  turnstile: {
-    siteKey: '0x4AAAAAAA0-MfbU2F9tiUGq',
-    appearance: 'execute',
-    mode: 'visible',
-    autoResetOnSuccess: true,
-    scriptOptions: {
-      async: true,
-      defer: true
     }
-  },
+  ],
   css: ['~/assets/css/styles.scss'],
   devServer: {
     host: 'localhost',

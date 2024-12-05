@@ -1,22 +1,23 @@
-<template>
+<template>  
     <v-container>
-        <v-row class="mx-auto py-5 border-b-md	border-primary">
+        <v-row class="mx-auto py-5 border-b-md	border-deep-orange-darken-4">
             <h2 class="text-h4 text-primary font-weight-bold">Get Your FREE Library Card</h2>
         </v-row>
+        <div v-if="isLoading" 
+        class="fill-height w-100 opacity-20 blue-grey-lighten-5 d-flex justify-center align-center"
+        style="height: 100%;"
+        >
+            <v-progress-circular
+                v-if="isLoading"
+                :size="50"
+                :width="4"
+                indeterminate
+                color="primary"
+            />
+        </div>
         <v-row class="mx-auto px-10">
-            <v-col cols="12">
-                <v-progress-circular
-                    v-if="isLoading"
-                    :size="50"
-                    :width="4"
-                    indeterminate
-                    color="primary"
-                    class="mx-auto"
-                    style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);"
-                />
-            </v-col>
             <v-col cols="12" sm="8">
-                <v-stepper v-model="step" show-actions="true" elevation="0" width="100%" mobile>
+                <v-stepper v-model="step" show-actions="true" elevation="0" width="100%">
                     <template v-slot:default>
                     <v-stepper-header class="elevation-0 border-b">
                         <template v-for="(item, index) in filteredSteps" :key="index">
@@ -25,8 +26,8 @@
                                 :step="item.title"
                                 :value="index + 1"
                                 :title="item.title"
-                                :color="step === index + 1 ? 'primary' : 'green'" 
-                                class="text-body-1 font-weight-bold"            
+                                :color="step === index + 1 ? 'primary' : 'green-darken-4'" 
+                                class="text-body-2 font-weight-bold"            
                             ></v-stepper-item>
                             <v-divider 
                             :thickness="3"
@@ -70,7 +71,7 @@
                             <v-col class="d-flex justify-end">
                                 <v-btn
                                     v-if="step === filteredSteps.length && step !== 1"
-                                    :disabled="!formData.acceptTerms"
+                                    :disabled="!formData.acceptTerms || turnstile === false || isLoading === true"
                                     color="primary"
                                     @click="submitForm"
                                     class="me-2"
@@ -142,11 +143,11 @@
     // Step list
     const stepList = rules(formData);
     const selectedRadio = computed(() => userRegistration.getRadioSelection);
+    const turnstile = computed(() => userRegistration.getTurnstile);
     watch(selectedRadio, (newValue) => {
         return formData.value.radios = newValue;
     });
 
-    
     onMounted(async () => {
         apiService.initializeToken().then((response) => {
             return response;
@@ -239,6 +240,11 @@
         if (filteredSteps.value[step.value - 1].title === 'Minor') {
             if (formData.value.minorFirstname === '' || formData.value.minorLastname === '' 
             || formData.value.minorMiddlename === '' || formData.value.minorDateOfBirth === null) {
+                return true;
+            }
+        }
+        if (filteredSteps.value[step.value - 1].title === 'Choose your password' || filteredSteps.value[step.value - 1].title === 'Confirmation') {
+            if (formData.value.password === '' || formData.value.confirmPassword === '') {
                 return true;
             }
         }

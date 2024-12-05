@@ -3,5 +3,10 @@ import { defineNuxtConfig } from 'nuxt/config';
 
 export default defineNuxtConfig({
   devtools: { enabled: true },
-  modules: ["@pinia/nuxt", "@nuxtjs/turnstile"]
+  modules: [
+    "@pinia/nuxt",
+    "@nuxtjs/turnstile",
+    "@nuxtjs/tailwindcss",
+    "@nuxt/scripts"
+  ]
 })

@@ -23,14 +23,13 @@
           class="mt-5"
         />
       </div>
-      <NuxtTurnstile
-        v-model="token"
-        ref="turnstile"
-      />
+      <div id="example-container" class="cf-turnstile"></div>
+
       <v-checkbox
         label="I accept the terms and conditions"
         v-model="formData.acceptTerms"
         :rules="[rules.required]"
+        :disabled="formData.password === '' || formData.confirmPassword === ''"
         @change="onCheckboxChange"
         @click="onNativeSubmit"
         required
@@ -39,6 +38,7 @@
       <v-checkbox
         v-if="formData.radios !== 'Minor'"
         label="Do you want to add minor(s) to your account?"
+        :disabled="formData.acceptTerms === false"
         v-model="formData.addMinor"
       >
       </v-checkbox>
@@ -52,9 +52,9 @@
   import { useRegistrationStore } from '../store/registration-store';
   import { apiService } from '../services/api-service';
 
-  const turnstile = ref()
-  const token = ref('')
-  const response = ref()
+  const tokenResponse = ref()
+  const config = useRuntimeConfig()
+  const siteKey = `${config.public.site_key}`
 
   const props = defineProps(['formData', 'rules']);
   const barcode = ref('');
@@ -69,16 +69,28 @@
     apiService.fetchBarcode().then((item) => {
       barcode.value = item;
     });
+
+    // if using synchronous loading, will be called once the DOM is ready
+    turnstile.ready(function () {
+      turnstile.render("#example-container", {
+        sitekey: siteKey,
+        callback: function (token: unknown) {
+          tokenResponse.value = token;
+        },
+      });
+    });
   });
 
   // Submit the token to your server for validation
   const onNativeSubmit = async () => {
-    response.value = await $fetch('/api/validate-turnstile', {
+    const response = await $fetch('/api/validate-turnstile', {
       method: 'POST',
       body: {
-        token: token.value,
+        token: tokenResponse.value,
       }
     })
+    userRegistration.setTurnstile((response as any).success)
+    console.log((response as any).success)
   }
 
   // Ensure widget is rendered on component mount

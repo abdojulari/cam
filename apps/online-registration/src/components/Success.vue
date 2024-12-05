@@ -22,7 +22,7 @@
         </p>
         <a 
           class="font-weight-bold text-body-1 text-primary" 
-          href="/preview"
+          href="#"
         >
           Print your profile
         </a>

@@ -13,7 +13,7 @@
     "plugins": [],
     "composite": true,
     "declaration": true,       
-    "declarationMap": true
+    "declarationMap": true,
   },
   "include": [
     ".nuxt/nuxt.d.ts",

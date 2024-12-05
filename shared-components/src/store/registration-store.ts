@@ -57,14 +57,14 @@ export const useRegistrationStore = defineStore({
     addMinor:false,
     consent: '',
     password: {} as Password,
-    step: 1
+    turnstile: false,
   }),
   actions: {
-    async setStep(step: number) {
+    async setTurnstile(turnstile: boolean) {
         try {
-          this.step = step;
+          this.turnstile = turnstile;
         } catch (error) {
-          console.error(error + 'error in setStep');
+          console.error(error + 'error in setTurnstile!');
         }
     },
     async addBioData(bioData: BioData) {
@@ -193,8 +193,8 @@ export const useRegistrationStore = defineStore({
     getConsent(): string {
         return this.consent;
     },
-    getStep(): number {
-        return this.step;
+    getTurnstile(): boolean {
+        return this.turnstile;
     }
   },
 

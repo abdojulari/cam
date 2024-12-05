@@ -109,10 +109,11 @@ jobs:
           rm -rf .output
           npx nx reset
 
-      # Step 7: Build the project
+      # Step 7: Change directory to the project and build it
       - name: Build the online-registration project
         run: |
-          cd
+          cd $GITHUB_WORKSPACE
+          echo "After cd, current directory is: $(pwd)"
           npx nx build online-registration --prod
 
       # Step 8: Start the application using PM2 (simulate prod environment)

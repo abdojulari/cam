@@ -75,7 +75,7 @@
 </template>
   
 <script setup lang="ts">
-    import { ref, computed, defineProps, defineEmits } from 'vue';
+    import { ref, computed } from 'vue';
     import { minDate } from '../composables/minDate';
 
     const props = defineProps(['formData', 'rules', 'page', 'bioDataFormValid', 'form']);

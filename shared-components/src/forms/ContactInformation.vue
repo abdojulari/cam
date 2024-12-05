@@ -83,13 +83,22 @@
     const formData = ref(props.formData);
 
     const onPostalCodeInput = (event) => {
-     // Get the current postal code value
       let value = event.target.value || '';
-      value = value.toUpperCase();
-      if (value.length === 6) {
-        value = value.slice(0, 3) + ' ' + value.slice(3);
+      // Remove any spaces and convert the input to uppercase
+      value = value.replace(/\s/g, '').toUpperCase();
+      // If the length of the value is 6 or fewer characters, format accordingly
+      if (value.length > 6) {
+        value = value.slice(0, 6);  // Only take the first 6 characters
       }
+      // Insert the space after the first 3 characters
+      if (value.length > 3) {
+        value = value.slice(0, 3) + ' ' + value.slice(3, 6);
+      }
+      // Update the postal code in the form data
       formData.value.postalCode = value;
+      // Update the input field value
+      event.target.value = value;
     };
+
   </script>
   

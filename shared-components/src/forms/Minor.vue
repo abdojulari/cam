@@ -282,7 +282,6 @@
   import { 
     computed, 
     onMounted, 
-    defineProps, 
     ref, 
     watch 
   } from 'vue';
