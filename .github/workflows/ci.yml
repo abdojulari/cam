@@ -112,12 +112,14 @@ jobs:
       # Step 7: Change directory to the project and build it
       - name: Build the online-registration project
         run: |
+          cd apps/online-registration
           echo "current directory is: $(pwd)"
           npx nx build --prod
 
       # Step 8: Start the application using PM2 (simulate prod environment)
       - name: Start the application with PM2
         run: |
+          cd apps/online-registration
           pm2 start ecosystem.config.cjs
 
       # Step 9: Optional - Save PM2 process list
