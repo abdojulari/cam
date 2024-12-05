@@ -73,6 +73,7 @@ jobs:
       # Step 3: Install PM2 and NGINX
       - name: Install PM2 and NGINX
         run: |
+          echo "current directory is: $(pwd)"
           npm install -g pm2
           sudo apt update
           sudo apt install -y nginx
@@ -106,6 +107,7 @@ jobs:
       - name: Clean Nx build outputs and reset Nx cache
         run: |
           cd apps/online-registration
+          echo "current directory is: $(pwd)"
           rm -rf .output
           npx nx reset
 
@@ -114,7 +116,7 @@ jobs:
         run: |
           cd apps/online-registration
           echo "current directory is: $(pwd)"
-          npx nx build --prod
+          npx nx build --prod --verbose 
 
       # Step 8: Start the application using PM2 (simulate prod environment)
       - name: Start the application with PM2
