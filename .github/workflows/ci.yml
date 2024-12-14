@@ -138,10 +138,6 @@ jobs:
       - name: Save PM2 process list
         run: pm2 save
 
-      # Step 10: Optional - Output PM2 logs for debugging
-      - name: Display PM2 logs
-        run: pm2 logs
-
       # Optional: Test NGINX configuration (if you're doing this for testing)
       - name: Test NGINX configuration
         run: |
