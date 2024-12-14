@@ -46,7 +46,7 @@
         <h6 class="text-h6 font-weight-bold my-3"> Email Address</h6>
         <p>
           Upon successful registration, we'll use the email address you’ve entered to send you 
-          your library card number and PIN (personal identification number). This number may 
+          your library card number and password. This number may 
           then be used immediately to access the full range of EPL services (including borrowing 
           books, video games, eBooks and more).<br>
           Your email address will also be used to provide you with notifications
