@@ -11,7 +11,7 @@
           the Internet, the return of all materials borrowed and for charges on items that are overdue, lost or damaged. 
           You also agree to abide by the policies of the Edmonton Public Library, which include:
         </p>
-        <ul class="custom-list">
+        <ul class="custom-list my-5">
             <li>
                 <a 
                 class="text-body-1 text-primary"
@@ -23,7 +23,7 @@
             </li>
             <li>
                 <a 
-                href="~/assets/pdf-templates/privacy.pdf"
+                href="/pdf-templates/privacy.pdf"
                 class="text-body-1  text-primary"
                 target="_blank"
                 >
@@ -32,7 +32,7 @@
             </li>
             <li>
                 <a 
-                href="~/assets/pdf-templates/public.pdf"
+                href="/pdf-templates/public.pdf"
                 class="text-body-1  text-primary"
                 target="_blank"
                 >
@@ -71,7 +71,9 @@
           from your credit file.</b> If you register for a library card online, EPL will only store the following 
           personal information for account purposes:</p>
         <ul class="custom-list">
-          <li>First and last name</li>
+          <li>First name </li> 
+          <li>Middle name (if applicable) </li>
+          <li>Last name</li>
           <li>Date of birth</li>
           <li>Address, including postal code</li>
           <li>Phone number</li>
