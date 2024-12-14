@@ -83,7 +83,6 @@ jobs:
       # Step 7: Change directory to the project and build it
       - name: Build the online-registration project
         run: |
-          cd ../..
           echo "current directory is: $(pwd)"
           ls -la
           npx nx reset
