@@ -1,3 +1,4 @@
+<!-- eslint-disable vue/no-v-html -->
 <template>
   <v-layout class="d-flex flex-column  rounded rounded-md">
     <div
@@ -26,6 +27,7 @@ const footer = ref('');
 const CACHE_KEY = 'custom-header-footer';
 const CACHE_EXPIRY_KEY = 'custom-header-footer-expiry';
 const CACHE_EXPIRY_TIME = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
+
 
 onMounted(async () => {
     const now = Date.now();

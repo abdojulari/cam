@@ -5,6 +5,8 @@
     "declaration": true,       
     "declarationMap": true,
     "plugins": [],
+    "types": ["jquery"],
+    "typeRoots": ["./node_modules/@types", "./src/types"]
   },
   "include": [".nuxt/nuxt.d.ts", "src/**/*"],
   "exclude": []

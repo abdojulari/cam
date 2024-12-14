@@ -37,14 +37,15 @@
           />
         </v-col>
         <v-col cols="12" sm="6">
-           <v-text-field
+          <v-text-field
             label="Postal Code"
             v-model="formData.postalCode"
             variant="outlined"
             :rules="[rules.required, rules.postalCode]"
             required
             density="compact"
-            @input="onPostalCodeInput" 
+            @input="onPostalCodeInput"
+            :maxLength="7"
             prepend-inner-icon="mdi-map-marker"
           />
         </v-col>
@@ -84,19 +85,29 @@
 
     const onPostalCodeInput = (event) => {
       let value = event.target.value || '';
-      // Remove any spaces and convert the input to uppercase
+
+      // Convert the value to uppercase and remove spaces
       value = value.replace(/\s/g, '').toUpperCase();
-      // If the length of the value is 6 or fewer characters, format accordingly
+
+      // If the first character is not 'T', reject the input
+      if (value.length > 0 && value[0] !== 'T') {
+          // If the input doesn't start with 'T', clear the input (reject it)
+          formData.postalCode = ''; // Optionally reset the form data
+          event.target.value = ''; // Clear the input field
+          return;
+      }
+
+      // Only accept up to 6 characters (postal code length)
       if (value.length > 6) {
-        value = value.slice(0, 6);  // Only take the first 6 characters
+          value = value.slice(0, 6);
       }
-      // Insert the space after the first 3 characters
+
+      // Add space after the first 3 characters for formatting (e.g., T1A 1A1)
       if (value.length > 3) {
-        value = value.slice(0, 3) + ' ' + value.slice(3, 6);
+          value = value.slice(0, 3) + ' ' + value.slice(3, 6);
       }
-      // Update the postal code in the form data
-      formData.value.postalCode = value;
-      // Update the input field value
+
+      formData.postalCode = value.trim();
       event.target.value = value;
     };
 

@@ -1,6 +1,6 @@
 <template>
       <v-dialog v-model="isActive" max-width="800">
-        <template v-slot:default="{ isActive }">
+        <template>
           <v-card title="Terms of Use">
             <template v-slot:text>         
               <p>

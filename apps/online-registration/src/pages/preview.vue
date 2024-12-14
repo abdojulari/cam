@@ -1,5 +1,5 @@
 <template>
-    <FormPreview />
+  <FormPreview />
 </template>
 
 <script setup lang="ts">

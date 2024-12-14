@@ -6,11 +6,13 @@
           label="Password"        
           variant="outlined"
           :rules="[rules.required, rules.password]"
-          hint="Password must be 6-20 characters long, alphanumeric, and cannot contain spaces or special characters."
+          hint="Password must be 6-20 characters long, no space or special characters allowed."
           persistent-hint
           type="password"
           density="compact"
           required
+          :minLength="6"
+          :maxLength="20"
         />
         <v-text-field
           v-model="formData.confirmPassword"
@@ -21,28 +23,33 @@
           density="compact"
           required
           class="mt-5"
+          :minLength="6"
+          :maxLength="20"
         />
       </div>
-      <div id="example-container" class="cf-turnstile"></div>
-
+      <div id="container" class="cf-turnstile"></div>
+      <TermsAndConditions />
       <v-checkbox
         label="I accept the terms and conditions"
+        color="primary"
         v-model="formData.acceptTerms"
         :rules="[rules.required]"
-        :disabled="formData.password === '' || formData.confirmPassword === ''"
+        :disabled="disabled || formData.password === '' || formData.confirmPassword === ''"
         @change="onCheckboxChange"
         @click="onNativeSubmit"
         required
-      ></v-checkbox>
+      />
       
       <v-checkbox
         v-if="formData.radios !== 'Minor'"
         label="Do you want to add minor(s) to your account?"
         :disabled="formData.acceptTerms === false"
         v-model="formData.addMinor"
+        color="primary"
       >
       </v-checkbox>
       <TermAndCondition v-model="dialogVisible" />
+      
     </v-container>
 </template>
   
@@ -51,11 +58,12 @@
   import TermAndCondition from './TermAndCondition.vue';
   import { useRegistrationStore } from '../store/registration-store';
   import { apiService } from '../services/api-service';
+  import TermsAndConditions from './TermsAndConditions.vue';
 
   const tokenResponse = ref()
   const config = useRuntimeConfig()
   const siteKey = `${config.public.site_key}`
-
+  const disabled = ref(false);
   const props = defineProps(['formData', 'rules']);
   const barcode = ref('');
   const userRegistration = useRegistrationStore();
@@ -72,7 +80,7 @@
 
     // if using synchronous loading, will be called once the DOM is ready
     turnstile.ready(function () {
-      turnstile.render("#example-container", {
+      turnstile.render("#container", {
         sitekey: siteKey,
         callback: function (token: unknown) {
           tokenResponse.value = token;
@@ -96,7 +104,8 @@
   // Ensure widget is rendered on component mount
   const onCheckboxChange = (value: boolean) => {
     if (value) {
-      dialogVisible.value = true;
+      //dialogVisible.value = true;
+      disabled.value = true;
       if (
         userRegistration.getRadioSelection === 'Adult' && 
             userRegistration.getAdditionalMinor === true 

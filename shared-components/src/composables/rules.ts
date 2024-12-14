@@ -55,7 +55,7 @@ export const rules = (formData: any) => {
                 required: (value: unknown) => !!value || 'Required.',
                 password: (value: string) => {
                     const passwordRegex = /^(?=[A-Za-z0-9]{6,20}$)(?!.*\s).*$/;
-                    return passwordRegex.test(value) || 'Password must be 6-20 characters long.';
+                    return passwordRegex.test(value) || 'Password must be 6-20 characters long and no special characters allowed.';
                 },
             },
         },
@@ -81,6 +81,10 @@ export const rules = (formData: any) => {
                 firstname: (value: string) => /^[A-Za-z'-\s]+$/.test(value) || 'First name can only contain alphabets, hyphens, apostrophes, or spaces.',
                 lastname: (value: string) => /^[A-Za-z'-\s]+$/.test(value) || 'Last name can only contain alphabets, hyphens, apostrophes, or spaces.',
                 middlename: (value: string) => value === '' || /^[A-Za-z'-\s]+$/.test(value) || 'Middle name can only contain alphabets, hyphens, apostrophes, or spaces.',
+                password: (value: string) => {
+                    const passwordRegex = /^(?=[A-Za-z0-9]{6,20}$)(?!.*\s).*$/;
+                    return passwordRegex.test(value) || 'Password must be 6-20 characters long and no special characters allowed.';
+                },
 
             },
         }

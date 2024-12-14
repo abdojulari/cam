@@ -28,15 +28,17 @@ export default defineEventHandler(async (event: H3Event<EventHandlerRequest>) =>
             headers,
             body,
         });
-        
-        if (response.patronKey) {
-            patronKey = response.patronKey;
+       // Assert that the response has the expected shape
+        const responseData = response as { patronKey: string };  // Type assertion here
+
+        if (responseData?.patronKey) {
+            patronKey = responseData.patronKey;
         }
-        const responseData = await $fetch(patronKeyUrl + patronKey+'?includeFields=*,address1', {
+        const responseDataDetails = await $fetch(patronKeyUrl + patronKey+'?includeFields=*,address1', {
             method: 'GET',
             headers
         });
-        const userInfo = extractUserInfo(responseData);
+        const userInfo = extractUserInfo(responseDataDetails);
         return userInfo;
     } catch (error) {
         return { error: error.message }; 

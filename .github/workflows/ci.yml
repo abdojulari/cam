@@ -73,6 +73,7 @@ jobs:
       # Step 3: Install PM2 and NGINX
       - name: Install PM2 and NGINX
         run: |
+          cd ..
           echo "current directory is: $(pwd)"
           npm install -g pm2
           sudo apt update
@@ -86,7 +87,7 @@ jobs:
       # Step 5: Copy .env file (ensure env is set correctly in CI)
       - name: create .env file
         run: |
-          cd
+          cd ..
           echo "NUXT_PUBLIC_ILS_URL=${{ secrets.NUXT_PUBLIC_ILS_URL }}" >> .env
           echo "ILS_URL_DEV=${{ secrets.ILS_URL_DEV }}" >> .env
           echo "SYMWS_USER=${{ secrets.SYMWS_USER }}" >> .env
@@ -114,9 +115,10 @@ jobs:
       # Step 7: Change directory to the project and build it
       - name: Build the online-registration project
         run: |
-          cd apps/online-registration
+          cd ..
           echo "current directory is: $(pwd)"
-          npx nx build --prod --verbose 
+          npx nx reset
+          npx nx build online-registration --prod --verbose 
 
       # Step 8: Start the application using PM2 (simulate prod environment)
       - name: Start the application with PM2

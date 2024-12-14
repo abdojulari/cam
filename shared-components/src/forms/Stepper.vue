@@ -1,7 +1,9 @@
 <template>  
     <v-container>
-        <v-row class="mx-auto py-5 border-b-md	border-deep-orange-darken-4">
-            <h2 class="text-h4 text-primary font-weight-bold">Get Your FREE Library Card</h2>
+        <v-row class="mx-auto py-5">
+            <h2 class="text-h4 text-primary font-weight-bold">
+                Get Your FREE Library Card
+            </h2>
         </v-row>
         <div v-if="isLoading" 
         class="fill-height w-100 opacity-20 blue-grey-lighten-5 d-flex justify-center align-center"
@@ -15,9 +17,9 @@
                 color="primary"
             />
         </div>
-        <v-row class="mx-auto px-10">
+        <v-row class="mx-auto px-10">  
             <v-col cols="12" sm="8">
-                <v-stepper v-model="step" show-actions="true" elevation="0" width="100%">
+                <v-stepper v-model="step" show-actions="true" elevation="0" width="100%" height="100%" theme="light">
                     <template v-slot:default>
                     <v-stepper-header class="elevation-0 border-b">
                         <template v-for="(item, index) in filteredSteps" :key="index">
@@ -59,13 +61,14 @@
                         </template>
                     </v-stepper-window>
             
-                        <v-stepper-actions
+                        <!-- <v-stepper-actions
                             color="primary"
                             :disabled="!formData.radios && page !== 'registration-portal' || disabled || isNextDisabled"
                             @click:next="next"
                             @click:prev="prev"
                         >
-                        </v-stepper-actions>
+                        </v-stepper-actions> -->
+                       
                         <v-container>
                             <v-row>
                             <v-col class="d-flex justify-end">
@@ -82,13 +85,34 @@
                             </v-row>
                         </v-container>
                     </template>
+                    <template v-slot:actions>
+                        <section class="d-flex justify-space-between pt-10">
+                            <v-btn v-if="step !== 1"
+                                @click="prev" 
+                                variant="flat"
+                            >
+                                <p class=" font-medium capitalize">Previous</p>
+                            </v-btn>
+                            <v-spacer v-if="step === 1"/>
+                            <v-btn 
+                                @click="next" 
+                                variant="flat" 
+                                color="primary" 
+                                theme="dark"
+                                :disabled="!formData.radios && page !== 'registration-portal' || disabled || isNextDisabled"
+                            >
+                                <p class="font-medium capitalize">Next</p>
+                            </v-btn>
+                        </section>
+                    </template>
                 </v-stepper>
             </v-col>
             <v-col cols="12" sm="4">
                 <v-img src="~/assets/images/EPLCards.svg" alt="registration"></v-img>
             </v-col>
-        </v-row>     
+        </v-row> 
     </v-container>
+    <ErrorPrompt :is-active="showErrorDialog" @close="closeErrorDialog" />
 </template>
   
 <script setup>
@@ -97,6 +121,7 @@
     import { useRouter } from 'vue-router'
     import { apiService } from '../services/api-service';
     import { rules } from '../composables/rules';
+    import ErrorPrompt from './ErrorPrompt.vue';
     
     const userRegistration = useRegistrationStore();
     const router = useRouter();
@@ -109,6 +134,7 @@
     const formValid = ref(false);
     const form = ref();
     const step = ref(1);
+    
     const formData = ref({
         radios: '',
         firstname: '',
@@ -144,6 +170,10 @@
     const stepList = rules(formData);
     const selectedRadio = computed(() => userRegistration.getRadioSelection);
     const turnstile = computed(() => userRegistration.getTurnstile);
+    const showErrorDialog = ref(false);
+    const closeErrorDialog = () => {
+        showErrorDialog.value = false;
+    };
     watch(selectedRadio, (newValue) => {
         return formData.value.radios = newValue;
     });
@@ -221,7 +251,22 @@
     
     const prev = () => {
         if (step.value > 1) {
-        step.value--;
+                    // Clear the form data based on the current step before moving back
+            const currentStepTitle = filteredSteps.value[step.value - 1].title;
+
+            if (currentStepTitle === 'About You') {
+                userRegistration.adult.biodata = {}; 
+                console.log(userRegistration.adult.biodata);
+            } else if (currentStepTitle === 'Contact') {
+                userRegistration.adult.contact = {}; 
+                console.log(userRegistration.adult.contact);
+            } else if (currentStepTitle === 'Profile') {
+                userRegistration.adult.profile = {}; 
+                userRegistration.adult.consent = null; 
+                console.log(userRegistration.adult.profile);
+            }
+
+            step.value--;
         }
     };
     // Check if the next button should be disabled
@@ -232,14 +277,14 @@
         }
         if (filteredSteps.value[step.value - 1].title === 'Contact') {
             if (formData.value.street === '' || formData.value.city === '' 
-            || formData.value.province === '' || formData.value.postalCode === null
+            || formData.value.province === '' || formData.value.postalCode === ''
             || formData.value.phone === '' || formData.value.email === '') {
                 return true;
             }
         }
         if (filteredSteps.value[step.value - 1].title === 'Minor') {
             if (formData.value.minorFirstname === '' || formData.value.minorLastname === '' 
-            || formData.value.minorMiddlename === '' || formData.value.minorDateOfBirth === null) {
+           || formData.value.minorDateOfBirth === null) {
                 return true;
             }
         }
@@ -267,13 +312,12 @@
                 });
             }
             // Once all submissions are done, check for errors in the data
-            if (registrationData && registrationData.error === '[POST] \"http://cre.test/api/duplicates\": 409 Conflict' || registrationData?.message !== 'Record added successfully.') {
-                alert('Please can you visit the library to resolve the issue?');
+            if (registrationData && registrationData.error || registrationData?.message !== 'Record added successfully.') {
+                showErrorDialog.value = true; 
                 return;
             }
             // Proceed to next page if no errors
             router.push('/success-page');
-            //return registrationData;
         } catch (error) {
             console.error('Error during registration:', error);
             alert('There was an error during registration.');

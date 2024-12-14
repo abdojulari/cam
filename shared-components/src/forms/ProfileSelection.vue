@@ -11,8 +11,8 @@
     </p>
 
     <v-radio-group v-model="formData.radios" @change="emitRadios" class="mb-5">
-      <v-radio label="Adult" value="Adult" class="my-2" />
-      <v-radio label="Minor" value="Minor" class="my-2" />
+      <v-radio color="primary" label="Adult" value="Adult" class="my-2" />
+      <v-radio color="primary" label="Minor" value="Minor" class="my-2" />
     </v-radio-group>
 
     <div 
@@ -23,6 +23,7 @@
         v-model="accepted"
         required
         class="mr-3"
+        color="primary"
       />
       <span class="text-body-1 ma-3">
         I agree to receive emails from the Edmonton Public Library about EPL news and events. I may unsubscribe at any time.
