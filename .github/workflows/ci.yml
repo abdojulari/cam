@@ -48,11 +48,10 @@ jobs:
         run: |
           ls -la
           exit 0
-          
+
       # Step 5: Copy .env file (ensure env is set correctly in CI)
       - name: create .env file
         run: |
-          cd ..
           echo "NUXT_PUBLIC_ILS_URL=${{ secrets.NUXT_PUBLIC_ILS_URL }}" >> .env
           echo "ILS_URL_DEV=${{ secrets.ILS_URL_DEV }}" >> .env
           echo "SYMWS_USER=${{ secrets.SYMWS_USER }}" >> .env
@@ -68,7 +67,11 @@ jobs:
           echo "CLIENT_ID=${{ secrets.CLIENT_ID }}" >> .env
           echo "CLIENT_SECRET=${{ secrets.CLIENT_SECRET }}" >> .env
           echo "CRE_DUPLICATE_URL=${{ secrets.CRE_DUPLICATE_URL }}" >> .env
-          
+      
+      - name: list contents
+        run: |
+          ls -la
+          exit 0
       # Step 6: Clean Nx build outputs and reset Nx cache
       - name: Clean Nx build outputs and reset Nx cache
         run: |
@@ -80,9 +83,9 @@ jobs:
       # Step 7: Change directory to the project and build it
       - name: Build the online-registration project
         run: |
-          cd ..
+          cd
           echo "current directory is: $(pwd)"
-          ls 
+          ls -la
           npx nx reset
           npx nx build online-registration --prod --verbose 
 
