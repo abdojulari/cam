@@ -41,6 +41,7 @@
                     label="Middle name"
                     v-model="formData.middlename"
                     variant="outlined"
+                    :rules="[(v: string) => /^[a-zA-Z]*$/.test(v) || 'Only alphabetic characters are allowed']"
                     density="compact"
                     />
                 </v-col>
@@ -54,7 +55,7 @@
                             variant="outlined"
                             rounded-0
                             density="compact"
-                            label="Date of Birth"
+                            label="Date of Birth *"
                             :rules="[rules.required]"
                             required
                             prepend-inner-icon="mdi-calendar"

@@ -3,7 +3,7 @@
       <v-row>
         <v-col cols="12" sm="6">
           <v-text-field
-            label="Address"
+            label="Address *"
             v-model="formData.street"
             variant="outlined"
             :rules="[rules.required]"
@@ -14,7 +14,7 @@
         </v-col>
         <v-col cols="12" sm="6">
           <v-select
-            label="City"
+            label="City *"
             :items="['Edmonton', 'Enoch']"
             v-model="formData.city"
             variant="outlined"
@@ -26,7 +26,7 @@
         </v-col>
         <v-col cols="12" sm="6">
           <v-text-field
-            label="Province"
+            label="Province *"
             v-model="formData.province"
             variant="outlined"
             readonly
@@ -38,7 +38,7 @@
         </v-col>
         <v-col cols="12" sm="6">
           <v-text-field
-            label="Postal Code"
+            label="Postal Code *"
             v-model="formData.postalCode"
             variant="outlined"
             :rules="[rules.required, rules.postalCode]"
@@ -51,7 +51,7 @@
         </v-col>
         <v-col cols="12" sm="6">
           <v-text-field
-            label="Phone Number"
+            label="Phone Number *"
             v-model="formData.phone"
             v-maska="'###-###-####'"
             variant="outlined"
@@ -63,7 +63,7 @@
         </v-col>
         <v-col cols="12" sm="6">
           <v-text-field
-            label="Email"
+            label="Email *"
             v-model="formData.email"
             variant="outlined"
             :rules="[rules.required, rules.email]"

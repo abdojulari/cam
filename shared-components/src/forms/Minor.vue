@@ -2,6 +2,16 @@
   <v-container>
     <v-row>
         <v-col cols="12">
+          <v-alert
+            color="#003365"
+            density="compact"
+            icon="mdi-information"
+            theme="dark"
+          >
+          Click 'ADD ANOTHER MINOR' only if adding more than one. The form cannot be left blank. For example, when adding two minors, click 'ADD ANOTHER MINOR' to enter the second, while the first will appear in the table below.
+          </v-alert>
+        </v-col>
+        <v-col cols="12">
           <span class="text-body-1 font-weight-light">Fields marked with an asterisk (*) are required</span>
         </v-col>
     </v-row>
@@ -33,6 +43,7 @@
             v-model="formData.minorMiddlename" 
             label="Middle Name"
             density="compact"
+            :rules="[(v: string) => /^[a-zA-Z]*$/.test(v) || 'Only alphabetic characters are allowed']"
             variant="outlined"
           >
           </v-text-field>
@@ -64,7 +75,7 @@
         <div class="d-flex ga-5 my-3">
           <v-text-field
             v-model="formData.password"
-            label="Password"        
+            label="Password *"        
             variant="outlined"
             :rules="[props.rules.required, props.rules.password]"
             type="password"
@@ -79,7 +90,7 @@
         <div class="">
           <v-text-field
             v-model="formData.confirmPassword"
-            label="Confirm Password"
+            label="Confirm Password *"
             variant="outlined"
             :rules="[props.rules.required,confirmPinRules]"
             type="password"
@@ -94,7 +105,8 @@
       <!-- Add minor button-->
       <v-row class="d-flex justify-between">
         <v-col cols="6" sm="6">
-          <v-btn  
+          <v-btn
+            v-if="minors.length < 3"  
             variant="flat" 
             color="primary" 
             :disabled="disabled || isMinorInvalid"
@@ -107,7 +119,8 @@
         </v-col>
         <v-col cols="6" class="d-flex justify-end" v-if="minors.length > 0">
           <v-btn 
-            variant="flat" 
+            variant="flat"
+            :disabled="disabled " 
             color="red" 
             class="ms-5"
             text="Cancel"
@@ -156,24 +169,32 @@
         </v-card>
       </v-row>
       <!-- End of minor list-->
-        <v-checkbox 
-          v-model="minorsContact" 
-          @click="sameAsAdult"
-          v-if="props.formData.radios === 'Adult'"
-          color="primary"
-        >
-          <template v-slot:label>
-            <div class="text-body-2">
-              Contact Information same as Adult
-            </div>
-          </template>
-        </v-checkbox>
+      <v-row>
+  
+        <v-col cols="12">
+          <v-btn
+            v-if="props.formData.radios === 'Adult'"
+            :loading="isLoading"
+            v-model="minorsContact" 
+            @click="sameAsAdult"
+            :text="!isLoading && disabled ? 'Saved' : 'Save Changes'"
+            :disabled = "isLoading || disabled"
+            variant="outlined"
+            color="primary"
+            prepend-icon="mdi-content-save"
+          />
+        </v-col>
+        <v-col cols="12" v-if="!isLoading && disabled && props.formData.radios === 'Adult'">
+          <span class="text-green-darken-4 font-italic font-weight-medium">Record saved successfully!</span>
+        </v-col>
+      </v-row>
     </v-container> 
     <div v-if="props.formData.radios !== 'Adult'"> 
       <v-switch
         label="Attach minor(s) to your profile"
         v-model="linkMinor"
         @click="connectionHandler"
+        :disabled="(!loading && linkDisabled) || disabled"
       >
       </v-switch>
     </div>
@@ -201,6 +222,11 @@
             type="password"
           />
         </v-row>
+        <v-row v-if="!loading && linkDisabled">
+          <v-col cols="12">
+            <span class="text-green-darken-4 font-italic font-weight-medium">Record saved successfully!</span>
+          </v-col>
+        </v-row>
         </v-card-text>
         <v-card-actions class="d-flex flex-column align-start justify-start">
           <v-btn 
@@ -209,10 +235,10 @@
             class="me-2 text-none text-uppercase"
             :disabled="loading || formData.barcode === '' || formData.pin === ''"
             :loading="loading"
+            :text="linkDisabled ? 'Saved' : 'Save Changes'"
             @click="loading = !loading"
-            >
-              Save Changes
-            </v-btn>
+            prepend-icon="mdi-content-save"
+          />
         </v-card-actions>
       </v-card>
       <v-card flat v-if="!linkMinor">
@@ -291,7 +317,12 @@
               :maxLength="7"
               @input="onPostalCodeInput"
             />
-          </div>  
+          </div>
+          <v-row v-if="disabled">
+            <v-col cols="12">
+              <span class="text-green-darken-4 font-italic font-weight-medium">Record saved successfully!</span>
+            </v-col>
+          </v-row>  
         </v-card-text>
         <v-card-actions class="d-flex flex-column align-start justify-start">
           <v-btn 
@@ -302,6 +333,7 @@
             :text="disabled ? 'Saved' : 'Save Changes'"
             :disabled="disabled || isInvalid"
             @click="linkAdult"
+            prepend-icon="mdi-content-save"
           >
           </v-btn>
         </v-card-actions> 
@@ -347,6 +379,7 @@
   const loader = ref(false);
   const barcode = ref('');
   const disabled = ref(false);
+  const linkDisabled = ref(false);
   const isInvalid = ref(true);
   const isMinorInvalid = ref(true);
  
@@ -384,7 +417,8 @@
           userRegistration.addRegistration({data:userRegistration.minor});
           isClicked.value = true;   
           loading.value = false; 
-          console.log(userRegistration.getRegistration)
+          linkDisabled.value = true
+          console.log('LOGIN' ,userRegistration.getRegistration)
           return data; 
           } catch (err) {
               return (err as any).message;
@@ -406,7 +440,7 @@
     const sameAsAdult = () => {
       isLoading.value = true
       setTimeout(() => {
-        isLoading.value = false
+      
         if (minors.value.length> 0) {
           minors.value.map(minor => {
             userRegistration.setMinor(sameAsAdultData(props.formData, barcode.value, minor));
@@ -417,10 +451,11 @@
         userRegistration.setMinor(sameAsAdultData(props.formData, barcode.value));
         userRegistration.addRegistration({data:userRegistration.minor});
         isClicked.value = true;
-        disabled.value = true
+        disabled.value = true  
+        isLoading.value = false
       }, 2000)
-      
-      console.log(userRegistration.getRegistration)
+
+      console.log('SAME as :', userRegistration.getRegistration)
     };
 
     watch(props.formData, (newVal) => {
@@ -488,7 +523,7 @@
       userRegistration.setMinor(createMinorRegistrationData(barcode.value,props.formData, undefined));
       isClicked.value = true;
       userRegistration.addRegistration({data:userRegistration.minor});
-      console.log(userRegistration.getRegistration)
+      console.log('ADULT Contact:', userRegistration.getRegistration)
     }
     // Delete minor from the list
     const deleteMinor = (id: any) => {

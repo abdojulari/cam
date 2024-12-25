@@ -18,8 +18,8 @@
             />
         </div>
         <v-row class="mx-auto px-10">  
-            <v-col cols="12" sm="8">
-                <v-stepper v-model="step" show-actions="true" elevation="0" width="100%" height="100%" theme="light">
+            <v-col cols="12" lg="8">
+                <v-stepper v-model="step" show-actions="true" elevation="0" width="100%" height="100%">
                     <template v-slot:default>
                     <v-stepper-header class="elevation-0 border-b">
                         <template v-for="(item, index) in filteredSteps" :key="index">
@@ -28,7 +28,7 @@
                                 :step="item.title"
                                 :value="index + 1"
                                 :title="item.title"
-                                :color="step === index + 1 ? 'primary' : 'green-darken-4'" 
+                                :color="step === index + 1 ? 'primary-darken-1' : 'green-darken-4'" 
                                 class="text-body-2 font-weight-bold"            
                             ></v-stepper-item>
                             <v-divider 
@@ -98,7 +98,7 @@
                                 @click="next" 
                                 variant="flat" 
                                 color="primary" 
-                                theme="dark"
+                
                                 :disabled="!formData.radios && page !== 'registration-portal' || disabled || isNextDisabled"
                             >
                                 <p class="font-medium capitalize">Next</p>
@@ -107,7 +107,7 @@
                     </template>
                 </v-stepper>
             </v-col>
-            <v-col cols="12" sm="4">
+            <v-col cols="12" lg="4" class="d-none  d-lg-flex">
                 <v-img src="~/assets/images/EPLCards.svg" alt="registration"></v-img>
             </v-col>
         </v-row> 

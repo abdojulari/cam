@@ -3,7 +3,7 @@
       <div v-if="formData.radios === 'Adult'">
         <v-text-field
           v-model="formData.password"
-          label="Password"        
+          label="Password *"        
           variant="outlined"
           :rules="[rules.required, rules.password]"
           hint="Password must be 6-20 characters long, no space or special characters allowed."
@@ -16,7 +16,7 @@
         />
         <v-text-field
           v-model="formData.confirmPassword"
-          label="Confirm Password"
+          label="Confirm Password *"
           variant="outlined"
           :rules="[rules.required, confirmPinRules]"
           type="password"
@@ -27,10 +27,11 @@
           :maxLength="20"
         />
       </div>
+      <p class="mb-5">Verifying human user *</p>
       <div id="container" class="cf-turnstile"></div>
       <TermsAndConditions />
       <v-checkbox
-        label="I accept the terms and conditions"
+        label="I accept the terms and conditions *"
         color="primary"
         v-model="formData.acceptTerms"
         :rules="[rules.required]"
