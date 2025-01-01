@@ -282,7 +282,7 @@
           <div class="d-flex ga-5 my-2">
             <v-text-field 
               v-model="formData.adultStreet" 
-              label="Street" 
+              label="Address" 
               :rules="[props.rules.required]"
               density="compact"
               variant="outlined"

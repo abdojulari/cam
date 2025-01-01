@@ -185,7 +185,7 @@
             <v-row v-for="(entry, index) in registration" :key="index" class="mb-4">
               <v-col cols="12">
                 <div class="mb-4">
-                  <span class="text-h6">Record {{ index + 1 }}</span>
+                  <span v-if="registration.length > 1" class="text-h6">Record {{ index + 1 }}</span>
                   <v-divider class="my-4"></v-divider>
                 </div>
 
