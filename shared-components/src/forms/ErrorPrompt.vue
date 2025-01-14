@@ -47,6 +47,6 @@ import { useRouter } from 'vue-router';
 
     const handleClose = async () => {
         emit('close');
-        return router.push('/');
+        //return router.push('https://epl.bibliocommons.com/locations');
     }
 </script>

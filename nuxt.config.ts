@@ -7,6 +7,7 @@ export default defineNuxtConfig({
     "@pinia/nuxt",
     "@nuxtjs/turnstile",
     "@nuxtjs/tailwindcss",
-    "@nuxt/scripts"
+    "@nuxt/scripts",
+    "nuxt-gtag"
   ]
 })

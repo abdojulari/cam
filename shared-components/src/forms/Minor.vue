@@ -113,7 +113,8 @@
             text="Add another minor"
             size="small"
             @click="addMinor"   
-            prepend-icon="mdi-plus-circle"  
+            prepend-icon="mdi-plus-circle" 
+            class="btn-add-minor" 
           >
           </v-btn>
         </v-col>
@@ -582,7 +583,13 @@
       formData.value.adultPostalCode = value.trim();
       event.target.value = value;
     };
-
-
 </script>
-  
+<style scoped>
+@media (max-width: 600px) {
+  .btn-add-minor {
+    width: 140px !important;
+    color: #fff;
+    font-size: 8px;
+  }
+}
+</style> 

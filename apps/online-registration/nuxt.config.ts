@@ -38,6 +38,7 @@ export default defineNuxtConfig({
       secret_key: process?.env.NUXT_PUBLIC_TURNSTILE_SECRET_KEY,
       site_key: process?.env.NUXT_PUBLIC_TURNSTILE_SITE_KEY,
       turnstile_url: process?.env.NUXT_TURNSTILE_VERIFY_URL,
+      gtagId: process?.env.NUXT_PUBLIC_GA_ID,
     }
   },
   modules:[

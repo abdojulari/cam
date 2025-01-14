@@ -1,6 +1,6 @@
 <template>  
-    <v-container>
-        <v-row class="mx-auto py-5">
+    <v-container class="main-view">
+        <v-row class="px-1 py-1 mx-1 my-1 d-flex justify-center py-5">
             <h2 class="text-h4 text-primary font-weight-bold">
                 Get Your FREE Library Card
             </h2>
@@ -17,8 +17,13 @@
                 color="primary"
             />
         </div>
-        <v-row class="mx-auto px-10">  
-            <v-col cols="12" lg="8">
+        <v-row class="px-1 py-1 mx-1 my-1 d-flex justify-center">
+            <v-col cols="12">
+                <v-img src="~/assets/images/horizontal.png" alt="registration"></v-img>
+            </v-col>
+        </v-row>
+        <v-row class="px-1 py-1 mx-1 my-1 d-flex justify-center">  
+            <v-col cols="12">
                 <v-stepper v-model="step" show-actions="true" elevation="0" width="100%" height="100%">
                     <template v-slot:default>
                     <v-stepper-header class="elevation-0 border-b">
@@ -39,7 +44,7 @@
                         </template>
                     </v-stepper-header>
             
-                    <v-stepper-window>
+                    <v-stepper-window class="stepper-window">
                         <template v-for="(item, index) in filteredSteps" :key="index">
                         <v-stepper-window-item :value="index + 1">
                             <v-card>
@@ -60,30 +65,21 @@
                         </v-stepper-window-item>
                         </template>
                     </v-stepper-window>
-            
-                        <!-- <v-stepper-actions
-                            color="primary"
-                            :disabled="!formData.radios && page !== 'registration-portal' || disabled || isNextDisabled"
-                            @click:next="next"
-                            @click:prev="prev"
-                        >
-                        </v-stepper-actions> -->
-                       
-                        <v-container>
-                            <v-row>
-                            <v-col class="d-flex justify-end">
-                                <v-btn
-                                    v-if="step === filteredSteps.length && step !== 1"
-                                    :disabled="!formData.acceptTerms || turnstile === false || isLoading === true"
-                                    color="primary"
-                                    @click="submitForm"
-                                    class="me-2"
-                                >
-                                    Submit
-                                </v-btn>
-                            </v-col>
-                            </v-row>
-                        </v-container>
+                    <v-container>
+                        <v-row>
+                        <v-col class="d-flex justify-end">
+                            <v-btn
+                                v-if="step === filteredSteps.length && step !== 1"
+                                :disabled="!formData.acceptTerms || turnstile === false || isLoading === true"
+                                color="primary"
+                                @click="submitForm"
+                                class="me-2"
+                            >
+                                Submit
+                            </v-btn>
+                        </v-col>
+                        </v-row>
+                    </v-container>
                     </template>
                     <template v-slot:actions>
                         <section class="d-flex justify-space-between pt-10">
@@ -106,9 +102,6 @@
                         </section>
                     </template>
                 </v-stepper>
-            </v-col>
-            <v-col cols="12" lg="4" class="d-none  d-lg-flex">
-                <v-img src="~/assets/images/EPLCards.svg" alt="registration"></v-img>
             </v-col>
         </v-row> 
     </v-container>
@@ -171,8 +164,11 @@
     const selectedRadio = computed(() => userRegistration.getRadioSelection);
     const turnstile = computed(() => userRegistration.getTurnstile);
     const showErrorDialog = ref(false);
-    const closeErrorDialog = () => {
+    const closeErrorDialog = async () => {
         showErrorDialog.value = false;
+        await navigateTo('https://epl.bibliocommons.com/locations', {
+            external: true
+        })
     };
     watch(selectedRadio, (newValue) => {
         return formData.value.radios = newValue;
@@ -331,5 +327,11 @@
 <style scoped>
 .v-stepper-item {
     transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+}
+/* Mobile-specific styles */
+@media (max-width: 600px) {
+    .v-stepper-window, .main-view  > .stepper-window{
+        margin: 0 !important;
+    }
 }
 </style>
