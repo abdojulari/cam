@@ -1,6 +1,6 @@
 <template>  
     <v-container class="main-view">
-        <v-row class="px-1 py-1 mx-1 my-1 d-flex justify-center py-5">
+        <v-row class="py-5">
             <h2 class="text-h4 text-primary font-weight-bold">
                 Get Your FREE Library Card
             </h2>

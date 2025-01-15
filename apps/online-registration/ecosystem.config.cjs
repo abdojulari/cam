@@ -1,3 +1,4 @@
+require('dotenv').config({ path: '/var/www/cam/.env' });
 module.exports = {
     apps: [
       {
@@ -8,7 +9,7 @@ module.exports = {
         script: './.output/server/index.mjs',
         env: {
           NODE_ENV: 'production',
-          NUXT_PUBLIC_ILS_URL: process.env.NUXT_PUBLIC_ILS_URL, // Ensure these are set in the environment or .env
+          NUXT_PUBLIC_ILS_URL: process.env.NUXT_PUBLIC_ILS_URL,
           SYMWS_USER: process.env.SYMWS_USER,
           SYMWS_PASS: process.env.SYMWS_PASS,
           SYMWSCLIENTID: process.env.SYMWSCLIENTID,
