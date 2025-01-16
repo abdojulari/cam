@@ -59,7 +59,7 @@
           >
             EPL location
           </a> to begin 
-          physical borrowing and to extend your membership from 90 days to as long as you live 
+          physical borrowing and to extend your membership from 45 days to as long as you live 
           in Edmonton. As a bonus, you'll receive a FREE tote bag when you visit us the first time!
         </div>
       </v-col>
@@ -295,8 +295,6 @@ onMounted(async () => {
   // URL for the App Store
   const appleUrl = 'https://itunes.apple.com/ca/app/epl-mobile/id390969843?mt=8'
   appleDataUrl.value = await generateQRCode(appleUrl)
-
-  console.log('registration', registration) 
 })
 
 // turn on the dialog

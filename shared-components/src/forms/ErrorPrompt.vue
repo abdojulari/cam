@@ -32,9 +32,7 @@
 </template>
 <script setup lang="ts">
 import { computed } from 'vue';
-import { useRouter } from 'vue-router';
 
-    const router = useRouter(); 
     const props = defineProps({
         isActive: Boolean
     });
@@ -47,6 +45,5 @@ import { useRouter } from 'vue-router';
 
     const handleClose = async () => {
         emit('close');
-        //return router.push('https://epl.bibliocommons.com/locations');
     }
 </script>

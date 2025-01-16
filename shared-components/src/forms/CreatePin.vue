@@ -75,10 +75,13 @@
     return props.formData.confirmPassword !== props.formData.password ? 'Pins do not match' : true;
   });
   onMounted(() => {
-    apiService.fetchBarcode().then((item) => {
-      barcode.value = item;
-    });
-
+    // if it is an adult, fetch the barcode
+    if (userRegistration.getRadioSelection === 'Adult') {
+      apiService.fetchBarcode().then((item) => {
+        barcode.value = item;
+      });
+    }
+  
     // if using synchronous loading, will be called once the DOM is ready
     turnstile.ready(function () {
       turnstile.render("#container", {

@@ -15,40 +15,39 @@
           <span class="text-body-1 font-weight-light">Fields marked with an asterisk (*) are required</span>
         </v-col>
     </v-row>
-    <v-card class="" variant="flat" >
-      <v-card-title>
-        <h3>Minor Details</h3>
-      </v-card-title>
-      <v-card-text>
-        <div class="d-flex ga-5 my-3">
-            <v-text-field 
-              v-model="formData.minorFirstname" 
-              label="First Name *" 
-              :rules="[props.rules.required, props.rules.firstname]"
-              density="compact"
-              variant="outlined"
-            >
-            </v-text-field>
-            <v-text-field 
-              v-model="formData.minorLastname" 
-              label="Last Name *" 
-              density="compact"
-              :rules="[props.rules.required, props.rules.lastname]"
-              variant="outlined"
-            >
-            </v-text-field>
-        </div>
-        <div class="d-flex ga-5 my-3">
+    <v-row class="" variant="flat" >
+      <v-col cols="12">
+        <h2 class="text-h6 font-weight-bold ">Minor Details</h2>
+      </v-col>
+      <v-col cols="12" sm="6">
+        <v-text-field 
+          v-model="formData.minorFirstname" 
+          label="First Name *" 
+          :rules="[props.rules.required, props.rules.firstname]"
+          density="compact"
+          variant="outlined"
+        />
+        </v-col>  
+        <v-col cols="12" sm="6">
+          <v-text-field 
+            v-model="formData.minorLastname" 
+            label="Last Name *" 
+            density="compact"
+            :rules="[props.rules.required, props.rules.lastname]"
+            variant="outlined"
+            />
+        </v-col>    
+        <v-col cols="12" sm="6">
           <v-text-field 
             v-model="formData.minorMiddlename" 
             label="Middle Name"
             density="compact"
             :rules="[(v: string) => /^[a-zA-Z]*$/.test(v) || 'Only alphabetic characters are allowed']"
             variant="outlined"
-          >
-          </v-text-field>
- 
-          <v-menu v-model="isMenuOpen" :close-on-content-click="false">
+          />
+        </v-col>      
+        <v-col cols="12" sm="6">
+           <v-menu v-model="isMenuOpen" :close-on-content-click="false">
             <template v-slot:activator="{ props }">
               <v-text-field
                 :model-value="formattedDate"
@@ -59,7 +58,7 @@
                 label="Date of Birth *"
                 prepend-inner-icon="mdi-calendar"
                 required
-                width="50"
+                
               />
             </template>
             <v-date-picker
@@ -70,9 +69,8 @@
               :max="new Date().toISOString().split('T')[0]"
             ></v-date-picker>
           </v-menu>
-        </div>
-        <!-- Password details -->
-        <div class="d-flex ga-5 my-3">
+        </v-col> 
+        <v-col cols="12" sm="6">
           <v-text-field
             v-model="formData.password"
             label="Password *"        
@@ -86,8 +84,8 @@
             :maxLength="20"
           />
           
-        </div>
-        <div class="">
+        </v-col>
+        <v-col cols="12"  sm="6">
           <v-text-field
             v-model="formData.confirmPassword"
             label="Confirm Password *"
@@ -98,9 +96,8 @@
             :minLength="6"
             :maxLength="20"   
           />
-        </div>
-      </v-card-text>
-    </v-card> 
+        </v-col>    
+    </v-row> 
     <v-container>
       <!-- Add minor button-->
       <v-row class="d-flex justify-between">
@@ -205,23 +202,27 @@
           <h3>Link your child(ren) to your profile</h3>
         </v-card-title>
         <v-card-text>
+        <v-row>
+          <v-col cols="12" sm="6">
+            <v-text-field 
+              v-model="formData.barcode" 
+              label="Barcode" 
+              :rules="[props.rules.required]"
+              density="compact"
+              variant="outlined"
+            />
+          </v-col>
+          <v-col cols="12" sm="6">
+            <v-text-field 
+              v-model="formData.pin" 
+              label="Password" 
+              :rules="[props.rules.required]"
+              density="compact"
+              variant="outlined"
+              type="password"
+            />
+          </v-col>
           
-        <v-row class="d-flex ga-5 my-2">
-          <v-text-field 
-            v-model="formData.barcode" 
-            label="Barcode" 
-            :rules="[props.rules.required]"
-            density="compact"
-            variant="outlined"
-          />
-          <v-text-field 
-            v-model="formData.pin" 
-            label="Password" 
-            :rules="[props.rules.required]"
-            density="compact"
-            variant="outlined"
-            type="password"
-          />
         </v-row>
         <v-row v-if="!loading && linkDisabled">
           <v-col cols="12">
@@ -247,23 +248,26 @@
             <h4>Details of Adult responsible for the minor(s)</h4>
         </v-card-title>
         <v-card-text>
-          <div class="d-flex ga-5 my-2">
+          <v-row>
+            <v-col cols="12" sm="6">
               <v-text-field 
-              v-model="formData.adultFirstname" 
-              label="First Name" 
-              :rules="[props.rules.required, props.rules.firstname]"
-              density="compact"
-              variant="outlined"
-            />
-            <v-text-field 
-              v-model="formData.adultLastname" 
-              label="Last Name" 
-              :rules="[props.rules.required, props.rules.lastname]"
-              density="compact"
-              variant="outlined"
-            />
-          </div>
-          <div class="d-flex ga-5 my-2">
+                v-model="formData.adultFirstname" 
+                label="First Name" 
+                :rules="[props.rules.required, props.rules.firstname]"
+                density="compact"
+                variant="outlined"
+              />
+            </v-col>
+            <v-col cols="12" sm="6">
+              <v-text-field 
+                v-model="formData.adultLastname" 
+                label="Last Name" 
+                :rules="[props.rules.required, props.rules.lastname]"
+                density="compact"
+                variant="outlined"
+              />
+            </v-col>
+            <v-col cols="12" sm="6">
               <v-text-field 
                 v-model="formData.adultEmail" 
                 label="Email" 
@@ -271,6 +275,8 @@
                 density="compact"
                 variant="outlined"
               />
+            </v-col>
+            <v-col cols="12" sm="6">
               <v-text-field 
                 v-model="formData.adultPhone" 
                 label="Phone Number" 
@@ -279,46 +285,51 @@
                 density="compact"
                 variant="outlined"
               />
-          </div>
-          <div class="d-flex ga-5 my-2">
-            <v-text-field 
-              v-model="formData.adultStreet" 
-              label="Address" 
-              :rules="[props.rules.required]"
-              density="compact"
-              variant="outlined"
-            />
-            <v-select
-              label="City"
-              :items="['Edmonton', 'Enoch']"
-              v-model="formData.adultCity" 
-              variant="outlined"
-              :rules="[props.rules.city]"
-              required
-              density="compact"
-              prepend-inner-icon="mdi-city"
-            />
-         
-          </div>
-          <div class="d-flex ga-5 my-2">
-            <v-text-field 
-              v-model="formData.adultProvince" 
-              label="Province" 
-              :rules="[props.rules.required, props.rules.province]"
-              density="compact"
-              variant="outlined"
-              readonly
-            />
-            <v-text-field 
-              v-model="formData.adultPostalCode" 
-              label="Postcode" 
-              :rules="[props.rules.required, props.rules.postalCode]"
-              density="compact"
-              variant="outlined"
-              :maxLength="7"
-              @input="onPostalCodeInput"
-            />
-          </div>
+            </v-col>
+            <v-col cols="12" sm="6">
+              <v-text-field 
+                v-model="formData.adultStreet" 
+                label="Address" 
+                :rules="[props.rules.required]"
+                density="compact"
+                variant="outlined"
+              />
+            </v-col>
+            <v-col cols="12" sm="6">
+              <v-select
+                label="City"
+                :items="['Edmonton', 'Enoch']"
+                v-model="formData.adultCity" 
+                variant="outlined"
+                :rules="[props.rules.city]"
+                required
+                density="compact"
+                prepend-inner-icon="mdi-city"
+              />
+            </v-col>
+            <v-col cols="12" sm="6">
+              <v-text-field 
+                v-model="formData.adultProvince" 
+                label="Province" 
+                :rules="[props.rules.required, props.rules.province]"
+                density="compact"
+                variant="outlined"
+                readonly
+              />
+            </v-col>
+            <v-col cols="12" sm="6">
+              <v-text-field 
+                v-model="formData.adultPostalCode" 
+                label="Postcode" 
+                :rules="[props.rules.required, props.rules.postalCode]"
+                density="compact"
+                variant="outlined"
+                :maxLength="7"
+                @input="onPostalCodeInput"
+              />
+            </v-col>
+          </v-row>
+
           <v-row v-if="disabled">
             <v-col cols="12">
               <span class="text-green-darken-4 font-italic font-weight-medium">Record saved successfully!</span>
@@ -348,18 +359,20 @@
     computed, 
     onMounted, 
     ref, 
+    toRef, 
     watch 
   } from 'vue';
   import { useRegistrationStore } from '../store/registration-store';
   import { apiService } from '../services/api-service';
   import { minDate } from '../composables/minDate';
-  import { vMaska } from "maska/vue"
+  import { vMaska } from "maska/vue";
 
   import { 
     createMinorRegistrationData, 
     createRegistrationData, 
     sameAsAdultData
   } from '../constants/minor-form-data';
+import { use } from 'h3';
 
   interface Minor {
     id: number;
@@ -383,9 +396,9 @@
   const linkDisabled = ref(false);
   const isInvalid = ref(true);
   const isMinorInvalid = ref(true);
- 
   const props = defineProps(['formData', 'rules', 'page', 'bioDataFormValid', 'form']);
   const formData = ref(props.formData);
+
   let minorId = 0;
   const confirmPinRules = computed(() => {
     return props.formData.confirmPassword !== props.formData.password ? 'Pins do not match' : true;
@@ -494,7 +507,7 @@
     };
     
     // Watch the formData object for changes
-    watch(formData.value, (newVal) => {
+    watch([() => isClicked.value, formData.value], ([newIsClicked, newVal]) => {
       isInvalid.value = !newVal.adultFirstname?.trim() ||
                         !newVal.adultLastname?.trim() ||
                         !newVal.adultEmail?.trim() ||
@@ -503,6 +516,7 @@
                         !newVal.adultCity?.trim() ||
                         !newVal.adultProvince?.trim() ||
                         !newVal.adultPostalCode?.trim();
+      userRegistration.setLinkState(newIsClicked);
     }, { deep: true });
 
     // Link adult to the minor
@@ -526,6 +540,7 @@
       userRegistration.addRegistration({data:userRegistration.minor});
       console.log('ADULT Contact:', userRegistration.getRegistration)
     }
+
     // Delete minor from the list
     const deleteMinor = (id: any) => {
       minors.value = minors.value.filter(minor => minor.id !== id);

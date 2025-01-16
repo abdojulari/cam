@@ -58,6 +58,7 @@ export const useRegistrationStore = defineStore({
     consent: '',
     password: {} as Password,
     turnstile: false,
+    linkState: false,
   }),
   actions: {
     async setTurnstile(turnstile: boolean) {
@@ -154,6 +155,13 @@ export const useRegistrationStore = defineStore({
         } catch (error) {
           console.error(error);
         }
+      },
+      async setLinkState(linkState: boolean) {
+        try {
+          this.linkState = linkState;
+        } catch (error) {
+          console.error(error);
+        }
       }
   },
   getters: {
@@ -195,6 +203,9 @@ export const useRegistrationStore = defineStore({
     },
     getTurnstile(): boolean {
         return this.turnstile;
+    },
+    getLinkState(): boolean {
+        return this.linkState;
     }
   },
 

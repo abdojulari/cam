@@ -1,7 +1,7 @@
 <template>  
     <v-container class="main-view">
-        <v-row class="py-5">
-            <h2 class="text-h4 text-primary font-weight-bold">
+        <v-row class="pa-5 ">
+            <h2 class="text-h6 text-sm-h4  text-primary font-weight-bold">
                 Get Your FREE Library Card
             </h2>
         </v-row>
@@ -19,7 +19,7 @@
         </div>
         <v-row class="px-1 py-1 mx-1 my-1 d-flex justify-center">
             <v-col cols="12">
-                <v-img src="~/assets/images/horizontal.png" alt="registration"></v-img>
+                <v-img class="w-100" src="~/assets/images/horizontal.png" alt="registration"></v-img>
             </v-col>
         </v-row>
         <v-row class="px-1 py-1 mx-1 my-1 d-flex justify-center">  
@@ -115,8 +115,10 @@
     import { apiService } from '../services/api-service';
     import { rules } from '../composables/rules';
     import ErrorPrompt from './ErrorPrompt.vue';
+    import { useUtmParams } from '../composables/useUtmParams';
     
     const userRegistration = useRegistrationStore();
+    const utmParams = useUtmParams();
     const router = useRouter();
     const props = defineProps({
         page: {
@@ -280,7 +282,7 @@
         }
         if (filteredSteps.value[step.value - 1].title === 'Minor') {
             if (formData.value.minorFirstname === '' || formData.value.minorLastname === '' 
-           || formData.value.minorDateOfBirth === null) {
+           || formData.value.minorDateOfBirth === null || formData.value.password === '' || formData.value.confirmPassword === '') {
                 return true;
             }
         }
@@ -290,6 +292,10 @@
             }
         }
 
+        if(filteredSteps.value[step.value - 1].title === 'Minor' && userRegistration.getLinkState === false) {
+            return true; 
+        }
+
         return step.value >= filteredSteps.value.length;
     })
     const disabled = computed(() => {
@@ -297,6 +303,19 @@
         if (filteredSteps.value.length === step.value) return 'next'
         return undefined
     })
+
+    // Send event to GA with UTM params
+    const sendEventToGA = () => {
+    if (typeof window !== 'undefined' && window.gtag) {
+        window.gtag('event', 'form_submission', {
+            'event_category': 'register',
+            'event_label': filteredSteps.value[step.value - 1].title,
+            'registration_type': selectedRadio.value === 'Adult' ? 'EPL_SELF' : 'EPL_SELFJ',
+            'step': step.value,
+            ...utmParams,  
+        });
+        }
+    }
    
     const submitForm = async () => {
         isLoading.value = true;
@@ -312,6 +331,7 @@
                 showErrorDialog.value = true; 
                 return;
             }
+            sendEventToGA();
             // Proceed to next page if no errors
             router.push('/success-page');
         } catch (error) {
@@ -325,6 +345,9 @@
 
 </script>
 <style scoped>
+.v-container {
+    max-width: 900px;
+}
 .v-stepper-item {
     transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
 }
