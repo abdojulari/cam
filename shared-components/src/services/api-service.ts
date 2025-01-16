@@ -56,7 +56,9 @@ export const apiService = {
           const response = await fetch(url, {
               method: 'POST',
               headers,
-              body
+              body,
+              credentials: 'include',
+              mode: 'cors'
           });
           const data = await response.json();
           return data;

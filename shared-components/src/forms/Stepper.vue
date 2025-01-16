@@ -90,11 +90,10 @@
                                 <p class=" font-medium capitalize">Previous</p>
                             </v-btn>
                             <v-spacer v-if="step === 1"/>
-                            <v-btn 
+                            <v-btn v-if="(selectedRadio === 'Minor' && filteredSteps[step - 1].title !== 'Confirmation') || (selectedRadio === 'Adult' && step !== 5)"
                                 @click="next" 
                                 variant="flat" 
                                 color="primary" 
-                
                                 :disabled="!formData.radios && page !== 'registration-portal' || disabled || isNextDisabled"
                             >
                                 <p class="font-medium capitalize">Next</p>
@@ -282,17 +281,17 @@
         }
         if (filteredSteps.value[step.value - 1].title === 'Minor') {
             if (formData.value.minorFirstname === '' || formData.value.minorLastname === '' 
-           || formData.value.minorDateOfBirth === null || formData.value.password === '' || formData.value.confirmPassword === '') {
+           || formData.value.minorDateOfBirth === null || formData.value.password === '' || formData.value.confirmPassword === '' || formData.value.password.length < 6) {
                 return true;
             }
         }
-        if (filteredSteps.value[step.value - 1].title === 'Choose your password' || filteredSteps.value[step.value - 1].title === 'Confirmation') {
-            if (formData.value.password === '' || formData.value.confirmPassword === '') {
+        if (filteredSteps.value[step.value - 1].title === 'Choose your password' || filteredSteps.value[step.value - 1].title === 'Confirmation' ) {
+            if (formData.value.password === '' || formData.value.confirmPassword === '' || formData.value.password.length < 6) {
                 return true;
             }
         }
 
-        if(filteredSteps.value[step.value - 1].title === 'Minor' && userRegistration.getLinkState === false) {
+        if(filteredSteps.value[step.value - 1].title === 'Minor' && userRegistration.getLinkState === false && formData.value.password.length < 6) {
             return true; 
         }
 

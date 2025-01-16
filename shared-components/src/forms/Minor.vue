@@ -15,7 +15,7 @@
           <span class="text-body-1 font-weight-light">Fields marked with an asterisk (*) are required</span>
         </v-col>
     </v-row>
-    <v-row class="" variant="flat" >
+    <v-row>
       <v-col cols="12">
         <h2 class="text-h6 font-weight-bold ">Minor Details</h2>
       </v-col>
@@ -58,7 +58,7 @@
                 label="Date of Birth *"
                 prepend-inner-icon="mdi-calendar"
                 required
-                
+                :readonly="isReadonly"
               />
             </template>
             <v-date-picker
@@ -97,78 +97,76 @@
             :maxLength="20"   
           />
         </v-col>    
-    </v-row> 
-    <v-container>
-      <!-- Add minor button-->
-      <v-row class="d-flex justify-between">
-        <v-col cols="6" sm="6">
-          <v-btn
-            v-if="minors.length < 3"  
-            variant="flat" 
-            color="primary" 
-            :disabled="disabled || isMinorInvalid"
-            text="Add another minor"
-            size="small"
-            @click="addMinor"   
-            prepend-icon="mdi-plus-circle" 
-            class="btn-add-minor" 
-          >
-          </v-btn>
-        </v-col>
-        <v-col cols="6" class="d-flex justify-end" v-if="minors.length > 0">
-          <v-btn 
-            variant="flat"
-            :disabled="disabled " 
-            color="red" 
-            class="ms-5"
-            text="Cancel"
-            size="small"
-            prepend-icon="mdi-minus-circle"
-            @click="resetMinorForm"
-          />
-        </v-col>
-      </v-row>
-      <!-- Minor list-->
-      <v-row v-if="minors.length > 0" class="ma-2">
+    </v-row>  
+    <!-- Add minor button-->
+    <v-row class="mb-5">
+      <v-col cols="6">
+        <v-btn
+          v-if="minors.length < 3"  
+          variant="flat" 
+          color="primary" 
+          :disabled="disabled || isMinorInvalid"
+          text="Add another minor"
+          size="small"
+          @click="addMinor"   
+          prepend-icon="mdi-plus-circle" 
+          class="btn-add-minor" 
+        >
+        </v-btn>
+      </v-col>
+      <v-col cols="6" v-if="minors.length > 0">
+        <v-btn 
+          variant="flat"
+          :disabled="disabled " 
+          color="red" 
+          text="Cancel"
+          size="small"
+          prepend-icon="mdi-minus-circle"
+          @click="resetMinorForm"
+          class="me-5 btn-add-minor"
+        />
+      </v-col>
+    </v-row>
+    <!-- Minor list-->
+    <v-row class="my-5" v-if="minors.length > 0">
+      <v-col cols="12" class="">
         <h3 class="text-uppercase font-weight-black">Minors List</h3>
-      </v-row>
-      <v-row class="px-2">
-        <v-card color="primary" variant="outline" elevated border v-if="minors.length > 0">
-          <v-card-text>
-            <v-data-table
-              :headers="headers"
-              :items="minors"
-              item-key="id"
-              :hide-default-footer="true"
-              color="primary"
-            > 
-              <template v-slot:headers="{ columns,toggleSort }">
-                <tr>
-                  <template v-for="column in columns" :key="column.key">
-                    <th>
-                      <span class="mr-2 cursor-pointer font-weight-bold text-sm" @click="() => toggleSort(column)">{{ column.title }}</span>
-                    </th>
-                  </template>
-                </tr>
-              </template>
-              <template v-slot:item.actions="{ item }">
-                <v-btn 
-                  color="red" 
-                  @click="deleteMinor(item.id)" 
-                  text="Delete" 
-                  size="small" 
-                  density="compact" 
-                  icon="mdi-delete"
-                />
-                
-              </template>
-            </v-data-table>
-          </v-card-text>
-        </v-card>
-      </v-row>
-      <!-- End of minor list-->
+      </v-col>
+      <v-card color="primary" variant="outline" elevated border >
+        <v-card-text>
+          <v-data-table
+            :headers="headers"
+            :items="minors"
+            item-key="id"
+            :hide-default-footer="true"
+            color="primary"
+          > 
+            <template v-slot:headers="{ columns,toggleSort }">
+              <tr>
+                <template v-for="column in columns" :key="column.key">
+                  <th>
+                    <span class="mr-2 cursor-pointer font-weight-bold text-sm" @click="() => toggleSort(column)">{{ column.title }}</span>
+                  </th>
+                </template>
+              </tr>
+            </template>
+            <template v-slot:item.actions="{ item }">
+              <v-btn 
+                color="red" 
+                @click="deleteMinor(item.id)" 
+                text="Delete" 
+                size="small" 
+                density="compact" 
+                icon="mdi-delete"
+              />
+              
+            </template>
+          </v-data-table>
+        </v-card-text>
+      </v-card>
+    </v-row>
+    <!-- End of minor list-->
       <v-row>
-  
         <v-col cols="12">
           <v-btn
             v-if="props.formData.radios === 'Adult'"
@@ -186,20 +184,20 @@
           <span class="text-green-darken-4 font-italic font-weight-medium">Record saved successfully!</span>
         </v-col>
       </v-row>
-    </v-container> 
+ 
     <div v-if="props.formData.radios !== 'Adult'"> 
       <v-switch
         label="Attach minor(s) to your profile"
         v-model="linkMinor"
         @click="connectionHandler"
-        :disabled="(!loading && linkDisabled) || disabled"
+        :disabled="(!loading && linkDisabled && !errorLogin) || (disabled && !errorLogin) "
       >
       </v-switch>
     </div>
     <div class="" v-if="props.formData.radios !== 'Adult'">
         <v-card flat v-if="linkMinor">
         <v-card-title class="mb-2">
-          <h3>Link your child(ren) to your profile</h3>
+          <h3>Link your child(ren) to your EPL card</h3>
         </v-card-title>
         <v-card-text>
         <v-row>
@@ -224,7 +222,7 @@
           </v-col>
           
         </v-row>
-        <v-row v-if="!loading && linkDisabled">
+        <v-row v-if="!loading && linkDisabled && !errorLogin">
           <v-col cols="12">
             <span class="text-green-darken-4 font-italic font-weight-medium">Record saved successfully!</span>
           </v-col>
@@ -234,14 +232,19 @@
           <v-btn 
             variant="flat" 
             color="primary" 
-            class="me-2 text-none text-uppercase"
             :disabled="loading || formData.barcode === '' || formData.pin === ''"
             :loading="loading"
-            :text="linkDisabled ? 'Saved' : 'Save Changes'"
+            :text="linkDisabled && !errorLogin ? 'Saved' : 'Save Changes'"
             @click="loading = !loading"
             prepend-icon="mdi-content-save"
           />
         </v-card-actions>
+        <div class="px-5">
+          <p class="font-italic font-weight-medium" v-if="errorLogin"> {{ errorLogin }}</p>
+          <span class="font-weight-medium text-red my-5">
+            Please click the 'SAVE CHANGES' button to save your progress before proceeding to the 'NEXT' button.
+          </span>
+        </div>
       </v-card>
       <v-card flat v-if="!linkMinor">
         <v-card-title>
@@ -320,7 +323,7 @@
             <v-col cols="12" sm="6">
               <v-text-field 
                 v-model="formData.adultPostalCode" 
-                label="Postcode" 
+                label="Postal Code" 
                 :rules="[props.rules.required, props.rules.postalCode]"
                 density="compact"
                 variant="outlined"
@@ -349,6 +352,9 @@
           >
           </v-btn>
         </v-card-actions> 
+        <div>
+          <p class="px-5 font-weight-bold text-red">Please click the 'SAVE CHANGES' button to save your progress before proceeding to the 'NEXT' button.</p>
+        </div>
       </v-card>
     </div>
   </v-container>
@@ -358,21 +364,20 @@
   import { 
     computed, 
     onMounted, 
+    readonly, 
     ref, 
-    toRef, 
     watch 
   } from 'vue';
   import { useRegistrationStore } from '../store/registration-store';
   import { apiService } from '../services/api-service';
   import { minDate } from '../composables/minDate';
   import { vMaska } from "maska/vue";
-
   import { 
     createMinorRegistrationData, 
     createRegistrationData, 
     sameAsAdultData
   } from '../constants/minor-form-data';
-import { use } from 'h3';
+
 
   interface Minor {
     id: number;
@@ -398,6 +403,8 @@ import { use } from 'h3';
   const isMinorInvalid = ref(true);
   const props = defineProps(['formData', 'rules', 'page', 'bioDataFormValid', 'form']);
   const formData = ref(props.formData);
+  const errorLogin = ref();
+  const isReadonly = ref(true);
 
   let minorId = 0;
   const confirmPinRules = computed(() => {
@@ -433,6 +440,11 @@ import { use } from 'h3';
           loading.value = false; 
           linkDisabled.value = true
           console.log('LOGIN' ,userRegistration.getRegistration)
+          // data returns error notify the user 
+          if (data.error) {
+            errorLogin.value = 'Invalid barcode or password';
+          }
+
           return data; 
           } catch (err) {
               return (err as any).message;
@@ -548,6 +560,7 @@ import { use } from 'h3';
 
     const resetMinorForm = () => {
        // Check if minors array is not empty
+      isReadonly.value = false;
       if (minors.value.length > 0) {
         // Get the last minor record
         const lastMinor = minors.value[minors.value.length - 1];
@@ -562,6 +575,7 @@ import { use } from 'h3';
 
         // Delete the last minor from the list
         deleteMinor(lastMinor.id);
+        isReadonly.value = true;
       }
     };
     // Define headers for the data table
@@ -602,9 +616,9 @@ import { use } from 'h3';
 <style scoped>
 @media (max-width: 600px) {
   .btn-add-minor {
-    width: 140px !important;
+    width: 180px !important;
     color: #fff;
-    font-size: 8px;
+    font-size: 10px;
   }
 }
 </style> 
