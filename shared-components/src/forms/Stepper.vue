@@ -94,7 +94,7 @@
                                 @click="next" 
                                 variant="flat" 
                                 color="primary" 
-                                :disabled="!formData.radios && page !== 'registration-portal' || disabled || isNextDisabled"
+                                :disabled="!formData.radios && page !== 'registration-portal' || disabled || isNextDisabled "
                             >
                                 <p class="font-medium capitalize">Next</p>
                             </v-btn>
@@ -291,7 +291,8 @@
             }
         }
 
-        if(filteredSteps.value[step.value - 1].title === 'Minor' && userRegistration.getLinkState === false && formData.value.password.length < 6) {
+        if(filteredSteps.value[step.value - 1].title === 'Minor' && userRegistration.getLinkState === false) {
+            console.log('password length is less than 6');
             return true; 
         }
 
