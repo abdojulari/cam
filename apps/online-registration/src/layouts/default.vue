@@ -119,8 +119,7 @@ onMounted(async () => {
     } else {
         // If cached data is not available or expired, fetch new data
         try {
-            const config = useRuntimeConfig();
-            const response = await fetch(`${config.public.baseUrl}/get-custom-header-footer`, {
+            const response = await fetch('/api/get-custom-header-footer', {
                 method: 'GET',
                 headers: { 'Content-Type': 'application/json' },
             });

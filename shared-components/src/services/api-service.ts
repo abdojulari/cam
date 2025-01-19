@@ -23,7 +23,7 @@ export const apiService = {
           return { error: (error as Error).message }; 
       }
     },
-    async registration(payload: any) {
+    async registration(payload: unknown) {
       const config = useRuntimeConfig();
       const url = `${config.public.CRE_DUPLICATE_URL}`;
       const access_token = getCookie('access_token');
