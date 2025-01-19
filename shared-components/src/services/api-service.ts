@@ -95,7 +95,17 @@ export const apiService = {
       const headers = {
         'Accept': 'application/json',
         'Content-Type': 'application/x-www-form-urlencoded'
-       };
+      };
+
+      const test = await fetch(`${config.public.baseUrl}/get-token`, {
+        method: 'POST',
+        headers,
+        body,
+        credentials: 'include',
+        mode: 'cors'
+      });
+      const data = await test.json();
+      console.log('test', data.access_token);
 
       try {
           const response = await fetch(url, {

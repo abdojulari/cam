@@ -95,7 +95,8 @@
 
   // Submit the token to your server for validation
   const onNativeSubmit = async () => {
-    const response = await $fetch('/api/validate-turnstile', {
+    const config = useRuntimeConfig();
+    const response = await $fetch(`${config.public.baseUrl}/validate-turnstile`, {
       method: 'POST',
       body: {
         token: tokenResponse.value,
