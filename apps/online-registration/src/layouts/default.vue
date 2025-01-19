@@ -121,10 +121,15 @@ onMounted(async () => {
         try {
             const response = await fetch('/api/get-custom-header-footer', {
                 method: 'GET',
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json' 
+                },
             });
 
             if (!response.ok) {
+                const errorText = await response.text();
+                console.error('Error response:', errorText);
                 throw new Error('Failed to fetch custom header/footer');
             }
 
@@ -205,6 +210,7 @@ onMounted(async () => {
             // Cache the response data and expiry time
             localStorage.setItem(CACHE_KEY, JSON.stringify(data));
             localStorage.setItem(CACHE_EXPIRY_KEY, (now + CACHE_EXPIRY_TIME).toString());
+            return data;
 
         } catch (error) {
             console.error('Error fetching custom header/footer:', error);
