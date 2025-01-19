@@ -85,48 +85,65 @@ export const apiService = {
     },
     async initializeToken() {
       const config = useRuntimeConfig();
-      const body = new URLSearchParams({
-        client_id: config.public.CLIENT_ID,
-        client_secret: config.public.CLIENT_SECRET,
-        grant_type: "client_credentials"
-      }).toString();
-      
-      const url = `${config.public.tokenUrl}`;
-      const headers = {
-        'Accept': 'application/json',
-        'Content-Type': 'application/x-www-form-urlencoded'
-      };
-
-      const test = await fetch(`${config.public.baseUrl}/get-token`, {
-        method: 'POST',
-        headers,
-        body,
-        credentials: 'include',
-        mode: 'cors'
-      });
-      const data = await test.json();
-      console.log('test', data.access_token);
-
+     
       try {
-          const response = await fetch(url, {
-              method: 'POST',
-              headers,
-              body,
-              credentials: 'include',
-              mode: 'cors'
-          });
-          const data = await response.json()
+        const response = await fetch('/api/get-token', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Accept': 'application/json'
+            },
+            body: new URLSearchParams({
+                client_id: config.public.CLIENT_ID,
+                client_secret: config.public.CLIENT_SECRET,
+                grant_type: "client_credentials"
+            })
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        console.log('Token received:', data.access_token);
+        return data.access_token;
+    } catch (error) {
+        console.error('Error getting token:', error);
+        throw error;
+    }
+     
+
+      // try {
+      //   const body = new URLSearchParams({
+      //     client_id: config.public.CLIENT_ID,
+      //     client_secret: config.public.CLIENT_SECRET,
+      //     grant_type: "client_credentials"
+      //   }).toString();
+        
+      //   const url = `${config.public.tokenUrl}`;
+      //   const headers = {
+      //     'Accept': 'application/json',
+      //     'Content-Type': 'application/x-www-form-urlencoded'
+      //   };
+      //     const response = await fetch(url, {
+      //         method: 'POST',
+      //         headers,
+      //         body,
+      //         credentials: 'include',
+      //         mode: 'cors'
+      //     });
+      //     const data = await response.json()
           
-          if (data.access_token) {
-              document.cookie = `access_token=${data.access_token}; path=/;`;
-          }
-          return data;
-      }
-      catch (error) {
-        console.error(
-          'Request failed:', 
-          {error });
-      }
+      //     if (data.access_token) {
+      //         document.cookie = `access_token=${data.access_token}; path=/;`;
+      //     }
+      //     return data;
+      // }
+      // catch (error) {
+      //   console.error(
+      //     'Request failed:', 
+      //     {error });
+      // }
     },
     async externalApiCall() {
       const config = useRuntimeConfig();

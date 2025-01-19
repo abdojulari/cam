@@ -1,4 +1,6 @@
+// server/api/get-token.ts
 import { 
+    createError,
     defineEventHandler, 
     EventHandlerRequest, 
     H3Event,
@@ -6,36 +8,38 @@ import {
 } from "h3";
 
 export default defineEventHandler(async (event: H3Event<EventHandlerRequest>) => {
-    // read the event payload and extract the token from cre
     const config = useRuntimeConfig(event);
     const url = `${config.public.tokenUrl}`;
-    const bodyStr = await readBody(event);
-    // Convert the body to a URL-encoded string if needed
-    // Or use JSON depending on what the API expects
-    const body = new URLSearchParams(bodyStr).toString(); 
-    const headers = {
-        'Accept': 'application/json',
-        'Content-Type': 'application/x-www-form-urlencoded'
-    };
-
+    
     try {
+        const body = await readBody(event);
+        
+        // Log the request details for debugging
+        console.log('Requesting token from:', url);
+        console.log('Request body:', body);
+
         const response = await fetch(url, {
             method: 'POST',
-            headers,
-            body,
-            credentials: 'include',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: new URLSearchParams(body).toString()
         });
-        console.log('response', response);
-        return response.json();
+
+        if (!response.ok) {
+            console.error('Token request failed:', await response.text());
+            throw new Error(`Token request failed with status ${response.status}`);
+        }
+
+        const data = await response.json();
+        return data;
     }
     catch (error) {
-        return {
-            status: 500,
-            body: {
-                error: 'Failed to get token',
-                message: error.message
-            }
-        };
+        console.error('Token error:', error);
+        throw createError({
+            statusCode: 500,
+            statusMessage: error.message
+        });
     }
-
 });
