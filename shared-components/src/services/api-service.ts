@@ -67,8 +67,9 @@ export const apiService = {
         }
     },
     async authenticate(body: unknown) {
+      const config = useRuntimeConfig();
       try {
-        const response = await fetch('/api/authenticate', {
+        const response = await fetch(`${config.public.baseUrl}/authenticate`, {
           method: 'POST',
           body: JSON.stringify(body),
           headers: {
@@ -118,8 +119,9 @@ export const apiService = {
       }
     },
     async externalApiCall() {
+      const config = useRuntimeConfig();
       try {
-        const response = await fetch('/api/external-api', {
+        const response = await fetch(`${config.public.baseUrl}/external-api`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

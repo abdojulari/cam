@@ -2,6 +2,26 @@ import { nxViteTsPaths } from '@nx/vite/plugins/nx-tsconfig-paths.plugin';
 import { defineNuxtConfig } from 'nuxt/config';
 import vuetify, { transformAssetUrls } from 'vite-plugin-vuetify'
 // https://nuxt.com/docs/api/configuration/nuxt-config
+const getApiBaseUrl = () => {
+  const hostname = typeof window !== 'undefined' ? window.location.hostname : ''; // To make it work in both server and client
+
+  if (process.env.NODE_ENV === 'production') {
+    // Determine the URL based on the hostname
+    if (hostname === 'cam.epl.ca') {
+      return 'https://cam.epl.ca/api';
+    } else if (hostname === 'epl-cam.epl.ca') {
+      return 'https://epl-cam.epl.ca/api';
+    }
+  } else if (process.env.NODE_ENV === 'dev-server') {
+    return 'https://cam-dev.epl.ca/api';
+  } else if (process.env.NODE_ENV === 'development') {
+    return 'http://localhost:4500/api';
+  }
+
+  // Default fallback if no conditions are met
+  return 'http://localhost:4500/api';
+};
+
 export default defineNuxtConfig({
   app: {
     head: {
@@ -20,6 +40,7 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   runtimeConfig:{
     public:{
+      baseUrl: getApiBaseUrl(),
       apiBase: process?.env.NUXT_PUBLIC_ILS_URL,
       SYMWS_USER: process?.env.SYMWS_USER,
       SYMWS_PASS: process?.env.SYMWS_PASS,
