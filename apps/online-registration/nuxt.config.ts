@@ -55,7 +55,7 @@ export default defineNuxtConfig({
   $production: {
     runtimeConfig: {
       public: {
-        baseUrl: hostname === 'cam.epl.ca' ? 'https://cam.epl.ca/api' : 'https://epl-cam.epl.ca/api',
+        baseUrl: 'https://cam.epl.ca/api',
       },
     },
     routeRules: {
