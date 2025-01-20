@@ -71,7 +71,8 @@ export const apiService = {
               barcode: payload.data.barcode,
               careof: payload.data.careof,
               category5: payload.data.consent
-          })
+          }),
+          credentials: 'include',
         });
 
         if (!response.ok) {
