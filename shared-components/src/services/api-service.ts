@@ -46,11 +46,13 @@ export const apiService = {
     async registration(payload: any) {
       
       try {
+        const access_token = getCookie('access_token');
         const response = await fetch('/api/registration', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Accept': 'application/json'
+                'Accept': 'application/json',
+                'Authorization' :`Bearer ${access_token}`,
             },
             body: JSON.stringify({
               firstname: payload.data.biodata.firstname,
@@ -77,7 +79,7 @@ export const apiService = {
         }
 
           const data = await response.json();
-          console.log('Submitted successfully:', data.access_token);
+          console.log('Submitted successfully:', data);
           return data;
       } catch (error) {
           console.error('Error submitting the form:', error);
