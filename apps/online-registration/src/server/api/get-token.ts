@@ -3,28 +3,25 @@ import {
     createError,
     defineEventHandler, 
     EventHandlerRequest, 
-    H3Event,
-    readBody
+    H3Event
 } from "h3";
 
 export default defineEventHandler(async (event: H3Event<EventHandlerRequest>) => {
-    const config = useRuntimeConfig(event);
-    const url = `${config.public.tokenUrl}`;
+    const config = useRuntimeConfig(event).private;
+    const url = `${config.tokenUrl}`;
     
     try {
-        const body = await readBody(event);
-        
-        // Log the request details for debugging
-        console.log('Requesting token from:', url);
-        console.log('Request body:', body);
-
         const response = await fetch(url, {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/x-www-form-urlencoded'
             },
-            body: new URLSearchParams(body).toString()
+            body: new URLSearchParams({
+                client_id: config.CLIENT_ID,
+                client_secret: config.CLIENT_SECRET,
+                grant_type: "client_credentials"
+            }).toString()
         });
 
         if (!response.ok) {

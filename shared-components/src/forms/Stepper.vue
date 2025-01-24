@@ -32,7 +32,7 @@
                                 :complete="step > index + 1"
                                 :step="item.title"
                                 :value="index + 1"
-                                :title="item.title"
+                                :title="item.title === 'Minor' ? 'Child' : item.title"
                                 :color="step === index + 1 ? 'primary-darken-1' : 'green-darken-4'" 
                                 class="text-body-2 font-weight-bold"            
                             ></v-stepper-item>
@@ -49,7 +49,7 @@
                         <v-stepper-window-item :value="index + 1">
                             <v-card>
                             <v-card-title>
-                                <h3 class="text-primary text-h6 font-weight-bold">{{ item.title }}</h3>
+                                <h3 class="text-primary text-h6 font-weight-bold">{{ item.title === 'Minor' ? 'Child' : item.title}}</h3>
                             </v-card-title>
                             <v-card-text>
                                 <component 
@@ -70,7 +70,7 @@
                         <v-col class="d-flex justify-end">
                             <v-btn
                                 v-if="step === filteredSteps.length && step !== 1"
-                                :disabled="!formData.acceptTerms || turnstile === false || isLoading === true"
+                                :disabled="!formData.acceptTerms || turnstile === false || isLoading === true || formData.password.length < 6 || formData.password !== formData.confirmPassword" 
                                 color="primary"
                                 @click="submitForm"
                                 class="me-2"
@@ -105,6 +105,7 @@
         </v-row> 
     </v-container>
     <ErrorPrompt :is-active="showErrorDialog" @close="closeErrorDialog" />
+    <SystemError :is-active="showSystemErrorDialog" @close="closeErrorDialog" />
 </template>
   
 <script setup>
@@ -115,9 +116,12 @@
     import { rules } from '../composables/rules';
     import ErrorPrompt from './ErrorPrompt.vue';
     import { useUtmParams } from '../composables/useUtmParams';
+    import { useGtag } from 'vue-gtag-next'
+    import SystemError from './SystemError.vue';
     
     const userRegistration = useRegistrationStore();
-    const utmParams = useUtmParams();
+    const { event } = useGtag()
+    const utmParams = useUtmParams()
     const router = useRouter();
     const props = defineProps({
         page: {
@@ -165,8 +169,10 @@
     const selectedRadio = computed(() => userRegistration.getRadioSelection);
     const turnstile = computed(() => userRegistration.getTurnstile);
     const showErrorDialog = ref(false);
+    const showSystemErrorDialog = ref(false);
     const closeErrorDialog = async () => {
         showErrorDialog.value = false;
+        showSystemErrorDialog.value = false;
         await navigateTo('https://epl.bibliocommons.com/locations', {
             external: true
         })
@@ -268,31 +274,35 @@
     };
     // Check if the next button should be disabled
     const isNextDisabled = computed(() => {
-        //const currentStepIndex = step.value - 1;
+        
+        const postalCodePattern = /^T\d[ABCEGHJ-NPRSTV-Z]\s\d[ABCEGHJ-NPRSTV-Z]\d$/;
+        const passwordRegex = /^(?=[A-Za-z0-9]{6,20}$)(?!.*\s).*$/;
+        const emailPattern = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
+        const phonePattern = /^\d{3}-\d{3}-\d{4}$/;
+
         if (filteredSteps.value[step.value - 1].title === 'About You' && !formValid.value) {
             return true;
         }
         if (filteredSteps.value[step.value - 1].title === 'Contact') {
             if (formData.value.street === '' || formData.value.city === '' 
             || formData.value.province === '' || formData.value.postalCode === ''
-            || formData.value.phone === '' || formData.value.email === '') {
+            || formData.value.phone === '' || formData.value.email === '' || !phonePattern.test(formData.value.phone) || !emailPattern.test(formData.value.email) || !postalCodePattern.test(formData.value.postalCode)) {
                 return true;
             }
         }
         if (filteredSteps.value[step.value - 1].title === 'Minor') {
             if (formData.value.minorFirstname === '' || formData.value.minorLastname === '' 
-           || formData.value.minorDateOfBirth === null || formData.value.password === '' || formData.value.confirmPassword === '' || formData.value.password.length < 6) {
+           || formData.value.minorDateOfBirth === null || formData.value.password === '' || formData.value.confirmPassword === '' || formData.value.password.length < 6 || formData.value.password !== formData.value.confirmPassword ) {
                 return true;
             }
         }
         if (filteredSteps.value[step.value - 1].title === 'Choose your password' || filteredSteps.value[step.value - 1].title === 'Confirmation' ) {
-            if (formData.value.password === '' || formData.value.confirmPassword === '' || formData.value.password.length < 6) {
+            if (formData.value.password === '' || formData.value.confirmPassword === '' || formData.value.password.length < 6 || formData.value.password !== formData.value.confirmPassword || !passwordRegex.test(formData.value.password)) {
                 return true;
             }
         }
 
         if(filteredSteps.value[step.value - 1].title === 'Minor' && userRegistration.getLinkState === false) {
-            console.log('password length is less than 6');
             return true; 
         }
 
@@ -306,15 +316,13 @@
 
     // Send event to GA with UTM params
     const sendEventToGA = () => {
-    if (typeof window !== 'undefined' && window.gtag) {
-        window.gtag('event', 'form_submission', {
-            'event_category': 'register',
-            'event_label': filteredSteps.value[step.value - 1].title,
-            'registration_type': selectedRadio.value === 'Adult' ? 'EPL_SELF' : 'EPL_SELFJ',
-            'step': step.value,
-            ...utmParams,  
-        });
-        }
+        event('form_submission', {
+            event_category: 'register',
+            event_label: filteredSteps.value[step.value - 1].title,
+            registration_type: selectedRadio.value === 'Adult' ? 'EPL_SELF' : 'EPL_SELFJ',
+            step: step.value,
+            ...utmParams
+        })
     }
    
     const submitForm = async () => {
@@ -335,8 +343,8 @@
             // Proceed to next page if no errors
             router.push('/success-page');
         } catch (error) {
-            console.error('Error during registration:', error);
-            alert('There was an error during registration.');
+            console.error('System error during the registration:', error.text);
+            showSystemErrorDialog.value = true;
         } finally {
             isLoading.value = false; // Hide loading animation once the process is complete
         }

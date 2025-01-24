@@ -8,7 +8,7 @@
             icon="mdi-information"
             theme="dark"
           >
-          Click 'ADD ANOTHER MINOR' only if adding more than one. The form cannot be left blank. For example, when adding two minors, click 'ADD ANOTHER MINOR' to enter the second, while the first will appear in the table below.
+          Click 'ADD ANOTHER CHILD' only if adding more than one. The form cannot be left blank. For example, when adding two minors, click 'ADD ANOTHER CHILD' to enter the second, while the first will appear in the table below.
           </v-alert>
         </v-col>
         <v-col cols="12">
@@ -17,7 +17,7 @@
     </v-row>
     <v-row>
       <v-col cols="12">
-        <h2 class="text-h6 font-weight-bold ">Minor Details</h2>
+        <h2 class="text-h6 font-weight-bold ">Child Details</h2>
       </v-col>
       <v-col cols="12" sm="6">
         <v-text-field 
@@ -100,21 +100,21 @@
     </v-row>  
     <!-- Add minor button-->
     <v-row class="mb-5">
-      <v-col cols="6">
+      <v-col cols="12" sm="6">
         <v-btn
           v-if="minors.length < 3"  
           variant="flat" 
           color="primary" 
           :disabled="disabled || isMinorInvalid"
-          text="Add another minor"
-          size="small"
-          @click="addMinor"   
+          text="Add another child"
+          @click="addMinor"
+          size="small"      
           prepend-icon="mdi-plus-circle" 
-          class="btn-add-minor" 
+          class="btn-add-minor w-100 w-sm-75" 
         >
         </v-btn>
       </v-col>
-      <v-col cols="6" v-if="minors.length > 0">
+      <v-col cols="12" sm="6" v-if="minors.length > 0">
         <v-btn 
           variant="flat"
           :disabled="disabled " 
@@ -123,14 +123,14 @@
           size="small"
           prepend-icon="mdi-minus-circle"
           @click="resetMinorForm"
-          class="me-5 btn-add-minor"
+          class="btn-add-minor w-100 w-sm-75"
         />
       </v-col>
     </v-row>
     <!-- Minor list-->
     <v-row class="my-5" v-if="minors.length > 0">
       <v-col cols="12" class="">
-        <h3 class="text-uppercase font-weight-black">Minors List</h3>
+        <h3 class="text-uppercase font-weight-black">List of Added Child(ren)</h3>
       </v-col>
       <v-card color="primary" variant="outline" elevated border >
         <v-card-text>
@@ -187,7 +187,7 @@
  
     <div v-if="props.formData.radios !== 'Adult'"> 
       <v-switch
-        label="Attach minor(s) to your profile"
+        label="Attach child(ren) to your profile"
         v-model="linkMinor"
         @click="connectionHandler"
         :disabled="(!loading && linkDisabled && !errorLogin) || (disabled && !errorLogin) "
@@ -220,7 +220,11 @@
               type="password"
             />
           </v-col>
-          
+          <v-col cols="12" v-if="errorLogin" class="mt-n10 ">
+            <span class="text-red font-italic font-weight-medium">
+              {{ errorLogin }}
+            </span>
+          </v-col>
         </v-row>
         <v-row v-if="!loading && linkDisabled && !errorLogin">
           <v-col cols="12">
@@ -239,16 +243,17 @@
             prepend-icon="mdi-content-save"
           />
         </v-card-actions>
-        <div class="px-5">
-          <p class="font-italic font-weight-medium" v-if="errorLogin"> {{ errorLogin }}</p>
-          <span class="font-weight-medium text-red my-5">
-            Please click the 'SAVE CHANGES' button to save your progress before proceeding to the 'NEXT' button.
-          </span>
-        </div>
+        <v-alert
+          density="compact"
+          text="Please click the 'SAVE CHANGES' button to save your progress before proceeding to the 'NEXT' button."
+          type="warning"
+          class="mt-5 mx-3"
+        >
+        </v-alert>
       </v-card>
       <v-card flat v-if="!linkMinor">
         <v-card-title>
-            <h4>Details of Adult responsible for the minor(s)</h4>
+            <h4>Details of Adult responsible for the child(ren)</h4>
         </v-card-title>
         <v-card-text>
           <v-row>
@@ -352,9 +357,13 @@
           >
           </v-btn>
         </v-card-actions> 
-        <div>
-          <p class="px-5 font-weight-bold text-red">Please click the 'SAVE CHANGES' button to save your progress before proceeding to the 'NEXT' button.</p>
-        </div>
+        <v-alert
+          density="compact"
+          text="Please click the 'SAVE CHANGES' button to save your progress before proceeding to the 'NEXT' button."
+          type="warning"
+          class="mt-5 mx-3"
+        >
+        </v-alert>
       </v-card>
     </div>
   </v-container>
@@ -364,7 +373,6 @@
   import { 
     computed, 
     onMounted, 
-    readonly, 
     ref, 
     watch 
   } from 'vue';
@@ -405,6 +413,11 @@
   const formData = ref(props.formData);
   const errorLogin = ref();
   const isReadonly = ref(true);
+
+  const postalCodePattern = /^T\d[ABCEGHJ-NPRSTV-Z]\s\d[ABCEGHJ-NPRSTV-Z]\d$/;
+  const passwordRegex = /^(?=[A-Za-z0-9]{6,20}$)(?!.*\s).*$/;
+  const emailPattern = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
+  const phonePattern = /^\d{3}-\d{3}-\d{4}$/;
 
   let minorId = 0;
   const confirmPinRules = computed(() => {
@@ -489,7 +502,7 @@
                         !newVal.minorLastname?.trim() ||
                         !newVal.minorDateOfBirth ||
                         !newVal.password?.trim() ||
-                        !newVal.confirmPassword?.trim();
+                        !newVal.confirmPassword?.trim() || !passwordRegex.test(newVal.password) || !passwordRegex.test(newVal.confirmPassword);
     }, { deep: true });
     // Add minor to the list
     const addMinor = () => {
@@ -520,14 +533,11 @@
     
     // Watch the formData object for changes
     watch([() => isClicked.value, formData.value], ([newIsClicked, newVal]) => {
-      isInvalid.value = !newVal.adultFirstname?.trim() ||
-                        !newVal.adultLastname?.trim() ||
-                        !newVal.adultEmail?.trim() ||
-                        !newVal.adultPhone?.trim() ||
-                        !newVal.adultStreet?.trim() ||
-                        !newVal.adultCity?.trim() ||
-                        !newVal.adultProvince?.trim() ||
-                        !newVal.adultPostalCode?.trim();
+      isInvalid.value = !newVal.adultFirstname?.trim() || !newVal.adultLastname?.trim() ||
+        !newVal.adultEmail?.trim() || !newVal.adultPhone?.trim() ||
+        !newVal.adultStreet?.trim() || !newVal.adultCity?.trim() ||
+        !newVal.adultProvince?.trim() || !newVal.adultPostalCode?.trim() || 
+        !phonePattern.test(newVal.adultPhone) || !emailPattern.test(newVal.adultEmail) || !postalCodePattern.test(newVal.adultPostalCode);
       userRegistration.setLinkState(newIsClicked);
     }, { deep: true });
 
@@ -616,9 +626,8 @@
 <style scoped>
 @media (max-width: 600px) {
   .btn-add-minor {
-    width: 180px !important;
     color: #fff;
-    font-size: 10px;
+    font-size: 9px;
   }
 }
 </style> 

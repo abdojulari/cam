@@ -9,12 +9,11 @@
         rounded
         >
         <div>
-            <h2 class="text-h4 font-weight-black text-orange">Sorry, we can’t register you.</h2>
+            <h2 class="text-h4 font-weight-black text-orange">
+                Oops – something isn’t working on our end.
+            </h2>
             <div class="text-body-1 font-weight-medium mb-2">
-                Head to your nearest branch to sign up in person or 
-                <a class="text-decoration-underline text-blue font-weight-bold" href="https://www2.epl.ca/ContactEPL/">
-                    contact us
-                </a>. 
+                Try again in a few minutes or <a class="text-decoration-underline text-blue font-weight-bold" href="https://www2.epl.ca/ContactEPL/">contact us</a>. 
             </div>
             <v-btn 
                 color="orange" 

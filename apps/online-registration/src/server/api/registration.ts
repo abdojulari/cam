@@ -10,17 +10,11 @@ import {
 
 export default defineEventHandler(async (event: H3Event<EventHandlerRequest>) => {
     const config = useRuntimeConfig(event);
-    const url = `${config.public.CRE_DUPLICATE_URL}`;
+    const url = `${config.private.CRE_DUPLICATE_URL}`;
     
     try {
         const body = await readBody(event);
-        
-        // Log the request details for debugging
-        console.log('Requesting token from:', url);
-        console.log('Request body:', body);
         const access_token = getCookie(event, 'access_token', );
-        // get access token from cookie
-        console.log('access_token:', access_token);
         const response = await fetch(url, {
             method: 'POST',
             headers: {

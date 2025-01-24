@@ -7,15 +7,15 @@ import {
 import { apiClient } from "../util/fetch";
 
 export default defineEventHandler(async (event: H3Event<EventHandlerRequest>) => {
-    const config = useRuntimeConfig(event);
-    const url = `${config.public.apiBase}${config.public.ENDPOINT}`;
+    const config = useRuntimeConfig(event).private;
+    const url = `${config.apiBase}${config.ENDPOINT}`;
     const body = new URLSearchParams({
-        login: config.public.SYMWS_USER,
-        password: config.public.SYMWS_PASS,
+        login: config.SYMWS_USER,
+        password: config.SYMWS_PASS,
     }).toString();
     const headers = {
         'Accept': 'application/json',
-        'X-sirs-clientID': config.public.SYMWSCLIENTID,
+        'X-sirs-clientID': config.SYMWSCLIENTID,
         'Content-Type': 'application/x-www-form-urlencoded',
     };
 

@@ -8,16 +8,16 @@ import {
 import { extractUserInfo } from "../util/dataCleaner";
 
 export default defineEventHandler(async (event: H3Event<EventHandlerRequest>) => {
-    const config = useRuntimeConfig(event);
-    const url = `${config.public.apiBase}${config.public.user}`;
+    const config = useRuntimeConfig(event).private;
+    const url = `${config.apiBase}${config.user}`;
     const sessionToken = getCookie(event, 'sessionToken');
     const body  = await readBody(event);
-    const patronKeyUrl = `${config.public.apiBase}${config.public.PATRON_USER}`;
+    const patronKeyUrl = `${config.apiBase}${config.PATRON_USER}`;
     // Define headers
     const headers = {
         'X-sirs-sessionToken': sessionToken,
-        'x-sirs-clientID': config.public.SYMWSCLIENTID,
-        'SD-Originating-App-Id': config.public.APPS_ID,
+        'x-sirs-clientID': config.SYMWSCLIENTID,
+        'SD-Originating-App-Id': config.APPS_ID,
         'Accept': 'application/json',
         'Content-Type': 'application/json'
     };

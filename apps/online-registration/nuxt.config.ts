@@ -2,12 +2,11 @@ import { nxViteTsPaths } from '@nx/vite/plugins/nx-tsconfig-paths.plugin';
 import { defineNuxtConfig } from 'nuxt/config';
 import vuetify, { transformAssetUrls } from 'vite-plugin-vuetify'
 // https://nuxt.com/docs/api/configuration/nuxt-config
-const hostname = typeof window !== 'undefined' ? window.location.hostname : '';
 
 export default defineNuxtConfig({
   app: {
     head: {
-      title: 'EPL | Online Registration',
+      title: 'EPL | Get Your FREE Library Card',
       script: [
         {
           src: 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit',
@@ -24,6 +23,11 @@ export default defineNuxtConfig({
   runtimeConfig:{
     public:{
       NODE_ENV: process?.env.NODE_ENV,
+      site_key: process?.env.NUXT_PUBLIC_TURNSTILE_SITE_KEY,
+      turnstile_url: process?.env.NUXT_TURNSTILE_VERIFY_URL,
+      gtagId: process?.env.NUXT_PUBLIC_GA_ID,
+    },
+    private: {
       apiBase: process?.env.NUXT_PUBLIC_ILS_URL,
       SYMWS_USER: process?.env.SYMWS_USER,
       SYMWS_PASS: process?.env.SYMWS_PASS,
@@ -70,7 +74,6 @@ export default defineNuxtConfig({
         },
       },
     },
-
   },
   modules:[
     '@nuxtjs/tailwindcss',
@@ -105,6 +108,5 @@ export default defineNuxtConfig({
       },
     },
   },
-
   compatibilityDate: '2024-04-03',
 });

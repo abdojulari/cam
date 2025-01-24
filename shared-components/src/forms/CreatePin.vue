@@ -43,20 +43,17 @@
       
       <v-checkbox
         v-if="formData.radios !== 'Minor'"
-        label="Do you want to add minor(s) to your account?"
+        label="I want to create a card for a youth under my care"
         :disabled="formData.acceptTerms === false"
         v-model="formData.addMinor"
         color="primary"
       >
       </v-checkbox>
-      <TermAndCondition v-model="dialogVisible" />
-      
-    </v-container>
+   </v-container>
 </template>
   
 <script setup lang="ts">
   import { computed, onMounted, ref } from 'vue';
-  import TermAndCondition from './TermAndCondition.vue';
   import { useRegistrationStore } from '../store/registration-store';
   import { apiService } from '../services/api-service';
   import TermsAndConditions from './TermsAndConditions.vue';

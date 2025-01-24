@@ -2,14 +2,26 @@
     <v-card border title="Terms of Use" class="my-5 overflow-auto" height="300">
       <template v-slot:text>         
         <p class="">
-          Please read the following information carefully to better understand what you are agreeing to when you click 'Accept':
+          These terms are an agreement between Edmonton Public Library (“EPL”) and you. 
+          You should read all the terms before indicating acceptance. These terms apply to 
+          membership for Library services, borrowing services, access to online content 
+          and programs, Internet access, rules of conduct within a library branch, and use 
+          of your Library account.
         </p>
-        <h6 class="text-h6 font-weight-bold my-3"> Account Borrowing Rules</h6>
+        <h6 class="text-h6 font-weight-bold my-3"> Accuracy of Membership Information</h6>
         <p>
-          When you register for an Edmonton Public Library ("EPL") account, you agree to accept full responsibility for the 
-          new library account created and for the choices and use of library resources. This includes unfiltered access to 
-          the Internet, the return of all materials borrowed and for charges on items that are overdue, lost or damaged. 
-          You also agree to abide by the policies of the Edmonton Public Library, which include:
+          When you register for an Edmonton Public Library ("EPL") account, you agree the personal 
+          information you have provided is correct and current, and that you will notify EPL in a 
+          timely manner if there are any changes to your contact details in the future. Validation 
+          of identity will take place when you visit an EPL branch for the first time. Remember to 
+          bring picture ID and proof of address to begin borrowing and to extend your 45-day temporary 
+          library card to a full Edmonton resident membership. 
+        </p>
+        <p>
+          Children under the age of 18 and others lacking in capacity require the consent of a parent 
+          or guardian.  EPL will communicate to accounts with a parent/guardian attached by the 
+          email/phone/address provided for the account. No changes can be made to the account without 
+          the parent/guardian’s consent.  
         </p>
         <ul class="custom-list my-5">
             <li>

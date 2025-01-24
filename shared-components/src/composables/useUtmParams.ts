@@ -1,14 +1,29 @@
 // composables/useUtmParams.ts
 export function useUtmParams() {
-  if (process.client) {
-    const params = new URLSearchParams(window.location.search);
-    return {
-      utm_source: params.get('utm_source'),
-      utm_medium: params.get('utm_medium'),
-      utm_campaign: params.get('utm_campaign'),
-      utm_term: params.get('utm_term'),
-      utm_content: params.get('utm_content')
-    };
+  const getUtmParams = () => {
+    if (typeof window === 'undefined') return {}
+
+    const urlParams = new URLSearchParams(window.location.search)
+    const utmParams: { [key: string]: string } = {}
+    
+    // List of UTM parameters to capture
+    const utmKeys = [
+      'utm_source',
+      'utm_medium',
+      'utm_campaign',
+      'utm_term',
+      'utm_content'
+    ]
+
+    utmKeys.forEach(key => {
+      const value = urlParams.get(key)
+      if (value) {
+        utmParams[key] = value
+      }
+    })
+
+    return utmParams
   }
-  return {}; // Return an empty object on the server side
+
+  return getUtmParams()
 }

@@ -3,13 +3,12 @@ import {
     createError,
     defineEventHandler, 
     EventHandlerRequest, 
-    H3Event,
-    readBody
+    H3Event
 } from "h3";
 
 export default defineEventHandler(async (event: H3Event<EventHandlerRequest>) => {
-    const config = useRuntimeConfig(event);
-    const url = `${config.public.CRE_BARCODE_URL}`;
+    const config = useRuntimeConfig(event).private;
+    const url = `${config.CRE_BARCODE_URL}`;
     
     try {
         const response = await fetch(url, {
@@ -29,7 +28,7 @@ export default defineEventHandler(async (event: H3Event<EventHandlerRequest>) =>
         return data;
     }
     catch (error) {
-        console.error('Token error:', error);
+        console.error('Barcode error:', error);
         throw createError({
             statusCode: 500,
             statusMessage: error.message

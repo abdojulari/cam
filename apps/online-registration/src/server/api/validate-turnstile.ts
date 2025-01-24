@@ -8,9 +8,9 @@ export default defineEventHandler(async (event) => {
   const body = await readBody(event)
   const token = body.token || body['cf-turnstile-response']
   const ip = event.headers.get('cf-connecting-ip')
-  const config = useRuntimeConfig(event)
-  const siteKey = `${config.public.secret_key}`
-  const url = `${config.public.turnstile_url}`
+  const config = useRuntimeConfig(event).private
+  const siteKey = `${config.secret_key}`
+  const url = `${config.turnstile_url}`
 
   const result = await fetch(url, { 
     body: JSON.stringify({ 

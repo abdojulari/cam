@@ -12,7 +12,7 @@
 
     <v-radio-group v-model="formData.radios" @change="emitRadios" class="mb-5">
       <v-radio color="primary" label="Adult" value="Adult" class="my-2" />
-      <v-radio color="primary" label="Minor" value="Minor" class="my-2" />
+      <v-radio color="primary" label="Child" value="Minor" class="my-2" />
     </v-radio-group>
 
     <div 
