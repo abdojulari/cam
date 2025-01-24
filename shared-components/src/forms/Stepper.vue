@@ -116,11 +116,10 @@
     import { rules } from '../composables/rules';
     import ErrorPrompt from './ErrorPrompt.vue';
     import { useUtmParams } from '../composables/useUtmParams';
-    import { useGtag } from 'vue-gtag-next'
     import SystemError from './SystemError.vue';
     
+    const { gtag } = useGtag()
     const userRegistration = useRegistrationStore();
-    const { event } = useGtag()
     const utmParams = useUtmParams()
     const router = useRouter();
     const props = defineProps({
@@ -316,7 +315,9 @@
 
     // Send event to GA with UTM params
     const sendEventToGA = () => {
-        event('form_submission', {
+        gtag('event', 'form_submission', {
+            app_name: 'EPL | Online Registration',
+            screen_name: 'Submission',
             event_category: 'register',
             event_label: filteredSteps.value[step.value - 1].title,
             registration_type: selectedRadio.value === 'Adult' ? 'EPL_SELF' : 'EPL_SELFJ',

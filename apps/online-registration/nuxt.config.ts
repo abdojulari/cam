@@ -77,6 +77,7 @@ export default defineNuxtConfig({
   },
   modules:[
     '@nuxtjs/tailwindcss',
+    'nuxt-gtag',
     (_options, nuxt) => {
       nuxt.hooks.hook('vite:extendConfig', (config) => {
         // @ts-expect-error Description of why the error is expected
@@ -89,7 +90,22 @@ export default defineNuxtConfig({
     host: 'localhost',
     port: 4500,
   },
-
+  gtag: {
+    id: process.env.NUXT_PUBLIC_GA_ID,
+    config: {
+    
+    },
+    initCommands: [
+      // Setup up consent mode
+      ['consent', 'default', {
+        ad_user_data: 'granted',
+        ad_personalization: 'granted',
+        ad_storage: 'granted',
+        analytics_storage: 'granted',
+        wait_for_update: 500,
+      }]
+    ]
+  },
   typescript: {
     typeCheck: true,
     tsConfig: {
