@@ -87,7 +87,7 @@ export const apiService = {
         const response = await fetch('/api/get-token', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
+                'Content-Type': 'application/json',
                 'Accept': 'application/json'
             },
         });
