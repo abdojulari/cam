@@ -83,6 +83,7 @@ export const apiService = {
       }
     },
     async initializeToken() {
+      const config = useRuntimeConfig().private;
       try {
         const response = await fetch('/api/get-token', {
             method: 'POST',
@@ -91,8 +92,8 @@ export const apiService = {
                 'Accept': 'application/json'
             },
             body: new URLSearchParams({
-              client_id: '', // If needed
-              client_secret: '', // If needed
+              client_id: config.CLIENT_ID,
+              client_secret: config.CLIENT_SECRET,
               grant_type: 'client_credentials'
           }).toString(),
             credentials: 'include',
