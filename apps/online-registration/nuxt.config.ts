@@ -2,7 +2,19 @@ import { nxViteTsPaths } from '@nx/vite/plugins/nx-tsconfig-paths.plugin';
 import { defineNuxtConfig } from 'nuxt/config';
 import vuetify, { transformAssetUrls } from 'vite-plugin-vuetify'
 // https://nuxt.com/docs/api/configuration/nuxt-config
+import crypto from 'crypto-js';
 
+// Define your secret key for encryption (this should be a secret, don't commit it to version control)
+const secretKey = process.env.SECRET_KEY || 'secret-key';
+
+// Encrypt function
+const encrypt = (text: any) => {
+  return crypto.AES.encrypt(text, secretKey).toString();
+};
+
+// Encrypt the values and manually update them in your `runtimeConfig`
+const clientId = encrypt(process.env.CLIENT_ID);
+const clientSecret = encrypt(process.env.CLIENT_SECRET);
 export default defineNuxtConfig({
   app: {
     head: {
@@ -60,8 +72,8 @@ export default defineNuxtConfig({
     runtimeConfig: {
       public: {
         baseUrl: 'https://cam.epl.ca/api',
-        CLIENT_ID: process?.env.CLIENT_ID,
-        CLIENT_SECRET: process?.env.CLIENT_SECRET,
+        CLIENT_ID:clientId,
+        CLIENT_SECRET: clientSecret,
       },
       private: {
         CLIENT_ID: process.env.CLIENT_ID,

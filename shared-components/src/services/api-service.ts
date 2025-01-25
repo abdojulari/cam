@@ -85,20 +85,21 @@ export const apiService = {
     
     async initializeToken() {
       try {
-          //const config = await useRuntimeConfig().public;
+          const config = await useRuntimeConfig().public;
           const response = await $fetch('/api/get-token', { 
             method: 'POST',
             headers: {
               'Content-Type': 'application/x-www-form-urlencoded',
               'Accept': 'application/json'
             },
-            // body: new URLSearchParams({
-            //   client_id: config.CLIENT_ID,
-            //   client_secret: config.CLIENT_SECRET,
-            //   grant_type: 'client_credentials'
-            // }).toString(), 
+            body: new URLSearchParams({
+              client_id: config.CLIENT_ID,
+              client_secret: config.CLIENT_SECRET,
+              grant_type: 'client_credentials'
+            }).toString(), 
           });
           const data = await response as { access_token: string };
+          console.log('CONFIG', config);
           console.log('data', data?.access_token);
           if (data) {
               document.cookie = `access_token=${data?.access_token}; path=/;`;
@@ -108,7 +109,7 @@ export const apiService = {
           console.error('Token retrieval failed', error);
           throw error;
       }
-    },
+  },
     async externalApiCall() {
       try {
         const response = await fetch('/api/external-api', {
