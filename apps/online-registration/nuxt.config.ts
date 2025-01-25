@@ -2,14 +2,16 @@ import { nxViteTsPaths } from '@nx/vite/plugins/nx-tsconfig-paths.plugin';
 import { defineNuxtConfig } from 'nuxt/config';
 import vuetify, { transformAssetUrls } from 'vite-plugin-vuetify'
 // https://nuxt.com/docs/api/configuration/nuxt-config
-import crypto from 'crypto-js';
+
+import CryptoJS from 'crypto-js';
+
 
 // Define your secret key for encryption (this should be a secret, don't commit it to version control)
 const secretKey = process.env.SECRET_KEY || 'secret-key';
 
 // Encrypt function
 const encrypt = (text: any) => {
-  return crypto.AES.encrypt(text, secretKey).toString();
+  return CryptoJS.AES.encrypt(text, secretKey).toString();
 };
 
 // Encrypt the values and manually update them in your `runtimeConfig`

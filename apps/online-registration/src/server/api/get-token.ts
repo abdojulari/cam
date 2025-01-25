@@ -1,10 +1,10 @@
 import { createError, defineEventHandler, EventHandlerRequest, H3Event, readBody, setCookie } from "h3";
-import crypto from 'crypto-js';
+import CryptoJS from 'crypto-js';
 const secretKey = process.env.SECRET_KEY;
 // Decrypt function
 const decrypt = (encryptedText: any) => {
-    const bytes = crypto.AES.decrypt(encryptedText, secretKey);
-    return bytes.toString(crypto.enc.Utf8);
+    const bytes = CryptoJS.AES.decrypt(encryptedText, secretKey);
+    return bytes.toString(CryptoJS.enc.Utf8);
 };
 
 export default defineEventHandler(async (event: H3Event<EventHandlerRequest>) => {
