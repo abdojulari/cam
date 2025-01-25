@@ -114,20 +114,12 @@ export const apiService = {
     //     }
     
     // },
-    async initializeToken() {
+    async getToken() {
       try {
-          const response = await fetch('/api/get-token', {
-              method: 'POST',
-              credentials: 'include'
-          });
-  
-          if (!response.ok) {
-              throw new Error(`HTTP error! status: ${response.status}`);
-          }
-  
+          await $fetch('/api/get-token', { method: 'POST' });
           return true;
       } catch (error) {
-          console.error('Error getting token:', error);
+          console.error('Token retrieval failed', error);
           throw error;
       }
   },

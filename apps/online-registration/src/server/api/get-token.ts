@@ -45,11 +45,11 @@ import { createError, defineEventHandler, EventHandlerRequest, H3Event, setCooki
 // });
 
 
-export default defineEventHandler(async (event: H3Event<EventHandlerRequest>) => {
+export default defineEventHandler(async (event) => {
     const config = useRuntimeConfig(event).private;
     
     try {
-        const response = await fetch(config.tokenUrl, {
+        const response = await $fetch(config.tokenUrl, {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -62,31 +62,21 @@ export default defineEventHandler(async (event: H3Event<EventHandlerRequest>) =>
             }).toString()
         });
 
-        if (!response.ok) {
-            const errorText = await response.text();
-            throw createError({
-                statusCode: response.status,
-                statusMessage: errorText
-            });
-        }
-
-        const data = await response.json();
-        
-        // Optional: Set secure HttpOnly cookie
-        setCookie(event, 'access_token', data.access_token, {
+        // Set secure HttpOnly cookie
+        setCookie(event, 'access_token', response.access_token, {
             httpOnly: true,
-            secure: true,
+            secure: process.env.NODE_ENV === 'production', 
             sameSite: 'strict',
-            path: '/'
+            path: '/',
+            maxAge: response.expires_in || 3600 // Use token expiration or default to 1 hour
         });
 
         return { success: true };
     }
     catch (error) {
-        console.error('Token error:', error);
         throw createError({
             statusCode: 500,
-            statusMessage: error.message
+            message: error.message
         });
     }
 });
