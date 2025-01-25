@@ -87,11 +87,13 @@ export const apiService = {
         const response = await fetch('/api/get-token', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json',
+                'Content-Type': 'application/x-www-form-urlencoded',
                 'Accept': 'application/json'
             },
             body: new URLSearchParams({
-              grant_type: "client_credentials"
+              client_id: '', // If needed
+              client_secret: '', // If needed
+              grant_type: 'client_credentials'
           }).toString(),
             credentials: 'include',
         });
