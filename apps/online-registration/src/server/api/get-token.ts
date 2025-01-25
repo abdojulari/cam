@@ -50,7 +50,7 @@ export default defineEventHandler(async (event: H3Event<EventHandlerRequest>) =>
     console.log('config:', config);
     const body = readBody(event);
     console.log('body:', body);
-    console.log('some', {
+    console.log('some private', {
         client_id: config.CLIENT_ID,
         client_secret: config.CLIENT_SECRET,
         grant_type: "client_credentials"
