@@ -9,44 +9,8 @@
 
 import { createError, defineEventHandler, EventHandlerRequest, H3Event, readBody, setCookie } from "h3";
 
-// export default defineEventHandler(async (event: H3Event<EventHandlerRequest>) => {
-//     const config = useRuntimeConfig(event).private;
-//     const url = `${config.tokenUrl}`;
-//     const body =  new URLSearchParams({
-//         client_id: config.CLIENT_ID,
-//         client_secret: config.CLIENT_SECRET,
-//         grant_type: "client_credentials",
-//     }).toString();
-//     try {
-//         const response = await fetch(url, {
-//             method: 'POST',
-//             headers: {
-//                 'Accept': 'application/json',
-//                 'Content-Type': 'application/x-www-form-urlencoded'
-//             },
-//             body: body
-//         });
-
-//         if (!response.ok) {
-//             console.error('Token request failed:', await response.text());
-//             throw new Error(`Token request failed with status ${response.status}`);
-//         }
-
-//         const data = await response.json();
-//         return data;
-//     }
-//     catch (error) {
-//         console.error('Token error:', error);
-//         throw createError({
-//             statusCode: 500,
-//             statusMessage: error.message
-//         });
-//     }
-// });
-
-
 export default defineEventHandler(async (event: H3Event<EventHandlerRequest>) => {
-    const config = await useRuntimeConfig(event).private;
+    const { config } = await useRuntimeConfig(event).private;
     const body = await readBody(event);
  
     try {
