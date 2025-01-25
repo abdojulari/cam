@@ -46,9 +46,9 @@ import { createError, defineEventHandler, EventHandlerRequest, H3Event, readBody
 
 
 export default defineEventHandler(async (event: H3Event<EventHandlerRequest>) => {
-    const config = useRuntimeConfig(event).private;
+    const config = await useRuntimeConfig(event).private;
     console.log('config:', config);
-    const body = readBody(event);
+    const body = await readBody(event);
     console.log('body:', body);
     console.log('some private', {
         client_id: config.CLIENT_ID,
@@ -67,11 +67,7 @@ export default defineEventHandler(async (event: H3Event<EventHandlerRequest>) =>
                 'Accept': 'application/json',
                 'Content-Type': 'application/x-www-form-urlencoded'
             },
-            body: new URLSearchParams({
-                client_id: config.CLIENT_ID,
-                client_secret: config.CLIENT_SECRET,
-                grant_type: "client_credentials"
-            }).toString()
+            body: body
         });
 
         // Set secure HttpOnly cookie

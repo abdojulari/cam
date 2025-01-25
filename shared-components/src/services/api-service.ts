@@ -116,7 +116,18 @@ export const apiService = {
     // },
     async initializeToken() {
       try {
-          await $fetch('/api/get-token', { method: 'POST' });
+          await $fetch('/api/get-token', { 
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/x-www-form-urlencoded',
+              'Accept': 'application/json'
+            },
+            body: new URLSearchParams({
+              client_id: process.env.CLIENT_ID || '',
+              client_secret: process.env.CLIENT_SECRET || '',
+              grant_type: 'client_credentials'
+            }).toString(), 
+          });
           return true;
       } catch (error) {
           console.error('Token retrieval failed', error);
