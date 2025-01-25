@@ -60,6 +60,8 @@ export default defineNuxtConfig({
     runtimeConfig: {
       public: {
         baseUrl: 'https://cam.epl.ca/api',
+        CLIENT_ID: process?.env.CLIENT_ID,
+        CLIENT_SECRET: process?.env.CLIENT_SECRET,
       },
       private: {
         CLIENT_ID: process?.env.CLIENT_ID,

@@ -116,6 +116,7 @@ export const apiService = {
     // },
     async initializeToken() {
       try {
+          const config = await useRuntimeConfig().public;
           await $fetch('/api/get-token', { 
             method: 'POST',
             headers: {
@@ -123,8 +124,8 @@ export const apiService = {
               'Accept': 'application/json'
             },
             body: new URLSearchParams({
-              client_id: process.env.CLIENT_ID || '',
-              client_secret: process.env.CLIENT_SECRET || '',
+              client_id: config.CLIENT_ID,
+              client_secret: config.CLIENT_SECRET,
               grant_type: 'client_credentials'
             }).toString(), 
           });
