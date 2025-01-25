@@ -85,22 +85,18 @@ export const apiService = {
     
     async initializeToken() {
       try {
-          const config = await useRuntimeConfig().public;
-          const privateConfig = await useRuntimeConfig().private;
-          if (import.meta.server) {
-            console.log('API secret:', privateConfig.CLIENT_ID)
-          }
+          //const config = await useRuntimeConfig().public;
           const response = await $fetch('/api/get-token', { 
             method: 'POST',
             headers: {
               'Content-Type': 'application/x-www-form-urlencoded',
               'Accept': 'application/json'
             },
-            body: new URLSearchParams({
-              client_id: config.CLIENT_ID,
-              client_secret: config.CLIENT_SECRET,
-              grant_type: 'client_credentials'
-            }).toString(), 
+            // body: new URLSearchParams({
+            //   client_id: config.CLIENT_ID,
+            //   client_secret: config.CLIENT_SECRET,
+            //   grant_type: 'client_credentials'
+            // }).toString(), 
           });
           const data = await response as { access_token: string };
           console.log('data', data?.access_token);
