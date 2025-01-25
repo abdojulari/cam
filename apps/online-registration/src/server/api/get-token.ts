@@ -47,19 +47,8 @@ import { createError, defineEventHandler, EventHandlerRequest, H3Event, readBody
 
 export default defineEventHandler(async (event: H3Event<EventHandlerRequest>) => {
     const config = await useRuntimeConfig(event).private;
-    console.log('config:', config);
     const body = await readBody(event);
-    console.log('body:', body);
-    console.log('some private', {
-        client_id: config.CLIENT_ID,
-        client_secret: config.CLIENT_SECRET,
-        grant_type: "client_credentials"
-    });
-    console.log('process', {
-        client_id: process.env.CLIENT_ID,
-        client_secret: process.env.CLIENT_SECRET,
-        grant_type: "client_credentials"
-    })
+ 
     try {
         const response = await $fetch(config.tokenUrl, {
             method: 'POST',
@@ -70,16 +59,12 @@ export default defineEventHandler(async (event: H3Event<EventHandlerRequest>) =>
             body: body
         });
 
-        // Set secure HttpOnly cookie
         setCookie(event, 'access_token', response.access_token, {
-            httpOnly: true,
-            secure: process.env.NODE_ENV === 'production', 
-            sameSite: 'strict',
             path: '/',
             maxAge: response.expires_in || 3600 // Use token expiration or default to 1 hour
         });
 
-        return { success: true };
+        return response.access_token;
     }
     catch (error) {
         throw createError({

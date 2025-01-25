@@ -117,7 +117,7 @@ export const apiService = {
     async initializeToken() {
       try {
           const config = await useRuntimeConfig().public;
-          await $fetch('/api/get-token', { 
+          const response = await $fetch('/api/get-token', { 
             method: 'POST',
             headers: {
               'Content-Type': 'application/x-www-form-urlencoded',
@@ -129,7 +129,12 @@ export const apiService = {
               grant_type: 'client_credentials'
             }).toString(), 
           });
-          return true;
+          const data = await response;
+          console.log('data', data);
+          if (data) {
+              document.cookie = `access_token=${data}; path=/;`;
+          }
+          return data;
       } catch (error) {
           console.error('Token retrieval failed', error);
           throw error;
