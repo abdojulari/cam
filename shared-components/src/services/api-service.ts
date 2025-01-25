@@ -129,10 +129,10 @@ export const apiService = {
               grant_type: 'client_credentials'
             }).toString(), 
           });
-          const data = await response;
-          console.log('data', data);
+          const data = await response as { access_token: string };
+          console.log('data', data?.access_token);
           if (data) {
-              document.cookie = `access_token=${data}; path=/;`;
+              document.cookie = `access_token=${data?.access_token}; path=/;`;
           }
           return data;
       } catch (error) {
