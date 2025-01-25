@@ -3,20 +3,6 @@ import { defineNuxtConfig } from 'nuxt/config';
 import vuetify, { transformAssetUrls } from 'vite-plugin-vuetify'
 // https://nuxt.com/docs/api/configuration/nuxt-config
 
-import CryptoJS from 'crypto-js';
-
-
-// Define your secret key for encryption (this should be a secret, don't commit it to version control)
-const secretKey = process.env.SECRET_KEY || 'secret-key';
-
-// Encrypt function
-const encrypt = (text: any) => {
-  return CryptoJS.AES.encrypt(text, secretKey).toString();
-};
-
-// Encrypt the values and manually update them in your `runtimeConfig`
-const clientId = encrypt(process.env.CLIENT_ID);
-const clientSecret = encrypt(process.env.CLIENT_SECRET);
 export default defineNuxtConfig({
   app: {
     head: {
@@ -74,8 +60,8 @@ export default defineNuxtConfig({
     runtimeConfig: {
       public: {
         baseUrl: 'https://cam.epl.ca/api',
-        CLIENT_ID:clientId,
-        CLIENT_SECRET: clientSecret,
+        CLIENT_ID: process?.env.CLIENT_ID,
+        CLIENT_SECRET: process?.env.CLIENT_SECRET,
       },
       private: {
         CLIENT_ID: process.env.CLIENT_ID,
@@ -98,7 +84,6 @@ export default defineNuxtConfig({
   modules:[
     '@nuxtjs/tailwindcss',
     'nuxt-gtag',
-    'crypto-js',
     (_options, nuxt) => {
       nuxt.hooks.hook('vite:extendConfig', (config) => {
         // @ts-expect-error Description of why the error is expected

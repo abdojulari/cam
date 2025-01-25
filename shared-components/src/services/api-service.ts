@@ -85,7 +85,9 @@ export const apiService = {
     
     async initializeToken() {
       try {
-          const config = await useRuntimeConfig().public;
+          const client_secret = import.meta.env.CLIENT_SECRET;
+          const client_id = import.meta.env.CLIENT_ID;
+         
           const response = await $fetch('/api/get-token', { 
             method: 'POST',
             headers: {
@@ -93,13 +95,13 @@ export const apiService = {
               'Accept': 'application/json'
             },
             body: new URLSearchParams({
-              client_id: config.CLIENT_ID,
-              client_secret: config.CLIENT_SECRET,
+              client_id: client_id,
+              client_secret: client_secret,
               grant_type: 'client_credentials'
             }).toString(), 
           });
           const data = await response as { access_token: string };
-          console.log('CONFIG', config);
+          
           console.log('data', data?.access_token);
           if (data) {
               document.cookie = `access_token=${data?.access_token}; path=/;`;

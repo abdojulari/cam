@@ -1,21 +1,9 @@
 import { createError, defineEventHandler, EventHandlerRequest, H3Event, readBody, setCookie } from "h3";
-import CryptoJS from 'crypto-js';
-const secretKey = process.env.SECRET_KEY;
-// Decrypt function
-const decrypt = (encryptedText: any) => {
-    const bytes = CryptoJS.AES.decrypt(encryptedText, secretKey);
-    return bytes.toString(CryptoJS.enc.Utf8);
-};
 
 export default defineEventHandler(async (event: H3Event<EventHandlerRequest>) => {
     const { config } = await useRuntimeConfig(event).private;
-    const data = await readBody(event);
-    const body = {
-        client_id: decrypt(data.client_id) || config.CLIENT_ID,
-        client_secret: decrypt(data.client_secret) || config.CLIENT_SECRET,
-        grant_type: data.grant_type || 'client_credentials'
-    };
-    
+    const body = await readBody(event);
+ 
     try {
         const response = await $fetch(config.tokenUrl, {
             method: 'POST',
@@ -23,7 +11,7 @@ export default defineEventHandler(async (event: H3Event<EventHandlerRequest>) =>
                 'Accept': 'application/json',
                 'Content-Type': 'application/x-www-form-urlencoded'
             },
-            body: JSON.stringify(body)
+            body: body
         });
 
         setCookie(event, 'access_token', response.access_token, {
