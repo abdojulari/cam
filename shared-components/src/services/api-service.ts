@@ -82,38 +82,55 @@ export const apiService = {
         throw new Error('Authentication failed');
       }
     },
-    async initializeToken() {
-      const config = useRuntimeConfig().private;
-      try {
-        const response = await fetch('/api/get-token', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-                'Accept': 'application/json'
-            },
-            body: new URLSearchParams({
-              client_id: config.CLIENT_ID,
-              client_secret: config.CLIENT_SECRET,
-              grant_type: 'client_credentials'
-          }).toString(),
-            credentials: 'include',
-        });
+    // async initializeToken() {
+    //   const config = useRuntimeConfig().private;
+    //   try {
+    //     const response = await fetch('/api/get-token', {
+    //         method: 'POST',
+    //         headers: {
+    //             'Content-Type': 'application/x-www-form-urlencoded',
+    //             'Accept': 'application/json'
+    //         },
+    //         body: new URLSearchParams({
+    //           client_id: config.CLIENT_ID,
+    //           client_secret: config.CLIENT_SECRET,
+    //           grant_type: 'client_credentials'
+    //       }).toString(),
+    //         credentials: 'include',
+    //     });
 
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
+    //     if (!response.ok) {
+    //         throw new Error(`HTTP error! status: ${response.status}`);
+    //     }
 
-          const data = await response.json();
-          if (data.access_token) {
-              document.cookie = `access_token=${data.access_token}; path=/;`;
-          }
-          return data.access_token;
-        } catch (error) {
-            console.error('Error getting token:', error);
-            throw error;
-        }
+    //       const data = await response.json();
+    //       if (data.access_token) {
+    //           document.cookie = `access_token=${data.access_token}; path=/;`;
+    //       }
+    //       return data.access_token;
+    //     } catch (error) {
+    //         console.error('Error getting token:', error);
+    //         throw error;
+    //     }
     
-    },
+    // },
+    async initializeToken() {
+      try {
+          const response = await fetch('/api/get-token', {
+              method: 'POST',
+              credentials: 'include'
+          });
+  
+          if (!response.ok) {
+              throw new Error(`HTTP error! status: ${response.status}`);
+          }
+  
+          return true;
+      } catch (error) {
+          console.error('Error getting token:', error);
+          throw error;
+      }
+  },
     async externalApiCall() {
       try {
         const response = await fetch('/api/external-api', {
