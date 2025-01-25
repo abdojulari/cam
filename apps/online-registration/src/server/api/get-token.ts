@@ -10,7 +10,11 @@ import {
 export default defineEventHandler(async (event: H3Event<EventHandlerRequest>) => {
     const config = useRuntimeConfig(event).private;
     const url = `${config.tokenUrl}`;
-    const body = await readBody(event);
+    const body =  new URLSearchParams({
+        client_id: config.CLIENT_ID,
+        client_secret: config.CLIENT_SECRET,
+        grant_type: "client_credentials",
+    }).toString();
     try {
         const response = await fetch(url, {
             method: 'POST',
@@ -18,12 +22,7 @@ export default defineEventHandler(async (event: H3Event<EventHandlerRequest>) =>
                 'Accept': 'application/json',
                 'Content-Type': 'application/x-www-form-urlencoded'
             },
-            body: new URLSearchParams({
-                client_id: config.CLIENT_ID,
-                client_secret: config.CLIENT_SECRET,
-                grant_type: "client_credentials",
-                ...body
-            }).toString()
+            body: body
         });
 
         if (!response.ok) {
