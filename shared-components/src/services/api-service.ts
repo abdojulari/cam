@@ -90,6 +90,10 @@ export const apiService = {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
             },
+            body: new URLSearchParams({
+              grant_type: "client_credentials"
+          }).toString(),
+            credentials: 'include',
         });
 
         if (!response.ok) {
