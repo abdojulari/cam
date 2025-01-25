@@ -32,11 +32,11 @@ import { createError, defineEventHandler, EventHandlerRequest, H3Event, readBody
 import { apiClient } from "../util/fetch";
 
 export default defineEventHandler(async (event: H3Event<EventHandlerRequest>) => {
-    const { config } = useRuntimeConfig(event).private;
-    const url = config.tokenUrl;
+    const { config } = useRuntimeConfig(event);
+    const url = config.private.tokenUrl;
     const body = new URLSearchParams({
-        client_id: config.CLIENT_ID,
-        client_secret: config.CLIENT_SECRET,
+        client_id: config.private.CLIENT_ID,
+        client_secret: config.private.CLIENT_SECRET,
         grant_type: 'client_credentials'
     }).toString();
     const headers = {

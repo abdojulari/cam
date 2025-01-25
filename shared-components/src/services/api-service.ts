@@ -108,7 +108,7 @@ export const apiService = {
           console.error('Token retrieval failed', error);
           throw error;
       }
-  },
+    },
     async externalApiCall() {
       try {
         const response = await fetch('/api/external-api', {

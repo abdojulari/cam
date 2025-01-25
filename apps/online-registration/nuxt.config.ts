@@ -64,8 +64,8 @@ export default defineNuxtConfig({
         CLIENT_SECRET: process?.env.CLIENT_SECRET,
       },
       private: {
-        CLIENT_ID: process?.env.CLIENT_ID,
-        CLIENT_SECRET: process?.env.CLIENT_SECRET,
+        CLIENT_ID: process.env.CLIENT_ID,
+        CLIENT_SECRET: process.env.CLIENT_SECRET,
       }
     },
     routeRules: {
