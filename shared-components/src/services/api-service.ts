@@ -114,7 +114,7 @@ export const apiService = {
     //     }
     
     // },
-    async getToken() {
+    async initializeToken() {
       try {
           await $fetch('/api/get-token', { method: 'POST' });
           return true;

@@ -7,7 +7,7 @@
 //     readBody
 // } from "h3";
 
-import { createError, defineEventHandler, EventHandlerRequest, H3Event, setCookie } from "h3";
+import { createError, defineEventHandler, EventHandlerRequest, H3Event, readBody, setCookie } from "h3";
 
 // export default defineEventHandler(async (event: H3Event<EventHandlerRequest>) => {
 //     const config = useRuntimeConfig(event).private;
@@ -45,9 +45,21 @@ import { createError, defineEventHandler, EventHandlerRequest, H3Event, setCooki
 // });
 
 
-export default defineEventHandler(async (event) => {
+export default defineEventHandler(async (event: H3Event<EventHandlerRequest>) => {
     const config = useRuntimeConfig(event).private;
-    
+    console.log('config:', config);
+    const body = readBody(event);
+    console.log('body:', body);
+    console.log('some', {
+        client_id: config.CLIENT_ID,
+        client_secret: config.CLIENT_SECRET,
+        grant_type: "client_credentials"
+    });
+    console.log('process', {
+        client_id: process.env.CLIENT_ID,
+        client_secret: process.env.CLIENT_SECRET,
+        grant_type: "client_credentials"
+    })
     try {
         const response = await $fetch(config.tokenUrl, {
             method: 'POST',
