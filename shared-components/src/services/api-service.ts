@@ -101,7 +101,7 @@ export const apiService = {
           });
           const data = await response as { access_token: string };
           if (data) {
-              document.cookie = `access_token=${data}; path=/;`;
+              document.cookie = `access_token=${ import.meta.env.NODE_ENV === 'development' ? data : data.access_token}; path=/;`;
           }
           return data;
       } catch (error) {
