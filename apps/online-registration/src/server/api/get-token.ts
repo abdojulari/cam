@@ -1,4 +1,11 @@
-import { createError, defineEventHandler, EventHandlerRequest, H3Event, readBody, setCookie } from "h3";
+import { 
+    createError, 
+    defineEventHandler, 
+    EventHandlerRequest, 
+    H3Event, 
+    readBody, 
+    setCookie 
+} from "h3";
 
 export default defineEventHandler(async (event: H3Event<EventHandlerRequest>) => {
     const config  = await useRuntimeConfig(event);
