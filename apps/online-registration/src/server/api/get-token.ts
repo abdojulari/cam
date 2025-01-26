@@ -1,17 +1,17 @@
 import { createError, defineEventHandler, EventHandlerRequest, H3Event, readBody, setCookie } from "h3";
 
 export default defineEventHandler(async (event: H3Event<EventHandlerRequest>) => {
-    const { config } = await useRuntimeConfig(event).private;
+    const config  = await useRuntimeConfig(event);
     const body = await readBody(event);
- 
+    const url = config.public.NODE_ENV === 'development' ? config.public.tokenUrl : config.private.tokenUrl ;
     try {
-        const response = await $fetch(config.tokenUrl, {
+        const response = await $fetch(url, {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/x-www-form-urlencoded'
             },
-            body: body
+            body: new URLSearchParams(body).toString()
         });
 
         setCookie(event, 'access_token', response.access_token, {

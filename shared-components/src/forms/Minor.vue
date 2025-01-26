@@ -3,10 +3,9 @@
     <v-row>
         <v-col cols="12">
           <v-alert
-            color="#003365"
             density="compact"
             icon="mdi-information"
-            theme="dark"
+            
           >
           Click 'ADD ANOTHER CHILD' only if adding more than one. The form cannot be left blank. For example, when adding two minors, click 'ADD ANOTHER CHILD' to enter the second, while the first will appear in the table below.
           </v-alert>
@@ -105,7 +104,7 @@
           v-if="minors.length < 3"  
           variant="flat" 
           color="primary" 
-          :disabled="disabled || isMinorInvalid"
+          :disabled="disabled || isMinorInvalid || isClicked"
           text="Add another child"
           @click="addMinor"
           size="small"      
@@ -174,7 +173,7 @@
             v-model="minorsContact" 
             @click="sameAsAdult"
             :text="!isLoading && disabled ? 'Saved' : 'Save Changes'"
-            :disabled = "isLoading || disabled"
+            :disabled = "isLoading || disabled "
             variant="outlined"
             color="primary"
             prepend-icon="mdi-content-save"
@@ -236,7 +235,7 @@
           <v-btn 
             variant="flat" 
             color="primary" 
-            :disabled="loading || formData.barcode === '' || formData.pin === ''"
+            :disabled="loading || formData.barcode === '' || formData.pin === '' || isMinorInvalid || isClicked"
             :loading="loading"
             :text="linkDisabled && !errorLogin ? 'Saved' : 'Save Changes'"
             @click="loading = !loading"
@@ -453,6 +452,10 @@
           loading.value = false; 
           linkDisabled.value = true
           console.log('LOGIN' ,userRegistration.getRegistration)
+          if(!data.error) {
+            userRegistration.setLinkState(isClicked.value);
+          }
+          
           // data returns error notify the user 
           if (data.error) {
             errorLogin.value = 'Invalid barcode or password';

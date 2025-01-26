@@ -82,11 +82,10 @@ export const apiService = {
         throw new Error('Authentication failed');
       }
     },
-    
     async initializeToken() {
       try {
-          const client_secret = import.meta.env.CLIENT_SECRET;
-          const client_id = import.meta.env.CLIENT_ID;
+          const client_secret = import.meta.env.VITE_CLIENT_SECRET;
+          const client_id = import.meta.env.VITE_CLIENT_ID;
          
           const response = await $fetch('/api/get-token', { 
             method: 'POST',
@@ -101,17 +100,15 @@ export const apiService = {
             }).toString(), 
           });
           const data = await response as { access_token: string };
-          
-          console.log('data', data?.access_token);
           if (data) {
-              document.cookie = `access_token=${data?.access_token}; path=/;`;
+              document.cookie = `access_token=${data}; path=/;`;
           }
           return data;
       } catch (error) {
           console.error('Token retrieval failed', error);
           throw error;
       }
-  },
+    },
     async externalApiCall() {
       try {
         const response = await fetch('/api/external-api', {

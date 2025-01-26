@@ -53,6 +53,7 @@ export default defineNuxtConfig({
     runtimeConfig: {
       public: {
         baseUrl: 'http://localhost:4500/api',
+        tokenUrl: process.env.NUXT_CRE_TOKEN,
       },
     },
   },
@@ -60,12 +61,6 @@ export default defineNuxtConfig({
     runtimeConfig: {
       public: {
         baseUrl: 'https://cam.epl.ca/api',
-        CLIENT_ID: process?.env.CLIENT_ID,
-        CLIENT_SECRET: process?.env.CLIENT_SECRET,
-      },
-      private: {
-        CLIENT_ID: process.env.CLIENT_ID,
-        CLIENT_SECRET: process.env.CLIENT_SECRET,
       }
     },
     routeRules: {
@@ -98,9 +93,6 @@ export default defineNuxtConfig({
   },
   gtag: {
     id: process.env.NUXT_PUBLIC_GA_ID,
-    config: {
-    
-    },
     initCommands: [
       // Setup up consent mode
       ['consent', 'default', {
