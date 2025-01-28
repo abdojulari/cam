@@ -10,11 +10,12 @@ import {
 export default defineEventHandler(async (event: H3Event<EventHandlerRequest>) => {
     const config  = await useRuntimeConfig(event);
     const body = await readBody(event);
-    const payload = {
-        client_id: config.private.client_id,
-        client_secret: config.private.client_secret,
-        grant_type: 'client_credentials'
-    }
+     // Create form data string directly
+     const formData = new URLSearchParams({
+        'grant_type': 'client_credentials',
+        'client_id': config.private.client_id,
+        'client_secret': config.private.client_secret,
+    }).toString();
     const url = config.public.NODE_ENV === 'development' ? config.public.tokenUrl : config.private.tokenUrl ;
     try {
         const response = await $fetch(url,{
@@ -23,7 +24,7 @@ export default defineEventHandler(async (event: H3Event<EventHandlerRequest>) =>
                 'Accept': 'application/json',
                 'Content-Type': 'application/x-www-form-urlencoded'
             },
-            body: new URLSearchParams(payload).toString()
+            body: formData
         });
 
         setCookie(event, 'access_token', response.access_token, {
