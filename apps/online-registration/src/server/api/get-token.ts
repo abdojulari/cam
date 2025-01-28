@@ -12,9 +12,9 @@ export default defineEventHandler(async (event: H3Event<EventHandlerRequest>) =>
     const body = await readBody(event);
      // Create form data string directly
      const formData = new URLSearchParams({
-        'grant_type': 'client_credentials',
-        'client_id': config.private.client_id,
-        'client_secret': config.private.client_secret,
+        grant_type: 'client_credentials',
+        client_id: `${config.private.client_id}`,
+        client_secret: `${config.private.client_secret}`,
     }).toString();
     const url = config.public.NODE_ENV === 'development' ? config.public.tokenUrl : config.private.tokenUrl ;
     try {
