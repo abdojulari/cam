@@ -31,7 +31,7 @@ export default defineEventHandler(async (event: H3Event<EventHandlerRequest>) =>
         console.error('Barcode error:', error);
         throw createError({
             statusCode: 500,
-            statusMessage: error.message
+            statusMessage: 'Barcode generation failed'
         });
     }
 });

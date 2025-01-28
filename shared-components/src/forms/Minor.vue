@@ -472,7 +472,7 @@
 
           return data; 
           } catch (err) {
-              return (err as any).message;
+              //return (err as any).message;
           }
       }, 2000);
       

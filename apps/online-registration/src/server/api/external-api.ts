@@ -24,6 +24,6 @@ export default defineEventHandler(async (event: H3Event<EventHandlerRequest>) =>
         setCookie(event, 'sessionToken', response.sessionToken, { path: '/' });
         return response;
     } catch (error) {
-        return { error: error.message }; 
+        return { error: 'session Token not successful!' }; 
     }
 });

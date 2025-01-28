@@ -41,7 +41,7 @@ export default defineEventHandler(async (event: H3Event<EventHandlerRequest>) =>
         const userInfo = extractUserInfo(responseDataDetails);
         return userInfo;
     } catch (error) {
-        return { error: error.message }; 
+        return { error: 'User authentication failed!' }; 
     }
 
 });
