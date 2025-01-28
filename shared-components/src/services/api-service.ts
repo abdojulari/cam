@@ -94,11 +94,11 @@ export const apiService = {
               'Content-Type': 'application/x-www-form-urlencoded',
               'Accept': 'application/json'
             },
-            // body: new URLSearchParams({
-            //   client_id: client_id,
-            //   client_secret: client_secret,
-            //   grant_type: 'client_credentials'
-            // }).toString(), 
+            body: new URLSearchParams({
+              client_id: client_id,
+              client_secret: client_secret,
+              grant_type: 'client_credentials'
+            }).toString(), 
           });
           const data = await response as { access_token: string };
           
