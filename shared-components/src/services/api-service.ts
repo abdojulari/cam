@@ -32,6 +32,7 @@ export const apiService = {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
                 'Authorization' :`Bearer ${access_token}`,
+                'X-CRE-Token' : import.meta.env.VITE_CUSTOM_SECURITY_TOKEN
             },
             body: JSON.stringify({
               firstname: payload.data.biodata.firstname,
@@ -100,8 +101,9 @@ export const apiService = {
             }).toString(), 
           });
           const data = await response as { access_token: string };
+          
           if (data) {
-              document.cookie = `access_token=${ import.meta.env.NODE_ENV === 'development' ? data : data.access_token}; path=/;`;
+              document.cookie = `access_token=${ import.meta.env.DEV ? data : data.access_token}; path=/;`;
           }
           return data;
       } catch (error) {

@@ -182,6 +182,15 @@
         <v-col cols="12" v-if="!isLoading && disabled && props.formData.radios === 'Adult'">
           <span class="text-green-darken-4 font-italic font-weight-medium">Record saved successfully!</span>
         </v-col>
+        <v-col cols="12" v-if="props.formData.radios === 'Adult'">
+          <v-alert
+          density="compact"
+          text="Please click the 'SAVE CHANGES' button to save your progress before proceeding to the 'NEXT' button."
+          type="warning"
+          class="mt-5 mx-3"
+        >
+        </v-alert>
+        </v-col>
       </v-row>
  
     <div v-if="props.formData.radios !== 'Adult'"> 

@@ -11,16 +11,19 @@ import {
 export default defineEventHandler(async (event: H3Event<EventHandlerRequest>) => {
     const config = useRuntimeConfig(event);
     const url = `${config.private.CRE_DUPLICATE_URL}`;
+    const token = `${config.private.VITE_CUSTOM_SECURITY_TOKEN}`;
     
     try {
         const body = await readBody(event);
-        const access_token = getCookie(event, 'access_token', );
+        const access_token = getCookie(event, 'access_token');
+     
         const response = await fetch(url, {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
                 'Authorization' :`Bearer ${access_token}`,
                 'Content-Type': 'application/json',
+                'X-CRE-Token' : token
             },
             body: JSON.stringify(body)
         });
