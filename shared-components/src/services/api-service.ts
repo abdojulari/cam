@@ -134,6 +134,7 @@ export const apiService = {
             'Accept': 'application/json',
           },
         });
+        console.log('response', response);
         return await response.json();
       } catch (err) {
         console.error('Error during Sanctum token generation:', err);
