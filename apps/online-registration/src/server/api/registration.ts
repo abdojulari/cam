@@ -18,6 +18,7 @@ export default defineEventHandler(async (event: H3Event<EventHandlerRequest>) =>
         const access_token = getCookie(event, 'access_token');
        // const sanctum_token = getCookie(event, 'x-sanctum-token');
      
+       // middleware to check the request url
         const response = await fetch(url, {
             method: 'POST',
             headers: {

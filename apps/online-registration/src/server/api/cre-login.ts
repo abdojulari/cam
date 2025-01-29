@@ -19,6 +19,7 @@ export default defineEventHandler(async (event: H3Event<EventHandlerRequest>) =>
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
+                'Content-Length': Buffer.byteLength(body),
             },
             body: body
         });
