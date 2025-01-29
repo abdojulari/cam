@@ -16,7 +16,7 @@ export default defineEventHandler(async (event: H3Event<EventHandlerRequest>) =>
     try {
         const body = await readBody(event);
         const access_token = getCookie(event, 'access_token');
-        const sanctum_token = getCookie(event, 'x-sanctum-token');
+       // const sanctum_token = getCookie(event, 'x-sanctum-token');
      
         const response = await fetch(url, {
             method: 'POST',
@@ -25,7 +25,7 @@ export default defineEventHandler(async (event: H3Event<EventHandlerRequest>) =>
                 'Authorization' :`Bearer ${access_token}`,
                 'Content-Type': 'application/json',
                 'X-CRE-Token' : token,
-                'X-Sanctum-Token' : sanctum_token
+                //'X-Sanctum-Token' : sanctum_token
             },
             body: JSON.stringify(body)
         });
