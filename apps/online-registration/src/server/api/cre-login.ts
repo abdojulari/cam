@@ -13,6 +13,7 @@ export default defineEventHandler(async (event: H3Event<EventHandlerRequest>) =>
         email: config.VITE_CRE_LOGIN,
         password: config.VITE_CRE_PASSWORD,
     });
+
     
     try {
         const response = await $fetch(url, {
@@ -27,6 +28,8 @@ export default defineEventHandler(async (event: H3Event<EventHandlerRequest>) =>
             path: '/',
             maxAge: response.expires_in || 3600
         });
+        console.log('BODY:', body);
+        console.log('CRE login response:', config.VITE_CRE_LOGIN);
         console.log('Sanctum token:', response);
         return response.sanctum_token;
     } catch (error) {
