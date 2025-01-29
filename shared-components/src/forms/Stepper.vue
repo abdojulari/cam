@@ -184,6 +184,9 @@
         apiService.initializeToken().then((response) => {
             return response;
         });
+        apiService.sanctumToken().then((response) => {
+            return response;
+        });
         return formData.value.radios = selectedRadio.value;
     });
     // Filter items based on the current page

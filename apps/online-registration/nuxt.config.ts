@@ -48,6 +48,9 @@ export default defineNuxtConfig({
       turnstile_url: process?.env.NUXT_TURNSTILE_VERIFY_URL,
       gtagId: process?.env.NUXT_PUBLIC_GA_ID,
       VITE_CUSTOM_SECURITY_TOKEN: process?.env.VITE_CUSTOM_SECURITY_TOKEN,
+      VITE_CRE_LOGIN: process?.env.VITE_CRE_LOGIN,
+      VITE_CRE_PASSWORD: process?.env.VITE_CRE_PASSWORD,
+      VITE_CRE_AUTH_URL: process?.env.VITE_CRE_AUTH_URL,
     }
   },
   $development: {

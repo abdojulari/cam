@@ -125,5 +125,20 @@ export const apiService = {
         throw new Error('External API call failed');
       }
     },
+    async sanctumToken() {
+      try {
+        const response = await fetch('/api/cre-login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+          },
+        });
+        return await response.json();
+      } catch (err) {
+        console.error('Error during Sanctum token generation:', err);
+        throw new Error('Sanctum token generation failed');
+      }
+    }
 };
   
