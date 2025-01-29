@@ -20,8 +20,8 @@ export default defineEventHandler(async (event: H3Event<EventHandlerRequest>) =>
 
     try {
         const response = await apiClient(event, { url, method: 'POST', body, headers });
-        setCookie(event, 'x-sanctum-token', await response.sanctum_token, { path: '/' });
-        console.log('Sanctum token:', await response.sanctum_token);
+        setCookie(event, 'x-sanctum-token', response.sanctum_token, { path: '/' });
+        console.log('Sanctum token:', response.sanctum_token);
         return response.sanctum_token;
     } catch (error) {
         return { error: 'Unable to generate token' }; 
