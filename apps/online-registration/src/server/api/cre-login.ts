@@ -27,9 +27,9 @@ export default defineEventHandler(async (event: H3Event<EventHandlerRequest>) =>
             path: '/',
             maxAge: response.expires_in || 3600
         });
-        console.log('Sanctum token:', response.sanctum_token);
+        console.log('Sanctum token:', response);
         return response.sanctum_token;
     } catch (error) {
-        return { error: 'Unable to generate token' }; 
+        return { error: error.message }; 
     }
 });
