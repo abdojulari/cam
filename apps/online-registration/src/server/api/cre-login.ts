@@ -1,38 +1,54 @@
-import { 
-    defineEventHandler, 
-    EventHandlerRequest, 
-    H3Event, 
-    setCookie
-} from "h3";
-import { apiClient } from "../util/fetch";
-
 export default defineEventHandler(async (event: H3Event<EventHandlerRequest>) => {
     const config = useRuntimeConfig(event).private;
     const url = config.VITE_CRE_AUTH_URL;
+    
+    // Log the configuration being used
+    console.log('Auth URL:', url);
+    console.log('Login email:', config.VITE_CRE_LOGIN);
+
     const body = JSON.stringify({
         email: config.VITE_CRE_LOGIN,
         password: config.VITE_CRE_PASSWORD,
     });
 
-    
     try {
         const response = await $fetch(url, {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
+                'User-Agent': 'Nuxt-API-Client',
             },
-            body: body
+            body: body,
+            // Add timeout
+            timeout: 30000,
         });
-        setCookie(event, 'x-sanctum-token', response.sanctum_token, { 
+
+        if (!response.sanctum_token) {
+            throw new Error('No sanctum token in response');
+        }
+
+        setCookie(event, 'x-sanctum-token', response.sanctum_token, {
             path: '/',
-            maxAge: response.expires_in || 3600
+            maxAge: response.expires_in || 3600,
+            secure: true,
+            httpOnly: true
         });
-        console.log('BODY:', body);
-        console.log('CRE login response:', config.VITE_CRE_LOGIN);
-        console.log('Sanctum token:', response);
-        return response.sanctum_token;
+
+        return { success: true, token: response.sanctum_token };
     } catch (error) {
-        return { error: error.message }; 
+        console.error('Login error:', {
+            message: error.message,
+            data: error.data,
+            status: error.status,
+        });
+
+        // Return a more detailed error response
+        return {
+            error: true,
+            message: error.message,
+            status: error.status || 500,
+            details: error.data
+        };
     }
 });
