@@ -14,7 +14,7 @@ export default defineEventHandler(async (event: H3Event<EventHandlerRequest>) =>
     });
 
     try {
-        const response = await $fetch(url, {
+        const response = await event.$fetch(url, {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
