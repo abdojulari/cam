@@ -30,6 +30,6 @@ export default defineEventHandler(async (event: H3Event<EventHandlerRequest>) =>
         console.log('Sanctum token:', response.sanctum_token);
         return response.sanctum_token;
     } catch (error) {
-        return { error: 'Unable to generate token' }; 
+        return { error: error.message }; 
     }
 });
