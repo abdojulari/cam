@@ -13,14 +13,20 @@ export default defineEventHandler(async (event: H3Event<EventHandlerRequest>) =>
         email: config.VITE_CRE_LOGIN,
         password: config.VITE_CRE_PASSWORD,
     });
-    const headers = {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-    };
-
+    
     try {
-        const response = await apiClient(event, { url, method: 'POST', body, headers });
-        setCookie(event, 'x-sanctum-token', response.sanctum_token, { path: '/' });
+        const response = await $fetch(url, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: body
+        });
+        setCookie(event, 'x-sanctum-token', response.sanctum_token, { 
+            path: '/',
+            maxAge: response.expires_in || 3600
+        });
         console.log('Sanctum token:', response.sanctum_token);
         return response.sanctum_token;
     } catch (error) {
