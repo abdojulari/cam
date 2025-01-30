@@ -69,7 +69,7 @@ export const apiService = {
     },
     async authenticate(body: unknown) {
       try {
-        const response = await fetch('/api/authenticate', {
+        const response = await fetch('/api/customer-auth', {
           method: 'POST',
           body: JSON.stringify(body),
           headers: {

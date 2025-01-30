@@ -51,6 +51,7 @@ export default defineNuxtConfig({
       VITE_CRE_LOGIN: process?.env.VITE_CRE_LOGIN,
       VITE_CRE_PASSWORD: process?.env.VITE_CRE_PASSWORD,
       VITE_CRE_AUTH_URL: process?.env.VITE_CRE_AUTH_URL,
+      CRE_CUSTOMER_AUTH_URL: process?.env.CRE_CUSTOMER_AUTH_URL,
     }
   },
   $development: {
