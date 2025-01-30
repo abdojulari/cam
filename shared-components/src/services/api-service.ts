@@ -127,15 +127,20 @@ export const apiService = {
     // },
     async sanctumToken() {
       try {
-        const response = await fetch('/api/cre-login', {
+        const response = await $fetch('/api/cre-login', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json',
           },
         });
-        console.log('Sanctum token response:', await response.json());
-        return await response.json();
+        console.log('Sanctum token response:', await response);
+        const data = await response as { sanctum_token: string };
+          
+        if (data) {
+            document.cookie = `x-sanctum-token=${ import.meta.env.DEV ? data : data.sanctum_token}; path=/;`;
+        }
+        //return await response.json();
       } catch (err) {
         console.error('Error during Sanctum token generation:', err);
         throw new Error('Sanctum token generation failed');
