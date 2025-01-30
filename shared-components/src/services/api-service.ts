@@ -105,7 +105,7 @@ export const apiService = {
           if (data) {
               document.cookie = `access_token=${ import.meta.env.DEV ? data : data.access_token}; path=/;`;
           }
-          return data;
+          return data?.access_token;
       } catch (error) {
           console.error('Token retrieval failed', error);
           throw error;
@@ -136,11 +136,11 @@ export const apiService = {
         });
         
         const data = await response as { sanctum_token: string };
-        console.log('Sanctum token response:', data); 
+        
         if (data) {
             document.cookie = `x-sanctum-token=${ import.meta.env.DEV ? data : data.sanctum_token}; path=/;`;
         }
-        return data;
+        return data?.sanctum_token;
       } catch (err) {
         console.error('Error during Sanctum token generation:', err);
         throw new Error('Sanctum token generation failed');

@@ -30,6 +30,6 @@ export default defineEventHandler(async (event: H3Event<EventHandlerRequest>) =>
        
         return response.sanctum_token;
     } catch (error) {
-        return { error: 'Error during CRE login!' }; 
+        return { error: error.message }; 
     }
 });

@@ -609,7 +609,7 @@
       { title: 'Actions', value: 'actions', sortable: false },
     ];
     
-    const connectionHandler = apiService.externalApiCall();
+    //const connectionHandler = apiService.externalApiCall();
    
     const onPostalCodeInput = (event: { target: { value: string; }; }) => {
       let value = event.target.value || '';
