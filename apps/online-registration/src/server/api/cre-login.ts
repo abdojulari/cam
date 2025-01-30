@@ -27,12 +27,9 @@ export default defineEventHandler(async (event: H3Event<EventHandlerRequest>) =>
             path: '/',
             maxAge: response.expires_in || 3600
         });
-        console.log('BODY:', body);
-        console.log('CRE login response:', config.VITE_CRE_LOGIN);
-        console.log('Sanctum token:', response);
+       
         return response.sanctum_token;
     } catch (error) {
-        console.error('Error during CRE login:', error);
-        return { error: error.message }; 
+        return { error: 'Error during CRE login!' }; 
     }
 });

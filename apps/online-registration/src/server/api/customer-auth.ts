@@ -22,7 +22,6 @@ export default defineEventHandler(async (event: H3Event<EventHandlerRequest>) =>
             },
             body,
         });
-    
         return await response;
     
     } catch (error) {

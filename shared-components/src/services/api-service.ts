@@ -111,20 +111,20 @@ export const apiService = {
           throw error;
       }
     },
-    async externalApiCall() {
-      try {
-        const response = await fetch('/api/external-api', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        });
-        return await response.json();
-      } catch (err) {
-        console.error('Error calling external API:', err);
-        throw new Error('External API call failed');
-      }
-    },
+    // async externalApiCall() {
+    //   try {
+    //     const response = await fetch('/api/external-api', {
+    //       method: 'POST',
+    //       headers: {
+    //         'Content-Type': 'application/json',
+    //       },
+    //     });
+    //     return await response.json();
+    //   } catch (err) {
+    //     console.error('Error calling external API:', err);
+    //     throw new Error('External API call failed');
+    //   }
+    // },
     async sanctumToken() {
       try {
         const response = await fetch('/api/cre-login', {
@@ -134,6 +134,7 @@ export const apiService = {
             'Accept': 'application/json',
           },
         });
+        console.log('Sanctum token response:', await response.json());
         return await response.json();
       } catch (err) {
         console.error('Error during Sanctum token generation:', err);
