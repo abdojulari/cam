@@ -134,13 +134,13 @@ export const apiService = {
             'Accept': 'application/json',
           },
         });
-        console.log('Sanctum token response:', await response);
+        
         const data = await response as { sanctum_token: string };
-          
+        console.log('Sanctum token response:', data); 
         if (data) {
             document.cookie = `x-sanctum-token=${ import.meta.env.DEV ? data : data.sanctum_token}; path=/;`;
         }
-        //return await response.json();
+        return data;
       } catch (err) {
         console.error('Error during Sanctum token generation:', err);
         throw new Error('Sanctum token generation failed');
