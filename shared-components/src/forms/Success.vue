@@ -199,7 +199,7 @@
                     <v-col cols="12" md="6" class="mb-2">
                       <span><strong>Last Name:</strong> {{ entry.data.biodata.lastname }}</span>
                     </v-col>
-                    <v-col cols="12" md="6" class="mb-2">
+                    <v-col cols="12" md="6" class="mb-2" v-if="entry.data.biodata.middlename">
                       <span><strong>Middle Name:</strong> {{ entry.data.biodata.middlename }}</span>
                     </v-col>
                     <v-col cols="12" md="6" class="mb-2">

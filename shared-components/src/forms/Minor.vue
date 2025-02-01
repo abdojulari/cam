@@ -439,48 +439,6 @@
     });
   });
   // create watch for loading 
-    // watch(loading, (value) => {
-    //   if (!value) return;  
-    //   setTimeout(async () => {
-    //     try {
-    //       const body = {
-    //         barcode: props.formData.barcode,
-    //         password: props.formData.pin,
-    //       } as any;
-        
-    //       const data = await apiService.authenticate(body);
-    //       // data returns error notify the user 
-    //       if (data?.original.message) {
-    //         errorLogin.value = 'Invalid barcode or password';
-    //         loading.value = false;
-    //         return;
-    //       }
-
-    //       if (minors.value.length > 0) {
-    //         minors.value.map(minor => {
-    //           userRegistration.setMinor(createRegistrationData(barcode.value,props.formData, minor, data));
-    //           userRegistration.addRegistration({data:userRegistration.minor});
-    //         });
-    //       }
-    //       userRegistration.setMinor(createRegistrationData(barcode.value,props.formData, undefined, data));
-    //       userRegistration.addRegistration({data:userRegistration.minor});
-           
-    //       loading.value = false; 
-    //       linkDisabled.value = true
-    //       console.log('LOGIN' ,userRegistration.getRegistration)
-          
-    //         isClicked.value = true;  
-    //         userRegistration.setLinkState(isClicked.value);
-          
-
-    //       return data; 
-    //       } catch (err) {
-    //           return (err as any).message;
-    //       }
-    //   }, 2000);
-      
-    // });
-
     watch(loading, async (value) => {
       if (!value) return;
 
@@ -521,7 +479,7 @@
         userRegistration.setLinkState(isClicked.value);
 
         // Log the registration data for debugging
-        console.log('LOGIN', userRegistration.getRegistration);
+        //console.log('LOGIN', userRegistration.getRegistration);
 
         return data;
       } catch (err) {
@@ -560,7 +518,7 @@
         isLoading.value = false
       }, 2000)
 
-      console.log('SAME as :', userRegistration.getRegistration)
+      //console.log('SAME as :', userRegistration.getRegistration)
     };
 
     watch(props.formData, (newVal) => {

@@ -340,7 +340,7 @@
                 });
             }
             // Once all submissions are done, check for errors in the data
-            if (registrationData && registrationData.error || registrationData?.message !== 'Record added successfully.') {
+            if (registrationData?.message === "Duplicate record found with fuzzy logic." || registrationData?.message !== 'Record added successfully.') {
                 showErrorDialog.value = true; 
                 return;
             }
@@ -349,7 +349,10 @@
             router.push('/success-page');
         } catch (error) {
             console.error('System error during the registration:', error.text);
-            showSystemErrorDialog.value = true;
+            if( error.status !== 409) {
+                showSystemErrorDialog.value = true;
+            }
+        
         } finally {
             isLoading.value = false; // Hide loading animation once the process is complete
         }

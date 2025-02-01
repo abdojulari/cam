@@ -77,7 +77,8 @@ export const apiService = {
             'Content-Type': 'application/json',
           },
         });
-        return await response.json();
+        const data = await response.json();
+        return 'success';
       } catch (err) {
         console.error('Error during authentication:', err);
         throw new Error('Authentication failed');
@@ -118,7 +119,7 @@ export const apiService = {
         if (data) {
             document.cookie = `x-sanctum-token=${ import.meta.env.DEV ? data : data.sanctum_token}; path=/;`;
         }
-        return data?.sanctum_token;
+        return 'success';
       } catch (err) {
         console.error('Error during Sanctum token generation:');
         throw new Error('Sanctum token generation failed');
