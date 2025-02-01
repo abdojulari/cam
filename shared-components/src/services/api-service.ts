@@ -85,20 +85,12 @@ export const apiService = {
     },
     async initializeToken() {
       try {
-          const client_secret = import.meta.env.VITE_CLIENT_SECRET;
-          const client_id = import.meta.env.VITE_CLIENT_ID;
-         
           const response = await $fetch('/api/get-token', { 
             method: 'POST',
             headers: {
               'Content-Type': 'application/x-www-form-urlencoded',
               'Accept': 'application/json'
-            },
-            body: new URLSearchParams({
-              client_id: client_id,
-              client_secret: client_secret,
-              grant_type: 'client_credentials'
-            }).toString(), 
+            }
           });
           const data = await response as { access_token: string };
           
@@ -107,24 +99,10 @@ export const apiService = {
           }
           return data?.access_token;
       } catch (error) {
-          console.error('Token retrieval failed', error);
+          console.error('Token retrieval failed');
           throw error;
       }
     },
-    // async externalApiCall() {
-    //   try {
-    //     const response = await fetch('/api/external-api', {
-    //       method: 'POST',
-    //       headers: {
-    //         'Content-Type': 'application/json',
-    //       },
-    //     });
-    //     return await response.json();
-    //   } catch (err) {
-    //     console.error('Error calling external API:', err);
-    //     throw new Error('External API call failed');
-    //   }
-    // },
     async sanctumToken() {
       try {
         const response = await $fetch('/api/cre-login', {
@@ -142,7 +120,7 @@ export const apiService = {
         }
         return data?.sanctum_token;
       } catch (err) {
-        console.error('Error during Sanctum token generation:', err);
+        console.error('Error during Sanctum token generation:');
         throw new Error('Sanctum token generation failed');
       }
     }

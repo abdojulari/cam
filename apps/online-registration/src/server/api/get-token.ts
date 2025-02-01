@@ -9,7 +9,11 @@ import {
 
 export default defineEventHandler(async (event: H3Event<EventHandlerRequest>) => {
     const config  = await useRuntimeConfig(event);
-    const body = await readBody(event);
+    const payload = new URLSearchParams({
+        client_id: config.private.clientId,
+        client_secret: config.private.clientSecret,
+        grant_type: 'client_credentials'
+    }).toString()
     
     const url = config.public.NODE_ENV === 'development' ? config.public.tokenUrl : config.private.tokenUrl ;
     try {
@@ -19,7 +23,7 @@ export default defineEventHandler(async (event: H3Event<EventHandlerRequest>) =>
                 'Accept': 'application/json',
                 'Content-Type': 'application/x-www-form-urlencoded'
             },
-            body: new URLSearchParams(body).toString()
+            body: payload
         });
 
         setCookie(event, 'access_token', response.access_token, {

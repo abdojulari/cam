@@ -16,9 +16,8 @@ export default defineEventHandler(async (event: H3Event<EventHandlerRequest>) =>
     try {
         const body = await readBody(event);
         const access_token = getCookie(event, 'access_token');
-       // const sanctum_token = getCookie(event, 'x-sanctum-token');
+        const sanctum_token = getCookie(event, 'x-sanctum-token');
      
-       // middleware to check the request url
         const response = await fetch(url, {
             method: 'POST',
             headers: {
@@ -26,7 +25,7 @@ export default defineEventHandler(async (event: H3Event<EventHandlerRequest>) =>
                 'Authorization' :`Bearer ${access_token}`,
                 'Content-Type': 'application/json',
                 'X-CRE-Token' : token,
-                //'X-Sanctum-Token' : sanctum_token
+                'X-Sanctum-Token' : sanctum_token
             },
             body: JSON.stringify(body)
         });
@@ -40,10 +39,13 @@ export default defineEventHandler(async (event: H3Event<EventHandlerRequest>) =>
         return data;
     }
     catch (error) {
-        console.error('Submission error:', error);
+        if (error.response && error.response.status === 429) {
+            // Handle rate limit exceeded
+            console.error('Too many requests. Please try again later.');
+        }
         throw createError({
             statusCode: 500,
-            statusMessage: error.message
+            statusMessage: 'Submission error',
         });
     }
 });

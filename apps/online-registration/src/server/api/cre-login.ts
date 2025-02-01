@@ -30,6 +30,6 @@ export default defineEventHandler(async (event: H3Event<EventHandlerRequest>) =>
        
         return response.sanctum_token;
     } catch (error) {
-        return { error: error.message }; 
+        return { error: 'Unable to verify the authenticity!' }; 
     }
 });

@@ -318,15 +318,16 @@
 
     // Send event to GA with UTM params
     const sendEventToGA = () => {
-        gtag('event', 'form_submission', {
+        const eventData = {
             app_name: 'EPL | Online Registration',
             screen_name: 'Submission',
             event_category: 'register',
             event_label: filteredSteps.value[step.value - 1].title,
-            registration_type: selectedRadio.value === 'Adult' ? 'EPL_SELF' : 'EPL_SELFJ',
+            registration_type: 'test', //selectedRadio.value === 'Adult' ? 'EPL_SELF' : 'EPL_SELFJ',
             step: step.value,
             ...utmParams
-        })
+        };
+        gtag('event', 'form_submission', eventData);
     }
    
     const submitForm = async () => {

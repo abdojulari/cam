@@ -1,11 +1,11 @@
+<!-- eslint-disable vue/valid-v-slot -->
 <template>
   <v-container>
     <v-row>
         <v-col cols="12">
           <v-alert
             density="compact"
-            icon="mdi-information"
-            
+            icon="mdi-information"   
           >
           Click 'ADD ANOTHER CHILD' only if adding more than one. The form cannot be left blank. For example, when adding two minors, click 'ADD ANOTHER CHILD' to enter the second, while the first will appear in the table below.
           </v-alert>
@@ -193,16 +193,15 @@
         </v-col>
       </v-row>
  
-    <div v-if="props.formData.radios !== 'Adult'"> 
+    <v-row v-if="props.formData.radios !== 'Adult'"> 
       <v-switch
         label="Attach child(ren) to your profile"
         v-model="linkMinor"
-        @click="connectionHandler"
         :disabled="(!loading && linkDisabled && !errorLogin) || (disabled && !errorLogin) "
       >
       </v-switch>
-    </div>
-    <div class="" v-if="props.formData.radios !== 'Adult'">
+    </v-row>
+    <v-row class="bg-grey-lighten-2 p-5" v-if="props.formData.radios !== 'Adult'">
         <v-card flat v-if="linkMinor">
         <v-card-title class="mb-2">
           <h3>Link your child(ren) to your EPL card</h3>
@@ -244,10 +243,11 @@
           <v-btn 
             variant="flat" 
             color="primary" 
-            :disabled="loading || formData.barcode === '' || formData.pin === '' || isMinorInvalid || isClicked"
+            :disabled="loading || formData.barcode === '' || formData.pin === '' || isMinorInvalid || (isClicked && errorLogin !== 'Invalid barcode or password')"
             :loading="loading"
             :text="linkDisabled && !errorLogin ? 'Saved' : 'Save Changes'"
             @click="loading = !loading"
+            class="ml-2"
             prepend-icon="mdi-content-save"
           />
         </v-card-actions>
@@ -255,7 +255,7 @@
           density="compact"
           text="Please click the 'SAVE CHANGES' button to save your progress before proceeding to the 'NEXT' button."
           type="warning"
-          class="mt-5 mx-3"
+          class="mt-5 mx-4"
         >
         </v-alert>
       </v-card>
@@ -373,7 +373,7 @@
         >
         </v-alert>
       </v-card>
-    </div>
+    </v-row>
   </v-container>
 </template>
   
@@ -439,43 +439,97 @@
     });
   });
   // create watch for loading 
-    watch(loading, (value) => {
-      if (!value) return;  
-      setTimeout(async () => {
-        try {
-          const body = {
-            barcode: props.formData.barcode,
-            password: props.formData.pin,
-          } as any;
+    // watch(loading, (value) => {
+    //   if (!value) return;  
+    //   setTimeout(async () => {
+    //     try {
+    //       const body = {
+    //         barcode: props.formData.barcode,
+    //         password: props.formData.pin,
+    //       } as any;
         
-          const data = await apiService.authenticate(body);
-          if (minors.value.length > 0) {
-            minors.value.map(minor => {
-              userRegistration.setMinor(createRegistrationData(barcode.value,props.formData, minor, data));
-              userRegistration.addRegistration({data:userRegistration.minor});
-            });
-          }
-          userRegistration.setMinor(createRegistrationData(barcode.value,props.formData, undefined, data));
-          userRegistration.addRegistration({data:userRegistration.minor});
-          isClicked.value = true;   
-          loading.value = false; 
-          linkDisabled.value = true
-          console.log('LOGIN' ,userRegistration.getRegistration)
-          if(!data.error) {
-            userRegistration.setLinkState(isClicked.value);
-          }
-          
-          // data returns error notify the user 
-          if (data.error) {
-            errorLogin.value = 'Invalid barcode or password';
-          }
+    //       const data = await apiService.authenticate(body);
+    //       // data returns error notify the user 
+    //       if (data?.original.message) {
+    //         errorLogin.value = 'Invalid barcode or password';
+    //         loading.value = false;
+    //         return;
+    //       }
 
-          return data; 
-          } catch (err) {
-              //return (err as any).message;
-          }
-      }, 2000);
+    //       if (minors.value.length > 0) {
+    //         minors.value.map(minor => {
+    //           userRegistration.setMinor(createRegistrationData(barcode.value,props.formData, minor, data));
+    //           userRegistration.addRegistration({data:userRegistration.minor});
+    //         });
+    //       }
+    //       userRegistration.setMinor(createRegistrationData(barcode.value,props.formData, undefined, data));
+    //       userRegistration.addRegistration({data:userRegistration.minor});
+           
+    //       loading.value = false; 
+    //       linkDisabled.value = true
+    //       console.log('LOGIN' ,userRegistration.getRegistration)
+          
+    //         isClicked.value = true;  
+    //         userRegistration.setLinkState(isClicked.value);
+          
+
+    //       return data; 
+    //       } catch (err) {
+    //           return (err as any).message;
+    //       }
+    //   }, 2000);
       
+    // });
+
+    watch(loading, async (value) => {
+      if (!value) return;
+
+      try {
+        // Prepare request body
+        const body = {
+          barcode: props.formData.barcode,
+          password: props.formData.pin,
+        };
+
+        // Authenticate the user
+        const data = await apiService.authenticate(body);
+
+        // Check if authentication failed
+        if (data?.original?.message) {
+          errorLogin.value = 'Invalid barcode or password';
+          loading.value = false;
+          linkDisabled.value = false; // Reset this state so the user can try again
+          return;
+        }
+        errorLogin.value = '';
+        // If minors exist, add their registrations
+        if (minors.value.length > 0) {
+          minors.value.forEach(minor => {
+            userRegistration.setMinor(createRegistrationData(barcode.value, props.formData, minor, data));
+            userRegistration.addRegistration({ data: userRegistration.minor });
+          });
+        }
+
+        // Register the main user if no minors
+        userRegistration.setMinor(createRegistrationData(barcode.value, props.formData, undefined, data));
+        userRegistration.addRegistration({ data: userRegistration.minor });
+
+        // Reset loading and linkDisabled states
+        loading.value = false;
+        linkDisabled.value = true;
+        isClicked.value = true;
+        userRegistration.setLinkState(isClicked.value);
+
+        // Log the registration data for debugging
+        console.log('LOGIN', userRegistration.getRegistration);
+
+        return data;
+      } catch (err) {
+        loading.value = false;  // Ensure loading state is reset if an error occurs
+        linkDisabled.value = false;  // Allow the user to try again
+        errorLogin.value = `An error occurred: ${(err as any).message}`;
+        return (err as any).message;
+      }
     });
 
     const isMenuOpen = ref(false);
@@ -609,8 +663,6 @@
       { title: 'Actions', value: 'actions', sortable: false },
     ];
     
-    //const connectionHandler = apiService.externalApiCall();
-   
     const onPostalCodeInput = (event: { target: { value: string; }; }) => {
       let value = event.target.value || '';
       // Convert the value to uppercase and remove spaces
