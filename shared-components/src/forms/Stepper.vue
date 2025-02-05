@@ -348,14 +348,16 @@
                 showErrorDialog.value = true; 
                 return;
             }
+            console.log('Registration data:', registrationData);
             sendEventToGA(buttonName);
             // Proceed to next page if no errors
             router.push('/success-page');
         } catch (error) {
-            console.error('System error during the registration:', error.text);
-            if( error.status !== 409) {
-                showSystemErrorDialog.value = true;
+            console.error('System error during the registration:', error.message);
+            if( error.statusCode === 409) {
+                showErrorDialog.value = true
             }
+            showSystemErrorDialog.value = true;
         
         } finally {
             isLoading.value = false; // Hide loading animation once the process is complete
