@@ -354,7 +354,7 @@
             router.push('/success-page');
         } catch (error) {
             console.error('System error during the registration:', error.message);
-            if( error.statusCode === 409) {
+            if( error.message === 'HTTP error! status: 409') {
                 showErrorDialog.value = true
             }
             showSystemErrorDialog.value = true;
