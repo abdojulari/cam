@@ -72,7 +72,7 @@
                                 v-if="step === filteredSteps.length && step !== 1"
                                 :disabled="!formData.acceptTerms || turnstile === false || isLoading === true || formData.password.length < 6 || formData.password !== formData.confirmPassword" 
                                 color="primary"
-                                @click="submitForm"
+                                @click="submitForm($event)"
                                 class="me-2"
                             >
                                 Submit
@@ -91,7 +91,7 @@
                             </v-btn>
                             <v-spacer v-if="step === 1"/>
                             <v-btn v-if="(selectedRadio === 'Minor' && filteredSteps[step - 1].title !== 'Confirmation') || (selectedRadio === 'Adult' && step !== 5)"
-                                @click="next" 
+                                @click="next($event)" 
                                 variant="flat" 
                                 color="primary" 
                                 :disabled="!formData.radios && page !== 'registration-portal' || disabled || isNextDisabled "
@@ -209,8 +209,10 @@
         return stepList.slice(0,1); 
     });
     // Navigation methods
-    const next = () => {
+    const next = (event) => {
           // Handle submission based on current step
+        const buttonName = event.target.innerText;
+        console.log('Event: ', buttonName);
         if (filteredSteps.value[step.value - 1].title === 'About You') {
             form.value?.validate();
             
@@ -223,6 +225,7 @@
                 middlename: formData.value.middlename,
                 dateofbirth: (formData.value.dateofBirth).toISOString().split('T')[0],
             };
+            sendEventToGA(buttonName);
             
         } else if (filteredSteps.value[step.value - 1].title === 'Contact') {
             if (formData.value.street === '' || formData.value.city === '' 
@@ -238,11 +241,12 @@
                 phone: formData.value.phone,
                 email: formData.value.email,
             };
-
+            sendEventToGA(buttonName);
             console.log(userRegistration.adult.contact);
         } else if (filteredSteps.value[step.value - 1].title === 'Profile') {
             userRegistration.adult.profile = formData.value.radios; 
             userRegistration.adult.consent = userRegistration.getConsent;
+            sendEventToGA(buttonName);
         } 
        
         if (step.value < filteredSteps.value.length) {
@@ -317,19 +321,20 @@
     })
 
     // Send event to GA with UTM params
-    const sendEventToGA = () => {
-        gtag('event', 'form_submission', {
+    const sendEventToGA = (buttonName) => {
+        gtag('event', `${buttonName} Event Triggered`, {
             app_name: 'EPL | Online Registration',
-            screen_name: 'Submission',
-            event_category: 'register',
+            screen_name: `${filteredSteps.value[step.value - 1].title} Screen`,
+            event_category: `${buttonName} button clicked`,
             event_label: filteredSteps.value[step.value - 1].title,
-            registration_type: 'test', //selectedRadio.value === 'Adult' ? 'EPL_SELF' : 'EPL_SELFJ',
+            registration_type: selectedRadio.value === 'Adult' ? 'EPL_SELF' : 'EPL_SELFJ',
             step: step.value,
             ...utmParams
         });
     }
    
-    const submitForm = async () => {
+    const submitForm = async (event) => {
+        const buttonName = event.target.innerText;
         isLoading.value = true;
             let registrationData;
             try {
@@ -343,7 +348,7 @@
                 showErrorDialog.value = true; 
                 return;
             }
-            sendEventToGA();
+            sendEventToGA(buttonName);
             // Proceed to next page if no errors
             router.push('/success-page');
         } catch (error) {
