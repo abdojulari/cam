@@ -353,14 +353,13 @@
             // Proceed to next page if no errors
             router.push('/success-page');
         } catch (error) {
-            //console.error('System error during the registration:', error.message);
             if( error.message === 'HTTP error! status: 409') {
                 showErrorDialog.value = true
             }
-            //showSystemErrorDialog.value = true;
-            console.log('Error:', error.statusCode);
+            else {
+                showSystemErrorDialog.value = true;
+            }
             console.log('Error Message:', error.message);
-            console.log('Error Response:', error);
         
         } finally {
             isLoading.value = false; // Hide loading animation once the process is complete
