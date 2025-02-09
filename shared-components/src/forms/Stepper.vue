@@ -5,18 +5,7 @@
                 Get Your FREE Library Card
             </h2>
         </v-row>
-        <div v-if="isLoading" 
-        class="fill-height w-100 opacity-20 blue-grey-lighten-5 d-flex justify-center align-center"
-        style="height: 100%;"
-        >
-            <v-progress-circular
-                v-if="isLoading"
-                :size="50"
-                :width="4"
-                indeterminate
-                color="primary"
-            />
-        </div>
+      
         <v-row class="px-1 py-1 mx-1 my-1 d-flex justify-center">
             <v-col cols="12">
                 <v-img class="w-100" src="~/assets/images/horizontal.png" alt="registration"></v-img>
@@ -66,13 +55,25 @@
                         </template>
                     </v-stepper-window>
                     <v-container>
+                        <div v-if="isLoading" 
+                            class="fill-height h-100 w-100 opacity-20 blue-grey-lighten-5 d-flex justify-center align-center"
+                            style="height: 100%;"
+                        >
+                            <v-progress-circular
+                                v-if="isLoading"
+                                :size="60"
+                                :width="4"
+                                indeterminate
+                                color="primary"
+                            />
+                        </div>
                         <v-row>
                         <v-col class="d-flex justify-end">
                             <v-btn
                                 v-if="step === filteredSteps.length && step !== 1"
-                                :disabled="!formData.acceptTerms || (selectedRadio === 'Adult' && !buttonClickState && userRegistration.getAddMinor)|| (selectedRadio !== 'Adult' && 
+                                :disabled="!formData.acceptTerms || (selectedRadio === 'Adult' && !buttonClickState && formData.addMinor)|| (selectedRadio !== 'Adult' && 
                                 !buttonClickState)  || isLoading === true || (selectedRadio === 'Adult' 
-                                && !userRegistration.getAddMinor && (formData.password.length < 6 || 
+                                && !formData.addMinor && (formData.password.length < 6 || 
                                 formData.password !== formData.confirmPassword))" 
                                 color="primary"
                                 @click="submitForm($event)"
@@ -203,7 +204,6 @@
         const selected = selectedRadio.value;
         if (selected === "Adult") {
             if (formData.value.addMinor) {
-                userRegistration.setAddMinor(true);
                 return stepList.slice(0, 5);
             }
             return stepList.slice(0, 4); 
@@ -373,7 +373,7 @@
             if (registrationData?.message === "Duplicate record found with fuzzy logic.") {
                 showErrorDialog.value = true; 
                 return;
-            } else if (registrationData?.message === "Error posting to ILS API") {
+            } else if (registrationData?.message === "Error posting to ILS API" || registrationData?.error === "Posting to ILS failed 500") {
                 showSystemErrorDialog.value = true;
                 return;
             }

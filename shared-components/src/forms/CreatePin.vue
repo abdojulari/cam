@@ -66,20 +66,7 @@
   // Ensure widget is rendered on component mount
   const onPasswordConfirmation = (value: boolean) => {
     if (value) {
-      disabled.value = true;
-      // if (
-      //   userRegistration.getRadioSelection === 'Adult' && 
-      //       userRegistration.getAdditionalMinor === true 
-      //       && props.formData.addMinor === true) {
-      //   userRegistration.adult.profile = 'EPL_SELF'
-      //   userRegistration.addRegistration({data:userRegistration.minor})
-      //   console.log('minor', userRegistration.minor)
-      // }
-      // if (userRegistration.getRadioSelection === 'Adult') {
-      //   userRegistration.addRegistration({data:userRegistration.adult})
-      //   console.log(userRegistration.getConsent)
-      // }
-      
+      disabled.value = true;    
       // Check if the pins match before setting the password
       if (props.formData.password === props.formData.confirmPassword) {
         if (props.formData.radios === 'Adult') {
@@ -89,7 +76,7 @@
           userRegistration.adult.barcode = barcode.value
           userRegistration.adult.consent = userRegistration.getConsent
         }
-        //console.log('adult', userRegistration.adult)
+    
         if (userRegistration.getRadioSelection === 'Adult') {
           userRegistration.addRegistration({data:userRegistration.adult})
         }
@@ -99,6 +86,13 @@
       }
     } 
   };
+  watch(formData.value.addMinor, (newVal) => {
+    if (newVal) {
+      userRegistration.addMinor = true;
+    } else {
+      userRegistration.addMinor = false;
+    }
+  });
 
   watch(
     () => [formData.value.password, formData.value.confirmPassword],

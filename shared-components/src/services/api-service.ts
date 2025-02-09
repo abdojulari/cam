@@ -1,5 +1,4 @@
 // services/api-service.ts
-import { use } from 'h3';
 import { getCookie } from '../composables/get-cookies';
 
 export const apiService = {

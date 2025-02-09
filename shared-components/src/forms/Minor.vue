@@ -546,7 +546,6 @@
         userRegistration.addRegistration({data:userRegistration.minor})
       }
       userRegistration.setButtonClickState(isClicked.value);
-
       //console.log('SAME as :', userRegistration.getRegistration)
     };
 
