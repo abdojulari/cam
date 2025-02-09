@@ -3,13 +3,37 @@
       <v-row>
         <v-col cols="12" sm="6">
           <v-text-field
-            label="Address *"
-            v-model="formData.street"
+            label="Building Number *"
+            v-model="formData.buildingNumber"
             variant="outlined"
-            :rules="[rules.required]"
+            density="compact"
+            type="number"
+            required
+            prepend-inner-icon="mdi-home"
+            @input="updateStreet"
+          />
+        </v-col>
+        <v-col cols="12" sm="6">
+          <v-text-field
+            label="Street *"
+            v-model="formData.streetName"
+            variant="outlined"
             required
             density="compact"
-            prepend-inner-icon="mdi-home"
+            prepend-inner-icon="mdi-road"
+            @input="updateStreet"
+          />
+        </v-col>
+        <v-col cols="12" sm="6">
+          <v-text-field
+            label="Apt/Unit"
+            v-model="formData.aptUnit"
+            variant="outlined"
+            density="compact"
+            type="number"
+            max="3"
+            prepend-inner-icon="mdi-office-building"
+            @input="updateStreet"
           />
         </v-col>
         <v-col cols="12" sm="6">
@@ -78,23 +102,31 @@
   
   <script setup>
     import { vMaska } from "maska/vue"
+    import { ref } from 'vue';
     const props = defineProps(['formData', 'rules']);
 
     // create local formData and set it to the props
     const formData = ref(props.formData);
 
+    // Function to update formData.street
+    const updateStreet = () => {
+      const aptUnit = formData.value.aptUnit ? `${formData.value.aptUnit} -` : '';
+      const parts = [
+        aptUnit,
+        formData.value.buildingNumber,
+        formData.value.streetName
+      ].filter(Boolean);
+      formData.value.street = parts.join(' ');
+    };
+
     const onPostalCodeInput = (event) => {
       let value = event.target.value || '';
-
       // Convert the value to uppercase and remove spaces
       value = value.replace(/\s/g, '').toUpperCase();
 
-      // If the first character is not 'T', reject the input
-      if (value.length > 0 && value[0] !== 'T') {
-          // If the input doesn't start with 'T', clear the input (reject it)
-          formData.postalCode = ''; // Optionally reset the form data
-          event.target.value = ''; // Clear the input field
-          return;
+      // Automatically prepend 'T' if it's not already there
+      if (value.length === 0 || value[0] !== 'T') {
+          value = 'T' + value;
       }
 
       // Only accept up to 6 characters (postal code length)
@@ -107,7 +139,7 @@
           value = value.slice(0, 3) + ' ' + value.slice(3, 6);
       }
 
-      formData.postalCode = value.trim();
+      formData.value.adultPostalCode = value.trim();
       event.target.value = value;
     };
 

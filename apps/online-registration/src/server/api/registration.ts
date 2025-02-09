@@ -1,6 +1,5 @@
 // server/api/registration.ts
 import { 
-    createError,
     defineEventHandler, 
     EventHandlerRequest, 
     getCookie, 
@@ -43,9 +42,7 @@ export default defineEventHandler(async (event: H3Event<EventHandlerRequest>) =>
             // Handle rate limit exceeded
             console.error('Too many requests. Please try again later.');
         }
-        throw createError({
-            statusCode: 500,
-            statusMessage: 'Submission error',
-        });
+       
+        return { error: error.message }; 
     }
 });

@@ -32,7 +32,7 @@ export const apiService = {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
                 'Authorization' :`Bearer ${access_token}`,
-                'X-CRE-Token' : import.meta.env.VITE_CUSTOM_SECURITY_TOKEN
+                'X-CRE-Token' : import.meta.env.VITE_CUSTOM_SECURITY_TOKEN,
             },
             body: JSON.stringify({
               firstname: payload.data.biodata.firstname,
@@ -78,7 +78,7 @@ export const apiService = {
           },
         });
         const data = await response.json();
-        return 'success';
+        return data;
       } catch (err) {
         console.error('Error during authentication:', err);
         throw new Error('Authentication failed');
@@ -86,15 +86,21 @@ export const apiService = {
     },
     async initializeToken() {
       try {
+          const body = new URLSearchParams({
+              client_id: import.meta.env.VITE_CLIENT_ID,
+              client_secret: import.meta.env.VITE_CLIENT_SECRET,
+              grant_type: 'client_credentials'
+          }).toString();
+
           const response = await $fetch('/api/get-token', { 
             method: 'POST',
             headers: {
               'Content-Type': 'application/x-www-form-urlencoded',
               'Accept': 'application/json'
-            }
+            },
+            body: import.meta.env.DEV ? body : null
           });
           const data = await response as { access_token: string };
-          
           if (data) {
               document.cookie = `access_token=${ import.meta.env.DEV ? data : data.access_token}; path=/;`;
           }

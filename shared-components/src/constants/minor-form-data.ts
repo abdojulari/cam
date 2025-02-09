@@ -67,7 +67,7 @@ export const sameAsAdultData = (formData: any, barcode: any, minor?: any) => {
           postalcode: formData.postalCode,
         },
         careof: `${formData.firstname} ${formData.lastname}`,
-        profile: 'EPL_JNOVG',
+        profile: 'EPL_SELFJ',
         radioSelection: formData.radios,
         password: minor?.password || formData.password,
         confirmPassword: minor?.confirmPassword || formData.confirmPassword,

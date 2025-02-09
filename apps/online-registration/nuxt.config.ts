@@ -50,6 +50,8 @@ export default defineNuxtConfig({
       public: {
         baseUrl: 'http://localhost:4500/api',
         tokenUrl: process.env.NUXT_CRE_TOKEN,
+        CLIENT_ID: process?.env.CLIENT_ID,
+        CLIENT_SECRET: process?.env.CLIENT_SECRET,
       },
     },
   },

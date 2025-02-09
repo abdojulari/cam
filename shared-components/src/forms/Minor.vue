@@ -71,7 +71,7 @@
         </v-col> 
         <v-col cols="12" sm="6">
           <v-text-field
-            v-model="formData.password"
+            v-model="formData.minorPassword"
             label="Password *"        
             variant="outlined"
             :rules="[props.rules.required, props.rules.password]"
@@ -86,7 +86,7 @@
         </v-col>
         <v-col cols="12"  sm="6">
           <v-text-field
-            v-model="formData.confirmPassword"
+            v-model="formData.minorConfirmPassword"
             label="Confirm Password *"
             variant="outlined"
             :rules="[props.rules.required,confirmPinRules]"
@@ -195,7 +195,7 @@
  
     <v-row v-if="props.formData.radios !== 'Adult'"> 
       <v-switch
-        label="Attach child(ren) to your profile"
+        label="Add child(ren) to your existing account"
         v-model="linkMinor"
         :disabled="(!loading && linkDisabled && !errorLogin) || (disabled && !errorLogin) "
       >
@@ -211,7 +211,7 @@
           <v-col cols="12" sm="6">
             <v-text-field 
               v-model="formData.barcode" 
-              label="Barcode" 
+              label="Library Card Number" 
               :rules="[props.rules.required]"
               density="compact"
               variant="outlined"
@@ -243,7 +243,7 @@
           <v-btn 
             variant="flat" 
             color="primary" 
-            :disabled="loading || formData.barcode === '' || formData.pin === '' || isMinorInvalid || (isClicked && errorLogin !== 'Invalid barcode or password')"
+            :disabled="loading || formData.barcode === '' || formData.pin === '' || isMinorInvalid || (isClicked && errorLogin !== 'Invalid library card number or password!')"
             :loading="loading"
             :text="linkDisabled && !errorLogin ? 'Saved' : 'Save Changes'"
             @click="loading = !loading"
@@ -268,7 +268,7 @@
             <v-col cols="12" sm="6">
               <v-text-field 
                 v-model="formData.adultFirstname" 
-                label="First Name" 
+                label="First Name *" 
                 :rules="[props.rules.required, props.rules.firstname]"
                 density="compact"
                 variant="outlined"
@@ -277,7 +277,7 @@
             <v-col cols="12" sm="6">
               <v-text-field 
                 v-model="formData.adultLastname" 
-                label="Last Name" 
+                label="Last Name *" 
                 :rules="[props.rules.required, props.rules.lastname]"
                 density="compact"
                 variant="outlined"
@@ -286,7 +286,7 @@
             <v-col cols="12" sm="6">
               <v-text-field 
                 v-model="formData.adultEmail" 
-                label="Email" 
+                label="Email *" 
                 :rules="[props.rules.required, props.rules.email]"
                 density="compact"
                 variant="outlined"
@@ -295,7 +295,7 @@
             <v-col cols="12" sm="6">
               <v-text-field 
                 v-model="formData.adultPhone" 
-                label="Phone Number" 
+                label="Phone Number *" 
                 v-maska="'###-###-####'"
                 :rules="[props.rules.required, props.rules.phone]"
                 density="compact"
@@ -303,17 +303,42 @@
               />
             </v-col>
             <v-col cols="12" sm="6">
-              <v-text-field 
-                v-model="formData.adultStreet" 
-                label="Address" 
-                :rules="[props.rules.required]"
-                density="compact"
+              <v-text-field
+                label="Building Number *"
+                v-model="formData.adultBuildingNumber"
                 variant="outlined"
+                density="compact"
+                type="number"
+                required
+                prepend-inner-icon="mdi-home"
+                @input="updateStreet"
+              />
+            </v-col>
+            <v-col cols="12" sm="6">
+              <v-text-field
+                label="Street *"
+                v-model="formData.adultStreetName"
+                variant="outlined"
+                required
+                density="compact"
+                prepend-inner-icon="mdi-road"
+                @input="updateStreet"
+              />
+            </v-col>
+            <v-col cols="12" sm="6">
+              <v-text-field
+                label="Apt/Unit"
+                v-model="formData.adultAptUnit"
+                variant="outlined"
+                density="compact"
+                max="3"
+                prepend-inner-icon="mdi-office-building"
+                @input="updateStreet"
               />
             </v-col>
             <v-col cols="12" sm="6">
               <v-select
-                label="City"
+                label="City *"
                 :items="['Edmonton', 'Enoch']"
                 v-model="formData.adultCity" 
                 variant="outlined"
@@ -326,7 +351,7 @@
             <v-col cols="12" sm="6">
               <v-text-field 
                 v-model="formData.adultProvince" 
-                label="Province" 
+                label="Province *" 
                 :rules="[props.rules.required, props.rules.province]"
                 density="compact"
                 variant="outlined"
@@ -336,7 +361,7 @@
             <v-col cols="12" sm="6">
               <v-text-field 
                 v-model="formData.adultPostalCode" 
-                label="Postal Code" 
+                label="Postal Code *" 
                 :rules="[props.rules.required, props.rules.postalCode]"
                 density="compact"
                 variant="outlined"
@@ -429,7 +454,7 @@
 
   let minorId = 0;
   const confirmPinRules = computed(() => {
-    return props.formData.confirmPassword !== props.formData.password ? 'Pins do not match' : true;
+    return props.formData.minorConfirmPassword !== props.formData.minorPassword ? 'Pins do not match' : true;
   });
   onMounted(() => {
     formData.value.confirmPassword = '';
@@ -454,7 +479,7 @@
 
         // Check if authentication failed
         if (data?.original?.message) {
-          errorLogin.value = 'Invalid barcode or password';
+          errorLogin.value = 'Invalid library card number or password!';
           loading.value = false;
           linkDisabled.value = false; // Reset this state so the user can try again
           return;
@@ -462,8 +487,10 @@
         errorLogin.value = '';
         // If minors exist, add their registrations
         if (minors.value.length > 0) {
-          minors.value.forEach(minor => {
-            userRegistration.setMinor(createRegistrationData(barcode.value, props.formData, minor, data));
+          minors.value.forEach(async (minor) => {
+            const barcode = await apiService.fetchBarcode();
+            userRegistration.setMinor(createRegistrationData(barcode, props.formData, minor, data));
+            userRegistration.minor.consent = userRegistration.getConsent
             userRegistration.addRegistration({ data: userRegistration.minor });
           });
         }
@@ -480,7 +507,7 @@
 
         // Log the registration data for debugging
         //console.log('LOGIN', userRegistration.getRegistration);
-
+        userRegistration.setButtonClickState(isClicked.value);
         return data;
       } catch (err) {
         loading.value = false;  // Ensure loading state is reset if an error occurs
@@ -502,31 +529,35 @@
 
     const sameAsAdult = () => {
       isLoading.value = true
-      setTimeout(() => {
+         
+      if (minors.value.length> 0) {
+        minors.value.map(async minor => {
+          const barcode = await apiService.fetchBarcode();
+          userRegistration.setMinor(sameAsAdultData(props.formData, barcode, minor));
+          userRegistration.minor.consent = userRegistration.getConsent
+          userRegistration.addRegistration({data:userRegistration.minor});
+        });
+      }
       
-        if (minors.value.length> 0) {
-          minors.value.map(minor => {
-            userRegistration.setMinor(sameAsAdultData(props.formData, barcode.value, minor));
-            userRegistration.addRegistration({data:userRegistration.minor});
-          });
-        }
-      
-        userRegistration.setMinor(sameAsAdultData(props.formData, barcode.value));
-        userRegistration.addRegistration({data:userRegistration.minor});
-        isClicked.value = true;
-        disabled.value = true  
-        isLoading.value = false
-      }, 2000)
+      userRegistration.setMinor(sameAsAdultData(props.formData, barcode.value));
+      userRegistration.minor.consent = userRegistration.getConsent
+      isClicked.value = true;
+      disabled.value = true  
+      isLoading.value = false
+    
+      if (userRegistration.getRadioSelection === 'Adult' && props.formData.addMinor === true) { 
+        userRegistration.addRegistration({data:userRegistration.minor})
+      }
+      userRegistration.setButtonClickState(isClicked.value);
 
       //console.log('SAME as :', userRegistration.getRegistration)
     };
 
     watch(props.formData, (newVal) => {
       isMinorInvalid.value = !newVal.minorFirstname?.trim() ||
-                        !newVal.minorLastname?.trim() ||
-                        !newVal.minorDateOfBirth ||
-                        !newVal.password?.trim() ||
-                        !newVal.confirmPassword?.trim() || !passwordRegex.test(newVal.password) || !passwordRegex.test(newVal.confirmPassword);
+        !newVal.minorLastname?.trim() || !newVal.minorDateOfBirth ||
+        !newVal.minorPassword?.trim() || !newVal.minorConfirmPassword?.trim() || 
+        !passwordRegex.test(newVal.minorPassword) || !passwordRegex.test(newVal.minorConfirmPassword);
     }, { deep: true });
     // Add minor to the list
     const addMinor = () => {
@@ -539,8 +570,8 @@
         lastname: props.formData.minorLastname,
         middlename: props.formData.minorMiddlename,
         dateOfBirth: formattedDate.value,
-        password: props.formData.password,
-        confirmPassword: props.formData.confirmPassword,
+        password: props.formData.minorPassword,
+        confirmPassword: props.formData.minorConfirmPassword,
       });
 
       userRegistration.setAdditionalMinor(true);
@@ -549,8 +580,8 @@
       formData.value.minorLastname = '';
       formData.value.minorMiddlename = '';
       formData.value.minorDateOfBirth = null;
-      formData.value.password = '';
-      formData.value.confirmPassword = '';
+      formData.value.minorPassword = '';
+      formData.value.minorConfirmPassword = '';
       minorsContact.value = false;
       isClicked.value = false;
     };
@@ -558,8 +589,8 @@
     // Watch the formData object for changes
     watch([() => isClicked.value, formData.value], ([newIsClicked, newVal]) => {
       isInvalid.value = !newVal.adultFirstname?.trim() || !newVal.adultLastname?.trim() ||
-        !newVal.adultEmail?.trim() || !newVal.adultPhone?.trim() ||
-        !newVal.adultStreet?.trim() || !newVal.adultCity?.trim() ||
+        !newVal.adultEmail?.trim() || !newVal.adultPhone?.trim() || !newVal.adultBuildingNumber?.trim() ||
+        !newVal.adultStreetName?.trim() || !newVal.adultCity?.trim() ||
         !newVal.adultProvince?.trim() || !newVal.adultPostalCode?.trim() || 
         !phonePattern.test(newVal.adultPhone) || !emailPattern.test(newVal.adultEmail) || !postalCodePattern.test(newVal.adultPostalCode);
       userRegistration.setLinkState(newIsClicked);
@@ -576,15 +607,19 @@
         disabled.value = true
       }, 2000)
       if (minors.value.length> 0) {
-        minors.value.map(minor => {
-          userRegistration.setMinor(createMinorRegistrationData(barcode.value,props.formData,  minor,));
+        minors.value.map(async minor => {
+          const barcode = await apiService.fetchBarcode();
+          userRegistration.setMinor(createMinorRegistrationData(barcode,props.formData,  minor,));
+          userRegistration.minor.consent = userRegistration.getConsent
           userRegistration.addRegistration({data:userRegistration.minor});
         });
       }
       userRegistration.setMinor(createMinorRegistrationData(barcode.value,props.formData, undefined));
+      userRegistration.minor.consent = userRegistration.getConsent
       isClicked.value = true;
       userRegistration.addRegistration({data:userRegistration.minor});
-      console.log('ADULT Contact:', userRegistration.getRegistration)
+      userRegistration.setButtonClickState(isClicked.value);
+      //console.log('ADULT Contact:', userRegistration.getRegistration)
     }
 
     // Delete minor from the list
@@ -604,8 +639,8 @@
         formData.value.minorLastname = lastMinor.lastname;
         formData.value.minorMiddlename = lastMinor.middlename;
         formData.value.minorDateOfBirth = new Date(lastMinor.dateOfBirth);
-        formData.value.password = lastMinor.password;
-        formData.value.confirmPassword = lastMinor.confirmPassword;
+        formData.value.minorPassword = lastMinor.password;
+        formData.value.minorConfirmPassword = lastMinor.confirmPassword;
 
         // Delete the last minor from the list
         deleteMinor(lastMinor.id);
@@ -625,17 +660,17 @@
       let value = event.target.value || '';
       // Convert the value to uppercase and remove spaces
       value = value.replace(/\s/g, '').toUpperCase();
-      // If the first character is not 'T', reject the input
-      if (value.length > 0 && value[0] !== 'T') {
-          // If the input doesn't start with 'T', clear the input (reject it)
-          formData.value.adultPostalCode = ''; // Optionally reset the form data
-          event.target.value = ''; // Clear the input field
-          return;
+
+      // Automatically prepend 'T' if it's not already there
+      if (value.length === 0 || value[0] !== 'T') {
+          value = 'T' + value;
       }
+
       // Only accept up to 6 characters (postal code length)
       if (value.length > 6) {
           value = value.slice(0, 6);
       }
+
       // Add space after the first 3 characters for formatting (e.g., T1A 1A1)
       if (value.length > 3) {
           value = value.slice(0, 3) + ' ' + value.slice(3, 6);
@@ -643,6 +678,16 @@
 
       formData.value.adultPostalCode = value.trim();
       event.target.value = value;
+    };
+    // Function to update formData.street
+    const updateStreet = () => {
+      const adultAptUnit = formData.value.adultAptUnit ? `${formData.value.adultAptUnit} -` : '';
+      const parts = [
+        adultAptUnit,
+        formData.value.adultBuildingNumber,
+        formData.value.adultStreetName
+      ].filter(Boolean);
+      formData.value.adultStreet = parts.join(' ');
     };
 </script>
 <style scoped>

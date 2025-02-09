@@ -59,6 +59,7 @@ export const useRegistrationStore = defineStore({
     password: {} as Password,
     turnstile: false,
     linkState: false,
+    buttonClickState: false
   }),
   actions: {
     async setTurnstile(turnstile: boolean) {
@@ -80,6 +81,7 @@ export const useRegistrationStore = defineStore({
       },
       async setContact(contact: Contact) {
         try {
+          
           this.contact= contact;
 
         } catch (error) {
@@ -162,6 +164,13 @@ export const useRegistrationStore = defineStore({
         } catch (error) {
           console.error(error);
         }
+      },
+      async setButtonClickState(buttonClickState: boolean) {
+        try {
+          this.buttonClickState = buttonClickState;
+        } catch (error) {
+          console.error(error);
+        }
       }
   },
   getters: {
@@ -206,6 +215,9 @@ export const useRegistrationStore = defineStore({
     },
     getLinkState(): boolean {
         return this.linkState;
+    },
+    getButtonClickState(): boolean {
+        return this.buttonClickState;
     }
   },
 

@@ -14,6 +14,7 @@ export default defineEventHandler(async (event: H3Event<EventHandlerRequest>) =>
         client_secret: config.private.clientSecret,
         grant_type: 'client_credentials'
     }).toString()
+    const body = await readBody(event);
     
     const url = config.public.NODE_ENV === 'development' ? config.public.tokenUrl : config.private.tokenUrl ;
     try {
@@ -23,19 +24,19 @@ export default defineEventHandler(async (event: H3Event<EventHandlerRequest>) =>
                 'Accept': 'application/json',
                 'Content-Type': 'application/x-www-form-urlencoded'
             },
-            body: payload
+            body: config.public.NODE_ENV === 'development' ? new URLSearchParams(body).toString() : payload 
         });
 
         setCookie(event, 'access_token', response.access_token, {
             path: '/',
             maxAge: response.expires_in || 3600 // Use token expiration or default to 1 hour
         });
-
-        return response.access_token;
+       
+        return await response.access_token;
     }
     catch (error) {
         throw createError({
-            statusCode: 500,
+            statusCode: error.response.status || 500,
             message: 'Token retrieval failed'
         });
     }

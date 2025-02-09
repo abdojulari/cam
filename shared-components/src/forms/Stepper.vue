@@ -70,7 +70,10 @@
                         <v-col class="d-flex justify-end">
                             <v-btn
                                 v-if="step === filteredSteps.length && step !== 1"
-                                :disabled="!formData.acceptTerms || turnstile === false || isLoading === true || formData.password.length < 6 || formData.password !== formData.confirmPassword" 
+                                :disabled="!formData.acceptTerms || (selectedRadio === 'Adult' && !buttonClickState && userRegistration.getAddMinor)|| (selectedRadio !== 'Adult' && 
+                                !buttonClickState)  || isLoading === true || (selectedRadio === 'Adult' 
+                                && !userRegistration.getAddMinor && (formData.password.length < 6 || 
+                                formData.password !== formData.confirmPassword))" 
                                 color="primary"
                                 @click="submitForm($event)"
                                 class="me-2"
@@ -85,16 +88,17 @@
                         <section class="d-flex justify-space-between pt-10">
                             <v-btn v-if="step !== 1"
                                 @click="prev" 
+                                color="primary" 
                                 variant="flat"
                             >
                                 <p class=" font-medium capitalize">Previous</p>
                             </v-btn>
                             <v-spacer v-if="step === 1"/>
-                            <v-btn v-if="(selectedRadio === 'Minor' && filteredSteps[step - 1].title !== 'Confirmation') || (selectedRadio === 'Adult' && step !== 5)"
+                            <v-btn v-if="(selectedRadio === 'Minor' && step !== 2) || (selectedRadio === 'Adult' && step !== 5)"
                                 @click="next($event)" 
                                 variant="flat" 
                                 color="primary" 
-                                :disabled="!formData.radios && page !== 'registration-portal' || disabled || isNextDisabled "
+                                :disabled="(!formData.radios && page !== 'registration-portal') || disabled || isNextDisabled || !formData.acceptTerms  "
                             >
                                 <p class="font-medium capitalize">Next</p>
                             </v-btn>
@@ -131,7 +135,6 @@
     const formValid = ref(false);
     const form = ref();
     const step = ref(1);
-    
     const formData = ref({
         radios: '',
         firstname: '',
@@ -143,7 +146,7 @@
         province: 'AB',
         phone: '',
         email: '',
-        postalCode: '',
+        postalCode: 'T',
         message: '',
         guardianName: '',
         gender: '',
@@ -159,14 +162,20 @@
         minorLastname: '',
         minorMiddlename: '',
         minorDateOfBirth: null,
+        minorPassword: '',
+        minorConfirmPassword: '',
         acceptTerms: false,
         adultProvince: 'AB',
+        adultPostalCode: 'T',
+        buildingNumber:'',
+        streetName:'',
+        aptUnit:'',
     });
     const isLoading = ref(false);
     // Step list
     const stepList = rules(formData);
     const selectedRadio = computed(() => userRegistration.getRadioSelection);
-    const turnstile = computed(() => userRegistration.getTurnstile);
+    const buttonClickState = computed(() => userRegistration.getButtonClickState);
     const showErrorDialog = ref(false);
     const showSystemErrorDialog = ref(false);
     const closeErrorDialog = async () => {
@@ -200,7 +209,7 @@
             return stepList.slice(0, 4); 
         }
         if (selected === "Minor") {       
-            return [stepList[0], stepList[4],stepList[3]]; 
+            return [stepList[0], stepList[4]]; 
         }
         if (props.page === 'registration-portal') {
             return [stepList[1], stepList[2], stepList[3], stepList[5]];
@@ -210,9 +219,8 @@
     });
     // Navigation methods
     const next = (event) => {
-          // Handle submission based on current step
+        // Handle submission based on current step
         const buttonName = event.target.innerText;
-        console.log('Event: ', buttonName);
         if (filteredSteps.value[step.value - 1].title === 'About You') {
             form.value?.validate();
             
@@ -228,9 +236,11 @@
             sendEventToGA(buttonName);
             
         } else if (filteredSteps.value[step.value - 1].title === 'Contact') {
-            if (formData.value.street === '' || formData.value.city === '' 
-            || formData.value.province === '' || formData.value.postalCode === null
-            || formData.value.phone === '' || formData.value.email === '') {
+            
+            if ( formData.value.city === '' || formData.value.streetName === '' 
+            || formData.value.buildingNumber === '' || formData.value.province === '' 
+            || formData.value.postalCode === null || formData.value.phone === '' 
+            || formData.value.email === '') {
                 return isNextDisabled;
             }
             userRegistration.adult.contact = {
@@ -242,10 +252,12 @@
                 email: formData.value.email,
             };
             sendEventToGA(buttonName);
-            console.log(userRegistration.adult.contact);
+            //console.log(userRegistration.adult.contact);
         } else if (filteredSteps.value[step.value - 1].title === 'Profile') {
             userRegistration.adult.profile = formData.value.radios; 
             userRegistration.adult.consent = userRegistration.getConsent;
+            userRegistration.minor.consent = userRegistration.getConsent;
+            
             sendEventToGA(buttonName);
         } 
        
@@ -290,9 +302,12 @@
             return true;
         }
         if (filteredSteps.value[step.value - 1].title === 'Contact') {
-            if (formData.value.street === '' || formData.value.city === '' 
+            if ( formData.value.city === '' || formData.value.streetName === '' 
+            || formData.value.buildingNumber === ''
             || formData.value.province === '' || formData.value.postalCode === ''
-            || formData.value.phone === '' || formData.value.email === '' || !phonePattern.test(formData.value.phone) || !emailPattern.test(formData.value.email) || !postalCodePattern.test(formData.value.postalCode)) {
+            || formData.value.phone === '' || formData.value.email === '' || 
+            !phonePattern.test(formData.value.phone) || 
+            !emailPattern.test(formData.value.email) || !postalCodePattern.test(formData.value.postalCode)) {
                 return true;
             }
         }
@@ -312,9 +327,20 @@
             return true; 
         }
 
+        if (filteredSteps.value[step.value - 1].title === 'Profile') {
+            if (formData.value.acceptTerms === false) {
+                return true;
+            }
+        }
+
         return step.value >= filteredSteps.value.length;
     })
     const disabled = computed(() => {
+       if (filteredSteps.value[step.value - 1].title === 'Profile') {
+            if (formData.value.acceptTerms === false) {
+                return true;
+            }
+        }
         if (filteredSteps.value.length === 1) return 'prev'
         if (filteredSteps.value.length === step.value) return 'next'
         return undefined
@@ -344,8 +370,12 @@
                 });
             }
             // Once all submissions are done, check for errors in the data
-            if (registrationData?.message === "Duplicate record found with fuzzy logic." || registrationData?.message !== 'Record added successfully.') {
+            console.log('Registration Data:', registrationData);
+            if (registrationData?.message === "Duplicate record found with fuzzy logic.") {
                 showErrorDialog.value = true; 
+                return;
+            }else if (registrationData?.message !== "Record added successfully." || registrationData?.message !== "Duplicate record found with fuzzy logic.") {
+                showSystemErrorDialog.value = true;
                 return;
             }
             
