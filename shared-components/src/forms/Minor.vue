@@ -331,7 +331,6 @@
                 v-model="formData.adultAptUnit"
                 variant="outlined"
                 density="compact"
-                max="3"
                 prepend-inner-icon="mdi-office-building"
                 @input="updateStreet"
               />
@@ -504,8 +503,6 @@
         linkDisabled.value = true;
         isClicked.value = true;
         userRegistration.setLinkState(isClicked.value);
-
-        // Log the registration data for debugging
         //console.log('LOGIN', userRegistration.getRegistration);
         userRegistration.setButtonClickState(isClicked.value);
         return data;

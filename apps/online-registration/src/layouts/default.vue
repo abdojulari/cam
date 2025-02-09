@@ -95,6 +95,13 @@ onMounted(async () => {
                     defer: true,
                 },
                 {
+                    src: 'https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.8/handlebars.min.js',
+                    integrity: 'sha512-E1dSFxg+wsfJ4HKjutk/WaCzK7S2wv1POn1RRPGh8ZK+ag9l244Vqxji3r6wgz9YBf6+vhQEYJZpSjqWFPg9gg==',
+                    crossorigin: 'anonymous',
+                    referrerpolicy: 'no-referrer',
+                    defer: true,
+                },
+                {
                     src: 'https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js',
                     type: 'text/javascript',
                     defer: true,
@@ -103,12 +110,6 @@ onMounted(async () => {
                     src: `https:${src}`,
                     type: 'text/javascript',
                 })),
-                {
-                    src: 'https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.8/handlebars.min.js',
-                    integrity: 'sha512-E1dSFxg+wsfJ4HKjutk/WaCzK7S2wv1POn1RRPGh8ZK+ag9l244Vqxji3r6wgz9YBf6+vhQEYJZpSjqWFPg9gg==',
-                    crossorigin: 'anonymous',
-                    referrerpolicy: 'no-referrer',
-                }
             ],
         });
 
@@ -188,19 +189,21 @@ onMounted(async () => {
                     defer: true,
                     },
                     {
+                        src: 'https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.8/handlebars.min.js',
+                        integrity: 'sha512-E1dSFxg+wsfJ4HKjutk/WaCzK7S2wv1POn1RRPGh8ZK+ag9l244Vqxji3r6wgz9YBf6+vhQEYJZpSjqWFPg9gg==',
+                        crossorigin: 'anonymous',
+                        referrerpolicy: 'no-referrer',
+                        defer: true,
+                    },
+                    {
                         src: 'https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js',
                         type: 'text/javascript',
+                        defer: true,
                     },
                     ...scripts.map(src => ({
                         src: `https:${src}`,
                         type: 'text/javascript',
                     })),
-                    {
-                        src: 'https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.8/handlebars.min.js',
-                        integrity: 'sha512-E1dSFxg+wsfJ4HKjutk/WaCzK7S2wv1POn1RRPGh8ZK+ag9l244Vqxji3r6wgz9YBf6+vhQEYJZpSjqWFPg9gg==',
-                        crossorigin: 'anonymous',
-                        referrerpolicy: 'no-referrer',
-                    }
                 ],
             });
             // Set header and footer

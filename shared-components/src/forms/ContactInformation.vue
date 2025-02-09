@@ -31,7 +31,6 @@
             variant="outlined"
             density="compact"
             type="number"
-            max="3"
             prepend-inner-icon="mdi-office-building"
             @input="updateStreet"
           />

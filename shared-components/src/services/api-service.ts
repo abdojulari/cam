@@ -1,4 +1,5 @@
 // services/api-service.ts
+import { use } from 'h3';
 import { getCookie } from '../composables/get-cookies';
 
 export const apiService = {
@@ -86,19 +87,12 @@ export const apiService = {
     },
     async initializeToken() {
       try {
-          const body = new URLSearchParams({
-              client_id: import.meta.env.VITE_CLIENT_ID,
-              client_secret: import.meta.env.VITE_CLIENT_SECRET,
-              grant_type: 'client_credentials'
-          }).toString();
-
           const response = await $fetch('/api/get-token', { 
             method: 'POST',
             headers: {
               'Content-Type': 'application/x-www-form-urlencoded',
               'Accept': 'application/json'
-            },
-            body: import.meta.env.DEV ? body : null
+            }
           });
           const data = await response as { access_token: string };
           if (data) {

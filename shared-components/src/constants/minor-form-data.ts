@@ -18,8 +18,8 @@ export const createMinorRegistrationData = (barcode: string, formData: any, mino
         careof: `${formData.adultFirstname} ${formData.adultLastname}`,
         profile: 'EPL_SELFJ',
         radioSelection: formData.radios,
-        password: minor?.password || formData?.password,
-        confirmPassword: minor?.confirmPassword || formData.confirmPassword,
+        password: minor?.password || formData?.minorPassword,
+        confirmPassword: minor?.confirmPassword || formData.minorConfirmPassword,
         barcode: barcode,
     };
 };
@@ -44,8 +44,8 @@ export const createRegistrationData = (barcode: string, formData: any, minor?: a
         careof: data?.address?.careOf,
         profile: 'EPL_SELFJ',
         radioSelection: formData?.radios,
-        password: minor?.password || formData?.password,
-        confirmPassword: minor?.confirmPassword || formData?.confirmPassword,
+        password: minor?.password || formData?.minorPassword,
+        confirmPassword: minor?.confirmPassword || formData?.minorConfirmPassword,
         barcode: barcode,
     };
 };
@@ -69,8 +69,8 @@ export const sameAsAdultData = (formData: any, barcode: any, minor?: any) => {
         careof: `${formData.firstname} ${formData.lastname}`,
         profile: 'EPL_SELFJ',
         radioSelection: formData.radios,
-        password: minor?.password || formData.password,
-        confirmPassword: minor?.confirmPassword || formData.confirmPassword,
+        password: minor?.password || formData.minorPassword,
+        confirmPassword: minor?.confirmPassword || formData.minorConfirmPassword,
         barcode: barcode,
     }
 }

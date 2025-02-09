@@ -370,11 +370,10 @@
                 });
             }
             // Once all submissions are done, check for errors in the data
-            console.log('Registration Data:', registrationData);
             if (registrationData?.message === "Duplicate record found with fuzzy logic.") {
                 showErrorDialog.value = true; 
                 return;
-            }else if (registrationData?.message !== "Record added successfully." || registrationData?.message !== "Duplicate record found with fuzzy logic.") {
+            } else if (registrationData?.message === "Error posting to ILS API") {
                 showSystemErrorDialog.value = true;
                 return;
             }
