@@ -79,8 +79,9 @@
   watch(accepted, (newVal) => {
     if (newVal) {
       userRegistration.setConsent('ECONSENT');
-    }
-    
+    } else {
+      userRegistration.setConsent('ENOCONSENT');
+    }  
   });
 
   // Submit the token to your server for validation

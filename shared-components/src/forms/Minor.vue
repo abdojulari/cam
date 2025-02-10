@@ -586,9 +586,10 @@
     watch([() => isClicked.value, formData.value], ([newIsClicked, newVal]) => {
       isInvalid.value = !newVal.adultFirstname?.trim() || !newVal.adultLastname?.trim() ||
         !newVal.adultEmail?.trim() || !newVal.adultPhone?.trim() || !newVal.adultBuildingNumber?.trim() ||
-        !newVal.adultStreetName?.trim() || !newVal.adultCity?.trim() ||
-        !newVal.adultProvince?.trim() || !newVal.adultPostalCode?.trim() || 
+        !newVal.adultStreetName?.trim() || !newVal.adultCity?.trim() || !newVal.minorPassword?.trim() ||
+        !newVal.minorConfirmPassword?.trim() || !newVal.adultProvince?.trim() || !newVal.adultPostalCode?.trim() || 
         !phonePattern.test(newVal.adultPhone) || !emailPattern.test(newVal.adultEmail) || !postalCodePattern.test(newVal.adultPostalCode);
+        
       userRegistration.setLinkState(newIsClicked);
     }, { deep: true });
 
