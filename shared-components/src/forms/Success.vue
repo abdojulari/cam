@@ -1,5 +1,5 @@
 <template>
-  <v-container class="pa-6 bg-white  max-width-4xl mt-10 mx-auto">
+  <v-container class="pa-6 bg-white mt-10 mx-auto" style="max-width: 980px;" >
     <v-row>
       <v-col cols="12">
         <div class="text-h4 font-weight-semibold mb-4">

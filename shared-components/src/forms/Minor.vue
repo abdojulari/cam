@@ -173,7 +173,7 @@
             v-model="minorsContact" 
             @click="sameAsAdult"
             :text="!isLoading && disabled ? 'Saved' : 'Save Changes'"
-            :disabled = "isLoading || disabled "
+            :disabled = "isLoading || disabled || isMinorInvalid"
             variant="outlined"
             color="primary"
             prepend-icon="mdi-content-save"
@@ -525,6 +525,9 @@
     });
 
     const sameAsAdult = () => {
+      if (isMinorInvalid.value) {
+          return;
+      }
       isLoading.value = true
          
       if (minors.value.length> 0) {

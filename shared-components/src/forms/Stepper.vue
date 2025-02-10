@@ -67,22 +67,6 @@
                                 color="primary"
                             />
                         </div>
-                        <v-row>
-                        <v-col class="d-flex justify-end">
-                            <v-btn
-                                v-if="step === filteredSteps.length && step !== 1"
-                                :disabled="!formData.acceptTerms || (selectedRadio === 'Adult' && !buttonClickState && formData.addMinor)|| (selectedRadio !== 'Adult' && 
-                                !buttonClickState)  || isLoading === true || (selectedRadio === 'Adult' 
-                                && !formData.addMinor && (formData.password.length < 6 || 
-                                formData.password !== formData.confirmPassword))" 
-                                color="primary"
-                                @click="submitForm($event)"
-                                class="me-2"
-                            >
-                                Submit
-                            </v-btn>
-                        </v-col>
-                        </v-row>
                     </v-container>
                     </template>
                     <template v-slot:actions>
@@ -95,13 +79,28 @@
                                 <p class=" font-medium capitalize">Previous</p>
                             </v-btn>
                             <v-spacer v-if="step === 1"/>
-                            <v-btn v-if="(selectedRadio === 'Minor' && step !== 2) || (selectedRadio === 'Adult' && step !== 5)"
+                            <v-btn v-if="(
+                                    (selectedRadio === 'Minor' && step !== 2) ||
+                                    (selectedRadio === 'Adult' && ((step !== 5 && step !== 4) || (step === 4 && formData.addMinor)))
+                                )"
                                 @click="next($event)" 
                                 variant="flat" 
                                 color="primary" 
                                 :disabled="(!formData.radios && page !== 'registration-portal') || disabled || isNextDisabled || !formData.acceptTerms  "
                             >
                                 <p class="font-medium capitalize">Next</p>
+                            </v-btn>
+                            <v-btn
+                                v-if="step === filteredSteps.length && step !== 1"
+                                :disabled="!formData.acceptTerms || (selectedRadio === 'Adult' && !buttonClickState && formData.addMinor)|| (selectedRadio !== 'Adult' && 
+                                !buttonClickState)  || isLoading === true || (selectedRadio === 'Adult' 
+                                && !formData.addMinor && (formData.password.length < 6 || 
+                                formData.password !== formData.confirmPassword))" 
+                                color="primary"
+                                @click="submitForm($event)"
+                                class="me-2"
+                            >
+                                Submit
                             </v-btn>
                         </section>
                     </template>
