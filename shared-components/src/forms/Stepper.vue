@@ -121,7 +121,6 @@
     import ErrorPrompt from './ErrorPrompt.vue';
     import { useUtmParams } from '../composables/useUtmParams';
     import SystemError from './SystemError.vue';
-import { c } from 'vite/dist/node/types.d-aGj9QkWt';
     
     const { gtag } = useGtag()
     const userRegistration = useRegistrationStore();
