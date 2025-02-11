@@ -121,6 +121,7 @@
     import ErrorPrompt from './ErrorPrompt.vue';
     import { useUtmParams } from '../composables/useUtmParams';
     import SystemError from './SystemError.vue';
+import { c } from 'vite/dist/node/types.d-aGj9QkWt';
     
     const { gtag } = useGtag()
     const userRegistration = useRegistrationStore();
@@ -369,6 +370,7 @@
                 });
             }
             // Once all submissions are done, check for errors in the data
+            console.log('WHY ', registrationData);
             if (registrationData?.message === "Duplicate record found with fuzzy logic.") {
                 showErrorDialog.value = true; 
                 return;
