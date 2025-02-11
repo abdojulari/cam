@@ -25,6 +25,7 @@ export const apiService = {
     },
     async registration(payload: any) { 
       try {
+        console.log('payload', payload);
         const access_token = getCookie('access_token');
         const response = await fetch('/api/registration', {
             method: 'POST',

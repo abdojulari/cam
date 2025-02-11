@@ -367,6 +367,7 @@
             try {
                 for (const data of userRegistration.getRegistration) {
                 await apiService.registration(data).then((response) => {
+                    console.log('Data: ', response);
                     registrationData = response;
                 });
             }
