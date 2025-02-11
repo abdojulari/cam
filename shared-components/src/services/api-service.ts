@@ -50,7 +50,7 @@ export const apiService = {
               confirmPassword: payload.data.confirmPassword,
               barcode: payload.data.barcode,
               careof: payload.data.careof,
-              category5: payload.data.consent
+              category5: payload.data.consent ? payload.data.consent : 'ENOCONSENT'
           }),
           credentials: 'include',
         });

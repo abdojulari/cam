@@ -82,10 +82,13 @@
 
       <v-col cols="12">
         <v-btn
-          :block="$vuetify.display.smAndDown"
+          :block="$vuetify.display.xsOnly"
           color="success"
-          max-width="300"
+          max-width="320"
           width="100%"
+          @click="navigateTo('https://epl.bibliocommons.com/user/registration', {
+            external: true
+          })"
         >
           Log In
         </v-btn>
@@ -127,6 +130,7 @@
                 src="~/assets/images/app_Store_Badge.svg" 
                 alt="QR Code" 
                 :width="300"
+                :height="$vuetify.display.smAndDown ? 70 : 100"
                 class="mx-auto mb-4"
               />
               <div v-if="appleDataUrl">
@@ -145,6 +149,7 @@
                 src="~/assets/images/Get_it_on_Google_play.svg" 
                 alt="QR Code" 
                 :width="300"
+                :height="$vuetify.display.smAndDown ? 70 : 100"
                 class="mx-auto mb-4"
               />
               <div v-if="googleDataUrl">
@@ -168,6 +173,7 @@
 import { ref, onMounted } from 'vue'
 import * as QRCode from 'qrcode'
 import { useRegistrationStore } from '../store/registration-store';
+import { navigateTo } from 'nuxt/app';
 
 const registrationStore = useRegistrationStore();
 const registration = registrationStore.getRegistration;
