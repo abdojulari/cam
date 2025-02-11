@@ -360,19 +360,15 @@
    
     const submitForm = async (event) => {
         const buttonName = event.target.innerText;
-        console.log('WHERE ARE YOU', userRegistration.getRegistration);
-        console.log('registration Lasan', userRegistration.registration);
         isLoading.value = true;
             let registrationData;
             try {
-                for (const data of userRegistration.getRegistration) {
+                for (const data of userRegistration.registration) {
                 await apiService.registration(data).then((response) => {
-                    console.log('Data: ', response);
                     registrationData = response;
                 });
             }
             // Once all submissions are done, check for errors in the data
-            console.log('WHY ', registrationData);
             if (registrationData?.message === "Duplicate record found with fuzzy logic.") {
                 showErrorDialog.value = true; 
                 return;

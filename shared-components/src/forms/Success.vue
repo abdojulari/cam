@@ -1,5 +1,5 @@
 <template>
-  <v-container class="pa-6 bg-white mt-10 mx-auto" style="max-width: 980px;" >
+  <v-container class="pa-10 bg-white mt-10 mx-auto px-10 px-md-6" style="max-width: 980px;" >
     <v-row>
       <v-col cols="12">
         <div class="text-h4 font-weight-semibold mb-4">
@@ -81,29 +81,31 @@
       </v-col>
 
       <v-col cols="12">
-        <a 
-          href="https://epl.bibliocommons.com/user/login?destination=%2Fdashboard%2Fuser_dashboard" 
-          color="success" 
-          class="py-3 px-10 text-lg font-weight-bold text-white rounded-lg bg-success"
+        <v-btn
+          :block="$vuetify.display.smAndDown"
+          color="success"
+          max-width="300"
+          width="100%"
         >
           Log In
-        </a>
+        </v-btn>
       </v-col>
     </v-row>
     <v-row>
-      <v-col cols="3">
+      <v-col cols="12" md="3" class="text-center text-md-start">
         <div>
           <a href="https://itunes.apple.com/ca/app/epl-mobile/id390969843?mt=8">
             <v-img 
               src="~/assets/images/eplappphone.png" 
               alt="EPL Mobile App"
-              :width="200"
+              :width="$vuetify.display.smAndDown ? 300 : 200"
+              class="mx-auto mx-md-0"
             />
           </a>
         </div>
       </v-col>
-      <v-col cols="9">
-        <div>
+      <v-col cols="12" md="9">
+        <div class="mb-5">
           <h2 
             class="text-h5 font-weight-bold mb-1"
           >
@@ -116,39 +118,49 @@
             With the EPL Mobile app, you can keep the library in your pocket! It makes your phone a scannable library card and lets you find and discover titles, manage your account, and get branch information.
           </div>
           <br>
-          <span class="text-body-1 font-weight-bold"> Download it now!</span>
+          <span class="text-h6 font-weight-bold"> Download it now!</span>
         </div>
-        <div class="d-flex my-5">
-          <a href="">
-            <v-img 
-              src="~/assets/images/app_Store_Badge.svg" 
-              alt="QR Code" 
-              :width="200" 
-            />
-            <div v-if="appleDataUrl">
+        <v-row>
+          <v-col cols="12" sm="6" class="text-center">
+            <a href="">
               <v-img 
-                :src="appleDataUrl" 
-                alt="Generated QR Code" 
+                src="~/assets/images/app_Store_Badge.svg" 
+                alt="QR Code" 
+                :width="300"
+                class="mx-auto mb-4"
               />
-            </div>
-          </a>
-          <v-spacer />
-          <a href="">
-            <v-img 
-              src="~/assets/images/Get_it_on_Google_play.svg" 
-              alt="QR Code" 
-              :width="200" 
-            />
-            <div v-if="googleDataUrl">
+              <div v-if="appleDataUrl">
+                <v-img 
+                  :src="appleDataUrl" 
+                  alt="Generated QR Code" 
+                  :width="$vuetify.display.smAndDown ? 400 : 300"
+                  class="mx-auto px-8 px-md-2"
+                />
+              </div>
+            </a>
+          </v-col>
+          <v-col cols="12" sm="6" class="text-center">
+            <a href="">
               <v-img 
-                :src="googleDataUrl" 
-                alt="Generated QR Code" 
+                src="~/assets/images/Get_it_on_Google_play.svg" 
+                alt="QR Code" 
+                :width="300"
+                class="mx-auto mb-4"
               />
-            </div>
-          </a>
-        </div>
+              <div v-if="googleDataUrl">
+                <v-img 
+                  :src="googleDataUrl" 
+                  alt="Generated QR Code" 
+                  :width="$vuetify.display.smAndDown ? 400 : 300"
+                  class="mx-auto px-8 px-md-2"
+                />
+              </div>
+            </a>
+          </v-col>
+        </v-row>
       </v-col>
     </v-row>
+    
   </v-container>
   
 </template>

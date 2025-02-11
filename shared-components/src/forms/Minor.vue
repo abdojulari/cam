@@ -503,7 +503,7 @@
         linkDisabled.value = true;
         isClicked.value = true;
         userRegistration.setLinkState(isClicked.value);
-        console.log('LOGIN', userRegistration.getRegistration);
+        //console.log('LOGIN', userRegistration.getRegistration);
         userRegistration.setButtonClickState(isClicked.value);
         return data;
       } catch (err) {
@@ -549,7 +549,7 @@
         userRegistration.addRegistration({data:userRegistration.minor})
       }
       userRegistration.setButtonClickState(isClicked.value);
-      console.log('SAME as :', userRegistration.getRegistration)
+      //console.log('SAME as :', userRegistration.getRegistration)
     };
 
     watch(props.formData, (newVal) => {
@@ -619,7 +619,7 @@
       isClicked.value = true;
       userRegistration.addRegistration({data:userRegistration.minor});
       userRegistration.setButtonClickState(isClicked.value);
-      console.log('ADULT Contact:', userRegistration.getRegistration)
+      //console.log('ADULT Contact:', userRegistration.getRegistration)
     }
 
     // Delete minor from the list
