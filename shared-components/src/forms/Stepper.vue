@@ -360,10 +360,12 @@
    
     const submitForm = async (event) => {
         const buttonName = event.target.innerText;
+        console.log('WHERE ARE YOU', userRegistration.getRegistration);
+        console.log('registration Lasan', userRegistration.registration);
         isLoading.value = true;
             let registrationData;
             try {
-                for (const data of userRegistration.registration) {
+                for (const data of userRegistration.getRegistration) {
                 await apiService.registration(data).then((response) => {
                     registrationData = response;
                 });
