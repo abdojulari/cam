@@ -1,5 +1,5 @@
 // Utility function to build minor registration data
-export const createMinorRegistrationData = (barcode: string, formData: any, minor: any) => {
+export const createMinorRegistrationData = (formData: any, minor: any) => {
     return {
         biodata: {
             firstname: minor?.firstname || formData.minorFirstname,
@@ -19,13 +19,12 @@ export const createMinorRegistrationData = (barcode: string, formData: any, mino
         profile: 'EPL_SELFJ',
         radioSelection: formData.radios,
         password: minor?.password || formData?.minorPassword,
-        confirmPassword: minor?.confirmPassword || formData.minorConfirmPassword,
-        barcode: barcode,
+        confirmPassword: minor?.confirmPassword || formData.minorConfirmPassword
     };
 };
 
 // Utility function to create registration data for both adults and minors
-export const createRegistrationData = (barcode: string, formData: any, minor?: any, data?: any) => {
+export const createRegistrationData = (formData: any, minor?: any, data?: any) => {
     return {
         biodata: {
             firstname: minor?.firstname || formData?.minorFirstname,
@@ -45,12 +44,11 @@ export const createRegistrationData = (barcode: string, formData: any, minor?: a
         profile: 'EPL_SELFJ',
         radioSelection: formData?.radios,
         password: minor?.password || formData?.minorPassword,
-        confirmPassword: minor?.confirmPassword || formData?.minorConfirmPassword,
-        barcode: barcode,
+        confirmPassword: minor?.confirmPassword || formData?.minorConfirmPassword
     };
 };
 
-export const sameAsAdultData = (formData: any, barcode: any, minor?: any) => {
+export const sameAsAdultData = (formData: any, minor?: any) => {
     return {
         biodata: {
           firstname: minor?.firstname || formData.minorFirstname,
@@ -71,6 +69,5 @@ export const sameAsAdultData = (formData: any, barcode: any, minor?: any) => {
         radioSelection: formData.radios,
         password: minor?.password || formData.minorPassword,
         confirmPassword: minor?.confirmPassword || formData.minorConfirmPassword,
-        barcode: barcode,
     }
 }

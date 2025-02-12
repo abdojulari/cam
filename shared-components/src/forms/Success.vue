@@ -21,19 +21,12 @@
           Please check your inbox for your library card.
         </p>
     
-        <h6 v-if="registration.length > 0"  class="text-h6 text-primary font-weight-bold">Library Card Number(s)</h6>
-        <div v-for="(entry, index) in registration" :key="index">    
-          <div v-if="!entry.data.careof">
-            <span><strong>{{ entry.data.biodata.firstname }} {{ entry.data.biodata.lastname }}</strong>: {{ entry.data.barcode }}</span>
+        <h6 v-if="data.length > 0"  class="text-h6 text-primary font-weight-bold">Library Card Number(s)</h6>
+        <div v-for="(entry, index) in data" :key="index">    
+          <div>
+            <span><strong>{{ entry.name }}</strong>: {{ entry.barcode }}</span>
           </div>
-          <div v-else>
-            <div v-if="registration.length > 1 && entry.data.careof">
-              <span><strong>{{ entry.data.biodata.firstname }} {{ entry.data.biodata.lastname }}</strong>: {{ entry.data.barcode }}</span>
-            </div>
-            <div v-else>
-              <span><strong>{{ entry.data.biodata.firstname }} {{ entry.data.biodata.lastname }}</strong>: {{ entry.data.barcode }}</span>
-            </div>
-          </div>
+          
         </div>
       </v-col>
 
@@ -176,8 +169,7 @@ import { useRegistrationStore } from '../store/registration-store';
 import { navigateTo } from 'nuxt/app';
 
 const registrationStore = useRegistrationStore();
-const registration = registrationStore.getRegistration;
-//const dialog = ref(false)
+const data = registrationStore.getSuccessResponse;
 
 const appleDataUrl = ref<string >()
 const googleDataUrl = ref<string>()
@@ -201,15 +193,9 @@ onMounted(async () => {
   // URL for the App Store
   const appleUrl = 'https://itunes.apple.com/ca/app/epl-mobile/id390969843?mt=8'
   appleDataUrl.value = await generateQRCode(appleUrl)
+
 })
 
-// turn on the dialog
-// const showDialog = () => {
-//   dialog.value = true
-// }
-// const printPreview = () => {
-//   window.print();
-// };
 </script>
 
 <style scoped>

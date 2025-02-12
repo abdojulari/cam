@@ -25,6 +25,7 @@
           :rules="[props.rules.required, props.rules.firstname]"
           density="compact"
           variant="outlined"
+          :maxlength="25"
         />
         </v-col>  
         <v-col cols="12" sm="6">
@@ -34,7 +35,8 @@
             density="compact"
             :rules="[props.rules.required, props.rules.lastname]"
             variant="outlined"
-            />
+            :maxlength="25"
+          />
         </v-col>    
         <v-col cols="12" sm="6">
           <v-text-field 
@@ -43,6 +45,7 @@
             density="compact"
             :rules="[(v: string) => /^[a-zA-Z]*$/.test(v) || 'Only alphabetic characters are allowed']"
             variant="outlined"
+            :maxlength="25"
           />
         </v-col>      
         <v-col cols="12" sm="6">
@@ -272,6 +275,7 @@
                 :rules="[props.rules.required, props.rules.firstname]"
                 density="compact"
                 variant="outlined"
+                :maxlength="25"
               />
             </v-col>
             <v-col cols="12" sm="6">
@@ -281,6 +285,7 @@
                 :rules="[props.rules.required, props.rules.lastname]"
                 density="compact"
                 variant="outlined"
+                :maxlength="25"
               />
             </v-col>
             <v-col cols="12" sm="6">
@@ -436,7 +441,6 @@
   const loading = ref(false);
   const isLoading = ref(false);
   const loader = ref(false);
-  const barcode = ref('');
   const disabled = ref(false);
   const linkDisabled = ref(false);
   const isInvalid = ref(true);
@@ -458,9 +462,6 @@
   onMounted(() => {
     formData.value.confirmPassword = '';
     formData.value.password = '';
-    apiService.fetchBarcode().then((item) => {
-      barcode.value = item;
-    });
   });
   // create watch for loading 
     watch(loading, async (value) => {
@@ -487,15 +488,15 @@
         // If minors exist, add their registrations
         if (minors.value.length > 0) {
           minors.value.forEach(async (minor) => {
-            const barcode = await apiService.fetchBarcode();
-            userRegistration.setMinor(createRegistrationData(barcode, props.formData, minor, data));
+            userRegistration.setMinor(createRegistrationData(props.formData, minor, data));
             userRegistration.minor.consent = userRegistration.getConsent
             userRegistration.addRegistration({ data: userRegistration.minor });
           });
         }
 
         // Register the main user if no minors
-        userRegistration.setMinor(createRegistrationData(barcode.value, props.formData, undefined, data));
+        userRegistration.setMinor(createRegistrationData(props.formData, undefined, data));
+        userRegistration.minor.consent = userRegistration.getConsent
         userRegistration.addRegistration({ data: userRegistration.minor });
 
         // Reset loading and linkDisabled states
@@ -532,14 +533,13 @@
          
       if (minors.value.length> 0) {
         minors.value.map(async minor => {
-          const barcode = await apiService.fetchBarcode();
-          userRegistration.setMinor(sameAsAdultData(props.formData, barcode, minor));
+          userRegistration.setMinor(sameAsAdultData(props.formData, minor));
           userRegistration.minor.consent = userRegistration.getConsent
           userRegistration.addRegistration({data:userRegistration.minor});
         });
       }
       
-      userRegistration.setMinor(sameAsAdultData(props.formData, barcode.value));
+      userRegistration.setMinor(sameAsAdultData(props.formData));
       userRegistration.minor.consent = userRegistration.getConsent
       isClicked.value = true;
       disabled.value = true  
@@ -608,13 +608,12 @@
       }, 2000)
       if (minors.value.length> 0) {
         minors.value.map(async minor => {
-          const barcode = await apiService.fetchBarcode();
-          userRegistration.setMinor(createMinorRegistrationData(barcode,props.formData,  minor,));
+          userRegistration.setMinor(createMinorRegistrationData(props.formData,  minor));
           userRegistration.minor.consent = userRegistration.getConsent
           userRegistration.addRegistration({data:userRegistration.minor});
         });
       }
-      userRegistration.setMinor(createMinorRegistrationData(barcode.value,props.formData, undefined));
+      userRegistration.setMinor(createMinorRegistrationData(props.formData, undefined));
       userRegistration.minor.consent = userRegistration.getConsent
       isClicked.value = true;
       userRegistration.addRegistration({data:userRegistration.minor});

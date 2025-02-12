@@ -43,24 +43,14 @@
 <script setup lang="ts">
   import { computed, onMounted, ref, watch } from 'vue';
   import { useRegistrationStore } from '../store/registration-store';
-  import { apiService } from '../services/api-service';
 
   const disabled = ref(false);
   const props = defineProps(['formData', 'rules']);
-  const barcode = ref('');
   const userRegistration = useRegistrationStore();
   // create a local formData and set it to the props
   const formData = ref(props.formData);
   const confirmPinRules = computed(() => {
     return props.formData.confirmPassword !== props.formData.password ? 'Pins do not match' : true;
-  });
-  onMounted(() => {
-    // if it is an adult, fetch the barcode
-    if (userRegistration.getRadioSelection === 'Adult') {
-      apiService.fetchBarcode().then((item) => {
-        barcode.value = item;
-      });
-    }
   });
 
   // Ensure widget is rendered on component mount
@@ -73,7 +63,6 @@
           userRegistration.adult.password = props.formData.password;
           userRegistration.adult.confirmPassword = props.formData.confirmPassword;
           userRegistration.adult.profile = 'EPL_SELF'
-          userRegistration.adult.barcode = barcode.value
           userRegistration.adult.consent = userRegistration.getConsent
         }
     

@@ -364,10 +364,15 @@
             let registrationData;
             try {
                 for (const data of userRegistration.registration) {
-                await apiService.registration(data).then((response) => {
-                    registrationData = response;
-                });
-            }
+                    await apiService.registration(data).then((response) => {
+                        registrationData = response;
+                        // create a state managenennt for the response then extract the barcode
+                        userRegistration.setSuccessResponse({
+                            name: response?.data?.firstName + ' ' + response?.data?.lastName,
+                            barcode: response?.data?.barcode,
+                        });
+                    });
+                }
             // Once all submissions are done, check for errors in the data
             if (registrationData?.message === "Duplicate record found with fuzzy logic.") {
                 showErrorDialog.value = true; 
@@ -378,6 +383,7 @@
             }
             
             sendEventToGA(buttonName);
+           
             // Proceed to next page if no errors
             router.push('/success-page');
         } catch (error) {

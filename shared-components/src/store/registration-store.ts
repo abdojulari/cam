@@ -1,3 +1,4 @@
+import { set } from '@dotenvx/dotenvx';
 import { defineStore } from 'pinia'
 interface BioData {
     firstname: string;
@@ -42,6 +43,12 @@ interface Password {
     password: string;
     confirmPassword: string;
 }
+interface SuccessResponse {
+    data: {
+      name: string;
+      barcode: string;
+    };
+}
 export const useRegistrationStore = defineStore({
   id: 'registration',
   state: () => ({
@@ -59,7 +66,8 @@ export const useRegistrationStore = defineStore({
     password: {} as Password,
     turnstile: false,
     linkState: false,
-    buttonClickState: false
+    buttonClickState: false,
+    successResponse: [] as SuccessResponse[],
   }),
   actions: {
     async setTurnstile(turnstile: boolean) {
@@ -171,6 +179,13 @@ export const useRegistrationStore = defineStore({
         } catch (error) {
           console.error(error);
         }
+      },
+      async setSuccessResponse(successResponse: SuccessResponse) {
+        try {
+          this.successResponse.push(successResponse);
+        } catch (error) {
+          console.error(error);
+        }
       }
   },
   getters: {
@@ -218,6 +233,9 @@ export const useRegistrationStore = defineStore({
     },
     getButtonClickState(): boolean {
         return this.buttonClickState;
+    },
+    getSuccessResponse(): SuccessResponse[] {
+        return this.successResponse;
     }
   },
 

@@ -1,31 +1,33 @@
 // services/api-service.ts
 import { getCookie } from '../composables/get-cookies';
+import {dateFormat} from '../composables/dateFormat';
 
 export const apiService = {
-    async fetchBarcode() {
-      try {
-        const response = await fetch('/api/get-barcode', {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json'
-            },
-        });
+    // async fetchBarcode() {
+    //   try {
+    //     const response = await fetch('/api/get-barcode', {
+    //         method: 'GET',
+    //         headers: {
+    //             'Content-Type': 'application/json',
+    //             'Accept': 'application/json'
+    //         },
+    //     });
 
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
+    //     if (!response.ok) {
+    //         throw new Error(`HTTP error! status: ${response.status}`);
+    //     }
 
-        const data = await response.json();
-        return data.barcode;
-        } catch (error) {
-            console.error('Error getting barcode:', error);
-            throw error;
-        }
-    },
+    //     const data = await response.json();
+    //     return data.barcode;
+    //     } catch (error) {
+    //         console.error('Error getting barcode:', error);
+    //         throw error;
+    //     }
+    // },
     async registration(payload: any) { 
       try {
         const access_token = getCookie('access_token');
+        const formattedDateOfBirth = dateFormat(payload.data.biodata.dateofbirth);
         const response = await fetch('/api/registration', {
             method: 'POST',
             headers: {
@@ -38,7 +40,7 @@ export const apiService = {
               firstname: payload.data.biodata.firstname,
               lastname: payload.data.biodata.lastname,
               middlename: payload.data.biodata.middlename,
-              dateofbirth: payload.data.biodata.dateofbirth,
+              dateofbirth: formattedDateOfBirth,
               address: payload.data.contact.street,
               city: payload.data.contact.city,
               province: payload.data.contact.province,
@@ -48,7 +50,6 @@ export const apiService = {
               profile: payload.data.profile,
               password: payload.data.password,
               confirmPassword: payload.data.confirmPassword,
-              barcode: payload.data.barcode,
               careof: payload.data.careof,
               category5: payload.data.consent ? payload.data.consent : 'ENOCONSENT'
           }),

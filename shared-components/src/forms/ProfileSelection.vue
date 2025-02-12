@@ -76,11 +76,13 @@
       });
     });
   });
+
   watch(accepted, (newVal) => {
     if (newVal) {
       userRegistration.setConsent('ECONSENT');
-    } 
-    userRegistration.setConsent('ENOCONSENT');
+    } else {
+      userRegistration.setConsent('ENOCONSENT');
+    }
   });
 
   // Submit the token to your server for validation
