@@ -3,27 +3,6 @@ import { getCookie } from '../composables/get-cookies';
 import {dateFormat} from '../composables/dateFormat';
 
 export const apiService = {
-    // async fetchBarcode() {
-    //   try {
-    //     const response = await fetch('/api/get-barcode', {
-    //         method: 'GET',
-    //         headers: {
-    //             'Content-Type': 'application/json',
-    //             'Accept': 'application/json'
-    //         },
-    //     });
-
-    //     if (!response.ok) {
-    //         throw new Error(`HTTP error! status: ${response.status}`);
-    //     }
-
-    //     const data = await response.json();
-    //     return data.barcode;
-    //     } catch (error) {
-    //         console.error('Error getting barcode:', error);
-    //         throw error;
-    //     }
-    // },
     async registration(payload: any) { 
       try {
         const access_token = getCookie('access_token');
