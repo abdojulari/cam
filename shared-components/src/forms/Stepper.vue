@@ -354,7 +354,7 @@
             event_label: filteredSteps.value[step.value - 1].title,
             registration_type: selectedRadio.value === 'Adult' ? 'EPL_SELF' : 'EPL_SELFJ',
             step: step.value,
-            utmData: [...utmParams]
+            ...utmParams
         });
     }
    
