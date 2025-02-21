@@ -120,6 +120,7 @@
     import { rules } from '../composables/rules';
     import ErrorPrompt from './ErrorPrompt.vue';
     import { useUtmParams } from '../composables/useUtmParams';
+    import { useReproducibleData } from '../composables/reproducible-data';
     import SystemError from './SystemError.vue';
     
     const { gtag } = useGtag()
@@ -190,12 +191,14 @@
     });
 
     onMounted(async () => {
+        
         apiService.initializeToken().then((response) => {
             return response;
         });
         apiService.sanctumToken().then((response) => {
             return response;
         });
+        
         return formData.value.radios = selectedRadio.value;
     });
     // Filter items based on the current page
@@ -217,7 +220,7 @@
         return stepList.slice(0,1); 
     });
     // Navigation methods
-    const next = (event) => {
+    const next = async (event) => {
         // Handle submission based on current step
         const buttonName = event.target.innerText;
         if (filteredSteps.value[step.value - 1].title === 'About You') {
@@ -233,7 +236,17 @@
                 dateofbirth: (formData.value.dateofBirth).toISOString().split('T')[0],
             };
             sendEventToGA(buttonName);
-            
+            // send the reproducible data to the api
+            const reproducibleData = useReproducibleData({
+                eventCategory: 'EPL_SELF',
+                eventLabel: `${buttonName} button clicked`,
+                screenName: filteredSteps.value[step.value - 1].title,
+                registrationType: 'EPL_SELF',
+                dob: (formData.value.dateofBirth).toISOString().split('T')[0],
+                step: step.value,
+            });
+            await apiService.reproducibleData(reproducibleData);
+           
         } else if (filteredSteps.value[step.value - 1].title === 'Contact') {
             
             if ( formData.value.city === '' || formData.value.streetName === '' 
@@ -252,12 +265,32 @@
             };
             sendEventToGA(buttonName);
             //console.log(userRegistration.adult.contact);
+            // send the reproducible data to the api
+            const reproducibleData = useReproducibleData({
+                eventCategory: 'EPL_SELF',
+                eventLabel: `${buttonName} button clicked`,
+                screenName: filteredSteps.value[step.value - 1].title,
+                registrationType: 'EPL_SELF',
+                postalCode: formData.value.postalCode,
+                step: step.value,
+            });
+            await apiService.reproducibleData(reproducibleData);
+            
         } else if (filteredSteps.value[step.value - 1].title === 'Profile') {
             userRegistration.adult.profile = formData.value.radios; 
             userRegistration.adult.consent = userRegistration.getConsent;
             userRegistration.minor.consent = userRegistration.getConsent;
             
             sendEventToGA(buttonName);
+            // send the reproducible data to the api
+            const reproducibleData = useReproducibleData({
+                eventCategory: 'EPL_SELF',
+                eventLabel: `${buttonName} button clicked`,
+                screenName: filteredSteps.value[step.value - 1].title,
+                registrationType: 'EPL_SELF',
+                step: step.value,
+            });
+            await apiService.reproducibleData(reproducibleData);
         } 
        
         if (step.value < filteredSteps.value.length) {
@@ -383,7 +416,15 @@
             }
             
             sendEventToGA(buttonName);
-           
+            const reproducibleData = useReproducibleData({
+                eventCategory: 'Complete Registration',
+                eventLabel: `${buttonName} button clicked`,
+                screenName: 'Success Page',
+                registrationType: selectedRadio.value === 'Adult' ? 'EPL_SELF' : 'EPL_SELFJ',
+                step: step.value,
+            });
+            await apiService.reproducibleData(reproducibleData);
+
             // Proceed to next page if no errors
             router.push('/success-page');
         } catch (error) {

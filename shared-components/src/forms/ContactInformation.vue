@@ -107,9 +107,30 @@
     // create local formData and set it to the props
     const formData = ref(props.formData);
 
+    const abbreviationMap = {
+      'St': 'Street',
+      'Str': 'Street',
+      'Ave': 'Avenue',
+      'NW': 'Northwest',
+      'NE': 'Northeast',
+      'SW': 'Southwest',
+      'Blvd': 'Boulevard',
+      'Dr': 'Drive',
+      'Rd': 'Road'
+    };
     // Function to update formData.street
     const updateStreet = () => {
       const aptUnit = formData.value.aptUnit ? `${formData.value.aptUnit} -` : '';
+         // Replace abbreviations with full names
+      let streetName = formData.value.streetName;
+      Object.keys(abbreviationMap).forEach(abbr => {
+        const regex = new RegExp(`\\b${abbr}\\b`, 'gi'); // Match the abbreviation as a whole word
+        streetName = streetName.replace(regex, abbreviationMap[abbr]);
+      });
+
+      // Update the streetName in formData after replacement
+      formData.value.streetName = streetName;
+      
       const parts = [
         aptUnit,
         formData.value.buildingNumber,

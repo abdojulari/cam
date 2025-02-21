@@ -40,7 +40,7 @@ export const createRegistrationData = (formData: any, minor?: any, data?: any) =
             email: data?.address?.email,
             postalcode: data?.address?.postalCode,
         },
-        careof: data?.address?.careOf,
+        careof: data?.address?.careOf ? `${data?.address?.careOf}` : `${data?.firstName} ${data?.lastName}`,
         profile: 'EPL_SELFJ',
         radioSelection: formData?.radios,
         password: minor?.password || formData?.minorPassword,

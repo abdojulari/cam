@@ -1,4 +1,5 @@
 import { nxViteTsPaths } from '@nx/vite/plugins/nx-tsconfig-paths.plugin';
+import { config } from 'dotenv';
 import { defineNuxtConfig } from 'nuxt/config';
 import vuetify, { transformAssetUrls } from 'vite-plugin-vuetify'
 // https://nuxt.com/docs/api/configuration/nuxt-config
@@ -43,6 +44,7 @@ export default defineNuxtConfig({
       VITE_CRE_PASSWORD: process?.env.VITE_CRE_PASSWORD,
       VITE_CRE_AUTH_URL: process?.env.VITE_CRE_AUTH_URL,
       CRE_CUSTOMER_AUTH_URL: process?.env.CRE_CUSTOMER_AUTH_URL,
+      CRE_STATISTICS_URL: process?.env.CRE_STATISTICS_URL,
     }
   },
   $development: {
@@ -100,7 +102,9 @@ export default defineNuxtConfig({
         analytics_storage: 'granted',
         wait_for_update: 500,
       }]
-    ]
+    ],
+    config:{},
+    event_name:'epl_card_reg'
   },
   typescript: {
     typeCheck: true,

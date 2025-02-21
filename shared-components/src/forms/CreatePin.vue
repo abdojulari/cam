@@ -43,6 +43,8 @@
 <script setup lang="ts">
   import { computed, onMounted, ref, watch } from 'vue';
   import { useRegistrationStore } from '../store/registration-store';
+import { useReproducibleData } from '../composables/reproducible-data';
+import { apiService } from '../services/api-service';
 
   const disabled = ref(false);
   const props = defineProps(['formData', 'rules']);
@@ -83,11 +85,23 @@
     }
   });
 
-  watch(
-    () => [formData.value.password, formData.value.confirmPassword],
+  watch(() => [formData.value.password, formData.value.confirmPassword],
     ([newPassword, newConfirmPassword]) => {
       if (newPassword && newConfirmPassword && newPassword === newConfirmPassword) {
         onPasswordConfirmation(true);
+        // send the reproducible data to the api
+        const reproducibleData = useReproducibleData({
+          eventCategory: 'EPL_SELF',
+          eventLabel: '',
+          screenName: 'Choose Your Password',
+          registrationType: 'EPL_SELF',
+          step: 4,
+        });
+        apiService.reproducibleData(reproducibleData).then((response) => {
+          console.log(response);
+          return response;
+        });
+
       }
     }
   );

@@ -103,6 +103,13 @@ export const apiService = {
         console.error('Error during Sanctum token generation:');
         throw new Error('Sanctum token generation failed');
       }
+    },
+    async reproducibleData(params: any) {
+      const response = await $fetch('/api/reproducible-data', {
+        method: 'POST',
+        body: JSON.stringify(params),
+      });
+      return response;
     }
 };
   

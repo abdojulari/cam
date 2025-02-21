@@ -21,6 +21,7 @@
                     density="compact"
                     :rules="[rules.required, props.rules.firstname]"
                     :error-messages="formValid && !formData.firstname ? ['First name is required'] : []" 
+                    :maxlength="25"
                     required
                     />
                 </v-col>
@@ -32,6 +33,7 @@
                     variant="outlined"
                     density="compact"
                     :rules="[rules.required, props.rules.lastname]"
+                    :maxlength="25"
                     required
                     />
                 </v-col> 
@@ -43,6 +45,7 @@
                     variant="outlined"
                     :rules="[(v: string) => /^[a-zA-Z]*$/.test(v) || 'Only alphabetic characters are allowed']"
                     density="compact"
+                    :maxlength="25"
                     />
                 </v-col>
                 <v-col cols="12" sm="6">
@@ -100,4 +103,6 @@
             year: 'numeric',
         }).format(props.formData.dateofBirth);
     });
+
+
 </script>

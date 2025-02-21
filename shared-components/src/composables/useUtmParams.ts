@@ -5,7 +5,6 @@ export function useUtmParams() {
 
     const urlParams = new URLSearchParams(window.location.search)
     const utmParams: { [key: string]: string } = {}
-    
     // List of UTM parameters to capture
     const utmKeys = [
       'utm_source',
@@ -21,9 +20,9 @@ export function useUtmParams() {
         utmParams[key] = value
       }
     })
-
+    
     return utmParams
   }
-
+  
   return getUtmParams()
 }

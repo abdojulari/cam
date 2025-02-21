@@ -82,8 +82,8 @@
             density="compact"
             hint="Password must be 6-20 characters long, no space or special characters allowed."
             persistent-hint
-            :minLength="6"
-            :maxLength="20"
+            :minlength="6"
+            :maxlength="20"
           />
           
         </v-col>
@@ -95,8 +95,8 @@
             :rules="[props.rules.required,confirmPinRules]"
             type="password"
             density="compact"
-            :minLength="6"
-            :maxLength="20"   
+            :minlength="6"
+            :maxlength="20"   
           />
         </v-col>    
     </v-row>  
@@ -422,6 +422,8 @@
     createRegistrationData, 
     sameAsAdultData
   } from '../constants/minor-form-data';
+import { useReproducibleData } from '../composables/reproducible-data';
+import { useUtmParams } from '../composables/useUtmParams';
 
 
   interface Minor {
@@ -454,6 +456,9 @@
   const passwordRegex = /^(?=[A-Za-z0-9]{6,20}$)(?!.*\s).*$/;
   const emailPattern = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
   const phonePattern = /^\d{3}-\d{3}-\d{4}$/;
+
+  const { gtag } = useGtag();
+  const utmParams = useUtmParams()
 
   let minorId = 0;
   const confirmPinRules = computed(() => {
@@ -504,8 +509,20 @@
         linkDisabled.value = true;
         isClicked.value = true;
         userRegistration.setLinkState(isClicked.value);
-        //console.log('LOGIN', userRegistration.getRegistration);
+        console.log('LOGIN', userRegistration.getRegistration);
+        console.log('Data: ', data);
         userRegistration.setButtonClickState(isClicked.value);
+        const reproducibleData = useReproducibleData({
+            eventCategory: 'Link your child(ren) to your EPL card',
+            eventLabel: 'Save Changes button clicked',
+            screenName: 'Child Details',
+            registrationType: 'EPL_SELFJ',
+            postalCode: formData.value.adultPostalCode,
+            dob: formData.value.minorDateOfBirth,
+            step: 2,
+        });
+        await apiService.reproducibleData(reproducibleData);
+        sendEventToGA('Save Changes');
         return data;
       } catch (err) {
         loading.value = false;  // Ensure loading state is reset if an error occurs
@@ -525,7 +542,7 @@
       }).format(props.formData.minorDateOfBirth);
     });
 
-    const sameAsAdult = () => {
+    const sameAsAdult = async () => {
       if (isMinorInvalid.value) {
           return;
       }
@@ -549,6 +566,17 @@
         userRegistration.addRegistration({data:userRegistration.minor})
       }
       userRegistration.setButtonClickState(isClicked.value);
+      const reproducibleData = useReproducibleData({
+          eventCategory: 'Adding a child to your existing account',
+          eventLabel: 'Save Changes button clicked',
+          screenName: 'Child Details',
+          registrationType: 'EPL_SELFJ',
+          postalCode: formData.value.adultPostalCode,
+          dob: formData.value.minorDateOfBirth,
+          step: 5,
+      });
+      await apiService.reproducibleData(reproducibleData);
+      sendEventToGA('Save Changes');
       //console.log('SAME as :', userRegistration.getRegistration)
     };
 
@@ -597,7 +625,7 @@
     }, { deep: true });
 
     // Link adult to the minor
-    const linkAdult = () => {
+    const linkAdult = async () => {
       if (isInvalid.value) {
           return;
       }
@@ -618,6 +646,17 @@
       isClicked.value = true;
       userRegistration.addRegistration({data:userRegistration.minor});
       userRegistration.setButtonClickState(isClicked.value);
+      const reproducibleData = useReproducibleData({
+          eventCategory: 'Details of Adult responsible for the child(ren)',
+          eventLabel: 'Save Changes button clicked',
+          screenName: 'Child Details',
+          registrationType: 'EPL_SELFJ',
+          postalCode: formData.value.adultPostalCode,
+          dob: formData.value.minorDateOfBirth,
+          step: 2,
+      });
+      await apiService.reproducibleData(reproducibleData);
+      sendEventToGA('Save Changes');
       //console.log('ADULT Contact:', userRegistration.getRegistration)
     }
 
@@ -678,16 +717,64 @@
       formData.value.adultPostalCode = value.trim();
       event.target.value = value;
     };
+
+    // Function to update formData.street
+    // const updateStreet = () => {
+    //   const adultAptUnit = formData.value.adultAptUnit ? `${formData.value.adultAptUnit} -` : '';
+    //   const parts = [
+    //     adultAptUnit,
+    //     formData.value.adultBuildingNumber,
+    //     formData.value.adultStreetName
+    //   ].filter(Boolean);
+    //   formData.value.adultStreet = parts.join(' ');
+    // };
+
+    
+    const abbreviationMap: any = {
+      'St': 'Street',
+      'Str': 'Street',
+      'Ave': 'Avenue',
+      'NW': 'Northwest',
+      'NE': 'Northeast',
+      'SW': 'Southwest',
+      'Blvd': 'Boulevard',
+      'Dr': 'Drive',
+      'Rd': 'Road'
+    };
     // Function to update formData.street
     const updateStreet = () => {
       const adultAptUnit = formData.value.adultAptUnit ? `${formData.value.adultAptUnit} -` : '';
+         // Replace abbreviations with full names
+      let streetName = formData.value.adultStreetName;
+      Object.keys(abbreviationMap).forEach(abbr => {
+        const regex = new RegExp(`\\b${abbr}\\b`, 'gi'); // Match the abbreviation as a whole word
+        streetName = streetName.replace(regex, abbreviationMap[abbr]);
+      });
+
+      // Update the streetName in formData after replacement
+      formData.value.adultStreetName = streetName;
+      
       const parts = [
-        adultAptUnit,
+      adultAptUnit,
         formData.value.adultBuildingNumber,
         formData.value.adultStreetName
       ].filter(Boolean);
       formData.value.adultStreet = parts.join(' ');
     };
+
+    
+    const sendEventToGA = (buttonName: string) => {
+        gtag('event', `${buttonName} Event Triggered`, {
+            app_name: 'EPL | Online Registration',
+            screen_name: 'Child Screen',
+            event_category: `${buttonName} button clicked`,
+            event_label: 'Child Details',
+            registration_type: 'EPL_SELFJ',
+            step: 2,
+            ...utmParams
+        });
+    }
+
 </script>
 <style scoped>
 @media (max-width: 600px) {
