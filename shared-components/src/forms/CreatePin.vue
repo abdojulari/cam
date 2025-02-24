@@ -41,22 +41,24 @@
 </template>
   
 <script setup lang="ts">
-  import { computed, onMounted, ref, watch } from 'vue';
+  import { computed, ref, watch } from 'vue';
   import { useRegistrationStore } from '../store/registration-store';
-import { useReproducibleData } from '../composables/reproducible-data';
-import { apiService } from '../services/api-service';
+  import { useReproducibleData } from '../composables/reproducible-data';
+  import { apiService } from '../services/api-service';
 
   const disabled = ref(false);
   const props = defineProps(['formData', 'rules']);
   const userRegistration = useRegistrationStore();
+  const postedAlready = ref(false);
   // create a local formData and set it to the props
   const formData = ref(props.formData);
   const confirmPinRules = computed(() => {
     return props.formData.confirmPassword !== props.formData.password ? 'Pins do not match' : true;
   });
 
+
   // Ensure widget is rendered on component mount
-  const onPasswordConfirmation = (value: boolean) => {
+  const onPasswordConfirmation = async (value: boolean) => {
     if (value) {
       disabled.value = true;    
       // Check if the pins match before setting the password
@@ -69,7 +71,7 @@ import { apiService } from '../services/api-service';
         }
     
         if (userRegistration.getRadioSelection === 'Adult') {
-          userRegistration.addRegistration({data:userRegistration.adult})
+          await userRegistration.addRegistration({data:userRegistration.adult})
         }
       } else {
         // Optionally, handle the case where pinpins do not match
@@ -97,11 +99,14 @@ import { apiService } from '../services/api-service';
           registrationType: 'EPL_SELF',
           step: 4,
         });
-        apiService.reproducibleData(reproducibleData).then((response) => {
-          console.log(response);
-          return response;
-        });
-
+        if (!postedAlready.value) {
+          apiService.reproducibleData(reproducibleData).then((response: any) => {
+            if (response?.message === 'Data received for statistics') {
+              postedAlready.value = true;
+            }
+            return response.message;
+          });
+        }
       }
     }
   );

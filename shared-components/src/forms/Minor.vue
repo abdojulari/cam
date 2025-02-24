@@ -328,6 +328,10 @@
                 density="compact"
                 prepend-inner-icon="mdi-road"
                 @input="updateStreet"
+                :rules="[
+                  (value: any) => !!value || 'Street name is required',
+                  (value: string) => /^[a-zA-Z0-9\s\-\'\/#]+$/.test(value) || 'Invalid characters in street name'
+                ]"
               />
             </v-col>
             <v-col cols="12" sm="6">
@@ -456,6 +460,7 @@ import { useUtmParams } from '../composables/useUtmParams';
   const passwordRegex = /^(?=[A-Za-z0-9]{6,20}$)(?!.*\s).*$/;
   const emailPattern = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
   const phonePattern = /^\d{3}-\d{3}-\d{4}$/;
+  const streetNamePattern = /^[a-zA-Z0-9\s\-\'\/#]+$/;
 
   const { gtag } = useGtag();
   const utmParams = useUtmParams()
@@ -617,7 +622,7 @@ import { useUtmParams } from '../composables/useUtmParams';
     watch([() => isClicked.value, formData.value], ([newIsClicked, newVal]) => {
       isInvalid.value = !newVal.adultFirstname?.trim() || !newVal.adultLastname?.trim() ||
         !newVal.adultEmail?.trim() || !newVal.adultPhone?.trim() || !newVal.adultBuildingNumber?.trim() ||
-        !newVal.adultStreetName?.trim() || !newVal.adultCity?.trim() || !newVal.minorPassword?.trim() ||
+        !newVal.adultStreetName?.trim() || !newVal.adultCity?.trim() || !newVal.minorPassword?.trim() || !streetNamePattern.test(newVal.adultStreetName) ||
         !newVal.minorConfirmPassword?.trim() || !newVal.adultProvince?.trim() || !newVal.adultPostalCode?.trim() || 
         !phonePattern.test(newVal.adultPhone) || !emailPattern.test(newVal.adultEmail) || !postalCodePattern.test(newVal.adultPostalCode);
         

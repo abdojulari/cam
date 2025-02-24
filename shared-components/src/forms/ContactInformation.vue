@@ -22,6 +22,10 @@
             density="compact"
             prepend-inner-icon="mdi-road"
             @input="updateStreet"
+            :rules="[
+              value => !!value || 'Street name is required',
+              value => /^[a-zA-Z0-9\s\-\'\/#]+$/.test(value) || 'Invalid characters in street name'
+            ]"
           />
         </v-col>
         <v-col cols="12" sm="6">
@@ -159,7 +163,7 @@
           value = value.slice(0, 3) + ' ' + value.slice(3, 6);
       }
 
-      formData.value.adultPostalCode = value.trim();
+      formData.value.postalCode = value.trim().toUpperCase();
       event.target.value = value;
     };
 
