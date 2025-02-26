@@ -7,7 +7,7 @@
             v-model="formData.buildingNumber"
             variant="outlined"
             density="compact"
-            type="number"
+            :rules="[rules.required, alphanumericRule]"
             required
             prepend-inner-icon="mdi-home"
             @input="updateStreet"
@@ -34,8 +34,8 @@
             v-model="formData.aptUnit"
             variant="outlined"
             density="compact"
-            type="number"
             prepend-inner-icon="mdi-office-building"
+            :rules="[alphanumericRule]"
             @input="updateStreet"
           />
         </v-col>
@@ -106,10 +106,13 @@
   <script setup>
     import { vMaska } from "maska/vue"
     import { ref } from 'vue';
+import { rules } from "../composables/rules";
     const props = defineProps(['formData', 'rules']);
 
     // create local formData and set it to the props
     const formData = ref(props.formData);
+    // create a rule for aptUnit and buildingNumber fields to only accept alphanumeric characters
+    const alphanumericRule = value => /^[a-zA-Z0-9\s\-\'\/#]+$/.test(value) || 'Invalid characters';
 
     const abbreviationMap = {
       'St': 'Street',

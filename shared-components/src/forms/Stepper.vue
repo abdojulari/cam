@@ -265,7 +265,6 @@
                 email: formData.value.email,
             };
             sendEventToGA(buttonName);
-            console.log(userRegistration.adult.contact);
             // send the reproducible data to the api
             const reproducibleData = useReproducibleData({
                 eventCategory: 'EPL_SELF',
@@ -381,8 +380,9 @@
 
     // Send event to GA with UTM params
     const sendEventToGA = (buttonName) => {
-        gtag('event', `${buttonName} Event Triggered`, {
+        gtag('event', 'sign_up', {
             app_name: 'EPL | Online Registration',
+            method: `Online Card Reg, ${selectedRadio.value === 'Adult' ? 'EPL_SELF' : 'EPL_SELFJ'}`,
             screen_name: `${filteredSteps.value[step.value - 1].title} Screen`,
             event_category: `${buttonName} button clicked`,
             event_label: filteredSteps.value[step.value - 1].title,

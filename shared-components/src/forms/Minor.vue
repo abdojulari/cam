@@ -313,7 +313,7 @@
                 v-model="formData.adultBuildingNumber"
                 variant="outlined"
                 density="compact"
-                type="number"
+                :rules="[props.rules.required, alphanumericRule]"
                 required
                 prepend-inner-icon="mdi-home"
                 @input="updateStreet"
@@ -340,6 +340,7 @@
                 v-model="formData.adultAptUnit"
                 variant="outlined"
                 density="compact"
+                :rules="[alphanumericRule]" 
                 prepend-inner-icon="mdi-office-building"
                 @input="updateStreet"
               />
@@ -461,6 +462,8 @@ import { useUtmParams } from '../composables/useUtmParams';
   const emailPattern = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
   const phonePattern = /^\d{3}-\d{3}-\d{4}$/;
   const streetNamePattern = /^[a-zA-Z0-9\s\-\'\/#]+$/;
+  const alphanumericRule = (value: string) => /^[a-zA-Z0-9\s\-\'\/#]+$/.test(value) || 'Invalid characters';
+
 
   const { gtag } = useGtag();
   const utmParams = useUtmParams()

@@ -23,8 +23,8 @@
     
         <h6 v-if="data.length > 0"  class="text-h6 text-primary font-weight-bold">Library Card Number(s)</h6>
         <div v-for="(entry, index) in data" :key="index">    
-          <div>
-            <span><strong>{{ entry.name }}</strong>: {{ entry.barcode }}</span>
+          <div v-for="(result, index ) in entry" :key="index">
+            <span><strong>{{ result.name }}</strong>: {{ result.barcode }}</span>
           </div>
           
         </div>
