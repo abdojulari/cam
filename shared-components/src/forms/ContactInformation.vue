@@ -35,7 +35,9 @@
             variant="outlined"
             density="compact"
             prepend-inner-icon="mdi-office-building"
-            :rules="[alphanumericRule]"
+            :rules="[
+              value => !value || /^[a-zA-Z0-9\s\-\'\/#]*$/.test(value) || 'Invalid characters in Apt/Unit'
+            ]"
             @input="updateStreet"
           />
         </v-col>
@@ -106,7 +108,7 @@
   <script setup>
     import { vMaska } from "maska/vue"
     import { ref } from 'vue';
-import { rules } from "../composables/rules";
+    import { rules } from "../composables/rules";
     const props = defineProps(['formData', 'rules']);
 
     // create local formData and set it to the props

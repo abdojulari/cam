@@ -188,7 +188,7 @@
         <v-col cols="12" v-if="props.formData.radios === 'Adult'">
           <v-alert
           density="compact"
-          text="Please click the 'SAVE CHANGES' button to save your progress before proceeding to the 'NEXT' button."
+          text="Please click the 'SAVE CHANGES' button to save your progress before proceeding to the 'SUBMIT' button."
           type="warning"
           class="mt-5 mx-3"
         >
@@ -256,7 +256,7 @@
         </v-card-actions>
         <v-alert
           density="compact"
-          text="Please click the 'SAVE CHANGES' button to save your progress before proceeding to the 'NEXT' button."
+          text="Please click the 'SAVE CHANGES' button to save your progress before proceeding to the 'SUBMIT' button."
           type="warning"
           class="mt-5 mx-4"
         >
@@ -340,7 +340,9 @@
                 v-model="formData.adultAptUnit"
                 variant="outlined"
                 density="compact"
-                :rules="[alphanumericRule]" 
+                :rules="[
+                  (value: string) => !value || /^[a-zA-Z0-9\s\-\'\/#]*$/.test(value) || 'Invalid characters in Apt/Unit'
+                ]"
                 prepend-inner-icon="mdi-office-building"
                 @input="updateStreet"
               />
@@ -401,7 +403,7 @@
         </v-card-actions> 
         <v-alert
           density="compact"
-          text="Please click the 'SAVE CHANGES' button to save your progress before proceeding to the 'NEXT' button."
+          text="Please click the 'SAVE CHANGES' button to save your progress before proceeding to the 'SUBMIT' button."
           type="warning"
           class="mt-5 mx-3"
         >
@@ -427,9 +429,8 @@
     createRegistrationData, 
     sameAsAdultData
   } from '../constants/minor-form-data';
-import { useReproducibleData } from '../composables/reproducible-data';
-import { useUtmParams } from '../composables/useUtmParams';
-
+  import { useReproducibleData } from '../composables/reproducible-data';
+  import { useUtmParams } from '../composables/useUtmParams';
 
   interface Minor {
     id: number;
@@ -463,7 +464,7 @@ import { useUtmParams } from '../composables/useUtmParams';
   const phonePattern = /^\d{3}-\d{3}-\d{4}$/;
   const streetNamePattern = /^[a-zA-Z0-9\s\-\'\/#]+$/;
   const alphanumericRule = (value: string) => /^[a-zA-Z0-9\s\-\'\/#]+$/.test(value) || 'Invalid characters';
-
+  const alphanumeric = /^[a-zA-Z0-9\s\-\'\/#]+$/
 
   const { gtag } = useGtag();
   const utmParams = useUtmParams()
@@ -626,7 +627,7 @@ import { useUtmParams } from '../composables/useUtmParams';
       isInvalid.value = !newVal.adultFirstname?.trim() || !newVal.adultLastname?.trim() ||
         !newVal.adultEmail?.trim() || !newVal.adultPhone?.trim() || !newVal.adultBuildingNumber?.trim() ||
         !newVal.adultStreetName?.trim() || !newVal.adultCity?.trim() || !newVal.minorPassword?.trim() || !streetNamePattern.test(newVal.adultStreetName) ||
-        !newVal.minorConfirmPassword?.trim() || !newVal.adultProvince?.trim() || !newVal.adultPostalCode?.trim() || 
+        !newVal.minorConfirmPassword?.trim() || !newVal.adultProvince?.trim() || !newVal.adultPostalCode?.trim() || !alphanumeric.test(newVal.adultBuildingNumber) ||
         !phonePattern.test(newVal.adultPhone) || !emailPattern.test(newVal.adultEmail) || !postalCodePattern.test(newVal.adultPostalCode);
         
       userRegistration.setLinkState(newIsClicked);
