@@ -4,7 +4,7 @@ import ContactInfo from '../forms/ContactInformation.vue';
 import ProfileSelection from '../forms/ProfileSelection.vue';
 import Minor from '../forms/Minor.vue';
 import CreatePin from '../forms/CreatePin.vue';
-export const rules = (formData: any) => {
+export const validationRules = (formData: any) => {
     return [
         {
             title: 'Profile ',

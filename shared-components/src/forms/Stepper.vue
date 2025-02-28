@@ -117,7 +117,7 @@
     import { useRegistrationStore } from '../store/registration-store';
     import { useRouter } from 'vue-router'
     import { apiService } from '../services/api-service';
-    import { rules } from '../composables/rules';
+    import { validationRules } from '../composables/rules';
     import ErrorPrompt from './ErrorPrompt.vue';
     import { useUtmParams } from '../composables/useUtmParams';
     import { useReproducibleData } from '../composables/reproducible-data';
@@ -173,9 +173,10 @@
         aptUnit:'',
     });
     const isLoading = ref(false);
-    const streetNamePattern = /^[a-zA-Z0-9\s\-\'\/#]+$/;
+    const streetNamePattern = /^[a-zA-Z0-9\s\-/#']*$/;
+
     // Step list
-    const stepList = rules(formData);
+    const stepList = validationRules(formData);
     const selectedRadio = computed(() => userRegistration.getRadioSelection);
     const buttonClickState = computed(() => userRegistration.getButtonClickState);
     const showErrorDialog = ref(false);
@@ -309,14 +310,25 @@
 
             if (currentStepTitle === 'About You') {
                 userRegistration.adult.biodata = {}; 
+                userRegistration.registration.pop();
                 console.log(userRegistration.adult.biodata);
             } else if (currentStepTitle === 'Contact') {
                 userRegistration.adult.contact = {}; 
+                userRegistration.registration.pop();
+                formData.value.password = '';
+                formData.value.confirmPassword = '';
                 console.log(userRegistration.adult.contact);
             } else if (currentStepTitle === 'Profile') {
                 userRegistration.adult.profile = {}; 
-                userRegistration.adult.consent = null; 
+                userRegistration.adult.consent = null;
+                userRegistration.registration.pop(); 
                 console.log(userRegistration.adult.profile);
+            } else if (currentStepTitle === 'Confirmation') {
+                userRegistration.adult.password = '';
+                userRegistration.adult.confirmPassword = ''
+                userRegistration.registration.pop();
+                formData.value.password = '';
+                formData.value.confirmPassword = '';
             }
 
             step.value--;
@@ -392,121 +404,121 @@
         });
     }
    
-    // const submitForm = async (event) => {
-    //     const buttonName = event.target.innerText;
-    //     isLoading.value = true;
-    //         let registrationData;
-    //         try {
-    //             for (const data of userRegistration.registration) {
-    //                 await apiService.registration(data).then((response) => {
-    //                     registrationData = response;
-    //                     // create a state managenennt for the response then extract the barcode
-    //                     userRegistration.setSuccessResponse({
-    //                         name: response?.data?.firstName + ' ' + response?.data?.lastName,
-    //                         barcode: response?.data?.barcode,
-    //                     });
-    //                 });
-    //             }
-    //             // Once all submissions are done, check for errors in the data
-    //             if (registrationData?.message === "Duplicate record found with fuzzy logic.") {
-    //                 showErrorDialog.value = true; 
-    //                 return;
-    //             } else if (registrationData === undefined || registrationData?.message === "Error posting to ILS API" || registrationData?.error === "Posting to ILS failed 500") {
-    //                 showSystemErrorDialog.value = true;
-    //                 return;
-    //             } else {
-    //                 sendEventToGA(buttonName);
-    //                 const reproducibleData = useReproducibleData({
-    //                     eventCategory: 'Complete Registration',
-    //                     eventLabel: `${buttonName} button clicked`,
-    //                     screenName: 'Success Page',
-    //                     registrationType: selectedRadio.value === 'Adult' ? 'EPL_SELF' : 'EPL_SELFJ',
-    //                     step: step.value,
-    //                 });
-    //                 await apiService.reproducibleData(reproducibleData);
-    //                 // Proceed to next page if no errors
-    //                 router.push('/success-page');
-    //             }
-                
-    //         } catch (error) {
-    //             if( error.message === 'HTTP error! status: 409') {
-    //                 showErrorDialog.value = true
-    //             }
-    //             else {
-    //                 showSystemErrorDialog.value = true;
-    //             }
-    //             console.log('Error Message:', error.message);
-            
-    //         } finally {
-    //             isLoading.value = false; // Hide loading animation once the process is complete
-    //         }
-    //         return registrationData;
-    // };
-
     const submitForm = async (event) => {
-    const buttonName = event.target.innerText;
-    isLoading.value = true;
-    let registrationData;
-
-    try {
-        const registrationResults = await Promise.all(
-            userRegistration.registration.map(data => 
-                apiService.registration(data)
-            )
-        );
-
-        // Store all registrations' data
-        const allRegistrationsData = registrationResults.map(result => ({
-            name: result?.data?.firstName + ' ' + result?.data?.lastName,
-            barcode: result?.data?.barcode,
-        }));
-
-        // Set all registrations data
-        userRegistration.setSuccessResponse(allRegistrationsData);
-
-        // Check for errors in any registration
-        const hasError = registrationResults.some(result => 
-            result?.message === "Duplicate record found with fuzzy logic." ||
-            result === undefined ||
-            result?.message === "Error posting to ILS API" ||
-            result?.error === "Posting to ILS failed 500"
-        );
-
-        if (hasError) {
-            const hasDuplicate = registrationResults.some(
-                result => result?.message === "Duplicate record found with fuzzy logic."
-            );
-            if (hasDuplicate) {
-                showErrorDialog.value = true;
-                return;
+        const buttonName = event.target.innerText;
+        isLoading.value = true;
+            let registrationData;
+            try {
+                for (const data of userRegistration.registration) {
+                    await apiService.registration(data).then((response) => {
+                        registrationData = response;
+                        // create a state managenennt for the response then extract the barcode
+                        userRegistration.setSuccessResponse({
+                            name: response?.data?.firstName + ' ' + response?.data?.lastName,
+                            barcode: response?.data?.barcode,
+                        });
+                    });
+                }
+                // Once all submissions are done, check for errors in the data
+                if (registrationData?.message === "Duplicate record found with fuzzy logic.") {
+                    showErrorDialog.value = true; 
+                    return;
+                } else if (registrationData === undefined || registrationData?.message === "Error posting to ILS API" || registrationData?.error === "Posting to ILS failed 500") {
+                    showSystemErrorDialog.value = true;
+                    return;
+                } else {
+                    sendEventToGA(buttonName);
+                    const reproducibleData = useReproducibleData({
+                        eventCategory: 'Complete Registration',
+                        eventLabel: `${buttonName} button clicked`,
+                        screenName: 'Success Page',
+                        registrationType: selectedRadio.value === 'Adult' ? 'EPL_SELF' : 'EPL_SELFJ',
+                        step: step.value,
+                    });
+                    await apiService.reproducibleData(reproducibleData);
+                    // Proceed to next page if no errors
+                    router.push('/success-page');
+                }
+                
+            } catch (error) {
+                if( error.message === 'HTTP error! status: 409') {
+                    showErrorDialog.value = true
+                }
+                else {
+                    showSystemErrorDialog.value = true;
+                }
+                console.log('Error Message:', error.message);
+            
+            } finally {
+                isLoading.value = false; // Hide loading animation once the process is complete
             }
-            showSystemErrorDialog.value = true;
-            return;
-        }
+            return registrationData;
+    };
 
-        sendEventToGA(buttonName);
-        const reproducibleData = useReproducibleData({
-            eventCategory: 'Complete Registration',
-            eventLabel: `${buttonName} button clicked`,
-            screenName: 'Success Page',
-            registrationType: selectedRadio.value === 'Adult' ? 'EPL_SELF' : 'EPL_SELFJ',
-            step: step.value,
-        });
-        await apiService.reproducibleData(reproducibleData);
-        router.push('/success-page');
+//     const submitForm = async (event) => {
+//     const buttonName = event.target.innerText;
+//     isLoading.value = true;
+//     let registrationData;
 
-    } catch (error) {
-        if (error.message === 'HTTP error! status: 409') {
-            showErrorDialog.value = true;
-        } else {
-            showSystemErrorDialog.value = true;
-        }
-        console.log('Error Message:', error.message);
-    } finally {
-        isLoading.value = false;
-    }
-    return registrationData;
-};
+//     try {
+//         const registrationResults = await Promise.all(
+//             userRegistration.registration.map(data => 
+//                 apiService.registration(data)
+//             )
+//         );
+
+//         // Store all registrations' data
+//         const allRegistrationsData = registrationResults.map(result => ({
+//             name: result?.data?.firstName + ' ' + result?.data?.lastName,
+//             barcode: result?.data?.barcode,
+//         }));
+
+//         // Set all registrations data
+//         userRegistration.setSuccessResponse(allRegistrationsData);
+
+//         // Check for errors in any registration
+//         const hasError = registrationResults.some(result => 
+//             result?.message === "Duplicate record found with fuzzy logic." ||
+//             result === undefined ||
+//             result?.message === "Error posting to ILS API" ||
+//             result?.error === "Posting to ILS failed 500"
+//         );
+
+//         if (hasError) {
+//             const hasDuplicate = registrationResults.some(
+//                 result => result?.message === "Duplicate record found with fuzzy logic."
+//             );
+//             if (hasDuplicate) {
+//                 showErrorDialog.value = true;
+//                 return;
+//             }
+//             showSystemErrorDialog.value = true;
+//             return;
+//         }
+
+//         sendEventToGA(buttonName);
+//         const reproducibleData = useReproducibleData({
+//             eventCategory: 'Complete Registration',
+//             eventLabel: `${buttonName} button clicked`,
+//             screenName: 'Success Page',
+//             registrationType: selectedRadio.value === 'Adult' ? 'EPL_SELF' : 'EPL_SELFJ',
+//             step: step.value,
+//         });
+//         await apiService.reproducibleData(reproducibleData);
+//         router.push('/success-page');
+
+//     } catch (error) {
+//         if (error.message === 'HTTP error! status: 409') {
+//             showErrorDialog.value = true;
+//         } else {
+//             showSystemErrorDialog.value = true;
+//         }
+//         console.log('Error Message:', error.message);
+//     } finally {
+//         isLoading.value = false;
+//     }
+//     return registrationData;
+// };
 
 </script>
 <style scoped>

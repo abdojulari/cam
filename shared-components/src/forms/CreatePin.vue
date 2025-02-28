@@ -58,27 +58,64 @@
 
 
   // Ensure widget is rendered on component mount
+  // const onPasswordConfirmation = async (value: boolean) => {
+  //   if (value) {
+  //     disabled.value = true;    
+  //     // Check if the pins match before setting the password
+  //     if (props.formData.password === props.formData.confirmPassword) {
+  //       if (props.formData.radios === 'Adult') {
+  //         userRegistration.adult.password = props.formData.password;
+  //         userRegistration.adult.confirmPassword = props.formData.confirmPassword;
+  //         userRegistration.adult.profile = 'EPL_SELF'
+  //         userRegistration.adult.consent = userRegistration.getConsent
+  //       }
+    
+  //       if (userRegistration.getRadioSelection === 'Adult') {
+  //         await userRegistration.addRegistration({data:userRegistration.adult})
+  //       }
+  //       console.log('REG: ', userRegistration.getRegistration )
+  //     } else {
+  //       // Optionally, handle the case where pinpins do not match
+  //       console.error("Pins do not match");
+  //     }
+  //   } 
+  // };
+
   const onPasswordConfirmation = async (value: boolean) => {
     if (value) {
-      disabled.value = true;    
+      disabled.value = true;
+      
       // Check if the pins match before setting the password
       if (props.formData.password === props.formData.confirmPassword) {
         if (props.formData.radios === 'Adult') {
           userRegistration.adult.password = props.formData.password;
           userRegistration.adult.confirmPassword = props.formData.confirmPassword;
-          userRegistration.adult.profile = 'EPL_SELF'
-          userRegistration.adult.consent = userRegistration.getConsent
+          userRegistration.adult.profile = 'EPL_SELF';
+          userRegistration.adult.consent = userRegistration.getConsent;
         }
-    
+
+        // Check if 'userRegistration.getRegistration' contains 'userRegistration.adult'
+        const existingRegistration = userRegistration.getRegistration.find(reg => reg.profile === 'EPL_SELF');
+        if (existingRegistration) {
+          // Delete or clear the existing registration
+          const index = userRegistration.getRegistration.indexOf(existingRegistration);
+          if (index !== -1) {
+            userRegistration.getRegistration.splice(index, 1);  // Remove the existing entry
+          }
+        }
+      
+        // Add new registration
         if (userRegistration.getRadioSelection === 'Adult') {
-          await userRegistration.addRegistration({data:userRegistration.adult})
+          await userRegistration.addRegistration({ data: userRegistration.adult });
         }
+        console.log('REG: ', userRegistration.getRegistration);
       } else {
-        // Optionally, handle the case where pinpins do not match
+        // Optionally, handle the case where the pins do not match
         console.error("Pins do not match");
       }
-    } 
+    }
   };
+
   watch(formData.value.addMinor, (newVal) => {
     if (newVal) {
       userRegistration.addMinor = true;

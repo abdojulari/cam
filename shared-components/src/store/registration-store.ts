@@ -139,11 +139,25 @@ export const useRegistrationStore = defineStore({
       },
       async addRegistration(registration: Registration) {
         try {
-          this.registration.push(registration);
+          // Check if registration already exists by a unique key (e.g., barcode or combination of fields)
+          const index = this.registration.findIndex(
+            (existingRegistration) => 
+              existingRegistration.data.biodata.firstname === registration.data.biodata.firstname &&
+              existingRegistration.data.biodata.lastname === registration.data.biodata.lastname &&
+              existingRegistration.data.biodata.dateofbirth === registration.data.biodata.dateofbirth
+          );
+      
+          if (index === -1) {
+            // If registration doesn't exist, push a new one
+            this.registration.push(registration);
+          } else {
+            // If registration exists, update the existing one
+            this.registration[index] = registration;
+          }
         } catch (error) {
-          console.error(error);
+          console.error('Error in addRegistration: ', error);
         }
-      },
+      },      
       async setAdditionalMinor(additionalMinor: boolean) {
         try {
           this.additionalMinor = additionalMinor;

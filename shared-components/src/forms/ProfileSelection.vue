@@ -51,7 +51,7 @@
   import { onMounted, ref, watch } from 'vue';
   import { useRegistrationStore } from '../store/registration-store';
   import TermsAndConditions from './TermsAndConditions.vue';
-import { Registration } from '../types/online.dt.types';
+
   const accepted = ref(false);
   const userRegistration = useRegistrationStore();
   const props = defineProps(['formData', 'rules', 'page']);

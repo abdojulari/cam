@@ -108,7 +108,6 @@
   <script setup>
     import { vMaska } from "maska/vue"
     import { ref } from 'vue';
-    import { rules } from "../composables/rules";
     const props = defineProps(['formData', 'rules']);
 
     // create local formData and set it to the props
@@ -120,34 +119,43 @@
       'St': 'Street',
       'Str': 'Street',
       'Ave': 'Avenue',
+      'Av' : 'Avenue',
       'NW': 'Northwest',
       'NE': 'Northeast',
       'SW': 'Southwest',
-      'Blvd': 'Boulevard',
+      'Blv': 'Boulevard',
+      'Blvd' : 'Boulevard',
       'Dr': 'Drive',
       'Rd': 'Road'
     };
+
+    let timeoutId;
+
     // Function to update formData.street
     const updateStreet = () => {
-      const aptUnit = formData.value.aptUnit ? `${formData.value.aptUnit} -` : '';
-         // Replace abbreviations with full names
-      let streetName = formData.value.streetName;
-      Object.keys(abbreviationMap).forEach(abbr => {
-        const regex = new RegExp(`\\b${abbr}\\b`, 'gi'); // Match the abbreviation as a whole word
-        streetName = streetName.replace(regex, abbreviationMap[abbr]);
-      });
+      clearTimeout(timeoutId); // Clear any existing timeout
 
-      // Update the streetName in formData after replacement
-      formData.value.streetName = streetName;
-      
-      const parts = [
-        aptUnit,
-        formData.value.buildingNumber,
-        formData.value.streetName
-      ].filter(Boolean);
-      formData.value.street = parts.join(' ');
+      timeoutId = setTimeout(() => {
+        const aptUnit = formData.value.aptUnit ? `${formData.value.aptUnit} -` : '';
+        
+        // Replace abbreviations with full names
+        let streetName = formData.value.streetName;
+        Object.keys(abbreviationMap).forEach(abbr => {
+          const regex = new RegExp(`\\b${abbr}\\b`, 'gi'); // Match the abbreviation as a whole word
+          streetName = streetName.replace(regex, abbreviationMap[abbr]);
+        });
+
+        // Update the streetName in formData after replacement
+        formData.value.streetName = streetName;
+        
+        const parts = [
+          aptUnit,
+          formData.value.buildingNumber,
+          formData.value.streetName
+        ].filter(Boolean);
+        formData.value.street = parts.join(' ');
+      }, 500); // Adjust the delay as needed (500ms in this case)
     };
-
     const onPostalCodeInput = (event) => {
       let value = event.target.value || '';
       // Convert the value to uppercase and remove spaces
