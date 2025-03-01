@@ -490,7 +490,6 @@
 
         // Authenticate the user
         const data = await apiService.authenticate(body);
-
         // Check if authentication failed
         if (data?.original?.message) {
           errorLogin.value = 'Invalid library card number or password!';
@@ -591,7 +590,7 @@
 
     watch(props.formData, (newVal) => {
       isMinorInvalid.value = !newVal.minorFirstname?.trim() ||
-        !newVal.minorLastname?.trim() || !newVal.minorDateOfBirth ||
+        !newVal.minorLastname?.trim() || !newVal.minorDateOfBirth || newVal.minorPassword !== newVal.minorConfirmPassword ||
         !newVal.minorPassword?.trim() || !newVal.minorConfirmPassword?.trim() || 
         !passwordRegex.test(newVal.minorPassword) || !passwordRegex.test(newVal.minorConfirmPassword);
     }, { deep: true });
@@ -626,7 +625,7 @@
     watch([() => isClicked.value, formData.value], ([newIsClicked, newVal]) => {
       isInvalid.value = !newVal.adultFirstname?.trim() || !newVal.adultLastname?.trim() ||
         !newVal.adultEmail?.trim() || !newVal.adultPhone?.trim() || !newVal.adultBuildingNumber?.trim() ||
-        !newVal.adultStreetName?.trim() || !newVal.adultCity?.trim() || !newVal.minorPassword?.trim() || !streetNamePattern.test(newVal.adultStreetName) ||
+        !newVal.adultStreetName?.trim() || !newVal.adultCity?.trim() || !newVal.minorPassword?.trim() || !streetNamePattern.test(newVal.adultStreetName) || newVal.minorPassword !== newVal.minorConfirmPassword ||
         !newVal.minorConfirmPassword?.trim() || !newVal.adultProvince?.trim() || !newVal.adultPostalCode?.trim() || !alphanumeric.test(newVal.adultBuildingNumber) ||
         !phonePattern.test(newVal.adultPhone) || !emailPattern.test(newVal.adultEmail) || !postalCodePattern.test(newVal.adultPostalCode);
         
@@ -739,38 +738,79 @@
     // };
 
     
+    // const abbreviationMap: any = {
+    //   'St': 'Street',
+    //   'Str': 'Street',
+    //   'Ave': 'Avenue',
+    //   'NW': 'Northwest',
+    //   'NE': 'Northeast',
+    //   'SW': 'Southwest',
+    //   'Blvd': 'Boulevard',
+    //   'Dr': 'Drive',
+    //   'Rd': 'Road'
+    // };
+    // // Function to update formData.street
+    // const updateStreet = () => {
+    //   const adultAptUnit = formData.value.adultAptUnit ? `${formData.value.adultAptUnit} -` : '';
+    //      // Replace abbreviations with full names
+    //   let streetName = formData.value.adultStreetName;
+    //   Object.keys(abbreviationMap).forEach(abbr => {
+    //     const regex = new RegExp(`\\b${abbr}\\b`, 'gi'); // Match the abbreviation as a whole word
+    //     streetName = streetName.replace(regex, abbreviationMap[abbr]);
+    //   });
+
+    //   // Update the streetName in formData after replacement
+    //   formData.value.adultStreetName = streetName;
+      
+    //   const parts = [
+    //   adultAptUnit,
+    //     formData.value.adultBuildingNumber,
+    //     formData.value.adultStreetName
+    //   ].filter(Boolean);
+    //   formData.value.adultStreet = parts.join(' ');
+    // };
+
     const abbreviationMap: any = {
       'St': 'Street',
       'Str': 'Street',
       'Ave': 'Avenue',
+      'Av' : 'Avenue',
       'NW': 'Northwest',
       'NE': 'Northeast',
       'SW': 'Southwest',
-      'Blvd': 'Boulevard',
+      'Blv': 'Boulevard',
+      'Blvd' : 'Boulevard',
       'Dr': 'Drive',
       'Rd': 'Road'
     };
+
+    let timeoutId: string | number | NodeJS.Timeout | undefined;
+
     // Function to update formData.street
     const updateStreet = () => {
-      const adultAptUnit = formData.value.adultAptUnit ? `${formData.value.adultAptUnit} -` : '';
-         // Replace abbreviations with full names
-      let streetName = formData.value.adultStreetName;
-      Object.keys(abbreviationMap).forEach(abbr => {
-        const regex = new RegExp(`\\b${abbr}\\b`, 'gi'); // Match the abbreviation as a whole word
-        streetName = streetName.replace(regex, abbreviationMap[abbr]);
-      });
+      clearTimeout(timeoutId); // Clear any existing timeout
 
-      // Update the streetName in formData after replacement
-      formData.value.adultStreetName = streetName;
-      
-      const parts = [
-      adultAptUnit,
-        formData.value.adultBuildingNumber,
-        formData.value.adultStreetName
-      ].filter(Boolean);
-      formData.value.adultStreet = parts.join(' ');
+        timeoutId = setTimeout(() => {
+        const adultAptUnit = formData.value.adultAptUnit ? `${formData.value.adultAptUnit} -` : '';
+        
+        // Replace abbreviations with full names
+        let streetName = formData.value.adultStreetName;;
+        Object.keys(abbreviationMap).forEach(abbr => {
+          const regex = new RegExp(`\\b${abbr}\\b`, 'gi'); // Match the abbreviation as a whole word
+          streetName = streetName.replace(regex, abbreviationMap[abbr]);
+        });
+
+        // Update the streetName in formData after replacement
+        formData.value.adultStreetName = streetName;
+        
+        const parts = [
+          adultAptUnit,
+          formData.value.adultBuildingNumber,
+          formData.value.adultStreetName
+        ].filter(Boolean);
+        formData.value.adultStreet = parts.join(' ');
+      }, 500);
     };
-
     
     const sendEventToGA = (buttonName: string) => {
         gtag('event', `${buttonName} Event Triggered`, {

@@ -21,7 +21,9 @@
             v-model="formData.confirmPassword"
             label="Confirm Password *"
             variant="outlined"
-            :rules="[rules.required, confirmPinRules]"
+            :rules="[rules.required, confirmPinRules, rules.password]"
+            hint="Password must be 6-20 characters long, no space or special characters allowed."
+            persistent-hint
             type="password"
             density="compact"
             required

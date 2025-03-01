@@ -156,6 +156,7 @@
         formData.value.street = parts.join(' ');
       }, 500); // Adjust the delay as needed (500ms in this case)
     };
+    
     const onPostalCodeInput = (event) => {
       let value = event.target.value || '';
       // Convert the value to uppercase and remove spaces

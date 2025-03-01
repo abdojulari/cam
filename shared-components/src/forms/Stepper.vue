@@ -95,7 +95,7 @@
                                 :disabled="!formData.acceptTerms || (selectedRadio === 'Adult' && !buttonClickState && formData.addMinor)|| (selectedRadio !== 'Adult' && 
                                 !buttonClickState)  || isLoading === true || (selectedRadio === 'Adult' 
                                 && !formData.addMinor && (formData.password.length < 6 || 
-                                formData.password !== formData.confirmPassword))" 
+                                formData.password !== formData.confirmPassword || !pass.test(formData.password)))" 
                                 color="primary"
                                 @click="submitForm($event)"
                                 class="me-2"
@@ -174,7 +174,7 @@
     });
     const isLoading = ref(false);
     const streetNamePattern = /^[a-zA-Z0-9\s\-/#']*$/;
-
+    const pass = /^(?=[A-Za-z0-9]{6,20}$)(?!.*\s).*$/;
     // Step list
     const stepList = validationRules(formData);
     const selectedRadio = computed(() => userRegistration.getRadioSelection);
