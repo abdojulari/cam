@@ -24,7 +24,7 @@
         <h6 v-if="data.length > 0"  class="text-h6 text-primary font-weight-bold">Library Card Number(s)</h6>
         <div v-for="(entry, index) in data" :key="index">    
           <div>
-            <span><strong>{{ entry.data.name }}</strong>: {{ entry.data.barcode }}</span>
+            <span><strong>{{ entry?.name }}</strong>: {{ entry?.barcode }}</span>
           </div>
           
         </div>
@@ -158,9 +158,7 @@
         </v-row>
       </v-col>
     </v-row>
-    
   </v-container>
-  
 </template>
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'

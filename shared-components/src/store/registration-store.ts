@@ -43,10 +43,9 @@ interface Password {
     confirmPassword: string;
 }
 interface SuccessResponse {
-    data: {
-      name: string;
-      barcode: string;
-    };
+    barcode: string;
+    name: string;
+    
 }
 export const useRegistrationStore = defineStore({
   id: 'registration',

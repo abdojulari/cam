@@ -92,8 +92,10 @@
             v-model="formData.minorConfirmPassword"
             label="Confirm Password *"
             variant="outlined"
-            :rules="[props.rules.required,confirmPinRules]"
+            :rules="[props.rules.required, props.rules.password, confirmPinRules]"
             type="password"
+            hint="Password must be 6-20 characters long, no space or special characters allowed."
+            persistent-hint
             density="compact"
             :minlength="6"
             :maxlength="20"   
@@ -119,7 +121,7 @@
       <v-col cols="12" sm="6" v-if="minors.length > 0">
         <v-btn 
           variant="flat"
-          :disabled="disabled " 
+          :disabled="disabled" 
           color="red" 
           text="Cancel"
           size="small"
@@ -154,7 +156,8 @@
             </template>
             <template v-slot:item.actions="{ item }">
               <v-btn 
-                color="red" 
+                color="red"
+                :disabled=" isClicked" 
                 @click="deleteMinor(item.id)" 
                 text="Delete" 
                 size="small" 
