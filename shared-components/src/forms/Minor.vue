@@ -433,7 +433,7 @@
     sameAsAdultData
   } from '../constants/minor-form-data';
   import { useReproducibleData } from '../composables/reproducible-data';
-  import { useUtmParams } from '../composables/useUtmParams';
+  import { sendEventToGA } from '../constants/gtag';
 
   interface Minor {
     id: number;
@@ -460,7 +460,6 @@
   const formData = ref(props.formData);
   const errorLogin = ref();
   const isReadonly = ref(true);
-
   const postalCodePattern = /^T\d[ABCEGHJ-NPRSTV-Z]\s\d[ABCEGHJ-NPRSTV-Z]\d$/;
   const passwordRegex = /^(?=[A-Za-z0-9]{6,20}$)(?!.*\s).*$/;
   const emailPattern = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
@@ -468,9 +467,6 @@
   const streetNamePattern = /^[a-zA-Z0-9\s\-\'\/#]+$/;
   const alphanumericRule = (value: string) => /^[a-zA-Z0-9\s\-\'\/#]+$/.test(value) || 'Invalid characters';
   const alphanumeric = /^[a-zA-Z0-9\s\-\'\/#]+$/
-
-  const { gtag } = useGtag();
-  const utmParams = useUtmParams()
 
   let minorId = 0;
   const confirmPinRules = computed(() => {
@@ -520,8 +516,7 @@
         linkDisabled.value = true;
         isClicked.value = true;
         userRegistration.setLinkState(isClicked.value);
-        console.log('LOGIN', userRegistration.getRegistration);
-        console.log('Data: ', data);
+        
         userRegistration.setButtonClickState(isClicked.value);
         const reproducibleData = useReproducibleData({
             eventCategory: 'Link your child(ren) to your EPL card',
@@ -588,7 +583,7 @@
       });
       await apiService.reproducibleData(reproducibleData);
       sendEventToGA('Save Changes');
-      //console.log('SAME as :', userRegistration.getRegistration)
+    
     };
 
     watch(props.formData, (newVal) => {
@@ -668,7 +663,7 @@
       });
       await apiService.reproducibleData(reproducibleData);
       sendEventToGA('Save Changes');
-      //console.log('ADULT Contact:', userRegistration.getRegistration)
+      
     }
 
     // Delete minor from the list
@@ -729,50 +724,6 @@
       event.target.value = value;
     };
 
-    // Function to update formData.street
-    // const updateStreet = () => {
-    //   const adultAptUnit = formData.value.adultAptUnit ? `${formData.value.adultAptUnit} -` : '';
-    //   const parts = [
-    //     adultAptUnit,
-    //     formData.value.adultBuildingNumber,
-    //     formData.value.adultStreetName
-    //   ].filter(Boolean);
-    //   formData.value.adultStreet = parts.join(' ');
-    // };
-
-    
-    // const abbreviationMap: any = {
-    //   'St': 'Street',
-    //   'Str': 'Street',
-    //   'Ave': 'Avenue',
-    //   'NW': 'Northwest',
-    //   'NE': 'Northeast',
-    //   'SW': 'Southwest',
-    //   'Blvd': 'Boulevard',
-    //   'Dr': 'Drive',
-    //   'Rd': 'Road'
-    // };
-    // // Function to update formData.street
-    // const updateStreet = () => {
-    //   const adultAptUnit = formData.value.adultAptUnit ? `${formData.value.adultAptUnit} -` : '';
-    //      // Replace abbreviations with full names
-    //   let streetName = formData.value.adultStreetName;
-    //   Object.keys(abbreviationMap).forEach(abbr => {
-    //     const regex = new RegExp(`\\b${abbr}\\b`, 'gi'); // Match the abbreviation as a whole word
-    //     streetName = streetName.replace(regex, abbreviationMap[abbr]);
-    //   });
-
-    //   // Update the streetName in formData after replacement
-    //   formData.value.adultStreetName = streetName;
-      
-    //   const parts = [
-    //   adultAptUnit,
-    //     formData.value.adultBuildingNumber,
-    //     formData.value.adultStreetName
-    //   ].filter(Boolean);
-    //   formData.value.adultStreet = parts.join(' ');
-    // };
-
     const abbreviationMap: any = {
       'St': 'Street',
       'Str': 'Street',
@@ -815,18 +766,6 @@
       }, 500);
     };
     
-    const sendEventToGA = (buttonName: string) => {
-        gtag('event', `${buttonName} Event Triggered`, {
-            app_name: 'EPL | Online Registration',
-            screen_name: 'Child Screen',
-            event_category: `${buttonName} button clicked`,
-            event_label: 'Child Details',
-            registration_type: 'EPL_SELFJ',
-            step: 2,
-            ...utmParams
-        });
-    }
-
 </script>
 <style scoped>
 @media (max-width: 600px) {

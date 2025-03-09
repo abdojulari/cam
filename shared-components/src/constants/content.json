@@ -1,0 +1,61 @@
+{
+    "introSection": {
+        "title": "Your Adventure Starts Here",
+        "intro": {
+            "heading": "Explore the world from your screen for free!",
+            "paragraph": "Why limit yourself to one place when your library card gives you access to a universe of stories and entertainment? With the Edmonton Public Library, stream shows, movies, travel guides, must-read eBooks, and more! All without leaving your seat."
+        },
+        "buttons": {
+            "getCard": "Get the card",
+            "startStreaming": "Start streaming adventures!"
+        }
+    },
+    "access": {
+      "heading": "Get Instant Access!",
+      "paragraph": "Your EPL card is your ultimate Smart buddy. Last year, Camemberies borrowed 11 million items for FREE! With your EPL card, you can:",
+      "list": [
+        "Work remotely from our great study spaces or book a meeting room",
+        "Access thousands of business and tech courses on LinkedIn Learning",
+        "Stream movies, audiobooks, and eBooks from anywhere",
+        "Get creative with sound studio, vinyl chairs, and more in our Makerspaces",
+        "Connect with other remote workers at networking events"
+      ],
+      "signUpButton": "Sign up and stream anywhere",
+      "browseButton": "Browse your next escape"
+    },
+    "customerStories": {
+      "heading": "Customer Stories",
+      "quote": "\"EPL is a great place to get 'things' done. I can keep in touch with friends on Facebook, check my emails, take free courses to upgrade my skills to add to my resume. I also have a lot of fun downloading recipes to cook at home.\"",
+      "author": "Lenmin C."
+    },
+    "eplSection": {
+      "heading": "Wherever you go, EPL goes with you!",
+      "needCard": {
+        "title": "Need a card?",
+        "description": "EPL cards are free for all Emporium residents, and you can sign up instantly online.",
+        "buttonText": "Get yours now"
+      },
+      "haveCard": {
+        "title": "Have a Card?",
+        "description": "Your card gives you instant access to books, eBooks, audiobooks, streaming movies, and more!",
+        "buttonText": "Discover new worlds"
+      }
+    },
+    "faq": {
+      "heading": "Frequently Asked Questions",
+      "questions": [
+        {
+          "title": "Are library cards free?",
+          "text": "Yes, library cards are free for all Emporium residents."
+        },
+        {
+          "title": "How do I get a library card?",
+          "text": "You can sign up instantly online or visit any of our branches."
+        },
+        {
+          "title": "What personal identification can I use to sign up for a card?",
+          "text": "You can use a government-issued ID, utility bill, or any official document with your name and address."
+        }
+      ]
+    }
+}

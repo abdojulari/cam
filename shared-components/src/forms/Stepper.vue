@@ -237,7 +237,7 @@
                 middlename: formData.value.middlename,
                 dateofbirth: (formData.value.dateofBirth).toISOString().split('T')[0],
             };
-            sendEventToGA(buttonName);
+            sendEventToGA(buttonName, 'biodata', 'EPL_SELF');
             // send the reproducible data to the api
             const reproducibleData = useReproducibleData({
                 eventCategory: 'EPL_SELF',
@@ -265,7 +265,7 @@
                 phone: formData.value.phone,
                 email: formData.value.email,
             };
-            sendEventToGA(buttonName);
+            sendEventToGA(buttonName, 'contact', 'EPL_SELF');
             // send the reproducible data to the api
             const reproducibleData = useReproducibleData({
                 eventCategory: 'EPL_SELF',
@@ -282,7 +282,7 @@
             userRegistration.adult.consent = userRegistration.getConsent;
             userRegistration.minor.consent = userRegistration.getConsent;
             
-            sendEventToGA(buttonName);
+            sendEventToGA(buttonName, 'profile_selection', formData.value.radios);
             // send the reproducible data to the api
             const reproducibleData = useReproducibleData({
                 eventCategory: 'EPL_SELF',
@@ -391,14 +391,14 @@
     })
 
     // Send event to GA with UTM params
-    const sendEventToGA = (buttonName) => {
-        gtag('event', 'sign_up', {
+    const sendEventToGA = (buttonName, eventName, profile) => {
+        gtag('event', eventName, {
             app_name: 'EPL | Online Registration',
-            method: `Online Card Reg, ${selectedRadio.value === 'Adult' ? 'EPL_SELF' : 'EPL_SELFJ'}`,
+            method: `Online Card Reg, ${profile}`,
             screen_name: `${filteredSteps.value[step.value - 1].title} Screen`,
             event_category: `${buttonName} button clicked`,
             event_label: filteredSteps.value[step.value - 1].title,
-            registration_type: selectedRadio.value === 'Adult' ? 'EPL_SELF' : 'EPL_SELFJ',
+            registration_type: profile,
             step: step.value,
             ...utmParams
         });
@@ -417,6 +417,7 @@
                             name: response?.data?.firstName + ' ' + response?.data?.lastName,
                             barcode: response?.data?.barcode,
                         });
+                        sendEventToGA(buttonName, 'sign_up', response?.data?.profile);
                     });
                 }
                 // Once all submissions are done, check for errors in the data
@@ -427,7 +428,6 @@
                     showSystemErrorDialog.value = true;
                     return;
                 } else {
-                    sendEventToGA(buttonName);
                     const reproducibleData = useReproducibleData({
                         eventCategory: 'Complete Registration',
                         eventLabel: `${buttonName} button clicked`,
@@ -454,71 +454,6 @@
             }
             return registrationData;
     };
-
-//     const submitForm = async (event) => {
-//     const buttonName = event.target.innerText;
-//     isLoading.value = true;
-//     let registrationData;
-
-//     try {
-//         const registrationResults = await Promise.all(
-//             userRegistration.registration.map(data => 
-//                 apiService.registration(data)
-//             )
-//         );
-
-//         // Store all registrations' data
-//         const allRegistrationsData = registrationResults.map(result => ({
-//             name: result?.data?.firstName + ' ' + result?.data?.lastName,
-//             barcode: result?.data?.barcode,
-//         }));
-
-//         // Set all registrations data
-//         userRegistration.setSuccessResponse(allRegistrationsData);
-
-//         // Check for errors in any registration
-//         const hasError = registrationResults.some(result => 
-//             result?.message === "Duplicate record found with fuzzy logic." ||
-//             result === undefined ||
-//             result?.message === "Error posting to ILS API" ||
-//             result?.error === "Posting to ILS failed 500"
-//         );
-
-//         if (hasError) {
-//             const hasDuplicate = registrationResults.some(
-//                 result => result?.message === "Duplicate record found with fuzzy logic."
-//             );
-//             if (hasDuplicate) {
-//                 showErrorDialog.value = true;
-//                 return;
-//             }
-//             showSystemErrorDialog.value = true;
-//             return;
-//         }
-
-//         sendEventToGA(buttonName);
-//         const reproducibleData = useReproducibleData({
-//             eventCategory: 'Complete Registration',
-//             eventLabel: `${buttonName} button clicked`,
-//             screenName: 'Success Page',
-//             registrationType: selectedRadio.value === 'Adult' ? 'EPL_SELF' : 'EPL_SELFJ',
-//             step: step.value,
-//         });
-//         await apiService.reproducibleData(reproducibleData);
-//         router.push('/success-page');
-
-//     } catch (error) {
-//         if (error.message === 'HTTP error! status: 409') {
-//             showErrorDialog.value = true;
-//         } else {
-//             showSystemErrorDialog.value = true;
-//         }
-//         console.log('Error Message:', error.message);
-//     } finally {
-//         isLoading.value = false;
-//     }
-//     return registrationData;
-// };
 
 </script>
 <style scoped>
