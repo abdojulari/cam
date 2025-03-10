@@ -23,6 +23,7 @@
     "src/**/*.jsx",
     "src/**/*.ts",
     "src/**/*.tsx",
-    "src/**/*.vue"
-, "src/forms/Success.vue"  ]
+    "src/**/*.vue",
+    "src/**/*.json",
+    "src/forms/Success.vue"  ]
 }

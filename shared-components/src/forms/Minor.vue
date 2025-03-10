@@ -433,7 +433,7 @@
     sameAsAdultData
   } from '../constants/minor-form-data';
   import { useReproducibleData } from '../composables/reproducible-data';
-  import { sendEventToGA } from '../constants/gtag';
+  import { useUtmParams } from '../composables/useUtmParams';
 
   interface Minor {
     id: number;
@@ -467,6 +467,8 @@
   const streetNamePattern = /^[a-zA-Z0-9\s\-\'\/#]+$/;
   const alphanumericRule = (value: string) => /^[a-zA-Z0-9\s\-\'\/#]+$/.test(value) || 'Invalid characters';
   const alphanumeric = /^[a-zA-Z0-9\s\-\'\/#]+$/
+  const { gtag } = useGtag();
+  const utmParams = useUtmParams()
 
   let minorId = 0;
   const confirmPinRules = computed(() => {
@@ -765,7 +767,29 @@
         formData.value.adultStreet = parts.join(' ');
       }, 500);
     };
+
+    const sendEventToGA = (buttonName: string) => {
+    gtag('event', 'child_details', {
+        app_name: 'EPL | Online Registration',
+        screen_name: 'Child Screen',
+        event_category: `${buttonName} button clicked`,
+        event_label: 'Child Details',
+        registration_type: 'EPL_SELFJ',
+        step: 2,
+        ...utmParams
+    });
+  }
     
+
+declare function useGtag(): {
+  gtag: Gtag
+  initialize: (id?: string) => void
+  disableAnalytics: (id?: string) => void
+  enableAnalytics: (id?: string) => void
+}
+
+type Gtag = any;
+
 </script>
 <style scoped>
 @media (max-width: 600px) {

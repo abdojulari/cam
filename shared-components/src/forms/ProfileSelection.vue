@@ -96,7 +96,6 @@
       }
     })
     userRegistration.setTurnstile((response as any).success)
-    //console.log((response as any).success)
   }
 
 </script>
