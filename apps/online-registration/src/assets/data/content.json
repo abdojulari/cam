@@ -28,6 +28,33 @@
       "quote": "\"EPL is a great place to get 'things' done. I can keep in touch with friends on Facebook, check my emails, take free courses to upgrade my skills to add to my resume. I also have a lot of fun downloading recipes to cook at home.\"",
       "author": "Lenmin C."
     },
+    "whyGetEPLCard": {
+      "heading": "Why Get an EPL Card?",
+      "linkedIn": {
+        "image": "linkedIn.png",
+        "heading": "ONLINE RESOURCE",
+        "subheading": "LinkedIn Learning",
+        "content": "Access thousands of business and tech courses on LinkedIn Learning."
+      },
+      "galeCourses": {
+        "image": "linkedIn.png",
+        "heading": "ONLINE RESOURCE",
+        "subheading": "Gale Courses",
+        "content": "Access thousands of business and tech courses on Gale Courses."
+      },
+      "overDrive": {
+        "image": "linkedIn.png",
+        "heading": "ONLINE RESOURCE",
+        "subheading": "OverDrive Magazines",
+        "content": "Access thousands of business and tech courses on OverDrive."
+      },
+      "job": {
+        "image": "linkedIn.png",
+        "heading": "ONLINE RESOURCE",
+        "subheading": "Job & Career Accelerator",
+        "content": "Connect with other remote workers at networking events."
+      }
+    },
     "eplSection": {
       "heading": "Wherever you go, EPL goes with you!",
       "needCard": {

@@ -8,6 +8,7 @@ export default defineNuxtConfig({
     "@nuxtjs/turnstile",
     "@nuxtjs/tailwindcss",
     "@nuxt/scripts",
-    "nuxt-gtag"
+    "nuxt-gtag",
+    "@nuxt/image"
   ]
 })

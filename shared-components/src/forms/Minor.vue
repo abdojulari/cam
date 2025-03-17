@@ -780,16 +780,6 @@
     });
   }
     
-
-declare function useGtag(): {
-  gtag: Gtag
-  initialize: (id?: string) => void
-  disableAnalytics: (id?: string) => void
-  enableAnalytics: (id?: string) => void
-}
-
-type Gtag = any;
-
 </script>
 <style scoped>
 @media (max-width: 600px) {

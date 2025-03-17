@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "@dotenvx/dotenvx": "^1.20.0",
+    "@nuxt/image": "^1.9.0",
     "@nuxtjs/turnstile": "^0.9.11"
   }
 }
