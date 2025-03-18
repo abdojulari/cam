@@ -1,6 +1,7 @@
 {
     "introSection": {
         "title": "Level Up Your Learning",
+        "image": "milner.jpg",
         "intro": {
             "heading": "Keep Growing, Keep Achieving ",
             "paragraph": "Your next big breakthrough starts with EPL. Whether you’re sharpening your skills, diving into a new subject, or exploring fresh ideas, your library card gives you access to top -tier learning resources.  ",
@@ -52,21 +53,21 @@
       },
       "galeCourses": {
         "link":"https://www.epl.ca/resource/gale-courses/",
-        "image": "linkedIn.png",
+        "image": "gale.png",
         "heading": "ONLINE RESOURCE",
         "subheading": "Gale Courses",
         "content": "Take your learning further with instructor-led online courses on everything from professional development and business to creative writing and personal wellness. Learn at your own pace with engaging, interactive lessons. "
       },
-      "overDrive": {
-        "link":"https://epl.overdrive.com/library/magazines",
-        "image": "linkedIn.png",
+      "oReilly": {
+        "link":"https://www.epl.ca/resource/oreilly-for-public-libraries-formerly-safari-tech-books/",
+        "image": "oreilly.png",
         "heading": "ONLINE RESOURCE",
-        "subheading": "OverDrive Magazines",
-        "content": "Stay informed and inspired with free access to hundreds of digital magazines, covering everything from technology and business to health, travel, and hobbies. Read on your device anytime, anywhere. "
+        "subheading": "O’Reilly for Public Libraries",
+        "content": "Get access to over 45,000 eBooks and 3,500+ videos on technology and business. Get instant access—no downloads or checkouts needed! "
       },
       "job": {
         "link":"https://www.epl.ca/resource/job-career-accelerator/",
-        "image": "linkedIn.png",
+        "image": "jobs.png",
         "heading": "ONLINE RESOURCE",
         "subheading": "Job & Career Accelerator",
         "content": "Take the next step in your career with powerful tools for job searching, resume building, and skill development. Find career resources to help you succeed in the workplace and beyond.  "
@@ -91,12 +92,12 @@
       "heading": "Frequently Asked Questions",
       "questions": [
         {
-          "title": "Are library cards free?",
-          "text": "Yes, library cards are free for all Emporium residents."
+          "title": "Do I need a library card to access online learning resources?",
+          "text": "Yes, you’ll need an active EPL card and to be an Edmonton resident* to access our online learning resources. Signing up for a card is quick and free."
         },
         {
-          "title": "How do I get a library card?",
-          "text": "You can sign up instantly online or visit any of our branches."
+          "title": "Do I need a special app or software to access EPL’s online learning resources?",
+          "text": "No special app or software is required. You can access EPL’s online learning resources directly from our website. Simply click on the resource you’d like to use, log in with your EPL card, and start learning."
         },
         {
           "title": "What personal identification can I use to sign up for a card?",

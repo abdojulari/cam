@@ -6,7 +6,7 @@
         <hr class="title-divider  w-100 bg-orange">
         <v-img
           class="mb-5"
-          src="https://images.unsplash.com/photo-1611162618758-2a29a995354b"
+          :src="`/images/${content.introSection.image}`"
           alt="Person holding phone showing digital library"
           height="400"
           cover
@@ -52,7 +52,7 @@
           <li v-for="(item, index) in content.access.list" :key="index" class="d-list-item">{{ item }}</li>
         </ul> 
       </v-col>
-      <div class="w-100 d-flex flex-column flex-md-row justify-space-around my-4">
+      <div class="w-100 d-flex flex-column flex-md-row justify-space-around my-5">
         <a 
           :href="content.access.links.signUpButton" 
           target="_blank" rel="noopener noreferrer" 
@@ -82,13 +82,13 @@
     <v-row class="mx-1">
       <h2 class="text-h5">{{ content.whyGetEPLCard.heading }}</h2>
       <hr class="title-divider my-4 w-100 bg-primary">
-      <v-col v-for="(item, index) in [content.whyGetEPLCard.linkedIn, content.whyGetEPLCard.galeCourses, content.whyGetEPLCard.overDrive, content.whyGetEPLCard.job]" :key="index" cols="12" md="3">
+      <v-col v-for="(item, index) in [content.whyGetEPLCard.linkedIn, content.whyGetEPLCard.galeCourses, content.whyGetEPLCard.oReilly, content.whyGetEPLCard.job]" :key="index" cols="12" md="3">
         <v-card variant="outlined" class="mx-auto" height="450" >
-          <img :src="`_nuxt/assets/images/${item.image}`" height="280" cover>
-          <v-card-title class="text-h6">
-            <span class="text-body-2 text-primary">{{ item.heading }}</span>
+          <img :src="`/images/${item.image}`" :alt="item.heading" style="height: 180px; width: 100%; object-fit: cover">
+          <v-card-title class="text-h6 text-center">
+            <span class="text-body-2 text-primary ">{{ item.heading }}</span>
           </v-card-title>
-          <v-card-subtitle class="text-body-1">
+          <v-card-subtitle class="text-body-1 text-center text-wrap">
             {{ item.subheading }}
           </v-card-subtitle>
           <v-card-text>
@@ -155,22 +155,6 @@ defineProps({
   }
 });
 
-const startStreaming = () => {
-  console.log('Start streaming adventures!');
-};
-
-const signUp = () => {
-  console.log('Sign up and stream anywhere');
-};
-
-const getCard = () => {
-  console.log('Get your card now');
-};
-
-const getImageUrl = (name) => {
-  if (!name) return '';
-  return `~/assets/images/${name}`;
-}
 </script>
 
 <style scoped>
@@ -181,14 +165,6 @@ const getImageUrl = (name) => {
 .title-divider {
   border: none;
   height: 4px;
-  /* background: linear-gradient(90deg, #4CAF50, #8BC34A); */
-  margin: 16px 0;
-  width: 100px;
-}
-.hr-divider {
-  border: none;
-  height: 4px;
-  background: linear-gradient(90deg, #da7e1b, #e29e31);
   margin: 16px 0;
   width: 100px;
 }

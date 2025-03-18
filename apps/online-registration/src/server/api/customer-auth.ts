@@ -10,6 +10,7 @@ export default defineEventHandler(async (event: H3Event<EventHandlerRequest>) =>
     const config = useRuntimeConfig(event).private;
     const url = `${config.CRE_CUSTOMER_AUTH_URL}`;
     const access_token = getCookie(event, 'access_token');
+    const sanctum_token = getCookie(event, 'x-sanctum-token');
     const body  = await readBody(event);
    
     try {
@@ -19,6 +20,7 @@ export default defineEventHandler(async (event: H3Event<EventHandlerRequest>) =>
                 'Accept': 'application/json',
                 'Authorization' :`Bearer ${access_token}`,
                 'Content-Type': 'application/json',
+                'X-Sanctum-Token' : sanctum_token
             },
             body,
         });
