@@ -83,7 +83,7 @@
       <h2 class="text-h5">{{ content.whyGetEPLCard.heading }}</h2>
       <hr class="title-divider my-4 w-100 bg-primary">
       <v-col v-for="(item, index) in [content.whyGetEPLCard.linkedIn, content.whyGetEPLCard.galeCourses, content.whyGetEPLCard.oReilly, content.whyGetEPLCard.job]" :key="index" cols="12" md="3">
-        <v-card variant="outlined" class="mx-auto" height="450" >
+        <v-card variant="outlined" class="mx-auto" height="500" >
           <img :src="`/images/${item.image}`" :alt="item.heading" style="height: 180px; width: 100%; object-fit: cover">
           <v-card-title class="text-h6 text-center">
             <span class="text-body-2 text-primary ">{{ item.heading }}</span>
