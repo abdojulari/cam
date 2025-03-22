@@ -1,14 +1,14 @@
 {
     "introSection": {
-        "title": "Level Up Your Learning",
+        "title": "Unlock Your Potential",
         "image": "milner.jpg",
         "intro": {
             "heading": "Keep Growing, Keep Achieving ",
             "paragraph": "Your next big breakthrough starts with EPL. Whether you’re sharpening your skills, diving into a new subject, or exploring fresh ideas, your library card gives you access to top -tier learning resources.  ",
-            "second_paragraph": "Take your knowledge to the next level with expert-led courses, creative tools, and endless opportunities to expand your mind.  "
+            "second_paragraph": "Take your knowledge further with expert-led courses, creative tools, and endless opportunities to expand your mind."
           },
         "buttons": {
-            "getCard": "Elevate Your Learning",
+            "getCard": "Get an EPL card",
             "startStreaming": "Explore Free Resources"
         }, 
         "links": {
@@ -39,7 +39,7 @@
     },
     "customerStories": {
       "heading": "Customer Stories",
-      "quote": "\"EPL is a great place to get 'things' done. I can keep in touch with friends on Facebook, check my emails, take free courses to upgrade my skills to add to my resume. I also have a lot of fun downloading recipes to cook at home.\"",
+      "quote": "EPL is a great place to get 'things' done. I can keep in touch with friends on Facebook, check my emails, take free courses to upgrade my skills to add to my resume. I also have a lot of fun downloading recipes to cook at home.",
       "author": "Lorraine C."
     },
     "whyGetEPLCard": {
@@ -82,7 +82,7 @@
         "link": "https://cam.epl.ca/"
       },
       "haveCard": {
-        "title": "Have a Card?",
+        "title": "Have a card?",
         "description": "Your card gives you instant access to books, eBooks, audiobooks, streaming movies, and more!",
         "buttonText": "Continue your learning journey",
         "link": "https://www.epl.ca/explore/?related-format=online-resources&topic=jobs-money-law"

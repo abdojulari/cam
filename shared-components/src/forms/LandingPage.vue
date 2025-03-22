@@ -1,6 +1,6 @@
 <template>
-  <v-container class="pa-10">
-    <v-row >
+  <v-container class="py-10">
+    <v-row class="row-uniform">
       <v-col cols="12">
         <h1 class="text-h4 font-weight-bold">{{ content.introSection.title }}</h1>
         <hr class="title-divider  w-100 bg-orange">
@@ -14,7 +14,7 @@
       </v-col>
     </v-row>
 
-    <v-row>
+    <v-row class="row-uniform">
       <v-col cols="12" sm="8">
         <h2 class="text-h4 mb-4 font-weight-bold">{{ content.introSection.intro.heading }}</h2>
         <p class="mb-4 text-body-1 lh-lg">{{ content.introSection?.intro?.paragraph }}</p>
@@ -22,66 +22,97 @@
       </v-col>
       <v-col cols="12" sm="4">
         <div class="d-flex flex-column">
-          <a 
-            :href="`${content.introSection.links.getCard}`" 
-            target="_blank" rel="noopener noreferrer" 
-            v-if="content.introSection.links.getCard" 
-            class="mt-5 text-center text-decoration-none text-body-1 bg-primary py-2 rounded"
-          >
-            {{ content.introSection.buttons.getCard }}
-          </a>
-          <a 
-            :href="`${content.introSection.links.startStreaming}`"
-            variant="outlined" 
-            target="_blank" rel="noopener noreferrer" 
-            v-if="content.introSection.links.startStreaming" 
-            class="mt-5 text-center text-decoration-none text-body-1 text-primary border-sm border-primary py-2 rounded border-opacity-100"
-          >
-            {{ content.introSection.buttons.startStreaming }}
-          </a>
+          <v-hover v-slot="{ isHovering, props }">
+            <a 
+              :href="`${content.introSection.links.getCard}`" 
+              target="_blank" rel="noopener noreferrer"
+              v-bind="props"
+              :class="{ 
+                'bg-white text-light-blue-darken-4': isHovering, 
+                'bg-primary text-white': !isHovering 
+              }" 
+              v-if="content.introSection.links.getCard" 
+              class="mt-5 text-center text-decoration-none text-body-1 py-2 rounded border-sm border-primary border-opacity-100"
+            >
+              {{ content.introSection.buttons.getCard }}
+            </a>
+          </v-hover>
+          <v-hover v-slot="{ isHovering, props }">
+            <a 
+              :href="`${content.introSection.links.startStreaming}`"
+              variant="outlined" 
+              target="_blank" rel="noopener noreferrer"
+              v-bind="props"
+              :class="{ 'bg-primary': isHovering, 'text-white': isHovering }" 
+              v-if="content.introSection.links.startStreaming" 
+              class="mt-5 text-center text-decoration-none text-body-1 text-primary border-sm border-primary py-2 rounded border-opacity-100"
+            >
+              {{ content.introSection.buttons.startStreaming }}
+            </a>
+          </v-hover>
         </div>
       </v-col>    
     </v-row>
 
-    <v-row class="mx-1">
-      <h2 class="text-h5">{{ content.access.heading }}</h2>
-      <hr class="title-divider my-4 w-100 bg-green">
-      <v-col cols="12" sm="12">
+    <v-row class="row-uniform">
+      <v-col cols="12">
+        <h2 class="text-h5 font-weight-bold">{{ content.access.heading }}</h2>
+        <hr class="title-divider my-4 w-100 bg-green">
+      </v-col>
+      <v-col cols="12" sm="8">
         <p class="text-body-1 lh-lg mb-4">{{ content.access.paragraph }}</p>
-        <ul class="ps-4 text-body-1 lh-lg gap-2">
+        <ul class="ps-10 text-body-1 lh-lg gap-2 ">
           <li v-for="(item, index) in content.access.list" :key="index" class="d-list-item">{{ item }}</li>
         </ul> 
       </v-col>
-      <div class="w-100 d-flex flex-column flex-md-row justify-space-around my-5">
-        <a 
-          :href="content.access.links.signUpButton" 
-          target="_blank" rel="noopener noreferrer" 
-          class="mt-5 text-center text-decoration-none text-body-1 bg-primary py-2 px-5 rounded"
-        >
-          {{ content.access.buttons.signUpButton }}
-        </a>
-        <a 
-          :href="content.access.links.browseButton" 
-          target="_blank" rel="noopener noreferrer" 
-          class="mt-5 text-center text-decoration-none text-body-1 text-primary border-sm border-primary py-2 px-5 rounded border-opacity-100"
-        >
-          {{ content.access.buttons.browseButton }}
-        </a>
-      </div>
-    </v-row>
-
-    <v-row>
+      <v-col cols="12" sm="4">
+        <v-sheet color="purple-darken-1" rounded class="pa-3 position-relative">
+          <div class="quote-container">
+            <v-icon class="quote-icon text-white" size="40">mdi-format-quote-open</v-icon>
+            <p class="text-body-1 lh-lg text-white">{{ content.customerStories.quote }}</p>
+          </div>
+          <div class="d-flex justify-end align-center">
+            <span class="text-body-2 lh-lg text-white pe-2">- {{ content.customerStories.author }}</span>
+            <v-icon class="text-white" size="40">mdi-format-quote-close</v-icon>
+          </div>
+        </v-sheet>
+      </v-col>
       <v-col cols="12">
-        <h2 class="text-h5">{{ content.customerStories.heading }}</h2>
-        <hr class="title-divider my-4 w-100 bg-pink-darken-1">
-        <p class="text-body-1 lh-lg">{{ content.customerStories.quote }}</p>
-        <span class="text-body-1 lh-lg">- {{ content.customerStories.author }}</span>     
+        <div class="w-100 d-flex flex-column flex-md-row justify-space-around my-5">
+          <v-hover v-slot="{ isHovering, props }">
+            <a 
+              :href="content.access.links.signUpButton" 
+              target="_blank" rel="noopener noreferrer"
+              v-bind="props"
+              :class="{ 
+                'bg-white text-light-blue-darken-4': isHovering, 
+                'bg-primary text-white': !isHovering 
+              }" 
+              class="mt-5 text-center text-decoration-none text-body-1 py-2 px-5 rounded border-sm border-primary border-opacity-100"
+            >
+              {{ content.access.buttons.signUpButton }}
+            </a>
+          </v-hover>
+          <v-hover v-slot="{ isHovering, props }">
+            <a 
+              :href="content.access.links.browseButton" 
+              target="_blank" rel="noopener noreferrer"
+              v-bind="props"
+              :class="{ 'bg-primary': isHovering, 'text-white': isHovering }"  
+              class="mt-5 text-center text-decoration-none text-body-1 text-primary border-sm border-primary py-2 px-5 rounded border-opacity-100"
+            >
+              {{ content.access.buttons.browseButton }}
+            </a>
+          </v-hover>
+        </div>
       </v-col>
     </v-row>
 
-    <v-row class="mx-1">
-      <h2 class="text-h5">{{ content.whyGetEPLCard.heading }}</h2>
-      <hr class="title-divider my-4 w-100 bg-primary">
+    <v-row class="row-uniform">
+      <v-col cols="12">
+        <h2 class="text-h5 font-weight-bold">{{ content.whyGetEPLCard.heading }}</h2>
+        <hr class="title-divider my-4 w-100 bg-primary">
+      </v-col>
       <v-col v-for="(item, index) in [content.whyGetEPLCard.linkedIn, content.whyGetEPLCard.galeCourses, content.whyGetEPLCard.oReilly, content.whyGetEPLCard.job]" :key="index" cols="12" md="3">
         <v-card variant="outlined" class="mx-auto" height="500" >
           <img :src="`/images/${item.image}`" :alt="item.heading" style="height: 180px; width: 100%; object-fit: cover">
@@ -98,14 +129,13 @@
       </v-col>
     </v-row>
 
-
-    <v-row class="mt-8 mx-1">
+    <v-row class="row-uniform">
       <v-col cols="12" class="text-h6">
-        <h2 class="text-h5">{{ content.eplSection.heading }}</h2>
+        <h2 class="text-h5 font-weight-bold">{{ content.eplSection.heading }}</h2>
         <hr class="title-divider my-4 w-100 bg-orange">
       </v-col>
       <v-col cols="12" md="6">
-        <h3 class="mb-4">{{ content.eplSection.needCard.title }}</h3>
+        <h3 class="mb-4 font-weight-bold">{{ content.eplSection.needCard.title }}</h3>
         <p class="text-body-1 lh-lg mb-6">{{ content.eplSection.needCard.description }}</p>
         <a 
           :href="content.eplSection.needCard.link" 
@@ -117,23 +147,26 @@
         </a>
       </v-col>
       <v-col cols="12" md="6">
-        <h3 class="mb-4">{{ content.eplSection.haveCard.title }}</h3>
+        <h3 class="mb-4 font-weight-bold">{{ content.eplSection.haveCard.title }}</h3>
         <p class="text-body-1 lh-lg mb-6">{{ content.eplSection.haveCard.description }}</p>
-      
+        <v-hover v-slot="{ isHovering, props }">
         <a 
           :href="content.eplSection.haveCard.link"
           target="_blank"
+          v-bind="props"
+          :class="{ 'bg-primary': isHovering, 'text-white': isHovering }"
           rel="noopener noreferrer"
           class="mt-5 text-center text-decoration-none text-body-1 text-primary border-sm border-primary py-2 px-5 d-inline-block rounded border-opacity-100"
         >
           {{ content.eplSection.haveCard.buttonText }}
         </a>
+        </v-hover>
       </v-col>
     </v-row>
 
-    <v-row class="mb-16 mx-1">
+    <v-row class="row-uniform mb-16">
       <v-col cols="12">
-        <h2>{{ content.faq.heading }}</h2>
+        <h2 class="text-h5 font-weight-bold">{{ content.faq.heading }}</h2>
         <hr class="title-divider my-4 w-100 bg-light-blue darken-2">
         <v-expansion-panels variant="accordion" flat>
           <v-expansion-panel v-for="(question, index) in content.faq.questions" :key="index" class="border-bottom">
@@ -155,6 +188,29 @@ defineProps({
   }
 });
 
+// Add Google Tag Manager scripts specifically for this page
+useHead({
+  script: [
+    {
+      innerHTML: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+      new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+      j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+      'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+      })(window,document,'script','dataLayer','GTM-WQQQLN2V');`,
+      tagPosition: 'head',
+      tagPriority: 'high'
+    }
+  ],
+  // Add the noscript iframe as a custom head tag
+  // This will be added to the body via Nuxt's handling
+  noscript: [
+    {
+      innerHTML: `<iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WQQQLN2V"
+      height="0" width="0" style="display:none;visibility:hidden"></iframe>`,
+      tagPosition: 'bodyOpen'
+    }
+  ]
+});
 </script>
 
 <style scoped>
@@ -178,6 +234,29 @@ defineProps({
   border-bottom: 1px solid rgba(0, 0, 0, 0.12);
 }
 
+/* Added for uniform row width and spacing */
+.row-uniform {
+  width: 100%;
+  margin-left: 0;
+  margin-right: 0;
+  margin-bottom: 48px;
+}
+
+.quote-container {
+  position: relative;
+  padding: 0 4px;
+}
+
+.quote-icon {
+  position: absolute;
+  top: -10px;
+  left: 0;
+}
+
+.quote-container p {
+  text-indent: 48px; /* This creates space just for the first line */
+} 
+
 @media screen and (max-width: 680px) {
   .v-container {
     padding: 16px;
@@ -189,6 +268,10 @@ defineProps({
   
   .v-btn {
     width: 100%;
+  }
+  
+  .row-uniform {
+    margin-bottom: 32px;
   }
 }
 
