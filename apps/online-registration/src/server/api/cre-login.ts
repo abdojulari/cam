@@ -23,6 +23,7 @@ export default defineEventHandler(async (event: H3Event<EventHandlerRequest>) =>
             },
             body: body
         });
+        
         setCookie(event, 'x-sanctum-token', response.sanctum_token, { 
             path: '/',
             maxAge: response.expires_in || 3600

@@ -1,7 +1,7 @@
 {
     "introSection": {
         "title": "Unlock Your Potential",
-        "image": "milner.jpg",
+        "image": "milner.png",
         "intro": {
             "heading": "Keep Growing, Keep Achieving ",
             "paragraph": "Your next big breakthrough starts with EPL. Whether you’re sharpening your skills, diving into a new subject, or exploring fresh ideas, your library card gives you access to top -tier learning resources.  ",
@@ -44,6 +44,7 @@
     },
     "whyGetEPLCard": {
       "heading": "Why Get an EPL Card?",
+      "paragraph": "Unlock a world of knowledge with your EPL card. Access top learning resources, expert-led courses, and more anytime, anywhere!",
       "linkedIn": {
         "link":"https://www.epl.ca/resource/linkedin-learning/",
         "image": "linkedin.png",

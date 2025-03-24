@@ -92,12 +92,21 @@ export const apiService = {
             'Accept': 'application/json',
           },
         });
-        
+        // cookie expires in 1 hour
+        const expires = new Date();
+        expires.setHours(expires.getHours() + 1);
         const data = await response as { sanctum_token: string };
         
         if (data) {
-            document.cookie = `x-sanctum-token=${ import.meta.env.DEV ? data : data.sanctum_token}; path=/;`;
+            document.cookie = `x-sanctum-token=${ 
+              import.meta.env.DEV ? data : data.sanctum_token}; path=/; expires=${expires.toUTCString()};`;
         }
+        
+        // const lpass = useCookie('test_cookie', {
+        //   expires: expires,
+        // });
+        // lpass.value = response;
+
         return 'success';
       } catch (err) {
         console.error('Error during Sanctum token generation:');

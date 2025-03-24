@@ -70,6 +70,7 @@ export default defineNuxtConfig({
       VITE_CRE_AUTH_URL: process?.env.VITE_CRE_AUTH_URL,
       CRE_CUSTOMER_AUTH_URL: process?.env.CRE_CUSTOMER_AUTH_URL,
       CRE_STATISTICS_URL: process?.env.CRE_STATISTICS_URL,
+      LPASS_URL: process?.env.LPASS_URL,
     }
   },
   $development: {

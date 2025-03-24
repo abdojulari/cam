@@ -1,6 +1,6 @@
 <template>
   <v-container class="py-10">
-    <v-row class="row-uniform">
+    <v-row class="row-top">
       <v-col cols="12">
         <h1 class="text-h4 font-weight-bold">{{ content.introSection.title }}</h1>
         <hr class="title-divider  w-100 bg-orange">
@@ -112,15 +112,25 @@
       <v-col cols="12">
         <h2 class="text-h5 font-weight-bold">{{ content.whyGetEPLCard.heading }}</h2>
         <hr class="title-divider my-4 w-100 bg-primary">
+        <p>{{ content.whyGetEPLCard.paragraph }}</p>
       </v-col>
       <v-col v-for="(item, index) in [content.whyGetEPLCard.linkedIn, content.whyGetEPLCard.galeCourses, content.whyGetEPLCard.oReilly, content.whyGetEPLCard.job]" :key="index" cols="12" md="3">
         <v-card variant="outlined" class="mx-auto" height="500" >
-          <img :src="`/images/${item.image}`" :alt="item.heading" style="height: 180px; width: 100%; object-fit: cover">
+          <a :href="item.link" target="_blank" rel="noopener noreferrer">
+            <v-img
+              :src="`/images/${item.image}`"
+              alt="Card image"
+              :alt="item.heading" style="height: 180px; width: 100%; object-fit: cover"
+              cover
+            />
+          </a>
           <v-card-title class="text-h6 text-center">
             <span class="text-body-2 text-primary ">{{ item.heading }}</span>
           </v-card-title>
-          <v-card-subtitle class="text-body-1 text-center text-wrap">
-            {{ item.subheading }}
+          <v-card-subtitle class="text-body-1 text-center text-wrap font-weight-medium">
+            <a :href="item.link" target="_blank" rel="noopener noreferrer">
+              {{ item.subheading }} 
+            </a>
           </v-card-subtitle>
           <v-card-text>
             {{ item.content }}
@@ -240,6 +250,13 @@ useHead({
   margin-left: 0;
   margin-right: 0;
   margin-bottom: 48px;
+}
+
+.row-top {
+  width: 100%;
+  margin-left: 0;
+  margin-right: 0;
+  margin-bottom: 18px;
 }
 
 .quote-container {
