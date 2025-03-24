@@ -18,7 +18,7 @@
     },
     "access": {
       "heading": "Get Instant Access!",
-      "paragraph": "Your EPL card is your key to endless learning. Last year, Edmontonians borrowed 11 million items using their library card. With your card, you can",
+      "paragraph": "Your EPL card is your key to endless learning. Last year, Edmontonians borrowed 11 million items using their library card. With your card, you can:",
       "list": [
         "Access thousands of businesses, tech, and creative courses on LinkedIn Learning.",
         "Master a new skill by accessing our studio labs, sound recording studios, and more. ",
@@ -28,8 +28,8 @@
         "Find the perfect space to research, study, or collaborate with like-minded learners.  "
       ],
       "buttons": {
-        "signUpButton": "Unlock your learning potential ",
-        "browseButton": "Access learning tools "
+        "signUpButton": "Unlock Your Learning Potential ",
+        "browseButton": "Access Learning Tools "
       },
       "links": {
         "signUpButton": "https://cam.epl.ca/",
@@ -79,13 +79,13 @@
       "needCard": {
         "title": "Need a card?",
         "description": "EPL cards are free for all Edmonton residents, and you can sign up instantly online. ",
-        "buttonText": "Get your free card!",
+        "buttonText": "Get Your Free Card!",
         "link": "https://cam.epl.ca/"
       },
       "haveCard": {
         "title": "Have a card?",
         "description": "Your card gives you instant access to books, eBooks, audiobooks, streaming movies, and more!",
-        "buttonText": "Continue your learning journey",
+        "buttonText": "Continue Your Learning Journey",
         "link": "https://www.epl.ca/explore/?related-format=online-resources&topic=jobs-money-law"
       }
     },
