@@ -4,7 +4,7 @@
         "image": "milner.png",
         "intro": {
             "heading": "Keep Growing, Keep Achieving ",
-            "paragraph": "Your next big breakthrough starts with EPL. Whether you’re sharpening your skills, diving into a new subject, or exploring fresh ideas, your library card gives you access to top -tier learning resources.  ",
+            "paragraph": "Your next big breakthrough starts with EPL. Whether you’re sharpening your skills, diving into a new subject, or exploring fresh ideas, your library card gives you access to top-tier learning resources.",
             "second_paragraph": "Take your knowledge further with expert-led courses, creative tools, and endless opportunities to expand your mind."
           },
         "buttons": {
@@ -78,7 +78,7 @@
       "heading": "Wherever you go, EPL goes with you!",
       "needCard": {
         "title": "Need a card?",
-        "description": "EPL cards are free for all Edmonton residents, and you can sign up instantly online. ",
+        "description": "EPL cards help Edmonton residents save on books, courses, and more. Sign up instantly online.",
         "buttonText": "Get Your Free Card!",
         "link": "https://cam.epl.ca/"
       },
