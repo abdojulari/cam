@@ -1,4 +1,5 @@
 <template>
+   <v-defaults-provider :defaults="{ VContainer: { style: 'font-family: Arial, Helvetica, sans-serif'}}">
   <v-container class="py-10">
     <v-row class="row-top">
       <v-col cols="12">
@@ -32,7 +33,7 @@
                 'bg-primary text-white': !isHovering 
               }" 
               v-if="content.introSection.links.getCard" 
-              class="mt-5 text-center text-decoration-none text-body-1 py-2 rounded border-sm border-primary border-opacity-100"
+              class="mt-5 text-center text-decoration-none link py-2 rounded border-sm border-primary border-opacity-100"
             >
               {{ content.introSection.buttons.getCard }}
             </a>
@@ -45,7 +46,7 @@
               v-bind="props"
               :class="{ 'bg-primary': isHovering, 'text-white': isHovering }" 
               v-if="content.introSection.links.startStreaming" 
-              class="mt-5 text-center text-decoration-none text-body-1 text-primary border-sm border-primary py-2 rounded border-opacity-100"
+              class="mt-5 text-center text-decoration-none link text-primary border-sm border-primary py-2 rounded border-opacity-100"
             >
               {{ content.introSection.buttons.startStreaming }}
             </a>
@@ -88,7 +89,7 @@
                 'bg-white text-light-blue-darken-4': isHovering, 
                 'bg-primary text-white': !isHovering 
               }" 
-              class="mt-5 text-center text-decoration-none text-body-1 py-2 px-5 rounded border-sm border-primary border-opacity-100"
+              class="mt-5 text-center text-decoration-none link py-2 px-5 rounded border-sm border-primary border-opacity-100"
             >
               {{ content.access.buttons.signUpButton }}
             </a>
@@ -99,7 +100,7 @@
               target="_blank" rel="noopener noreferrer"
               v-bind="props"
               :class="{ 'bg-primary': isHovering, 'text-white': isHovering }"  
-              class="mt-5 text-center text-decoration-none text-body-1 text-primary border-sm border-primary py-2 px-5 rounded border-opacity-100"
+              class="mt-5 text-center text-decoration-none link text-primary border-sm border-primary py-2 px-5 rounded border-opacity-100"
             >
               {{ content.access.buttons.browseButton }}
             </a>
@@ -111,7 +112,7 @@
     <v-row class="row-uniform">
       <v-col cols="12">
         <h2 class="text-h5 font-weight-bold">{{ content.whyGetEPLCard.heading }}</h2>
-        <hr class="title-divider my-4 w-100 bg-primary">
+        <hr class="title-divider my-4 w-100 bg-pink-darken-1">
         <p>{{ content.whyGetEPLCard.paragraph }}</p>
       </v-col>
       <v-col v-for="(item, index) in [content.whyGetEPLCard.linkedIn, content.whyGetEPLCard.galeCourses, content.whyGetEPLCard.oReilly, content.whyGetEPLCard.job]" :key="index" cols="12" md="3">
@@ -142,19 +143,23 @@
     <v-row class="row-uniform">
       <v-col cols="12" class="text-h6">
         <h2 class="text-h5 font-weight-bold">{{ content.eplSection.heading }}</h2>
-        <hr class="title-divider my-4 w-100 bg-orange">
+        <hr class="title-divider my-4 w-100 bg-purple-darken-1">
       </v-col>
       <v-col cols="12" md="6">
         <h3 class="mb-4 font-weight-bold">{{ content.eplSection.needCard.title }}</h3>
         <p class="text-body-1 lh-lg mb-6">{{ content.eplSection.needCard.description }}</p>
-        <a 
-          :href="content.eplSection.needCard.link" 
-          target="_blank" 
-          rel="noopener noreferrer" 
-          class="text-decoration-none text-body-1 lh-lg bg-pink-darken-1 py-2 px-5 rounded mt-5 d-inline-block"
-        >
-          {{ content.eplSection.needCard.buttonText }}
-        </a>
+        <v-hover v-slot="{ isHovering, props }">
+          <a 
+            :href="content.eplSection.needCard.link" 
+            target="_blank"
+            v-bind="props"
+            :class="{ 'bg-white text-light-blue-darken-4 border-sm border-primary border-opacity-100': isHovering, 'text-white': isHovering }" 
+            rel="noopener noreferrer" 
+            class="text-decoration-none link lh-lg bg-primary py-2 px-5 rounded mt-5 d-inline-block"
+          >
+            {{ content.eplSection.needCard.buttonText }}
+          </a>
+        </v-hover>
       </v-col>
       <v-col cols="12" md="6">
         <h3 class="mb-4 font-weight-bold">{{ content.eplSection.haveCard.title }}</h3>
@@ -166,7 +171,7 @@
           v-bind="props"
           :class="{ 'bg-primary': isHovering, 'text-white': isHovering }"
           rel="noopener noreferrer"
-          class="mt-5 text-center text-decoration-none text-body-1 text-primary border-sm border-primary py-2 px-5 d-inline-block rounded border-opacity-100"
+          class="mt-5 text-center link text-decoration-none text-primary border-sm border-primary py-2 px-5 d-inline-block rounded border-opacity-100"
         >
           {{ content.eplSection.haveCard.buttonText }}
         </a>
@@ -180,13 +185,29 @@
         <hr class="title-divider my-4 w-100 bg-light-blue darken-2">
         <v-expansion-panels variant="accordion" flat>
           <v-expansion-panel v-for="(question, index) in content.faq.questions" :key="index" class="border-bottom">
-            <v-expansion-panel-title>{{ question.title }}</v-expansion-panel-title>
-            <v-expansion-panel-text>{{ question.text }}</v-expansion-panel-text>
+            <v-expansion-panel-title class="text-body-1 lh-lg font-weight-bold">{{ question.title }}</v-expansion-panel-title>
+            <v-expansion-panel-text>
+              {{ question.text }} 
+              <a :href="question.hyperlink.link" class="text-decoration-underline text-primary" target="_blank" rel="noopener noreferrer">
+                {{ question?.hyperlink.text }}
+              </a>
+            </v-expansion-panel-text>
           </v-expansion-panel>
         </v-expansion-panels>
       </v-col>
+      <v-col cols="12">
+        <a 
+          href="https://www.epl.ca/faq/library-cards/ " 
+          target="_blank"
+          rel="noopener noreferrer"
+          class="text-decoration-none text-body-1 font-weight-bold lh-lg text-primary "
+        >
+        View more >
+        </a>
+      </v-col>
     </v-row>
   </v-container>
+</v-defaults-provider>
 </template>
 
 <script setup lang="ts">
@@ -226,6 +247,11 @@ useHead({
 <style scoped>
 .text-center {
   text-align: center;
+}
+
+.link {
+  font-size: 16px;
+  font-weight: 600;
 }
 
 .title-divider {
