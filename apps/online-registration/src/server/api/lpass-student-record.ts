@@ -11,7 +11,7 @@ export default defineEventHandler(async (event: H3Event<EventHandlerRequest>) =>
             throw new Error('Unauthorized!');
         }
         // get the student record from participating institutions
-        if (request.method === 'POST') {
+       
             const { 
                 firstname, 
                 lastname, 
@@ -29,7 +29,7 @@ export default defineEventHandler(async (event: H3Event<EventHandlerRequest>) =>
                 expirydate 
             } = await readBody(event);
 
-            if (!firstname, !lastname, !middlename, !dateofbirth, !email, !phone, !address, !city, !province, !postalcode, !studentid, !institution, !status, !expirydate) {
+            if (!firstname, !lastname, !dateofbirth, !email, !phone, !address, !city, !province, !postalcode, !studentid, !institution, !status, !expirydate) {
                 throw new Error('Missing required fields');
             }
 
@@ -50,7 +50,7 @@ export default defineEventHandler(async (event: H3Event<EventHandlerRequest>) =>
                 status, 
                 expirydate 
             };
-        }
+        
     } catch (error) {
         return {
             status: 401,
