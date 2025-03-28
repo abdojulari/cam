@@ -63,7 +63,7 @@
       <v-col cols="12" sm="8">
         <p class="text-body-1 lh-lg mb-4">{{ content.access.paragraph }}</p>
         <ul class="ps-10 text-body-1 lh-lg gap-2 ">
-          <li v-for="(item, index) in content.access.list" :key="index" class="d-list-item">{{ item }}</li>
+          <li v-for="(item, index) in content.access.list" :key="index" class="d-list-item" v-html = "item"> </li>
         </ul> 
       </v-col>
       <v-col cols="12" sm="4">
@@ -115,7 +115,7 @@
         <hr class="title-divider my-4 w-100 bg-pink-darken-1">
         <p>{{ content.whyGetEPLCard.paragraph }}</p>
       </v-col>
-      <v-col v-for="(item, index) in [content.whyGetEPLCard.linkedIn, content.whyGetEPLCard.galeCourses, content.whyGetEPLCard.oReilly, content.whyGetEPLCard.job]" :key="index" cols="12" md="3">
+      <v-col v-for="(item, index) in [content.whyGetEPLCard.card1, content.whyGetEPLCard.card2, content.whyGetEPLCard.card3, content.whyGetEPLCard.card4]" :key="index" cols="12" md="3">
         <v-card variant="outlined" class="mx-auto" height="500" >
           <a :href="item.link" target="_blank" rel="noopener noreferrer">
             <v-img
@@ -186,11 +186,8 @@
         <v-expansion-panels variant="accordion" flat>
           <v-expansion-panel v-for="(question, index) in content.faq.questions" :key="index" class="border-bottom">
             <v-expansion-panel-title class="text-body-1 lh-lg font-weight-bold">{{ question.title }}</v-expansion-panel-title>
-            <v-expansion-panel-text>
-              {{ question.text }} 
-              <a :href="question.hyperlink.link" class="text-decoration-underline text-primary" target="_blank" rel="noopener noreferrer">
-                {{ question?.hyperlink.text }}
-              </a>
+            <v-expansion-panel-text  v-html="question.text" class="mx-7">
+              
             </v-expansion-panel-text>
           </v-expansion-panel>
         </v-expansion-panels>
