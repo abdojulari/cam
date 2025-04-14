@@ -93,16 +93,16 @@
       "heading": "Frequently Asked Questions",
       "questions": [
         {
+          "title": "What do I need to get a library card?",
+          "text":  "<p>Getting your EPL card is simple. Visit any EPL location with <a class=\"text-primary text-decoration-underline\" target=\"_blank\" href=\"https://www.epl.ca/wp-content/uploads/sites/18/2021/04/Acceptable-Forms-of-ID-20201104-EPL-website.pdf\">indentification</a> (Drivers’ License, Alberta Health Care Card, etc.) and proof of Edmonton address in hand or <a class=\"text-primary text-decoration-underline\" target=\"_blank\" href=\"https://www2.epl.ca/signup\">signup online</a> for a 45-day temporary card to start experiencing some of the benefits of EPL membership before visiting a branch to get a full membership.<br><br> If you're under 18, your parent or guardian must sign for you, and they'll be responsible for what you borrow.</p>"
+        },
+        {
           "title": "How can EPL support me with early literacy?",
           "text":"<p>EPL has a variety of resources to help parents with early literacy, from our collections, classes and events, to staff advice and book recommendations. Visit our <a class=\"text-primary text-decoration-underline\" target=\"_blank\" href=\"https://www.epl.ca/early-literacy/\">Early Literacy</a> page to learn more</p>"  
         },
         {
           "title": "Do I need a library card to access the eBooks and online resources?",
           "text": "<p>We license our digital content from a number of companies (library vendors). The vendors require us to only allow our customers to access their products. For most products we are only licensed for the citizens of Edmonton. Your library card confirms your identity for the library vendors websites.</p>"
-        },
-        {
-          "title": "What do I need to get a library card?",
-          "text":  "<p>Getting your EPL card is simple. Visit any EPL location with <a class=\"text-primary text-decoration-underline\" target=\"_blank\" href=\"https://www.epl.ca/wp-content/uploads/sites/18/2021/04/Acceptable-Forms-of-ID-20201104-EPL-website.pdf\">indentification</a> (Drivers’ License, Alberta Health Care Card, etc.) and proof of Edmonton address in hand or <a class=\"text-primary text-decoration-underline\" target=\"_blank\" href=\"https://www2.epl.ca/signup\">signup online</a> for a 45-day temporary card to start experiencing some of the benefits of EPL membership before visiting a branch to get a full membership.<br><br> If you're under 18, your parent or guardian must sign for you, and they'll be responsible for what you borrow.</p>"
         }
       ]
     }
