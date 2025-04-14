@@ -1,0 +1,108 @@
+{
+    "introSection": {
+        "title": "Spark Creativity, Try Something New",
+        "image": "milner.png",
+        "intro": {
+            "heading": "Experiment, Build, and Create!",
+            "paragraph": "Whether you're tinkering with tech at the Library or learning new skills with digital tools at home, your EPL card gives you access to everything you need to get creative. Explore music production, 3D printing, video editing, and more, wherever you are.",
+            "second_paragraph": ""
+          },
+        "buttons": {
+            "getCard": "Get an EPL card",
+            "startStreaming": "See What You Can Create"
+        }, 
+        "links": {
+            "getCard": "https://cam.epl.ca/",
+            "startStreaming": "https://www.epl.ca/explore/?post-type=online-resources%2Cservice"
+        }
+    },
+    "access": {
+      "heading": "Access New Technology and Resources",
+      "paragraph": "Your EPL card is your ticket to creativity and innovation, both in person and online. From library spaces to digital resources, Edmontonians are exploring new hobbies, building skills, and bringing ideas to life. With your card, you can:",
+      "list": [
+        "Create music or launch a podcast in professional-grade <a class=\"text-primary text-decoration-underline\" target=\"_blank\" href=\"https://www.epl.ca/makerspace/studio_lab/\">Studio Labs</a>.",
+        "Design and produce with <a class=\"text-primary text-decoration-underline\" target=\"_blank\" href=\"https://www.epl.ca/makerspace/3d-printing/\">3D printing</a>, <a class=\"text-primary text-decoration-underline\" target=\"_blank\" href=\"https://www.epl.ca/makerspace/vinyl-cutting/\">vinyl cutting</a>, and <a class=\"text-primary text-decoration-underline\" target=\"_blank\" href=\"https://www.epl.ca/makerspace/laser-cutter/\">laser cutter</a>.",
+        "Access thousands of businesses, tech, and creative courses on <a class=\"text-primary text-decoration-underline\" target=\"_blank\" href=\"https://www.epl.ca/resource/linkedin-learning/\">LinkedIn Learning</a>.",
+        "Edit high-quality videos and photos using industry-standard software. "
+      ],
+      "paragraph2": "Don’t just imagine. Start creating with an EPL card!",
+      "buttons": {
+        "signUpButton": "Unlock Your Curiosity",
+        "browseButton": "Access Latest Tech Tools"
+      },
+      "links": {
+        "signUpButton": "https://cam.epl.ca/",
+        "browseButton": "https://www.epl.ca/explore/?post-type=online-resources%2Cservice"
+      }
+      
+    },
+    "customerStories": {
+      "heading": "Customer Stories",
+      "quote": "I am really happy that the EPL plays such a big role in the community. People of all ages and walks of life are welcome at the Library. Thank you for the wonderful staff and all that they do! Thanks for the Makerspace, art, music, and lectures.",
+      "author": "A. Arntzen"
+    },
+    "whyGetEPLCard": {
+      "heading": "Why Get an EPL Card?",
+      "paragraph": "No experience? No problem! Whether you're diving into EPL’s Makerspace or exploring digital tools from home, you'll find everything you need to start a new hobby or sharpen your skills. Your next great project starts here.",
+      "card1": {
+        "link":"https://www.epl.ca/makerspace/3d-printing/",
+        "image": "",
+        "heading": "SERVICES",
+        "subheading": "3D Printing",
+        "content": "Dream it, design it, print it. EPL’s 3D printers and beginner-friendly training help you bring your ideas to life. Take a 3D printing class, book a printer, and start creating."
+      },
+      "card2": {
+        "link":"https://www.epl.ca/resource/gale-courses/",
+        "image": "",
+        "heading": "ONLINE RESOURCE",
+        "subheading": "Gale Courses",
+        "content": "Take your learning further with instructor-led online courses on everything from professional development and business to creative writing and personal wellness. Learn at your own pace with engaging, interactive lessons."
+      },
+      "card3": {
+        "link":"https://www.epl.ca/makerspace/studios/",
+        "image": "",
+        "heading": "SERVICES",
+        "subheading": "Recording Studios",
+        "content": "Unleash your inner musician, podcaster, or audio engineer. Our recording studios are equipped with top-notch instruments and sound gear, perfect for anyone from beginners to pros looking to mix, record, or jam."
+      },
+      "card4": {
+        "link":"https://www.epl.ca/resource/oreilly-for-public-libraries-formerly-safari-tech-books/",
+        "image": "",
+        "heading": "ONLINE RESOURCE",
+        "subheading": "O’Reilly for Public Libraries",
+        "content": "Get access to over 45,000 eBooks and 3,500+ videos on technology and business. Get instant access—no downloads or checkouts needed!"
+      }
+    },
+    "eplSection": {
+      "heading": "Wherever You Go, EPL Goes with You!",
+      "needCard": {
+        "title": "Need a library card?",
+        "description": "Your EPL cards helps you save on books, courses, and more. Sign up instantly online. ",
+        "buttonText": "Get Your EPL Card!",
+        "link": "https://cam.epl.ca/"
+      },
+      "haveCard": {
+        "title": "Have a library card?",
+        "description": "Your card gives you instant access to books, eBooks, audiobooks, streaming movies, and so much more!",
+        "buttonText": "Sharpen Your Skills",
+        "link": "https://www.epl.ca/explore/?post-type=online-resources%2Cservice"
+      }
+    },
+    "faq": {
+      "heading": "Frequently Asked Questions",
+      "questions": [
+        {
+          "title": "What do I need to get a library card?",
+          "text":  "<p>Getting your EPL card is simple. Visit any EPL location with <a class=\"text-primary text-decoration-underline\" target=\"_blank\" href=\"https://www.epl.ca/wp-content/uploads/sites/18/2021/04/Acceptable-Forms-of-ID-20201104-EPL-website.pdf\">indentification</a> (Drivers’ License, Alberta Health Care Card, etc.) and proof of Edmonton address in hand or <a class=\"text-primary text-decoration-underline\" target=\"_blank\" href=\"https://www2.epl.ca/signup\">signup online</a> for a 45-day temporary card to start experiencing some of the benefits of EPL membership before visiting a branch to get a full membership.<br><br> If you're under 18, your parent or guardian must sign for you, and they'll be responsible for what you borrow.</p>"
+        },
+        {
+          "title": "Do I need a special app or software to access EPL’s online learning resources? ",
+          "text":"<p>No special app or software is required. You can access EPL’s online learning resources directly from our website. Simply click on the resource you’d like to use, log in with your EPL card, and start learning.</p>"  
+        },
+        {
+          "title": "Do I need a library card to access the eBooks and online resources?",
+          "text": "<p>We license our digital content from a number of companies (library vendors). The vendors require us to only allow our customers to access their products. For most products we are only licensed for the citizens of Edmonton. Your library card confirms your identity for the library vendors websites.</p>"
+        }
+      ]
+    }
+}
