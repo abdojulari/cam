@@ -102,11 +102,6 @@ export const apiService = {
               import.meta.env.DEV ? data : data.sanctum_token}; path=/; expires=${expires.toUTCString()};`;
         }
         
-        // const lpass = useCookie('test_cookie', {
-        //   expires: expires,
-        // });
-        // lpass.value = response;
-
         return 'success';
       } catch (err) {
         console.error('Error during Sanctum token generation:');
@@ -119,6 +114,7 @@ export const apiService = {
         body: JSON.stringify(params),
       });
       return response;
-    }
+    },
+    
 };
   

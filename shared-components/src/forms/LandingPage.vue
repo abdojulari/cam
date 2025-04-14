@@ -186,7 +186,7 @@
         <v-expansion-panels variant="accordion" flat>
           <v-expansion-panel v-for="(question, index) in content.faq.questions" :key="index" class="border-bottom">
             <v-expansion-panel-title class="text-body-1 lh-lg font-weight-bold">{{ question.title }}</v-expansion-panel-title>
-            <v-expansion-panel-text  v-html="question.text" class="mx-7">
+            <v-expansion-panel-text  v-html="question.text" class="mx-7 py-2">
               
             </v-expansion-panel-text>
           </v-expansion-panel>

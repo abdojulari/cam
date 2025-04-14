@@ -1,6 +1,8 @@
 import { z } from 'zod';
-import { defineEventHandler, getCookie, H3Event, readBody } from "h3";
+import { defineEventHandler, getCookie, readBody, createError,  setCookie } from 'h3';
+import { setBrowserCookie } from '../util/cookieManager';
 
+// Schema to validate the student record
 const StudentRecordSchema = z.object({
     firstname: z.string(),
     lastname: z.string(),
@@ -19,18 +21,20 @@ const StudentRecordSchema = z.object({
 });
 
 export default defineEventHandler(async (event) => {
+    const studentRecords = useStorage('redis');
     try {
         // Authentication check
         const access_token = getCookie(event, 'access_token');
         const sanctum_token = getCookie(event, 'x-sanctum-token');
+     
         if (!access_token || !sanctum_token) {
             throw createError({
                 statusCode: 401,
-                statusMessage: 'Unauthorized'
+                statusMessage: 'Unauthorized',
             });
         }
 
-        // Read and validate body
+        // Read and validate body data
         const body = await readBody(event);
         const result = StudentRecordSchema.safeParse(body);
 
@@ -38,15 +42,35 @@ export default defineEventHandler(async (event) => {
             throw createError({
                 statusCode: 400,
                 statusMessage: 'Bad Request',
-                data: {
-                    errors: result.error.flatten()
-                }
+                data: { errors: result.error.flatten() },
             });
         }
 
-        // Return the validated data
-        return result.data;
+        // Generate a unique ID for the record (for simplicity, using timestamp)
+        const id = Date.now().toString();
+        
+        // Store the student data in the in-memory map with the unique ID
+        await studentRecords.setItem(id, result.data);
 
+        // save the id to cookie
+        setCookie(event, 'id', id, {
+            path: '/',
+            httpOnly: false,
+            sameSite: 'none',
+            maxAge: 3600,
+            secure: process.env.NODE_ENV === 'production',
+        });
+        
+        setBrowserCookie('id', id, {
+            path: '/',
+            httpOnly: false,
+            sameSite: 'none',
+            maxAge: 3600,
+            secure: process.env.NODE_ENV === 'production',
+        });
+
+        // Return the ID of the saved record
+        return { id };
     } catch (error) {
         if (error.statusCode) {
             throw error;
@@ -54,9 +78,7 @@ export default defineEventHandler(async (event) => {
         throw createError({
             statusCode: 500,
             statusMessage: 'Internal Server Error',
-            data: {
-                error: error.message
-            }
+            data: { error: error.message },
         });
     }
 });
