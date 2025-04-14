@@ -65,6 +65,7 @@
         <ul class="ps-10 text-body-1 lh-lg gap-2 ">
           <li v-for="(item, index) in content.access.list" :key="index" class="d-list-item" v-html = "item"> </li>
         </ul> 
+        <p class="text-body-1 lh-lg mb-4">{{ content.access.paragraph2 }}</p>
       </v-col>
       <v-col cols="12" sm="4">
         <v-sheet color="purple-darken-1" rounded class="pa-3 position-relative">

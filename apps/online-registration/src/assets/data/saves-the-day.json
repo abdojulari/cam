@@ -1,0 +1,109 @@
+{
+    "introSection": {
+        "title": "Big Savings, Endless Benefits",
+        "image": "milner.png",
+        "intro": {
+            "heading": "Save on Streaming Costs, No Catch!",
+            "paragraph": "Why pay for subscriptions when your library card gives you free access to books, movies, video games, online courses, and more? With EPL you can enjoy the latest releases without spending a dime.  ",
+            "second_paragraph": ""
+          },
+        "buttons": {
+            "getCard": "Get an EPL card",
+            "startStreaming": "Savings Start at EPL"
+        }, 
+        "links": {
+            "getCard": "https://cam.epl.ca/",
+            "startStreaming": " https://www.epl.ca/explore/?post-type=online-resources%2Cwebsite%2Cstaff-list&related-format=online-resources%2Cmovies%2Cvideo-games"
+        }
+    },
+    "access": {
+      "heading": "Enjoy Premium Content Without Extra Costs!",
+      "paragraph": "Your EPL card gives you access to incredible stories, entertainment, and resources, without the added expense. Last year, Edmontonians saved thousands of dollars by borrowing from their local library instead of buying. With your card, you can:",
+      "list": [
+        "Have a movie night on us! Watch <a class=\"text-primary text-decoration-underline\" target=\"_blank\" href=\"https://epl.bibliocommons.com/v2/events?types=57fe877ae2c0a00100ce6fca\">films at the Library</a>, borrow <a class=\"text-primary text-decoration-underline\" target=\"_blank\" href=\"https://www.epl.ca/browse-movies/\">DVDs</a>, or <a class=\"text-primary text-decoration-underline\" target=\"_blank\" href=\"https://www.epl.ca/resource/kanopy/\">stream</a> your favourites from home.",
+        "Find your next great read. From bestselling novels to kids’ favourites, our <a class=\"text-primary text-decoration-underline\" target=\"_blank\" href=\"https://epl.ca/epl-picks\">EPL Picks lists</a> are curated for your enjoyment. There’s something for everyone!",
+        "Get creative in the <a class=\"text-primary text-decoration-underline\" target=\"_blank\" href=\"https://www.epl.ca/makerspace/\">Makerspace</a>, explore 3D printing, make music in our Studio Labs, and try out something new using our hands-on tools.",
+        "Join early literacy programs like <a class=\"text-primary text-decoration-underline\" target=\"_blank\" href=\"https://epl.bibliocommons.com/v2/events?types=57fe8aeae2c0a00100ce70f2\">Sign, Sign, Laugh and Learn</a> to make learning fun for kids.",
+        "Take part in exciting events, workshops, and games, all at no cost."
+      ],
+      "paragraph2": "EPL helps you save money and gives you access to more, sign up today!",
+      "buttons": {
+        "signUpButton": "Start Saving Now",
+        "browseButton": "Find Fun at EPL"
+      },
+      "links": {
+        "signUpButton": "https://cam.epl.ca/",
+        "browseButton": "https://www.epl.ca/explore/?post-type=staff-list%2Conline-resources%2Cwebsite&related-format=movies%2Conline-resources%2Cvideo-games"
+      }
+      
+    },
+    "customerStories": {
+      "heading": "Customer Stories",
+      "quote": "The library allows you to borrow books and other materials and return them, free of charge. This saves a lot of money. I keep meaning to keep a record of the total value of borrowed items. I know it is a very big number.",
+      "author": "Anita J."
+    },
+    "whyGetEPLCard": {
+      "heading": "Why Get an EPL Card?",
+      "paragraph": "If you love getting the most out of life while spending the least, an EPL card is your ultimate money-saving tool.",
+      "card1": {
+        "link":"https://www.epl.ca/resource/kanopy/",
+        "image": "",
+        "heading": "ONLINE RESOURCE",
+        "subheading": "Kanopy",
+        "content": "Stream quality films, documentaries, and shows anytime, anywhere. Kanopy gives you on-demand access to stories that entertain, educate, and inspire. It’s perfect for movie nights or quiet evenings in."
+      },
+      "card2": {
+        "link":"https://www.epl.ca/resource/pressreader/",
+        "image": "",
+        "heading": "ONLINE RESOURCE",
+        "subheading": "PressReader",
+        "content": "Stay up to date with thousands of newspapers and magazines from around the world. Whether you’re looking for the latest headlines or your favourite lifestyle reads, PressReader has you covered."
+      },
+      "card3": {
+        "link":"https://epl.bibliocommons.com/v2/events?types=57fe86b1e2c0a00100ce6f3d",
+        "image": "",
+        "heading": "EVENTS",
+        "subheading": "Early Literacy Events",
+        "content": "Stuck indoors with little ones? Drop into story times and other early literacy events that make learning fun and engaging for young readers."
+      },
+      "card4": {
+        "link":"https://epl.ca/epl-picks",
+        "image": "",
+        "heading": "ONLINE RESOURCE",
+        "subheading": "EPL Picks Lists",
+        "content": "Need a quick recommendation? Browse expertly curated books, movies, and music lists for every mood and moment. These picks are your shortcut to something great."
+      }
+    },
+    "eplSection": {
+      "heading": "Wherever You Go, EPL Goes with You!",
+      "needCard": {
+        "title": "Need a card?",
+        "description": "An EPL card helps you save on books, courses, and more. Sign up instantly online.",
+        "buttonText": "Get Your Free Card!",
+        "link": "https://cam.epl.ca/"
+      },
+      "haveCard": {
+        "title": "Have a card?",
+        "description": "Your EPL card gives you instant access to books, eBooks, audiobooks, streaming movies, and so much more!",
+        "buttonText": "Continue Your Learning Journey",
+        "link": "https://www.epl.ca/explore/?post-type=staff-list%2Conline-resources%2Cwebsite&related-format=movies%2Conline-resources%2Cvideo-games"
+      }
+    },
+    "faq": {
+      "heading": "Frequently Asked Questions",
+      "questions": [
+        {
+          "title": "How can EPL support me with early literacy?",
+          "text":"<p>EPL has a variety of resources to help parents with early literacy, from our collections, classes and events, to staff advice and book recommendations. Visit our <a class=\"text-primary text-decoration-underline\" target=\"_blank\" href=\"https://www.epl.ca/early-literacy/\">Early Literacy</a> page to learn more</p>"  
+        },
+        {
+          "title": "Do I need a library card to access the eBooks and online resources?",
+          "text": "<p>We license our digital content from a number of companies (library vendors). The vendors require us to only allow our customers to access their products. For most products we are only licensed for the citizens of Edmonton. Your library card confirms your identity for the library vendors websites.</p>"
+        },
+        {
+          "title": "What do I need to get a library card?",
+          "text":  "<p>Getting your EPL card is simple. Visit any EPL location with <a class=\"text-primary text-decoration-underline\" target=\"_blank\" href=\"https://www.epl.ca/wp-content/uploads/sites/18/2021/04/Acceptable-Forms-of-ID-20201104-EPL-website.pdf\">indentification</a> (Drivers’ License, Alberta Health Care Card, etc.) and proof of Edmonton address in hand or <a class=\"text-primary text-decoration-underline\" target=\"_blank\" href=\"https://www2.epl.ca/signup\">signup online</a> for a 45-day temporary card to start experiencing some of the benefits of EPL membership before visiting a branch to get a full membership.<br><br> If you're under 18, your parent or guardian must sign for you, and they'll be responsible for what you borrow.</p>"
+        }
+      ]
+    }
+}
