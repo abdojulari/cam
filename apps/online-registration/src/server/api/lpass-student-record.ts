@@ -1,6 +1,5 @@
 import { z } from 'zod';
 import { defineEventHandler, getCookie, readBody, createError,  setCookie } from 'h3';
-import { setBrowserCookie } from '../util/cookieManager';
 
 // Schema to validate the student record
 const StudentRecordSchema = z.object({
@@ -60,14 +59,7 @@ export default defineEventHandler(async (event) => {
             maxAge: 3600,
             secure: process.env.NODE_ENV === 'production',
         });
-        
-        setBrowserCookie('id', id, {
-            path: '/',
-            httpOnly: false,
-            sameSite: 'none',
-            maxAge: 3600,
-            secure: process.env.NODE_ENV === 'production',
-        });
+    
 
         // Return the ID of the saved record
         return { id };

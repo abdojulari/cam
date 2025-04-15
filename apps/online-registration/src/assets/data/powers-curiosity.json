@@ -1,7 +1,7 @@
 {
     "introSection": {
         "title": "Spark Creativity, Try Something New",
-        "image": "milner.png",
+        "image": "curiosity.png",
         "intro": {
             "heading": "Experiment, Build, and Create!",
             "paragraph": "Whether you're tinkering with tech at the Library or learning new skills with digital tools at home, your EPL card gives you access to everything you need to get creative. Explore music production, 3D printing, video editing, and more, wherever you are.",
@@ -46,28 +46,28 @@
       "paragraph": "No experience? No problem! Whether you're diving into EPL’s Makerspace or exploring digital tools from home, you'll find everything you need to start a new hobby or sharpen your skills. Your next great project starts here.",
       "card1": {
         "link":"https://www.epl.ca/makerspace/3d-printing/",
-        "image": "",
+        "image": "printing.png",
         "heading": "SERVICES",
         "subheading": "3D Printing",
         "content": "Dream it, design it, print it. EPL’s 3D printers and beginner-friendly training help you bring your ideas to life. Take a 3D printing class, book a printer, and start creating."
       },
       "card2": {
         "link":"https://www.epl.ca/resource/gale-courses/",
-        "image": "",
+        "image": "gale.png",
         "heading": "ONLINE RESOURCE",
         "subheading": "Gale Courses",
         "content": "Take your learning further with instructor-led online courses on everything from professional development and business to creative writing and personal wellness. Learn at your own pace with engaging, interactive lessons."
       },
       "card3": {
         "link":"https://www.epl.ca/makerspace/studios/",
-        "image": "",
+        "image": "recording_studio.png",
         "heading": "SERVICES",
         "subheading": "Recording Studios",
         "content": "Unleash your inner musician, podcaster, or audio engineer. Our recording studios are equipped with top-notch instruments and sound gear, perfect for anyone from beginners to pros looking to mix, record, or jam."
       },
       "card4": {
         "link":"https://www.epl.ca/resource/oreilly-for-public-libraries-formerly-safari-tech-books/",
-        "image": "",
+        "image": "oreilly.png",
         "heading": "ONLINE RESOURCE",
         "subheading": "O’Reilly for Public Libraries",
         "content": "Get access to over 45,000 eBooks and 3,500+ videos on technology and business. Get instant access—no downloads or checkouts needed!"

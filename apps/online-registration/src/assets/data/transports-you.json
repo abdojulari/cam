@@ -1,7 +1,7 @@
 {
     "introSection": {
         "title": "Your Ticket to New Worlds",
-        "image": "milner.png",
+        "image": "transport.png",
         "intro": {
             "heading": "Turn Every Ride into an Escape",
             "paragraph": "Long commutes don’t have to be boring. With your EPL card, you can stream, listen, or read on the go—turning every bus or train ride into a chance to learn, relax, or escape into a great story. ",
@@ -45,28 +45,28 @@
       "paragraph": "With an EPL card, you can escape into captivating stories, explore new ideas, and learn something new, all while you commute. From audiobooks and eBooks to streaming movies and language learning, let your library card be your ticket to anywhere. ",
       "card1": {
         "link":"https://www.epl.ca/resource/libby-by-overdrive/",
-        "image": "linkedin.png",
+        "image": "libby.png",
         "heading": "ONLINE RESOURCE",
         "subheading": "Libby by Overdrive",
         "content": "Borrow eBooks and audiobooks anytime with Libby by OverDrive, the library reading app. Whether you're on the go or winding down at home, enjoy stories delivered straight to your device."
       },
       "card2": {
         "link":"https://www.epl.ca/resource/pressreader/",
-        "image": "gale.png",
+        "image": "pressReader.png",
         "heading": "ONLINE RESOURCE",
         "subheading": "PressReader",
         "content": "Stay up to date with thousands of newspapers and magazines from around the world. From breaking news to lifestyle reads, PressReader keeps you informed and entertained. "
       },
       "card3": {
         "link":"https://www.epl.ca/resource/kanopy/",
-        "image": "oreilly.png",
+        "image": "kanopy.png",
         "heading": "ONLINE RESOURCE",
         "subheading": "Kanopy",
         "content": "Stream quality films, documentaries, and shows anytime, anywhere. Kanopy gives you on-demand access to stories that entertain, educate, and inspire. "
       },
       "card4": {
         "link":"https://epl.ca/epl-picks",
-        "image": "jobs.png",
+        "image": "EPL_picks.png",
         "heading": "ONLINE RESOURCE",
         "subheading": "EPL Picks Lists",
         "content": "Need a quick recommendation? Browse expertly curated book, movie, and music lists for every mood and moment. These picks are your shortcut to something great."
