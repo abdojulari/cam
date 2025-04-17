@@ -323,7 +323,7 @@ useHead({
     margin-bottom: 32px;
   }
   .responsive-img {
-    max-height: 200px;
+    max-height: 170px;
   }
 }
 
