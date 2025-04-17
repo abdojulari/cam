@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { defineEventHandler, getCookie, readBody, createError,  setCookie } from 'h3';
+import { defineEventHandler, getCookie, readBody, createError } from 'h3';
 
 // Schema to validate the student record
 const StudentRecordSchema = z.object({
@@ -44,22 +44,11 @@ export default defineEventHandler(async (event) => {
                 data: { errors: result.error.flatten() },
             });
         }
-
         // Generate a unique ID for the record (for simplicity, using timestamp)
         const id = Date.now().toString();
         
         // Store the student data in the in-memory map with the unique ID
         await studentRecords.setItem(id, result.data);
-
-        // save the id to cookie
-        setCookie(event, 'id', id, {
-            path: '/',
-            httpOnly: false,
-            sameSite: 'none',
-            maxAge: 3600,
-            secure: process.env.NODE_ENV === 'production',
-        });
-    
 
         // Return the ID of the saved record
         return { id };

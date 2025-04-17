@@ -23,7 +23,7 @@
         "Transform your ride by accessing thousands of books anytime on your phone or tablet with <a class=\"text-primary text-decoration-underline\" target=\"_blank\" href=\"https://www.epl.ca/resource/libby-by-overdrive/\">Libby by OverDrive</a>.",
         "Watch top films and series on <a class=\"text-primary text-decoration-underline\" target=\"_blank\" href=\"https://www.epl.ca/resource/kanopy/\">Kanopy</a> during your commute—no ads, no fees. ",
         "Take your time to learn a new language with <a class=\"text-primary text-decoration-underline\" target=\"_blank\" href=\"https://www.epl.ca/resource/mango-language-learning/\">Mango Languages</a> while you ride.",
-        "Stay informed! Read from top newspapers and magazines with <a class=\"text-primary text-decoration-underline\" target=\"_blank\" href=\"https://www.epl.ca/resource/pressreader/\">PressReader</a> and Flipster using your EPL card."
+        "Stay informed! Read from top newspapers and magazines with <a class=\"text-primary text-decoration-underline\" target=\"_blank\" href=\"https://www.epl.ca/resource/pressreader/\">PressReader</a> and <a class=\"text-primary text-decoration-underline\" target=\"_blank\" href=\"https://www.epl.ca/resource/flipster/\">Flipster</a> using your EPL card."
       ],
       "buttons": {
         "signUpButton": "Make Your Commute Fun",
@@ -38,7 +38,7 @@
     "customerStories": {
       "heading": "Customer Stories",
       "quote": "EPL has really been a game changer for me. I love the book collection, and the staff are amazing and helpful. <br> Thank you EPL for creating space where book lovers like myself can explore our passion and interest.",
-      "author": "rene O."
+      "author": "Irene O."
     },
     "whyGetEPLCard": {
       "heading": "Why Get an EPL Card?",

@@ -71,7 +71,8 @@
         <v-sheet color="purple-darken-1" rounded class="pa-3 position-relative">
           <div class="quote-container">
             <v-icon class="quote-icon text-white" size="40">mdi-format-quote-open</v-icon>
-            <p class="text-body-1 lh-lg text-white">{{ content.customerStories.quote }}</p>
+            <p class="text-body-1 lh-lg text-white" v-html="content.customerStories.quote"></p>
+            
           </div>
           <div class="d-flex justify-end align-center">
             <span class="text-body-2 lh-lg text-white pe-2">- {{ content.customerStories.author }}</span>

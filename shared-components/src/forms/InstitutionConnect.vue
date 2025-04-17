@@ -219,21 +219,17 @@ const confirmPasswordRules = [
   v => v === password.value || 'Passwords do not match',
 ];
 
-// Fetch data from your server
 onMounted(async () => {
-    try {
-        // Fetch data using $fetch (for client-side)
-        const data = await $fetch('/api/retrieve-lpass-record'); 
-        console.log('data', data);
-        
-        if (data) {
-            studentData.value = data;
-        }
-        console.log('studentData', studentData.value);
-        return data;
-    } catch (error) {
-        console.error('Error fetching student data:', error);
+    const url = new URL(window.location.href);
+    const id = url.searchParams.get('id');
+    console.log('id soe', id);
+
+    if (!id) {
+        console.warn('No student ID found in URL');
+        return;
     }
+    const data = await $fetch(`/api/retrieve-lpass-record?id=${id}`);
+    studentData.value = data;
 });
 
 
