@@ -6,7 +6,7 @@
         <h1 class="text-h4 font-weight-bold">{{ content.introSection.title }}</h1>
         <hr class="title-divider  w-100 bg-orange">
         <v-img
-          class="mb-5"
+          class="mb-5 responsive-img"
           :src="`/images/${content.introSection.image}`"
           alt="Person holding phone showing digital library"
           height="400"
@@ -299,6 +299,13 @@ useHead({
   text-indent: 48px; /* This creates space just for the first line */
 } 
 
+.responsive-img {
+  width: 100%;
+  height: auto;
+  max-height: 400px;
+}
+
+
 @media screen and (max-width: 680px) {
   .v-container {
     padding: 16px;
@@ -315,6 +322,9 @@ useHead({
   .row-uniform {
     margin-bottom: 32px;
   }
+  .responsive-img {
+    max-height: 200px;
+  }
 }
 
 @media screen and (min-width: 681px) and (max-width: 1024px) {
@@ -329,4 +339,5 @@ useHead({
     margin: 0 auto;
   }
 }
+
 </style>
