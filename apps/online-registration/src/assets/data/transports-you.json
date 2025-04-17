@@ -9,7 +9,7 @@
           },
         "buttons": {
             "getCard": "Get an EPL card",
-            "startStreaming": "Upgrade Your Commuters"
+            "startStreaming": "Upgrade Your Commute"
         }, 
         "links": {
             "getCard": "https://cam.epl.ca/",
@@ -83,7 +83,7 @@
       "haveCard": {
         "title": "Have a library card?",
         "description": "Your card gives you instant access to books, eBooks, audiobooks, streaming movies, and more!",
-        "buttonText": "Continue Your Learning Journey",
+        "buttonText": "Access Digital Content",
         "link": "https://www.epl.ca/explore/?post-type=staff-list%2Conline-resources"
       }
     },
