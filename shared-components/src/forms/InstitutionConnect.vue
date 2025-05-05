@@ -12,75 +12,105 @@
           </div>  
         </v-col>
         
-        <v-col cols="12" md="8"> 
-          <v-form fast-fail ref="form" class="p-4 rounded shadow-sm">
+        <v-col cols="12" md="8">
+          <v-alert
+            density="compact"
+            text="If any of your information isn't correct, please contact your institution."
+            title="Notice"
+            type="warning"
+            class="mb-5"
+          />
+
+          <v-card class="pa-10" variant="outlined">
+            <v-form fast-fail ref="form" class="p-4 rounded shadow-sm">
             <!-- Name Row -->
             <v-row>
-              <v-col cols="12" md="4">
+              <v-col cols="12" md="6">
                 <v-text-field
                   v-model="studentData.firstname"
                   label="First Name"
                   variant="outlined"
+                  density="compact"
+                  disabled
                   readonly
                 />
               </v-col>
-              <v-col cols="12" md="4">
+              <v-col cols="12" md="6">
                 <v-text-field
                   v-model="studentData.lastname"
                   label="Last Name"
                   variant="outlined"
+                  density="compact"
+                  disabled
+                  readonly
+                />
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col cols="12" md="6">
+                <v-text-field
+                  v-model="studentData.middlename"
+                  label="Middle Name"
+                  variant="outlined"
+                  density="compact"
+                  disabled
+                  readonly
+                />
+              </v-col>
+              <v-col cols="12" md="6">
+                <v-text-field
+                  v-model="studentData.dateofbirth"
+                  label="Date of Birth"
+                  variant="outlined"
+                  density="compact"
+                  disabled
+                  readonly
+                />
+              </v-col>
+            </v-row>
+            <!-- Contact Info Row -->
+            <v-row>
+              <v-col cols="12" md="5">
+                <v-text-field
+                  v-model="studentData.email"
+                  label="Email"
+                  variant="outlined"
+                  density="compact"
+                  disabled
+                  readonly
+                />
+              </v-col>
+              <v-col cols="12" md="3">
+                <v-text-field
+                  v-model="studentData.phone"
+                  label="Phone"
+                  variant="outlined"
+                  density="compact"
+                  disabled
                   readonly
                 />
               </v-col>
               <v-col cols="12" md="4">
                 <v-text-field
-                  v-model="studentData.middlename"
-                  label="Middle Name"
+                  v-model="studentData.address"
+                  label="Address"
                   variant="outlined"
-                  readonly
-                />
-              </v-col>
-            </v-row>
-  
-            <!-- Contact Info Row -->
-            <v-row>
-              <v-col cols="12" md="6">
-                <v-text-field
-                  v-model="studentData.email"
-                  label="Email"
-                  variant="outlined"
-                  readonly
-                />
-              </v-col>
-              <v-col cols="12" md="6">
-                <v-text-field
-                  v-model="studentData.phone"
-                  label="Phone"
-                  variant="outlined"
+                  density="compact"
+                  disabled
                   readonly
                 />
               </v-col>
             </v-row>
   
             <!-- Address Row -->
-            <v-row>
-              <v-col cols="12">
-                <v-text-field
-                  v-model="studentData.address"
-                  label="Address"
-                  variant="outlined"
-                  readonly
-                />
-              </v-col>
-            </v-row>
-  
-            <!-- Location Row -->
-            <v-row>
+            <v-row> 
               <v-col cols="12" md="4">
                 <v-text-field
                   v-model="studentData.city"
                   label="City"
                   variant="outlined"
+                  density="compact"
+                  disabled
                   readonly
                 />
               </v-col>
@@ -89,6 +119,8 @@
                   v-model="studentData.province"
                   label="Province"
                   variant="outlined"
+                  density="compact"
+                  disabled
                   readonly
                 />
               </v-col>
@@ -97,49 +129,59 @@
                   v-model="studentData.postalcode"
                   label="Postal Code"
                   variant="outlined"
+                  density="compact"
+                  disabled
                   readonly
                 />
               </v-col>
             </v-row>
-  
+
             <!-- Institution Info Row -->
             <v-row>
-              <v-col cols="12" md="6">
+              <v-col cols="12" md="3">
                 <v-text-field
                   v-model="studentData.studentid"
                   label="Student ID"
                   variant="outlined"
+                  density="compact"
+                  disabled
                   readonly
                 />
               </v-col>
-              <v-col cols="12" md="6">
+              <v-col cols="12" md="4">
                 <v-text-field
                   v-model="studentData.institution"
                   label="Institution"
                   variant="outlined"
+                  density="compact"
+                  disabled
                   readonly
                 />
               </v-col>
-            </v-row>
-  
-            <!-- Status Row -->
-            <v-row>
-              <v-col cols="12" md="6">
+              <v-col cols="12" md="2">
                 <v-text-field
                   v-model="studentData.status"
                   label="Status"
                   variant="outlined"
+                  density="compact"
+                  disabled
                   readonly
                 />
               </v-col>
-              <v-col cols="12" md="6">
+              <v-col cols="12" md="3">
                 <v-text-field
                   v-model="studentData.expirydate"
                   label="Expiry Date"
                   variant="outlined"
+                  density="compact"
+                  disabled
                   readonly
                 />
               </v-col>
+            </v-row>
+            <!-- Status Row -->
+            <v-row>
+              
             </v-row>
   
             <!-- Password Row -->
@@ -150,6 +192,7 @@
                   label="Password"
                   type="password"
                   variant="outlined"
+                  density="compact"
                   :rules="passwordRules"
                 />
               </v-col>
@@ -159,6 +202,7 @@
                   label="Confirm Password"
                   type="password"
                   variant="outlined"
+                  density="compact"
                   :rules="confirmPasswordRules"
                 />
               </v-col>
@@ -176,7 +220,9 @@
                 </v-btn>
               </v-col>
             </v-row>
-          </v-form>
+            </v-form>
+          </v-card>
+          
         </v-col>    
       </v-row>
     </v-container>
@@ -203,6 +249,8 @@ const studentData = ref({
     institution: '',
     status: '',
     expirydate: '',
+    neos: '',
+    country: '',
 });
 
 const password = ref('');
@@ -222,16 +270,49 @@ const confirmPasswordRules = [
 onMounted(async () => {
     const url = new URL(window.location.href);
     const id = url.searchParams.get('id');
-    console.log('id soe', id);
-
+    // Check if the id is present in the URL
     if (!id) {
         console.warn('No student ID found in URL');
         return;
     }
     const data = await $fetch(`/api/retrieve-lpass-record?id=${id}`);
+    console.log('Student Data:', data);
     studentData.value = data;
 });
 
+
+const generateBarcode = () => {
+  // Get first 3 chars of institution, convert to uppercase
+  //const institutionPrefix = studentData.value.institution.substring(0, 3).toUpperCase();
+  const institutionPrefix = studentData.value.neos;
+  // Start with institution prefix and student ID
+  let barcode = institutionPrefix + studentData.value.studentid;
+  
+  // If length is less than 14, pad with random numbers
+  while (barcode.length < 14) {
+    barcode += Math.floor(Math.random() * 10);
+  }
+  
+  // If longer than 14, truncate
+  if (barcode.length > 14) {
+    barcode = barcode.substring(0, 13);
+  }
+
+  return barcode;
+};
+
+
+function getStudentProfile(studentData) {
+  const institutionMap = new Map([
+    ['Concordia University', 'EPL_CONCOR'],
+    ['Grant MacEwan University', 'EPL_GMU'],
+    ['NorQuest College', 'EPL_NORQ'],
+    ['University of Alberta Cameron', 'EPL_UAL'],
+    ['Kings University', 'EPL_KINGS'],
+  ]);
+
+  return institutionMap.get(studentData?.value?.institution) || null;
+}
 
 // Handle form submission
 const submitForm = async () => {
@@ -242,11 +323,13 @@ const submitForm = async () => {
 
     isSubmitting.value = true;
     try {
-        const response = await useFetch('/api/submit-registration', {
+        const response = await useFetch('/api/submit-lpass', {
             method: 'POST',
             body: {
                 ...studentData.value,
                 password: password.value,
+                barcode: generateBarcode(),
+                profile: getStudentProfile(studentData),
             },
         });
 

@@ -17,6 +17,7 @@ const StudentRecordSchema = z.object({
     institution: z.string(),
     status: z.string(),
     expirydate: z.string(),
+    neos: z.string(),
 });
 
 export default defineEventHandler(async (event) => {

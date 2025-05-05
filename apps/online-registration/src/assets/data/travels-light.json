@@ -1,0 +1,109 @@
+{
+    "introSection": {
+        "title": "Your Library in Your Pocket",
+        "image": "transport.png",
+        "intro": {
+            "heading": "Your Library, Anywhere",
+            "paragraph": "No more heavy books in your bag! An EPL card gives you instant access to eBooks, audiobooks, and other digital content, so you can travel light while still bringing your entire reading list with you.  ",
+            "second_paragraph": ""
+          },
+        "buttons": {
+            "getCard": "Get an EPL card",
+            "startStreaming": "Find Your Next Read"
+        }, 
+        "links": {
+            "getCard": "https://cam.epl.ca/",
+            "startStreaming": "https://www.epl.ca/explore/?post-type=staff-list%2Conline-resources"
+        }
+    },
+    "access": {
+      "heading": "A Library in Your Pocket",
+      "paragraph": "Your EPL card keeps your travel bag light while giving you access to endless education and entertainment on the go. Last year, Edmontonians took their library with them wherever they went. With your card, you can: ",
+      "list": [
+        "Instantly borrow eBooks and audiobooks—no late fees, no hassle.",
+        "Download movies and shows to watch on your morning commute.",
+        "Use language-learning tools to prepare for your next adventure. ",
+        "Stream endless music while you explore familiar and new places. ",
+        "Stay updated with international news and travel guides. "
+      ],
+      "paragraph2": "Your EPL card is your bus buddy, get yours now! ",
+      "buttons": {
+        "signUpButton": "Access More on the Go",
+        "browseButton": "Browse the Best Digital Reads "
+      },
+      "links": {
+        "signUpButton": "https://cam.epl.ca/",
+        "browseButton": "https://www.epl.ca/explore/?post-type=staff-list%2Conline-resources"
+      }
+      
+    },
+    "customerStories": {
+      "heading": "Customer Stories",
+      "quote": "EPL has really been a game changer for me. I love the book collection, and the staff are amazing and helpful. <br> Thank you EPL for creating space where book lovers like myself can explore our passion and interest.",
+      "author": "Irene O."
+    },
+    "whyGetEPLCard": {
+      "heading": "Why Get an EPL Card?",
+      "paragraph": "Packing light? Your EPL card lets you carry a world of books, audiobooks, and entertainment right in your pocket. Whether you're commuting, traveling, or just on the move, access thousands of titles without the extra weight.",
+      "card1": {
+        "link":"https://www.epl.ca/resource/libby-by-overdrive/",
+        "image": "libby.png",
+        "heading": "ONLINE RESOURCE",
+        "subheading": "Libby by Overdrive",
+        "content": "Borrow eBooks and audiobooks anytime with Libby by OverDrive, the library reading app. Whether you're on the go or winding down at home, enjoy stories delivered straight to your device."
+      },
+      "card2": {
+        "link":"https://www.epl.ca/resource/pressreader/",
+        "image": "pressReader.png",
+        "heading": "ONLINE RESOURCE",
+        "subheading": "The Palace Project App",
+        "content": "Shape the future of digital reading with The Palace Project App! Access eBooks and eAudiobooks from Libby and Audible, all in one place. "
+      },
+      "card3": {
+        "link":"https://www.epl.ca/resource/kanopy/",
+        "image": "kanopy.png",
+        "heading": "ONLINE RESOURCE",
+        "subheading": "EPL Picks Lists",
+        "content": "Need a quick recommendation? Browse expertly curated books, movies, and music lists for every mood and moment. These picks are your shortcut to something great. "
+      },
+      "card4": {
+        "link":"https://epl.ca/epl-picks",
+        "image": "EPL_picks.png",
+        "heading": "ONLINE RESOURCE",
+        "subheading": "Flipster",
+        "content": "Need a quick recommendation? Browse expertly curated book, movie, and music lists for every mood and moment. These picks are your shortcut to something great."
+      }
+    },
+    "eplSection": {
+      "heading": "Wherever You Go, EPL Goes with You!",
+      "needCard": {
+        "title": "Need a library card?",
+        "description": "Your EPL cards helps you save on books, courses, and more. Sign up instantly online. ",
+        "buttonText": "Join the Library ",
+        "link": "https://cam.epl.ca/"
+      },
+      "haveCard": {
+        "title": "Have a library card?",
+        "description": "Your card gives you instant access to books, eBooks, audiobooks, streaming movies, and more!",
+        "buttonText": "Browse eBooks and Audiobooks",
+        "link": "https://www.epl.ca/explore/?post-type=staff-list%2Conline-resources"
+      }
+    },
+    "faq": {
+      "heading": "Frequently Asked Questions",
+      "questions": [
+        {
+          "title": "What do I need to get a library card? ",
+          "text": "<p>Getting your EPL card is simple. Visit any EPL location with identification (Drivers’ License, Alberta Health Care Card, etc.) and proof of Edmonton address in hand or signup online for a 45-day temporary card to start experiencing some of the benefits of EPL membership before visiting a branch to get a full membership. <br> If you're under 18, your parent or guardian must sign for you, and they'll be responsible for what you borrow. </p>"      
+        },
+        {
+          "title": "Do I need a library card to access the eBooks and online resources? ",
+          "text": "<p>We license our digital content from a number of companies (library vendors). The vendors require us to only allow our customers to access their products. For most products we are only licensed for the citizens of Edmonton. Your library card confirms your identity for the library vendors websites.</p>"
+        },
+        {
+          "title": "Do University and College Students qualify for library cards?",
+          "text": "Yes, and Library cards are free for all Edmonton Residents! Some schools even allow you to use your student card as your EPL card! This is called an L-Pass.<br><br>• U of A students and faculty - access EPL free with <a href=\"https://www.library.ualberta.ca/services/l-pass\" target=\"_blank\">U of A L-Pass</a>.<br>• MacEwan University students, staff and faculty - access EPL free with <a href=\"https://library.macewan.ca/services/l-pass-epl/register\" target=\"_blank\">MacEwan L-Pass</a>.<br>• Concordia University College students and faculty - access EPL free with <a href=\"http://library.concordia.ab.ca/lpass/\" target=\"_blank\">Concordia L-Pass</a> (does not work in IE8 or earlier).<br>• Norquest students - access EPL free with <a href=\"https://library.norquest.ca/borrow/lpass.aspx\" target=\"_blank\">Norquest L-Pass</a>.<br>• King's University students - <a href=\"https://web.library.ualberta.ca/epl/kings/login.php\" target=\"_blank\">register here</a> with your King's University library card number and PIN."
+        }
+      ]
+    }
+}
