@@ -1,6 +1,8 @@
 {
   "compilerOptions": {
     "plugins": [],
+    "resolveJsonModule": true,
+    "allowSyntheticDefaultImports": true,
     "types": [
       "@nuxt/types"
     ]

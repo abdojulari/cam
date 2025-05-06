@@ -1,7 +1,7 @@
 {
     "introSection": {
         "title": "Your Library in Your Pocket",
-        "image": "transport.png",
+        "image": "travel.png",
         "intro": {
             "heading": "Your Library, Anywhere",
             "paragraph": "No more heavy books in your bag! An EPL card gives you instant access to eBooks, audiobooks, and other digital content, so you can travel light while still bringing your entire reading list with you.  ",
@@ -53,25 +53,25 @@
         "content": "Borrow eBooks and audiobooks anytime with Libby by OverDrive, the library reading app. Whether you're on the go or winding down at home, enjoy stories delivered straight to your device."
       },
       "card2": {
-        "link":"https://www.epl.ca/resource/pressreader/",
-        "image": "pressReader.png",
+        "link":"https://www.epl.ca/epl-app/palace-project/",
+        "image": "thePlace.png",
         "heading": "ONLINE RESOURCE",
         "subheading": "The Palace Project App",
         "content": "Shape the future of digital reading with The Palace Project App! Access eBooks and eAudiobooks from Libby and Audible, all in one place. "
       },
       "card3": {
-        "link":"https://www.epl.ca/resource/kanopy/",
-        "image": "kanopy.png",
+        "link":"https://epl.ca/epl-picks",
+        "image": "EPL_picks.png",
         "heading": "ONLINE RESOURCE",
         "subheading": "EPL Picks Lists",
         "content": "Need a quick recommendation? Browse expertly curated books, movies, and music lists for every mood and moment. These picks are your shortcut to something great. "
       },
       "card4": {
-        "link":"https://epl.ca/epl-picks",
-        "image": "EPL_picks.png",
+        "link":"https://www.epl.ca/resource/flipster/",
+        "image": "flipster.png",
         "heading": "ONLINE RESOURCE",
         "subheading": "Flipster",
-        "content": "Need a quick recommendation? Browse expertly curated book, movie, and music lists for every mood and moment. These picks are your shortcut to something great."
+        "content": "Access popular magazines on your phone, tablet, or computer with Flipster. From fashion and food to business and entertainment, Flipster lets you browse full issues. Just sign in and start flipping. "
       }
     },
     "eplSection": {
@@ -102,7 +102,7 @@
         },
         {
           "title": "Do University and College Students qualify for library cards?",
-          "text": "Yes, and Library cards are free for all Edmonton Residents! Some schools even allow you to use your student card as your EPL card! This is called an L-Pass.<br><br>• U of A students and faculty - access EPL free with <a href=\"https://www.library.ualberta.ca/services/l-pass\" target=\"_blank\">U of A L-Pass</a>.<br>• MacEwan University students, staff and faculty - access EPL free with <a href=\"https://library.macewan.ca/services/l-pass-epl/register\" target=\"_blank\">MacEwan L-Pass</a>.<br>• Concordia University College students and faculty - access EPL free with <a href=\"http://library.concordia.ab.ca/lpass/\" target=\"_blank\">Concordia L-Pass</a> (does not work in IE8 or earlier).<br>• Norquest students - access EPL free with <a href=\"https://library.norquest.ca/borrow/lpass.aspx\" target=\"_blank\">Norquest L-Pass</a>.<br>• King's University students - <a href=\"https://web.library.ualberta.ca/epl/kings/login.php\" target=\"_blank\">register here</a> with your King's University library card number and PIN."
+          "text": "<div>Yes, and Library cards are free for all Edmonton Residents! Some schools even allow you to use your student card as your EPL card! This is called an L-Pass.<ul style=\"list-style-type:disc; margin-left: 20px\"><li> U of A students and faculty - access EPL free with <a class=\"text-decoration-underline text-primary\" href=\"https://www.library.ualberta.ca/services/l-pass\" target=\"_blank\">U of A L-Pass</a>.</li><li> MacEwan University students, staff and faculty - access EPL free with <a class=\"text-decoration-underline text-primary\" href=\"https://library.macewan.ca/services/l-pass-epl/register\" target=\"_blank\">MacEwan L-Pass</a>.</li><li> Concordia University College students and faculty - access EPL free with <a class=\"text-decoration-underline text-primary\" href=\"http://library.concordia.ab.ca/lpass/\" target=\"_blank\">Concordia L-Pass</a> (does not work in IE8 or earlier). </li><li> Norquest students - access EPL free with <a class=\"text-decoration-underline text-primary\" href=\"https://library.norquest.ca/borrow/lpass.aspx\" target=\"_blank\">Norquest L-Pass</a>. </li><li> King's University students - <a class=\"text-decoration-underline text-primary\" href=\"https://web.library.ualberta.ca/epl/kings/login.php\" target=\"_blank\">register here</a> with your King's University library card number and PIN. </li></ul></div>"
         }
       ]
     }

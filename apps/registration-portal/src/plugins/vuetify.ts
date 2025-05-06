@@ -1,30 +1,43 @@
 import '@mdi/font/css/materialdesignicons.css'
 import 'vuetify/styles'
-import { createVuetify } from 'vuetify'
-import { mdi } from 'vuetify/iconsets/mdi'
-import { aliases, fa } from 'vuetify/iconsets/fa-svg'
-import { library } from '@fortawesome/fontawesome-svg-core'
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import { fas } from '@fortawesome/free-solid-svg-icons'
-import { far } from '@fortawesome/free-regular-svg-icons'
+import { createVuetify, type ThemeDefinition} from 'vuetify'
+import { aliases, mdi } from 'vuetify/iconsets/mdi'
+import { createPinia } from 'pinia'
 
-
+const lightTheme: ThemeDefinition = {
+  dark: false,
+  colors: {
+    background: '#FFFFFF',
+    surface: '#FFFFFF',
+    primary: '#1765a6',
+    'primary-darken-1': '#1765a6',
+    'green-darken-4': '#237b00',
+    blue: '#ecf9fe',
+    secondary: '#03DAC6',
+    'secondary-darken-1': '#018786',
+    error: '#B00020',
+    info: '#2196F3',
+    success: '#4CAF50',
+    warning: '#FB8C00',
+  },
+}
 export default defineNuxtPlugin((app) => {
-  
-  app.vueApp.component('font-awesome-icon', FontAwesomeIcon)
-  library.add(fas)
-  library.add(far)
-
   const vuetify = createVuetify({
     icons: {
-        defaultSet: 'fa',
+        defaultSet: 'mdi',
         aliases,
         sets: {
-          fa,
           mdi,
         },
-      },
+    },
+    theme: {
+      defaultTheme: 'lightTheme',
+      themes: {
+        lightTheme,
+      } 
+    }
   })
-  
+  const pinia = createPinia()
+  //app.vueApp.use(pinia)
   app.vueApp.use(vuetify)
 })
