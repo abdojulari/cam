@@ -1,3 +1,4 @@
+<!-- eslint-disable vue/no-v-text-v-html-on-component -->
 <template>
    <v-defaults-provider :defaults="{ VContainer: { style: 'font-family: Arial, Helvetica, sans-serif'}}">
   <v-container class="py-10">
@@ -6,11 +7,9 @@
         <h1 class="text-h4 font-weight-bold">{{ content.introSection.title }}</h1>
         <hr class="title-divider  w-100 bg-orange">
         <v-img
-          class="mb-5 responsive-img"
+          class="mb-5 "
           :src="`/images/${content.introSection.image}`"
           alt="Person holding phone showing digital library"
-          height="400"
-          cover
         />
       </v-col>
     </v-row>
@@ -118,13 +117,11 @@
         <p>{{ content.whyGetEPLCard.paragraph }}</p>
       </v-col>
       <v-col v-for="(item, index) in [content.whyGetEPLCard.card1, content.whyGetEPLCard.card2, content.whyGetEPLCard.card3, content.whyGetEPLCard.card4]" :key="index" cols="12" md="3">
-        <v-card variant="outlined" class="mx-auto" height="500" >
+        <v-card variant="outlined" class="mx-auto" :height="$vuetify.display.xs ? 635 : 450" >
           <a :href="item.link" target="_blank" rel="noopener noreferrer">
             <v-img
               :src="`/images/${item.image}`"
-              alt="Card image"
-              :alt="item.heading" style="height: 180px; width: 100%; object-fit: cover"
-              cover
+              :alt="item.heading"
             />
           </a>
           <v-card-title class="text-h6 text-center">
@@ -299,12 +296,6 @@ useHead({
   text-indent: 48px; /* This creates space just for the first line */
 } 
 
-.responsive-img {
-  width: 100%;
-  height: auto;
-  max-height: 400px;
-}
-
 
 @media screen and (max-width: 680px) {
   .v-container {
@@ -322,15 +313,13 @@ useHead({
   .row-uniform {
     margin-bottom: 32px;
   }
-  .responsive-img {
-    max-height: 170px;
-  }
 }
 
 @media screen and (min-width: 681px) and (max-width: 1024px) {
   .v-container {
     padding: 20px !important;
   }
+
 }
 
 @media screen and (min-width: 1024px) {

@@ -13,7 +13,7 @@
         }, 
         "links": {
             "getCard": "https://cam.epl.ca/",
-            "startStreaming": "https://www.epl.ca/explore/?post-type=staff-list%2Conline-resources"
+            "startStreaming": "https://www.epl.ca/explore/?post-type=online-resources%2Cservice"
         }
     },
     "access": {
@@ -33,7 +33,7 @@
       },
       "links": {
         "signUpButton": "https://cam.epl.ca/",
-        "browseButton": "https://www.epl.ca/explore/?post-type=staff-list%2Conline-resources"
+        "browseButton": "https://www.epl.ca/explore/?post-type=online-resources%2Cservice"
       }
       
     },
@@ -44,18 +44,18 @@
     },
     "whyGetEPLCard": {
       "heading": "Why Get an EPL Card?",
-      "paragraph": "An EPL card gives you the freedom to access premium content without the price tag. Whether you’re a digital creator, freelancer, or just love to try new things, EPL has what you need to stay connected. ",
+      "paragraph": "Surprise your partner with something new every week without breaking the bank.",
       "card1": {
         "link":"https://www.epl.ca/the-kitchen/",
         "image": "theKitchen.png",
-        "heading": "ONLINE RESOURCE",
+        "heading": "EVENTS",
         "subheading": "The Kitchen",
         "content": "Cook, learn, and have fun together with interactive cooking classes at the Stanley A. Milner Library. Perfect for date night, these hands-on sessions will bring the heat in the best way."
       },
       "card2": {
         "link":"https://epl.bibliocommons.com/v2/events?types=57fe877ae2c0a00100ce6fca",
         "image": "filmsAtTheLibrary.png",
-        "heading": "ONLINE RESOURCE",
+        "heading": "EVENTS",
         "subheading": "Film at the Library",
         "content": "Skip the theatre and stop by the library for your next movie night. From indie flicks to hidden gems, enjoy a cozy, budget-friendly night out with films that make for great post-movie conversations. "
       },
@@ -69,7 +69,7 @@
       "card4": {
         "link":"https://epl.bibliocommons.com/v2/events?types=57fe8863e2c0a00100ce6fe5",
         "image": "craftsAndChats.png",
-        "heading": "ONLINE RESOURCE",
+        "heading": "EVENTS",
         "subheading": "Craft & Chat",
         "content": "Level up your date night with a creative twist. Bring your partner and enjoy some quality time making something by hand. Each week features a new project and a chance to connect in a fun, relaxed setting. "
       }
@@ -86,7 +86,7 @@
         "title": "Have a library card?",
         "description": "Your card gives you instant access to books, eBooks, audiobooks, streaming movies, and more!",
         "buttonText": "Dive into EPL's Collection",
-        "link": "https://www.epl.ca/explore/?post-type=staff-list%2Conline-resources"
+        "link": "https://www.epl.ca/explore/?post-type=online-resources%2Cservice"
       }
     },
     "faq": {
@@ -97,8 +97,8 @@
           "text": "<p>Getting your EPL card is simple. Visit any EPL location with identification (Drivers’ License, Alberta Health Care Card, etc.) and proof of Edmonton address in hand or signup online for a 45-day temporary card to start experiencing some of the benefits of EPL membership before visiting a branch to get a full membership. <br> If you're under 18, your parent or guardian must sign for you, and they'll be responsible for what you borrow. </p>"      
         },
         {
-          "title": "Do I need a library card to access the eBooks and online resources? ",
-          "text": "<p>We license our digital content from a number of companies (library vendors). The vendors require us to only allow our customers to access their products. For most products we are only licensed for the citizens of Edmonton. Your library card confirms your identity for the library vendors websites.</p>"
+          "title": "Does The Kitchen offer in-person and virtual classes? ",
+          "text": "<p>Yes, The Kitchen will offer in-person and online classes. Learn more about <a class=\"text-primary text-decoration-underline\" target=\"_blank\" href=\"https://www.epl.ca/the-kitchen/#events\">The Kitchen classes and events</a>.</p>"
         },
         {
           "title": "Do University and College Students qualify for library cards?",

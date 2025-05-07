@@ -54,13 +54,13 @@
       },
       "card2": {
         "link":"https://www.epl.ca/epl-app/palace-project/",
-        "image": "thePlace.png",
+        "image": "theplace.png",
         "heading": "ONLINE RESOURCE",
         "subheading": "The Palace Project App",
         "content": "Shape the future of digital reading with The Palace Project App! Access eBooks and eAudiobooks from Libby and Audible, all in one place. "
       },
       "card3": {
-        "link":"https://epl.ca/epl-picks",
+        "link":"https://www.epl.ca/epl-picks",
         "image": "EPL_picks.png",
         "heading": "ONLINE RESOURCE",
         "subheading": "EPL Picks Lists",

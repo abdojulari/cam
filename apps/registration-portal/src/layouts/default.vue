@@ -2,25 +2,27 @@
   <v-card>
     <v-layout>
       <v-app-bar
-        app
-        color="primary"
-        
-        height="30"
-        variant="flat"
+        app    
+        height="60"
+        scroll-behavior="elevate"
       >
-        <v-app-bar-nav-icon />
+        <v-app-bar-title>
+          <img src="~/assets/images/logo.png" alt="logo" class="logo" width="140" height="140">
+        </v-app-bar-title>
+
+        <template v-slot:append>
+          <v-btn icon="mdi-dots-vertical"></v-btn>
+        </template>
       </v-app-bar>
       <v-navigation-drawer
         location="left"
         permanent
+        color="primary"
       >
         <template #prepend>
-          <v-list-item
-            lines="two"
-            prepend-avatar="https://randomuser.me/api/portraits/women/81.jpg"
-            subtitle="Logged in"
-            title="Jane Smith"
-          />
+          <div class="d-flex justify-space-between align-center pa-5">
+            <p class="text-body-1 text-weight-bold mx-auto">New Customer Registration</p>
+          </div>
         </template>
 
         <v-divider />
@@ -29,25 +31,33 @@
           density="compact"
           nav
         >
-          <v-list-item 
-            prepend-icon="mdi-view-dashboard" 
-            title="New Registration" 
-            value="New Registration"
+
+        <v-list-group value="add-new-customer">
+          <template v-slot:activator="{ props }">
+            <v-list-item
+              v-bind="props"
+              title="New Customer"
+              prepend-icon="mdi-view-dashboard" 
+            ></v-list-item>
+          </template>
+
+          <v-list-item
+            v-for="([title, icon], i) in admins"
+            :key="i"
+            :prepend-icon="icon"
+            :title="title"
+            :value="title"
+          ></v-list-item>
+        </v-list-group>
+          <v-list-item
+            prepend-icon="mdi-laptop"
+            title="Computer Pass"
+            value="computer-pass"
           />
           <v-list-item
-            prepend-icon="mdi-home-city"
-            title="Home"
-            value="home"
-          />
-          <v-list-item
-            prepend-icon="mdi-account"
-            title="My Account"
-            value="account"
-          />
-          <v-list-item
-            prepend-icon="mdi-account-group-outline"
-            title="Users"
-            value="users"
+            prepend-icon="mdi-book-open-page-variant"
+            title="Guides and Resources"
+            value="guides-and-resources"
           />
         </v-list>
       </v-navigation-drawer>
@@ -58,5 +68,10 @@
 <script setup>
     import { ref } from 'vue';
 
+    const admins = ref([
+      ['Adult', 'mdi-account-plus'],
+      ['Child', 'mdi-account-group-outline']
+      
+    ]);
 
 </script>
