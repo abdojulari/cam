@@ -21,7 +21,7 @@
       "paragraph": "Your EPL card gives you unlimited opportunities to expand your knowledge and skill set. Last year, thousands of Edmontonians accessed learning tools through their library cards. With your card, you can: ",
       "list": [
         "Gain new career skills with <a class=\"text-primary text-decoration-underline\" href=\"https://www.epl.ca/resource/linkedin-learning/\" target=\"_blank\">LinkedIn Learning’s</a> professional courses. ",
-        "Get hands-on experience with <a class=\"text-primary text-decoration-underline\" href=\"https://www.epl.ca/makerspace/studio_lab/\" target=\"_blank\">studio labs</a>, <a class=\"text-primary text-decoration-underline\" href=\"https://www.epl.ca/makerspace/studios/\" target=\"_blank\">recording studios</a>, and <a class=\"text-primary text-decoration-underline\" href=\"https://www.epl.ca/makerspace/\" target=\"_blank\">more </a>.",
+        "Get hands-on experience with <a class=\"text-primary text-decoration-underline\" href=\"https://www.epl.ca/makerspace/studio_lab/\" target=\"_blank\">studio labs</a>, <a class=\"text-primary text-decoration-underline\" href=\"https://www.epl.ca/makerspace/studios/\" target=\"_blank\">recording studios</a>, and <a class=\"text-primary text-decoration-underline\" href=\"https://www.epl.ca/makerspace/\" target=\"_blank\">more</a>.",
         "Earn certifications in <a class=\"text-primary text-decoration-underline\" href=\"https://www.epl.ca/makerspace/3d-printing/\" target=\"_blank\">3D printing</a>, <a class=\"text-primary text-decoration-underline\" href=\"https://www.epl.ca/makerspace/sewing/\" target=\"_blank\">sewing</a>, and digital design tools.",
         "Join <a class=\"text-primary text-decoration-underline\" href=\"https://epl.bibliocommons.com/v2/events?types=57fe85cce2c0a00100ce6e74\" target=\"_blank\">book clubs</a>, <a class=\"text-primary text-decoration-underline\" href=\"https://epl.bibliocommons.com/v2/events?types=57fe874fe2c0a00100ce6f8a%2C5d2f8182372d954400e97bd2\" target=\"_blank\">workshops</a>, and <a class=\"text-primary text-decoration-underline\" href=\"https://epl.bibliocommons.com/v2/events?types=57fe8849e2c0a00100ce6fe3\" target=\"_blank\">speaker events</a> to connect with experts.  ",
         "Access documentaries and educational films that inspire and inform. "
@@ -48,14 +48,14 @@
       "card1": {
         "link":"https://www.epl.ca/resource/linkedin-learning/",
         "image": "linkedin.png",
-        "heading": "SERVICES",
+        "heading": "ONLINE RESOURCES",
         "subheading": "LinkedIn Learning",
         "content": "Gain in-demand skills with thousands of expert-led courses covering business, technology, and creative topics. Whether you're looking to advance your career or pick up a new hobby, your EPL card gives you access to top-tier training."
       },
       "card2": {
         "link":"https://www.epl.ca/resource/gale-courses/",
         "image": "gale.png",
-        "heading": "SERVICES",
+        "heading": "ONLINE RESOURCES",
         "subheading": "Gale Courses",
         "content": "Take your learning further with instructor-led online courses on everything from professional development and business to creative writing and personal wellness. Learn at your own pace with engaging, interactive lessons. "
       },
@@ -69,7 +69,7 @@
       "card4": {
         "link":"https://www.epl.ca/resource/national-geographic/",
         "image": "national-geography.png",
-        "heading": "SERVICES",
+        "heading": "ONLINE RESOURCES",
         "subheading": "National Geographic",
         "content": "Enjoy the highest-quality photojournalism and cartography with unparalleled, in-depth coverage of cultures, nature, science, technology, and the environment. "
       }

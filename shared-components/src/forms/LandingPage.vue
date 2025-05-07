@@ -117,7 +117,7 @@
         <p>{{ content.whyGetEPLCard.paragraph }}</p>
       </v-col>
       <v-col v-for="(item, index) in [content.whyGetEPLCard.card1, content.whyGetEPLCard.card2, content.whyGetEPLCard.card3, content.whyGetEPLCard.card4]" :key="index" cols="12" md="3">
-        <v-card variant="outlined" class="mx-auto" :height="$vuetify.display.xs ? 635 : 450" >
+        <v-card variant="outlined" class="mx-auto" :height="$vuetify.display.xs ? 635 : 510" >
           <a :href="item.link" target="_blank" rel="noopener noreferrer">
             <v-img
               :src="`/images/${item.image}`"
