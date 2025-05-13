@@ -1,7 +1,8 @@
 <template>
-  <Registration color="lightblue" form-title="Registration Portal"  />
+  <Dashboard />
 </template>
 
 <script setup lang="ts">
-import Registration from 'shared-components/src/forms/Registration.vue'
+  import Dashboard from '../components/Dashboard.vue'
+
 </script>
