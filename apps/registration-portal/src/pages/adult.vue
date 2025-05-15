@@ -1,10 +1,9 @@
 <template>
-  <div class="pa-8">
-    <h1>Adult Registration</h1>
-    <p>Welcome to the Adult registration page. Please fill out the required information to register as an adult member.</p>
-  </div>
+  <v-container>
+    <Adult /> 
+  </v-container>
 </template>
 
-<script setup>
-// Add any logic here if needed
+<script setup lang="ts">
+import Adult from '@/components/forms/Adult.vue';
 </script> 
