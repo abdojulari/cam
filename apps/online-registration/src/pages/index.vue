@@ -8,8 +8,7 @@ import { ref, watchEffect } from 'vue'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
-const isMaintenance = ref(true)
-
+const isMaintenance = ref(false)
 
 watchEffect(() => {
   if (isMaintenance.value) {
