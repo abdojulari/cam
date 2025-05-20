@@ -19,7 +19,7 @@
         </template>
       </v-app-bar>
       <Sidebar />
-      <v-main class="position-relative" style="height: calc(100vh - 60px);">
+      <v-main class="position-relative main-scrollable" style="height: calc(100vh - 60px);">
         <v-container>
           <slot />
         </v-container>
@@ -53,5 +53,9 @@
   height: calc(100% - 100px) !important;
   top: 60px !important;
 
+}
+
+.main-scrollable {
+  overflow-y: auto;
 }
 </style>
