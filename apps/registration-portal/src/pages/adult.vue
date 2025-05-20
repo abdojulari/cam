@@ -1,6 +1,6 @@
 <template>
-  <v-container class="ml-4">
-    <Adult /> 
+  <v-container >
+    <Adult class="ml-4" /> 
   </v-container>
 </template>
 
