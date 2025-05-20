@@ -28,7 +28,42 @@
                     />
                 </v-col>
             </v-row>
+            <v-row>
+                <v-col cols="12" sm="6" md="4">
+                    <v-text-field 
+                        label="Library Card Barcode" 
+                        v-model="libraryCardBarcode" 
+                        variant="outlined" 
+                        density="compact" 
+                        required 
+                    />
+                </v-col>
+                <v-col cols="12" sm="6" md="4">
+                    <v-btn 
+                        color="primary" 
+                        prepend-icon="mdi-card-account-details"
+                        class="text-capitalize"
+                        text="Provide a digital card Number"
+                    />   
+                </v-col>
+            </v-row>
+            <v-row>
+                <v-col cols="12" sm="6" md="4">
+                    <v-text-field 
+                        label="Password" 
+                        v-model="password" 
+                        variant="outlined" 
+                        density="compact" 
+                        required 
+                    />
+                </v-col>
+            </v-row>
             <v-divider class="my-2" elevation="4" color="grey-darken-1"/>
+            <v-row>
+                <v-col cols="12" sm="6" md="4">
+                    <h1>Customer Information</h1>
+                </v-col>
+            </v-row>
             <v-row>
                 <v-col cols="12" sm="6" md="4">
                     <v-text-field 
