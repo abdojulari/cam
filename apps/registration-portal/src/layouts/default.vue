@@ -19,10 +19,8 @@
         </template>
       </v-app-bar>
       <Sidebar />
-      <v-main class="position-relative main-scrollable" style="height: calc(100vh - 60px);">
-        <v-container>
+      <v-main class="position-relative main-scrollable " style="height: calc(100vh - 60px);">
           <slot />
-        </v-container>
       </v-main>
     </v-layout>
   </v-card>

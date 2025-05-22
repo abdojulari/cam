@@ -4,10 +4,11 @@
         permanent
         color="primary"
         class="custom-drawer-height ma-5 rounded-lg"
+        :width="320"
       >
         <template #prepend>
           <div class="d-flex justify-space-between align-center pa-5">
-            <p class="text-body-1 text-weight-bold mx-auto">New Customer Registration</p>
+            <p class="text-h6 text-weight-bold mx-auto">New Customer Registration</p>
           </div>
         </template>
 
@@ -85,13 +86,13 @@
         </v-list-group>
        
         </v-list>
-      </v-navigation-drawer>
+    </v-navigation-drawer>
 </template>
 <script setup>
 import { ref } from 'vue';
 const admins = ref([
       ['Adult', '/adult', 'mdi-account-plus'],
-      ['Child', '/child', 'mdi-account-group-outline']  
+      ['Juvenile', '/child', 'mdi-account-group-outline']  
     ]);
 
     const links = ref([
@@ -106,6 +107,11 @@ const admins = ref([
 :deep(.custom-drawer-height) {
   height: calc(100% - 100px) !important;
   top: 60px !important;
-
+}
+:deep(.custom-drawer-width) {
+  width: 500px !important;
+}
+:deep(.v-list-item--nav .v-list-item-title) {
+  font-size: 1rem !important;
 }
 </style>

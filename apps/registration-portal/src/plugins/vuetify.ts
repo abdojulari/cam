@@ -1,6 +1,7 @@
 import '@mdi/font/css/materialdesignicons.css'
 import 'vuetify/styles'
 import { createVuetify, type ThemeDefinition} from 'vuetify'
+import { VDateInput } from 'vuetify/labs/VDateInput'
 import { aliases, mdi } from 'vuetify/iconsets/mdi'
 import { createPinia } from 'pinia'
 
@@ -35,7 +36,10 @@ export default defineNuxtPlugin((app) => {
       themes: {
         lightTheme,
       } 
-    }
+    },
+    components: {
+      VDateInput,
+    },
   })
   const pinia = createPinia()
   //app.vueApp.use(pinia)
