@@ -115,6 +115,15 @@ export const apiService = {
       });
       return response;
     },
-    
+    async quickDuplicate(params: any) {
+      const response = await $fetch('/api/quick-duplicate', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(params),
+      });
+      return await response;
+    }
 };
   

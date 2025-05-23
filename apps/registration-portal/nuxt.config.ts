@@ -10,6 +10,30 @@ export default defineNuxtConfig({
     transpile: ['vuetify'],
   },
   devtools: { enabled: true },
+  runtimeConfig:{
+    public:{
+      NODE_ENV: process?.env.NODE_ENV,
+      site_key: process?.env.NUXT_PUBLIC_TURNSTILE_SITE_KEY,
+      turnstile_url: process?.env.NUXT_TURNSTILE_VERIFY_URL,
+      gtagId: process?.env.NUXT_PUBLIC_GA_ID,
+      CRE_DUPLICATE_URL: process?.env.CRE_DUPLICATE_URL,
+    },
+  },
+  $development: {
+    runtimeConfig: {
+      public: {
+        NODE_ENV: 'development',
+        CRE_DUPLICATE_URL: process?.env.CRE_DUPLICATE_URL,
+      },
+    },
+  },
+  $production: {
+    runtimeConfig: {
+      public: {
+        NODE_ENV: 'production',
+      },
+    },
+  },
   modules:[
     '@nuxtjs/tailwindcss',
     (_options, nuxt) => {

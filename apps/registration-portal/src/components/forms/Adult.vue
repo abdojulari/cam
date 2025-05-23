@@ -1,4 +1,18 @@
 <template>
+    <v-overlay :model-value="isLoading" class="d-flex align-center justify-center" persistent>
+        <v-progress-circular
+            color="primary"
+            indeterminate
+            size="48"
+            width="4"
+        />
+    </v-overlay>
+     <!-- Duplicate found-->
+     <DuplicateAlert 
+            :dialog="dialog" 
+            @update:dialog="(val: boolean) => dialog = val" 
+            :duplicateRecord="duplicateRecord"
+    />
     <v-form >
         <!-- Add New Adult Customer -->
         <v-row>
@@ -101,9 +115,7 @@
                 />
             </v-col>
         </v-row>  
-        <!-- Duplicate found-->
-        <v-btn color="primary" @click="dialog = true">Open Dialog</v-btn>
-        <DuplicateAlert :dialog="dialog" @update:dialog="(val: boolean) => dialog = val" />
+       
         <!-- Preferred Name/Use Preferred Name -->
         <v-row>
             <v-col cols="12" sm="6" md="4">
@@ -120,6 +132,8 @@
                 <v-checkbox 
                     label="Use Preferred Name" 
                     v-model="usePreferredName" 
+                    hide-details="auto"
+                    density="compact" 
                 />
             </v-col>
             
@@ -376,8 +390,9 @@
     </v-form>
 </template>
 <script setup lang="ts">
-import { ref, onMounted, shallowRef, computed } from 'vue';
+import { ref, onMounted, shallowRef, computed, watch } from 'vue';
 import DuplicateAlert from '../notification/DuplicateAlert.vue';
+import { apiService } from '../shared-components/src/services/api-service';
 
 const firstName = ref('');
 const lastName = ref('');
@@ -410,6 +425,8 @@ const title = ref([ 'Mr.', 'Mrs.', 'Ms.', 'Dr.', 'Prof.', 'Rev.', 'Hon.', 'Hon. 
 const selectedTitle = ref(null);
 const selectedEmailConsent = ref(null);
 const selectedHomeBranch = ref(null);
+const duplicateRecord = ref([]);
+const isLoading = ref(false);
 
 const indigenousStatus = ref('false');
 
@@ -421,6 +438,33 @@ const maxAdultDate = computed(() => {
   const today = new Date();
   today.setFullYear(today.getFullYear() - 18);
   return today.toISOString().split('T')[0];
+});
+
+
+watch([firstName, lastName, dateOfBirth], async () => {
+  if (!firstName.value || !lastName.value || !dateOfBirth.value) {
+    return;
+  }
+  isLoading.value = true;
+  const dob = typeof dateOfBirth.value === 'string'
+    ? dateOfBirth.value
+    : dateOfBirth.value.toISOString().split('T')[0];
+
+  const response = await apiService.quickDuplicate({
+    firstname: firstName.value,
+    lastname: lastName.value,
+    dateofbirth: dob,
+    middlename: middleName.value,
+  });
+
+  isLoading.value = false;
+
+  if (response?.data?.match) {
+    duplicateRecord.value = response.data.matched_record
+      ? [response.data.matched_record]
+      : [];
+    dialog.value = true;
+  }
 });
 </script>
 
