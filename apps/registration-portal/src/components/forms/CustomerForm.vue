@@ -193,13 +193,46 @@
                 />
             </v-col>
             <v-col cols="12" sm="6" md="4">
-                <v-btn 
-                    :color="barcodeCopied ? 'success' : 'secondary'" 
-                    :prepend-icon="barcodeCopied ? 'mdi-check' : 'mdi-content-copy'"
+                <v-btn
+                    v-if="!barcodeLoading"
+                    color="secondary" 
                     class="text-capitalize"
-                    :text="barcodeCopied ? 'Copied' : 'Copy Barcode Information'"
-                    @click="barcodeCopied = true"
+                    text="Copy Barcode Information"
+                    @click="loadBarcodeInformation()"
+                    :disabled="barcodeLoading"
                 />  
+                <v-progress-circular
+                    v-if="barcodeLoading"
+                    indeterminate
+                    color="primary"
+                />
+            </v-col>
+        </v-row>
+        <!-- Barcode lookup success/failure banner -->
+        <v-row>
+            <v-col cols="12" sm="6">
+                <!-- Success banner for barcode lookup -->
+                <v-banner
+                    v-if="barcodeCopied && !barcodeLoading"
+                    color="success"
+                    icon="mdi-check-circle"
+                    text="Barcode information copied successfully"
+                    class="mb-4"
+                    >
+                        <template v-slot:actions>
+                            <v-btn @click="barcodeCopied = false">   
+                                Dismiss
+                            </v-btn>
+                        </template>
+                </v-banner>
+                <!-- Failed banner for barcode lookup -->
+                <v-banner
+                    v-if="!barcodeCopied && barcodeCopiedError && !barcodeLoading"
+                    color="error"
+                    icon="mdi-alert-circle"
+                    text="Failed to copy barcode information"
+                    class="mb-4"
+                />
             </v-col>
         </v-row>
         <!-- Care/Of field -->
@@ -374,12 +407,43 @@
             </v-col>
             <v-col cols="12" sm="6" md="4">
                 <v-btn 
-                    :color="digitalCardNumberGenerated ? 'success' : 'secondary'" 
-                    :prepend-icon="digitalCardNumberGenerated ? 'mdi-check' : 'mdi-barcode'"
+                    v-if="!digitalCardNumberLoading"
+                    color="secondary" 
                     class="text-capitalize"
-                    :text="digitalCardNumberGenerated ? 'Generated' : 'Generate a digital card Number'"
-                    @click="digitalCardNumberGenerated = true"
-                />   
+                    text="Generate a digital card Number"
+                    @click="loadDigitalCardNumber()"
+                    :disabled="digitalCardNumberLoading"
+                /> 
+                <v-progress-circular
+                    v-if="digitalCardNumberLoading"
+                    indeterminate
+                    color="primary"
+                />  
+            </v-col>
+        </v-row>
+        <!-- Digital card number generated success/failure banner -->
+        <v-row>
+            <v-col cols="12" sm="6">
+                <v-banner
+                    v-if="digitalCardNumberGenerated && !digitalCardNumberLoading"
+                    color="success"
+                    icon="mdi-check-circle"
+                    text="Digital card number generated successfully"
+                    class="mb-4"
+                >
+                    <template v-slot:actions>
+                        <v-btn @click="digitalCardNumberGenerated = false">   
+                            Dismiss
+                        </v-btn>
+                    </template>
+                </v-banner>
+                <v-banner
+                    v-if="!digitalCardNumberGenerated && digitalCardNumberGeneratedError && !digitalCardNumberLoading"
+                    color="error"
+                    icon="mdi-alert-circle"
+                    text="Failed to generate digital card number"
+                    class="mb-4"
+                />
             </v-col>
         </v-row>
         <!-- Submit Button   -->
@@ -408,6 +472,8 @@ const usePreferredName = ref(false);
 const dateOfBirth = shallowRef<Date | null>(null);
 const barcode = ref('');
 const barcodeCopied = ref(false);
+const barcodeCopiedError = ref(false);
+const barcodeLoading = ref(false);
 const careOf = ref('');
 const address = ref('');
 const city = ref('');
@@ -422,6 +488,8 @@ const phoneNumber = ref('');
 const libraryCardBarcode = ref('');
 const digitalCardNumber = ref('');
 const digitalCardNumberGenerated = ref(false);
+const digitalCardNumberGeneratedError = ref(false);
+const digitalCardNumberLoading = ref(false);
 const dialog = ref(false);
 const profiles = ref([
     { value: 'Adult', text: 'Adult' },
@@ -477,5 +545,39 @@ watch([firstName, lastName, dateOfBirth], () => {
         dialog.value = true;
     }
 });
+
+const mockApiCall = async (ms: number) => {
+    await new Promise(resolve => setTimeout(resolve, ms));
+}
+
+const loadBarcodeInformation = async () => {
+    barcodeLoading.value = true;
+    try {
+        // mock api call
+        await mockApiCall(1000);
+        barcodeCopied.value = true;
+        barcodeCopiedError.value = false;
+    } catch (error) {
+        barcodeCopiedError.value = true;
+        barcodeCopied.value = false;
+    } finally {
+        barcodeLoading.value = false;
+    }
+}
+
+const loadDigitalCardNumber = async () => {
+    digitalCardNumberLoading.value = true;
+    try {
+        // mock api call
+        await mockApiCall(1000);
+        digitalCardNumberGenerated.value = true;
+        digitalCardNumberGeneratedError.value = false;
+    } catch (error) {
+        digitalCardNumberGeneratedError.value = true;
+        digitalCardNumberGenerated.value = false;
+    } finally {
+        digitalCardNumberLoading.value = false;
+    }
+}
 
 </script>
