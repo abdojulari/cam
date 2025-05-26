@@ -1,5 +1,19 @@
 <template>
     <div class="text-center pa-4">
+      <!-- Confirmation Dialog -->
+      <ConfirmationDialog
+        :dialog="showConfirmDialog"
+        @update:dialog="(val) => showConfirmDialog = val"
+        @confirm="handleConfirmCancel"
+        title="Confirm Cancellation"
+        message="Are you sure you want to cancel the registration? All entered information will be lost."
+        confirm-text="Yes"
+        cancel-text="No"
+        confirm-color="error"
+        cancel-color="grey"
+      />
+
+      <!-- Main Dialog -->
       <v-dialog
         v-model="modelValue"
         max-width="1400"
@@ -35,6 +49,7 @@
             density="compact"
             :hide-default-footer="(items && items.length < 5)"
             show-select
+            select-strategy="single"
           >
           </v-data-table>
           <template v-slot:actions>
@@ -42,8 +57,8 @@
   
             <v-btn 
               color="error"
-              @click="emit('update:dialog', false)"
-              text="Abort Registration"
+              @click="showConfirmDialog = true"
+              text="Cancel Registration"
               variant="flat"
               class="text-capitalize"
             />
@@ -53,6 +68,7 @@
               text="Create Temporary Pass"
               class="text-capitalize"
               variant="flat"
+              :disabled="selected.length === 0"
             />
             <v-btn 
               color="green-darken-1"
@@ -60,6 +76,7 @@
               text="Continue"
               variant="flat"
               class="text-capitalize mr-5"
+              :disabled="selected.length >= 1"
             />
           </template>
         </v-card>
@@ -68,8 +85,12 @@
   </template>
   <script setup>
     import { computed } from 'vue'
+    import ConfirmationDialog from './ConfirmationDialog.vue'
+    
     const search = ref('')
     const selected = ref([])
+    const showConfirmDialog = ref(false)
+    
     const props = defineProps({
       dialog: {
         type: Boolean,
@@ -86,6 +107,11 @@
       get: () => props.dialog,
       set: (val) => emit('update:dialog', val)
     })
+
+    const handleConfirmCancel = () => {
+      showConfirmDialog.value = false
+      emit('update:dialog', false)
+    }
 
     const headers = [
       { key: 'fullname', title: 'Full Name' },

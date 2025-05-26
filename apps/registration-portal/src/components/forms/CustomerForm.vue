@@ -1,5 +1,22 @@
 <template>
     <v-form >
+        <!-- Loading overlay for duplicate check -->
+        <v-overlay 
+            v-model="duplicateCheckLoading" 
+            class="align-center justify-center"
+            persistent
+            opacity="0.7"
+        >
+            <div class="text-center">
+                <v-progress-circular
+                    indeterminate
+                    size="64"
+                    color="primary"
+                />
+                <div class="text-h4 font-weight-bold mt-4 text-center text-white">Checking for duplicates...</div>
+            </div>
+        </v-overlay>
+        
         <!-- Add New Customer -->
         <v-row>
             <v-col cols="12" sm="12" md="12">
@@ -82,7 +99,9 @@
                     variant="outlined"
                     hide-details="auto"
                     density="compact" 
-                    required />
+                    required 
+                    @blur="checkForDuplicates"
+                />
             </v-col>
             <v-col cols="12" sm="6" md="4">
                 <v-text-field 
@@ -106,6 +125,7 @@
                     hide-details="auto"
                     density="compact" 
                     required 
+                    @blur="checkForDuplicates"
                 />
             </v-col>
             <v-col cols="12" sm="6" md="4">
@@ -118,7 +138,8 @@
                     hide-details="auto"
                     variant="outlined" 
                     density="compact" 
-                    required 
+                    required  
+                    @update:modelValue="checkForDuplicates"
                 />
             </v-col>
         </v-row>  
@@ -155,6 +176,7 @@
                     hide-details="auto"
                     density="compact" 
                     required 
+                    @blur="checkForDuplicates"
                 />
             </v-col>
             <v-col cols="12" sm="6" md="4">
@@ -166,6 +188,7 @@
                     density="compact"
                     append-inner-icon="mdi-phone"
                     required 
+                    @blur="checkForDuplicates"
                 />
             </v-col>
         </v-row>
@@ -197,7 +220,7 @@
                     v-if="!barcodeLoading"
                     color="secondary" 
                     class="text-capitalize"
-                    text="Copy Barcode Information"
+                    text="Copy"
                     @click="loadBarcodeInformation()"
                     :disabled="barcodeLoading"
                 />  
@@ -396,8 +419,10 @@
         <v-row>
             <v-col cols="12" sm="6" md="4">
                 <v-text-field 
-                    label="Library Card Barcode" 
-                    v-model="libraryCardBarcode" 
+                    label="Digital Library Card Barcode" 
+                    hint="Generate a digital card number"
+                    persistent-hint
+                    v-model="digitalCardNumber" 
                     variant="outlined" 
                     density="compact"
                     append-inner-icon="mdi-barcode-scan"
@@ -410,7 +435,7 @@
                     v-if="!digitalCardNumberLoading"
                     color="secondary" 
                     class="text-capitalize"
-                    text="Generate a digital card Number"
+                    text="Generate"
                     @click="loadDigitalCardNumber()"
                     :disabled="digitalCardNumberLoading"
                 /> 
@@ -490,6 +515,7 @@ const digitalCardNumber = ref('');
 const digitalCardNumberGenerated = ref(false);
 const digitalCardNumberGeneratedError = ref(false);
 const digitalCardNumberLoading = ref(false);
+const duplicateCheckLoading = ref(false);
 const dialog = ref(false);
 const profiles = ref([
     { value: 'Adult', text: 'Adult' },
@@ -539,12 +565,23 @@ const minChildDate = computed(() => {
   return today.toISOString().split('T')[0];
 });
 
-// watch firstname, lastname, dateofbirth and trigger dialog when all are filled
-watch([firstName, lastName, dateOfBirth], () => {
-    if (firstName.value && lastName.value && dateOfBirth.value) {
-        dialog.value = true;
+const checkForDuplicates = async () => {
+    if (firstName.value 
+    && lastName.value 
+    && dateOfBirth.value
+) {
+        duplicateCheckLoading.value = true;
+        try {
+            // mock api call for duplicate check
+            await mockApiCall(2000);
+            dialog.value = true;
+        } catch (error) {
+            console.error('Error checking for duplicates:', error);
+        } finally {
+            duplicateCheckLoading.value = false;
+        }
     }
-});
+}
 
 const mockApiCall = async (ms: number) => {
     await new Promise(resolve => setTimeout(resolve, ms));
