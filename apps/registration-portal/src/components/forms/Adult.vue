@@ -17,7 +17,7 @@
         <!-- Add New Adult Customer -->
         <v-row>
             <v-col cols="12" sm="12" md="12">
-                <h1 class="text-h5">Add New Adult Customer</h1>
+                <h1 class="text-h5 font-weight-bold">Add New Adult Customer</h1>
             </v-col>
         </v-row>
         <!-- Profile and Home Branch -->
@@ -46,12 +46,13 @@
             </v-col>
         </v-row>
         
-        <v-divider class="my-2" elevation="4" color="grey-darken-1"/>
-        <v-row>
+       
+        <v-row class="mt-4">
             <v-col cols="12" sm="12" md="12">
-                <h2 class="text-h6">Customer Information</h2>
+                <h2 class="text-h6 font-weight-medium">Customer Information</h2>
             </v-col>
-        </v-row>
+        </v-row> 
+        <v-divider class="mb-2 bg-red " opacity="1" thickness="2"/>
         <!-- Title/First Name -->
         <v-row>
             <v-col cols="12" sm="6" md="4">
@@ -164,11 +165,10 @@
             </v-col>
         </v-row>
          
-        <v-divider class="my-2" elevation="4" color="grey-darken-1"/>
         <!-- Customer Contact Information -->
-        <v-row>
+        <v-row class="mt-4">
             <v-col cols="12" sm="12" md="12">
-                <h2 class="text-h6">Contact Information</h2>
+                <h2 class="text-h6 font-weight-medium">Contact Information</h2>
             </v-col>
         </v-row>
         <!-- Barcode to copy address information form-->
@@ -187,17 +187,6 @@
                 />
             </v-col>
             <v-col cols="12" sm="6" md="4">
-                <v-btn 
-                    color="primary" 
-                    prepend-icon="mdi-check"
-                    class="text-capitalize"
-                    text="Lookup Information"
-                />  
-            </v-col>
-        </v-row>
-        <!-- Care/Of field -->
-        <v-row>
-            <v-col cols="12" sm="6" md="4">
                 <v-text-field 
                     label="Care/Of" 
                     v-model="careOf"
@@ -209,9 +198,10 @@
                     readonly
                 />
             </v-col>
-        </v-row>        
+        </v-row>
+                
         <!-- Primary Address -->
-        <v-row>
+        <v-row class="mt-4">
             <v-col cols="12" sm="12" md="12">
                 <h3 class="text-body-1">Primary Address</h3>
             </v-col>
@@ -267,7 +257,7 @@
             </v-col>
         </v-row>
         <!-- Secondary Address -->
-        <v-row>
+        <v-row class="mt-4">
             <v-col cols="12" sm="12" md="12">
                 <h3 class="text-body-1">Secondary Address</h3>
             </v-col>
@@ -321,9 +311,9 @@
             </v-col>
         </v-row>
         <!-- Marketing Consent -->
-        <v-row>
+        <v-row class="mt-4">
             <v-col cols="12" sm="12" md="12">
-                <h2 class="text-h6">Privacy & Consent</h2>
+                <h2 class="text-h6 font-weight-medium">Privacy & Consent</h2>
             </v-col>
         </v-row>
         <!-- E-mail consent dropdown -->
@@ -464,6 +454,34 @@ watch([firstName, lastName, dateOfBirth], async () => {
       ? [response.data.matched_record]
       : [];
     dialog.value = true;
+  }
+});
+
+// Watch barcode for 14 characters and auto-populate fields
+watch(barcode, async (newVal) => {
+  if (newVal && newVal.length === 14) {
+    isLoading.value = true;
+    try {
+      // Replace with your actual API call for barcode lookup
+      const response = await apiService.lookupByBarcode({ barcode: newVal });
+      console.log(response.result.address );
+      // Assuming response.data contains the fields to populate
+      if (response && response.result) {
+        // loop through the response.result and populate the fields
+        response.result.forEach((item: any) => {
+          careOf.value = item.careof || '';
+          address.value = item.address || '';
+          city.value = item.city || '';
+          province.value = item.province || '';
+          postalCode.value = item.postalcode || '';
+        });
+      }
+    } catch (e) {
+      // Optionally handle error (e.g., show a message)
+      console.log(e);
+    } finally {
+      isLoading.value = false;
+    }
   }
 });
 </script>

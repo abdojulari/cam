@@ -17,6 +17,7 @@ export default defineNuxtConfig({
       turnstile_url: process?.env.NUXT_TURNSTILE_VERIFY_URL,
       gtagId: process?.env.NUXT_PUBLIC_GA_ID,
       CRE_DUPLICATE_URL: process?.env.CRE_DUPLICATE_URL,
+      CRE_BACKCODE_LOOKUP: process?.env.CRE_BACKCODE_LOOKUP,
     },
   },
   $development: {
@@ -24,6 +25,7 @@ export default defineNuxtConfig({
       public: {
         NODE_ENV: 'development',
         CRE_DUPLICATE_URL: process?.env.CRE_DUPLICATE_URL,
+        CRE_BACKCODE_LOOKUP: process?.env.CRE_BACKCODE_LOOKUP,
       },
     },
   },
@@ -31,6 +33,8 @@ export default defineNuxtConfig({
     runtimeConfig: {
       public: {
         NODE_ENV: 'production',
+        CRE_DUPLICATE_URL: process?.env.CRE_DUPLICATE_URL,
+        CRE_BACKCODE_LOOKUP: process?.env.CRE_BACKCODE_LOOKUP,
       },
     },
   },

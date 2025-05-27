@@ -124,6 +124,16 @@ export const apiService = {
         body: JSON.stringify(params),
       });
       return await response;
+    },
+    async lookupByBarcode(params: any) {
+      const response = await $fetch('/api/barcode-lookup', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(params),
+      });
+      return await response;
     }
 };
   
