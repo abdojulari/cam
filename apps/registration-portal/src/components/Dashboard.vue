@@ -1,6 +1,5 @@
-<template>
-    
-    <v-container>
+<template>  
+    <v-container class="pa-10" style="height: 100vh">
         <v-row>
             <v-col cols="12">
                 <h1>Dashboard</h1>

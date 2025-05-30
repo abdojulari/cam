@@ -13,7 +13,10 @@
             @update:dialog="(val: boolean) => dialog = val" 
             :duplicateRecord="duplicateRecord"
     />
-    <v-form >
+    <div v-if="!isClient">
+        <v-skeleton-loader type="card" class="ma-5 rounded-lg" />
+    </div>
+    <v-form v-else>
         <!-- Add New Adult Customer -->
         <v-row>
             <v-col cols="12" sm="12" md="12">
