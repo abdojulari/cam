@@ -201,7 +201,11 @@
                     append-inner-icon="mdi-barcode-scan"
                     hide-details="auto"
                     density="compact" 
+                    type="number"
                     required 
+                    :max-length="14"
+                    :error="barcodeLengthError"
+                    :error-messages="barcodeLengthError ? 'Barcode must be 14 characters' : ''"
                 />
             </v-col>
             <v-col cols="12" sm="6" md="4">
@@ -218,17 +222,19 @@
             </v-col>
         </v-row>
         <!-- To display error if barcode is not found-->
-        <v-row >
-            <v-col cols="12" sm="6">     <!-- Success banner for barcode lookup -->
-                <v-banner
-                    v-if="barcodeError && !barcodeErrorDismiss"
+        <v-row v-if="barcodeError && !barcodeErrorDismiss">
+            <v-col cols="12" sm="6">
+                <v-banner    
                     color="error"
                     icon="mdi-alert-circle"
                     text="Barcode not found"
-                    class="mb-4"
+                    density="compact"
+                    class="border-0 shadow-md bg-red-lighten-5 pa-2 ma-0"
                     >
                         <template v-slot:actions>
-                            <v-btn @click="barcodeErrorDismiss = true">   
+                            <v-btn 
+                            @click="barcodeErrorDismiss = true" 
+                            class="text-capitalize mb-2">   
                                 Dismiss
                             </v-btn>
                         </template>
@@ -419,21 +425,21 @@
             </v-col>
             <v-col cols="12" sm="6" md="4">
                 <v-btn 
-                    color="primary" 
+                    color="orange" 
                     prepend-icon="mdi-barcode"
-                    class="text-capitalize"
+                    class="text-capitalize text-white"
                     text="Generate a digital card Number"
                 />   
             </v-col>
         </v-row>
         <!-- Submit Button   -->
         <v-row class="mt-6">
-            <v-spacer />
+            
             <v-col cols="12" sm="6" md="4">
                 <v-btn 
                     color="primary" 
                     prepend-icon="mdi-check"
-                    class="text-capitalize"
+                    class="text-capitalize mr-10"
                     text="Submit"
                     @click="handleSubmit"
                 />
@@ -529,6 +535,8 @@ const maxAdultDate = computed(() => {
   return today.toISOString().split('T')[0];
 });
 
+// Add computed property for barcode error
+const barcodeLengthError = computed(() => barcode.value !== '' && barcode.value.length > 0 && barcode.value.length < 14);
 
 watch([firstName, lastName, dateOfBirth], async () => {
   if (!firstName.value || !lastName.value || !dateOfBirth.value) {
@@ -561,12 +569,8 @@ watch(barcode, async (newVal) => {
   if (newVal && newVal.length === 14) {
     isLoading.value = true;
     try {
-      // Replace with your actual API call for barcode lookup
       const response = await apiService.lookupByBarcode({ barcode: newVal });
-      console.log(response.result.address );
-      // Assuming response.data contains the fields to populate
-      if (response && response.result) {
-        // loop through the response.result and populate the fields
+      if (response && response.result && response.result.length > 0) {
         response.result.forEach((item: any) => {
           careOf.value = item.careof || '';
           address.value = item.address || '';
@@ -574,15 +578,33 @@ watch(barcode, async (newVal) => {
           province.value = item.province || '';
           postalCode.value = item.postalcode || '';
         });
+        barcodeError.value = false;
+      } else {
+        // No result found
+        barcodeError.value = true;
+        barcodeErrorDismiss.value = false;
+        // Optionally clear fields
+        careOf.value = '';
+        address.value = '';
+        city.value = '';
+        province.value = '';
+        postalCode.value = '';
       }
-      barcodeError.value = false;
     } catch (e) {
-      // Optionally handle error (e.g., show a message)
       console.log(e);
       barcodeError.value = true;
+      barcodeErrorDismiss.value = false;
     } finally {
       isLoading.value = false;
     }
+  } else {
+    // Clear the fields if barcode is not 14 characters
+    careOf.value = '';
+    address.value = '';
+    city.value = '';
+    province.value = '';
+    postalCode.value = '';
+    barcodeError.value = false;
   }
 });
 
