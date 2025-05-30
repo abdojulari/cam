@@ -282,13 +282,19 @@
         <!-- Address1 / City -->
         <v-row>
             <v-col cols="12" sm="6" md="4">
-                <v-text-field 
+                <v-combobox 
                     label="Address Line 1" 
                     variant="outlined" 
                     hide-details="auto"
                     v-model="address"
+                    :items="addressSuggestions"
+                    item-title="text"
+                    item-value="address"
                     density="compact" 
                     append-inner-icon="mdi-map-marker"
+                    :loading="addressLoading"
+                    @update:search="searchAddresses"
+                    @update:modelValue="selectAddress"
                     required 
                 />
             </v-col>
@@ -313,7 +319,6 @@
                     hide-details="auto"
                     v-model="province"
                     density="compact"
-                    append-inner-icon="mdi-map-marker"
                     required 
                 />
             </v-col>
@@ -614,6 +619,41 @@ const loadDigitalCardNumber = async () => {
         digitalCardNumberGenerated.value = false;
     } finally {
         digitalCardNumberLoading.value = false;
+    }
+}
+
+const addressSuggestions = ref([]);
+const addressLoading = ref(false);
+
+const searchAddresses = async (query: string) => {
+    if (!query || query.length < 3) {
+        addressSuggestions.value = [];
+        return;
+    }
+    
+    addressLoading.value = true;
+    try {
+        const response = await $fetch('/api/address-lookup', {
+            method: 'POST',
+            body: { query }
+        });
+        
+        addressSuggestions.value = response.results || [];
+    } catch (error) {
+        console.error('Address lookup error:', error);
+        addressSuggestions.value = [];
+    } finally {
+        addressLoading.value = false;
+    }
+}
+
+const selectAddress = (selectedItem: any) => {
+    if (selectedItem && typeof selectedItem === 'object' && selectedItem.address) {
+        // Auto-fill the address fields when an address is selected
+        address.value = selectedItem.address.line1;
+        city.value = selectedItem.address.city;
+        province.value = selectedItem.address.province;
+        postalCode.value = selectedItem.address.postalCode;
     }
 }
 
