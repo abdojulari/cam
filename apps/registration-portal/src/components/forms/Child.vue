@@ -1,12 +1,12 @@
 <template>
-    <NewRegistration 
+    <CustomerRegistration 
         profileType="Child" 
         @submit="onSubmit" 
         :isClient="isClient"
     />
 </template>
 <script setup lang="ts">
-import NewRegistration from '../share-components/NewRegistration.vue';
+import CustomerRegistration from '../share-form-components/CustomerRegistration.vue';
 import { ref } from 'vue';
 const isClient = ref(true);
 
