@@ -48,6 +48,21 @@
                 />
             </v-col>
         </v-row>
+        <!-- School -->
+        <v-row v-if="profile === 'Child'">
+            <v-col cols="12" sm="6" md="4">
+                <v-combobox 
+                    label="School" 
+                    :items="schools"
+                    v-model="selectedSchool"
+                    item-title="text"
+                    item-value="value"
+                    variant="outlined"
+                    hide-details="auto"
+                    density="compact"  
+                />  
+            </v-col>
+        </v-row>
         
        
         <v-row class="mt-4">
@@ -204,12 +219,20 @@
         </v-row>
         <!-- To display error if barcode is not found-->
         <v-row >
-            <v-col cols="12" sm="6" md="4">
-                <v-alert 
-                    v-if="barcodeError" 
-                    type="error" 
-                    text="Barcode not found" 
-                />
+            <v-col cols="12" sm="6">     <!-- Success banner for barcode lookup -->
+                <v-banner
+                    v-if="barcodeError && !barcodeErrorDismiss"
+                    color="error"
+                    icon="mdi-alert-circle"
+                    text="Barcode not found"
+                    class="mb-4"
+                    >
+                        <template v-slot:actions>
+                            <v-btn @click="barcodeErrorDismiss = true">   
+                                Dismiss
+                            </v-btn>
+                        </template>
+                </v-banner>
             </v-col>
         </v-row>
                 
@@ -222,13 +245,19 @@
         <!-- Address1 / City -->
         <v-row>
             <v-col cols="12" sm="6" md="4">
-                <v-text-field 
+                <v-combobox 
                     label="Address Line 1" 
                     variant="outlined" 
                     hide-details="auto"
                     v-model="address"
+                    :items="addressSuggestions"
+                    item-title="text"
+                    item-value="address"
                     density="compact" 
                     append-inner-icon="mdi-map-marker"
+                    :loading="addressLoading"
+                    @update:search="searchAddresses"
+                    @update:modelValue="selectAddress"
                     required 
                 />
             </v-col>
@@ -468,12 +497,21 @@ const title = ref([ 'Mr.', 'Mrs.', 'Ms.', 'Dr.', 'Prof.', 'Rev.', 'Hon.', 'Hon. 
 const selectedTitle = ref(null);
 const selectedEmailConsent = ref(null);
 const selectedHomeBranch = ref(null);
+const schools = ref([
+    { value: 'Elementary', text: 'Elementary' },
+    { value: 'Secondary', text: 'Secondary' },
+    { value: 'High School', text: 'High School' },
+]);
+const selectedSchool = ref(null);
 const duplicateRecord = ref([]);
 const isLoading = ref(false);
 const barcodeError = ref(false);    
+const barcodeErrorDismiss = ref(false);
 const indigenousStatus = ref('false');
 const isClient = ref(false);
 const useSecondaryAddress = ref(false);
+const addressSuggestions = ref([]);
+const addressLoading = ref(false);
 
 onMounted(() => {
   if (props.profileType) {
@@ -575,5 +613,37 @@ function handleSubmit() {
       indigenousStatus: indigenousStatus.value,
     }
   });
+}
+
+const searchAddresses = async (query: string) => {
+    if (!query || query.length < 3) {
+        addressSuggestions.value = [];
+        return;
+    }
+    
+    addressLoading.value = true;
+    try {
+        const response = await $fetch('/api/address-lookup', {
+            method: 'POST',
+            body: { query }
+        });
+        
+        addressSuggestions.value = response.results || [];
+    } catch (error) {
+        console.error('Address lookup error:', error);
+        addressSuggestions.value = [];
+    } finally {
+        addressLoading.value = false;
+    }
+}
+
+const selectAddress = (selectedItem: any) => {
+    if (selectedItem && typeof selectedItem === 'object' && selectedItem.address) {
+        // Auto-fill the address fields when an address is selected
+        address.value = selectedItem.address.line1;
+        city.value = selectedItem.address.city;
+        province.value = selectedItem.address.province;
+        postalCode.value = selectedItem.address.postalCode;
+    }
 }
 </script>
