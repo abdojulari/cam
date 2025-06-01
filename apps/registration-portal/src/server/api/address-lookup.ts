@@ -89,7 +89,6 @@ interface CanadaPostErrorResponse {
     Resolution: string;
   }>;
 }
-
 export default defineEventHandler(async (event: H3Event<EventHandlerRequest>) => {
   const config = useRuntimeConfig(event);
   const apiKey = config.public.CANADA_POST_API_KEY;
@@ -268,15 +267,15 @@ function getMockAddressData(query: string): AddressLookupResponse {
     },
     {
       id: '5',
-      text: '555 University Avenue, Toronto, ON M5G 1X8',
-      highlight: '555 University Avenue',
-      description: 'Toronto, Ontario',
+      text: '2234 17 Street Northwest, Edmonton, AB T6Y 4H4',
+      highlight: '2234 17 Street Northwest',
+      description: 'Edmonton, Alberta',
       address: {
-        line1: '555 University Avenue',
+        line1: '2234 17 Street Northwest',
         line2: '',
-        city: 'Toronto',
-        province: 'ON',
-        postalCode: 'M5G 1X8',
+        city: 'Edmonton',
+        province: 'AB',
+        postalCode: 'T6Y 4H4',
         country: 'Canada'
       }
     }
