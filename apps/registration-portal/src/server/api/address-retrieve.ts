@@ -1,41 +1,18 @@
 import { defineEventHandler, EventHandlerRequest, H3Event, readBody, createError } from 'h3';
-interface AddressLookupRequest {
-  query: string;
-  postalCode?: string;
-  city?: string;
-  province?: string;
+
+interface AddressRetrieveRequest {
+  addressId: string;
 }
 
-interface AddressResult {
-  id: string;
-  text: string;
-  highlight: string;
-  description: string;
-  // optional address fields - only populated after retrieve
-  address?: {
+interface AddressDetailsResponse {
+  address: {
     line1: string;
     line2: string;
     city: string;
     province: string;
     postalCode: string;
     country: string;
-  }
-}
-
-interface AddressLookupResponse {
-  results: AddressResult[];
-  total: number;
-}
-
-// Canada Post AddressComplete API response interfaces
-interface CanadaPostFindResponse {
-  Items: Array<{
-    Id: string;
-    Type: string;
-    Text: string;
-    Highlight: string;
-    Description: string;
-  }>;
+  };
 }
 
 interface CanadaPostRetrieveResponse {
@@ -92,75 +69,95 @@ interface CanadaPostErrorResponse {
 export default defineEventHandler(async (event: H3Event<EventHandlerRequest>) => {
   const config = useRuntimeConfig(event);
   const apiKey = config.public.CANADA_POST_API_KEY;
-  const findUrl = config.public.CANADA_POST_API_FIND_URL;
-  const body = await readBody<AddressLookupRequest>(event);
+  const retrieveUrl = config.public.CANADA_POST_API_RETRIEVE_URL;
+  const body = await readBody<AddressRetrieveRequest>(event);
   
-  if (!body.query) {
+  if (!body.addressId) {
     throw createError({
       statusCode: 400,
-      statusMessage: 'Query parameter is required'
+      statusMessage: 'Address ID is required'
     });
   }
 
   // If no API key is configured, return mock data
   if (!apiKey) {
     console.warn('Canada Post API key not configured, using mock data');
-    return getMockAddressData(body.query);
+    return getMockAddressDetails(body.addressId);
   }
 
   try {
-    // Only call Find API to get address suggestions
-    const findResponse = await fetch(findUrl, {
+    const retrieveResponse = await fetch(retrieveUrl, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
       },
       body: new URLSearchParams({
         Key: apiKey,
-        SearchTerm: body.query,
-        Country: 'CAN',
-        MaxSuggestions: '5',
-        LanguagePreference: 'en'
+        Id: body.addressId
       })
     });
 
-    if (findResponse.status !== 200) {
-      throw new Error(`Canada Post Find API error: ${findResponse.status}`);
+    if (retrieveResponse.status !== 200) {
+      throw new Error(`Canada Post Retrieve API error: ${retrieveResponse.status}`);
     }
 
-    const findData: CanadaPostFindResponse = await findResponse.json();
+    const retrieveData: CanadaPostRetrieveResponse | CanadaPostErrorResponse = await retrieveResponse.json();
     
-    // Return only the basic suggestion data - no detailed address info yet
-    const addressResults: AddressResult[] = findData.Items.map(item => ({
-      id: item.Id,
-      text: item.Text,
-      highlight: item.Highlight,
-      description: item.Description,
-      // No address field populated yet - will be filled when user selects
-    }));
+    // Check if the response contains an error
+    if (retrieveData.Items && retrieveData.Items.length > 0) {
+      const firstItem = retrieveData.Items[0];
+      
+      if ('Error' in firstItem) {
+        console.error('Canada Post Retrieve API Error:', {
+          error: firstItem.Error,
+          description: firstItem?.Description,
+          cause: firstItem.Cause,
+          resolution: firstItem.Resolution
+        });
+        throw createError({
+          statusCode: 400,
+          statusMessage: `Address retrieval error: ${firstItem.Error}`
+        });
+      }
+      
+      // Process the address normally
+      const address = firstItem;
+      
+      return {
+        address: {
+          line1: address.Line1 || address.Street || '',
+          line2: address.Line2 || '',
+          city: address.City || '',
+          province: address.ProvinceCode || address.Province || '',
+          postalCode: address.PostalCode || '',
+          country: address.CountryName || 'Canada'
+        }
+      };
+    }
 
-    return {
-      results: addressResults,
-      total: addressResults.length
-    };
+    throw createError({
+      statusCode: 404,
+      statusMessage: 'Address not found'
+    });
 
   } catch (error: any) {
-    console.error('Canada Post Address Lookup Error:', error);
+    console.error('Canada Post Address Retrieve Error:', error);
     
-    // Return mock data as fallback
+    if (error.statusCode) {
+      throw error; // Re-throw HTTP errors
+    }
+    
+    // Return mock data as fallback for other errors
     console.warn('Falling back to mock data due to API error');
-    return getMockAddressData(body.query);
+    return getMockAddressDetails(body.addressId);
   }
 });
 
 // Mock data for development/testing and fallback
-function getMockAddressData(query: string): AddressLookupResponse {
-  const mockResults: AddressResult[] = [
-    {
-      id: '1',
-      text: '123 Main Street, Toronto, ON M5V 3A8',
-      highlight: '123 Main Street',
-      description: 'Toronto, Ontario',
+function getMockAddressDetails(addressId: string): AddressDetailsResponse {
+  // Simple mock based on addressId
+  const mockAddresses: Record<string, AddressDetailsResponse> = {
+    '1': {
       address: {
         line1: '123 Main Street',
         line2: '',
@@ -170,11 +167,7 @@ function getMockAddressData(query: string): AddressLookupResponse {
         country: 'Canada'
       }
     },
-    {
-      id: '2', 
-      text: '456 Queen Street West, Toronto, ON M5V 2A4',
-      highlight: '456 Queen Street West',
-      description: 'Toronto, Ontario',
+    '2': {
       address: {
         line1: '456 Queen Street West',
         line2: '',
@@ -184,11 +177,7 @@ function getMockAddressData(query: string): AddressLookupResponse {
         country: 'Canada'
       }
     },
-    {
-      id: '3',
-      text: '789 King Street, Toronto, ON M5H 1J9',
-      highlight: '789 King Street',
-      description: 'Toronto, Ontario', 
+    '3': {
       address: {
         line1: '789 King Street',
         line2: '',
@@ -198,11 +187,7 @@ function getMockAddressData(query: string): AddressLookupResponse {
         country: 'Canada'
       }
     },
-    {
-      id: '4',
-      text: '321 Bay Street, Toronto, ON M5H 2R2',
-      highlight: '321 Bay Street',
-      description: 'Toronto, Ontario',
+    '4': {
       address: {
         line1: '321 Bay Street',
         line2: '',
@@ -212,11 +197,7 @@ function getMockAddressData(query: string): AddressLookupResponse {
         country: 'Canada'
       }
     },
-    {
-      id: '5',
-      text: '2234 17 Street Northwest, Edmonton, AB T6Y 4H4',
-      highlight: '2234 17 Street Northwest',
-      description: 'Edmonton, Alberta',
+    '5': {
       address: {
         line1: '2234 17 Street Northwest',
         line2: '',
@@ -226,14 +207,16 @@ function getMockAddressData(query: string): AddressLookupResponse {
         country: 'Canada'
       }
     }
-  ].filter(result => 
-    result.text.toLowerCase().includes(query.toLowerCase()) ||
-    result.address.postalCode.toLowerCase().includes(query.toLowerCase()) ||
-    result.address.line1.toLowerCase().includes(query.toLowerCase())
-  );
+  };
 
-  return {
-    results: mockResults,
-    total: mockResults.length
+  return mockAddresses[addressId] || {
+    address: {
+      line1: 'Unknown Address',
+      line2: '',
+      city: 'Unknown',
+      province: 'AB',
+      postalCode: 'T0T 0T0',
+      country: 'Canada'
+    }
   };
 } 

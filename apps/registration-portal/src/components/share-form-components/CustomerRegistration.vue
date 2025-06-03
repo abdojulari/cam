@@ -258,7 +258,7 @@
                     v-model="address"
                     :items="addressSuggestions"
                     item-title="text"
-                    item-value="address"
+                    item-value="id"
                     density="compact" 
                     append-inner-icon="mdi-map-marker"
                     :loading="addressLoading"
@@ -461,6 +461,33 @@ import {
 import DuplicateAlert from '../notification/DuplicateAlert.vue';
 import { apiService } from '../shared-components/src/services/api-service';
 
+// Types for address lookup
+interface AddressResult {
+  id: string;
+  text: string;
+  highlight: string;
+  description: string;
+  address?: {
+    line1: string;
+    line2: string;
+    city: string;
+    province: string;
+    postalCode: string;
+    country: string;
+  }
+}
+
+interface AddressDetailsResponse {
+  address: {
+    line1: string;
+    line2: string;
+    city: string;
+    province: string;
+    postalCode: string;
+    country: string;
+  };
+}
+
 const props = defineProps<{ profileType?: string, isClient?: boolean }>();
 const emit = defineEmits<{
   (e: 'submit', payload: { profile: string; form: any }): void
@@ -518,6 +545,9 @@ const isClient = ref(false);
 const useSecondaryAddress = ref(false);
 const addressSuggestions = ref([]);
 const addressLoading = ref(false);
+const addressCache = new Map(); // Cache for address suggestions
+const addressDetailsCache = new Map(); // Cache for full address details
+let searchTimeout: NodeJS.Timeout | null = null;
 
 onMounted(() => {
   if (props.profileType) {
@@ -643,29 +673,106 @@ const searchAddresses = async (query: string) => {
         return;
     }
     
-    addressLoading.value = true;
-    try {
-        const response = await $fetch('/api/address-lookup', {
-            method: 'POST',
-            body: { query }
-        });
-        
-        addressSuggestions.value = response.results || [];
-    } catch (error) {
-        console.error('Address lookup error:', error);
-        addressSuggestions.value = [];
-    } finally {
-        addressLoading.value = false;
+    // Check cache first
+    const cacheKey = query.toLowerCase().trim();
+    if (addressCache.has(cacheKey)) {
+        addressSuggestions.value = addressCache.get(cacheKey);
+        return;
     }
+    
+    // Clear existing timeout
+    if (searchTimeout) {
+        clearTimeout(searchTimeout);
+    }
+    
+    // Debounce the search
+    searchTimeout = setTimeout(async () => {
+        addressLoading.value = true;
+        try {
+            const response = await $fetch('/api/address-lookup', {
+                method: 'POST',
+                body: { query }
+            });
+            
+            const results = response.results || [];
+            addressSuggestions.value = results;
+            
+            // Cache the results for 5 minutes
+            addressCache.set(cacheKey, results);
+            setTimeout(() => {
+                addressCache.delete(cacheKey);
+            }, 5 * 60 * 1000);
+            
+        } catch (error) {
+            console.error('Address lookup error:', error);
+            addressSuggestions.value = [];
+        } finally {
+            addressLoading.value = false;
+        }
+    }, 300); // 300ms debounce
 }
 
-const selectAddress = (selectedItem: any) => {
-    if (selectedItem && typeof selectedItem === 'object' && selectedItem.address) {
-        // Auto-fill the address fields when an address is selected
-        address.value = selectedItem.address.line1;
-        city.value = selectedItem.address.city;
-        province.value = selectedItem.address.province;
-        postalCode.value = selectedItem.address.postalCode;
+const selectAddress = async (selectedItem: unknown) => {
+    // Handle when user types freely vs selects from dropdown
+    if (typeof selectedItem === 'string') {
+        address.value = selectedItem;
+        return;
+    }
+    
+    const addressItem = selectedItem as AddressResult;
+    if (!addressItem || !addressItem.id) {
+        return;
+    }
+    
+    // If we already have full address details (from mock data), use them directly
+    if (addressItem.address) {
+        address.value = addressItem.address.line1;
+        city.value = addressItem.address.city;
+        province.value = addressItem.address.province;
+        postalCode.value = addressItem.address.postalCode;
+        return;
+    }
+    
+    // Check cache for address details
+    if (addressDetailsCache.has(addressItem.id)) {
+        const cachedAddress = addressDetailsCache.get(addressItem.id);
+        address.value = cachedAddress.line1;
+        city.value = cachedAddress.city;
+        province.value = cachedAddress.province;
+        postalCode.value = cachedAddress.postalCode;
+        return;
+    }
+    
+    // Fetch full address details only when user selects an address
+    addressLoading.value = true;
+    try {
+        const response = await $fetch('/api/address-retrieve', {
+            method: 'POST',
+            body: { addressId: addressItem.id }
+        }) as AddressDetailsResponse;
+        
+        if (response && response.address) {
+            const addressData = response.address;
+            
+            // Auto-fill the address fields
+            address.value = addressData.line1;
+            city.value = addressData.city;
+            province.value = addressData.province;
+            postalCode.value = addressData.postalCode;
+            
+            // Cache the address details
+            addressDetailsCache.set(addressItem.id, addressData);
+            setTimeout(() => {
+                addressDetailsCache.delete(addressItem.id);
+            }, 10 * 60 * 1000); // Cache for 10 minutes
+        }
+    } catch (error) {
+        console.error('Address retrieve error:', error);
+        // Fallback: try to extract info from the display text
+        const text = addressItem.text || '';
+        address.value = text;
+    } finally {
+        addressLoading.value = false;
     }
 }
 </script>
