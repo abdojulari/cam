@@ -13,15 +13,8 @@
         </v-col>
         
         <v-col cols="12" md="8">
-          <v-alert
-            density="compact"
-            text="If any of your information isn't correct, please contact your institution."
-            title="Notice"
-            type="warning"
-            class="mb-5"
-          />
-
-          <v-card class="pa-10" variant="outlined">
+          <p class="mb-5 text-h6 text-primary">If any of your information isn't correct, please contact your institution.</p>
+          <v-card class="pa-10 bg-grey-lighten-5" variant="flat">
             <v-form fast-fail ref="form" class="p-4 rounded shadow-sm">
             <!-- Name Row -->
             <v-row>
@@ -32,6 +25,7 @@
                   variant="outlined"
                   density="compact"
                   disabled
+                  hide-details
                   readonly
                 />
               </v-col>
@@ -42,6 +36,7 @@
                   variant="outlined"
                   density="compact"
                   disabled
+                  hide-details
                   readonly
                 />
               </v-col>
@@ -54,6 +49,7 @@
                   variant="outlined"
                   density="compact"
                   disabled
+                  hide-details
                   readonly
                 />
               </v-col>
@@ -64,6 +60,7 @@
                   variant="outlined"
                   density="compact"
                   disabled
+                  hide-details
                   readonly
                 />
               </v-col>
@@ -76,8 +73,7 @@
                   label="Email"
                   variant="outlined"
                   density="compact"
-                  disabled
-                  readonly
+                  hide-details
                 />
               </v-col>
               <v-col cols="12" md="3">
@@ -86,8 +82,7 @@
                   label="Phone"
                   variant="outlined"
                   density="compact"
-                  disabled
-                  readonly
+                  hide-details
                 />
               </v-col>
               <v-col cols="12" md="4">
@@ -96,8 +91,7 @@
                   label="Address"
                   variant="outlined"
                   density="compact"
-                  disabled
-                  readonly
+                  hide-details
                 />
               </v-col>
             </v-row>
@@ -110,8 +104,7 @@
                   label="City"
                   variant="outlined"
                   density="compact"
-                  disabled
-                  readonly
+                  hide-details
                 />
               </v-col>
               <v-col cols="12" md="4">
@@ -120,8 +113,7 @@
                   label="Province"
                   variant="outlined"
                   density="compact"
-                  disabled
-                  readonly
+                  hide-details 
                 />
               </v-col>
               <v-col cols="12" md="4">
@@ -130,13 +122,12 @@
                   label="Postal Code"
                   variant="outlined"
                   density="compact"
-                  disabled
-                  readonly
+                  hide-details
                 />
               </v-col>
             </v-row>
 
-            <!-- Institution Info Row -->
+            <!-- profile Info Row -->
             <v-row>
               <v-col cols="12" md="3">
                 <v-text-field
@@ -145,29 +136,22 @@
                   variant="outlined"
                   density="compact"
                   disabled
+                  hide-details
                   readonly
                 />
               </v-col>
-              <v-col cols="12" md="4">
+              <v-col cols="12" md="6">
                 <v-text-field
-                  v-model="studentData.institution"
+                  v-model="studentData.profile"
                   label="Institution"
                   variant="outlined"
                   density="compact"
                   disabled
+                  hide-details
                   readonly
                 />
               </v-col>
-              <v-col cols="12" md="2">
-                <v-text-field
-                  v-model="studentData.status"
-                  label="Status"
-                  variant="outlined"
-                  density="compact"
-                  disabled
-                  readonly
-                />
-              </v-col>
+              
               <v-col cols="12" md="3">
                 <v-text-field
                   v-model="studentData.expirydate"
@@ -175,15 +159,11 @@
                   variant="outlined"
                   density="compact"
                   disabled
-                  readonly
+                  hide-details
                 />
               </v-col>
             </v-row>
-            <!-- Status Row -->
-            <v-row>
-              
-            </v-row>
-  
+            
             <!-- Password Row -->
             <v-row>
               <v-col cols="12" md="6">
@@ -193,6 +173,7 @@
                   type="password"
                   variant="outlined"
                   density="compact"
+                  hide-details
                   :rules="passwordRules"
                 />
               </v-col>
@@ -203,6 +184,7 @@
                   type="password"
                   variant="outlined"
                   density="compact"
+                  hide-details
                   :rules="confirmPasswordRules"
                 />
               </v-col>
@@ -231,7 +213,6 @@
 
 <script setup>
 import { ref, onMounted } from 'vue';
-import { useFetch } from '#app';
 
 // Define the data model
 const studentData = ref({
@@ -246,10 +227,10 @@ const studentData = ref({
     province: '',
     postalcode: '',
     studentid: '',
-    institution: '',
+    profile: '',
     status: '',
     expirydate: '',
-    neos: '',
+    id: '',
     country: '',
 });
 
@@ -282,11 +263,11 @@ onMounted(async () => {
 
 
 const generateBarcode = () => {
-  // Get first 3 chars of institution, convert to uppercase
-  //const institutionPrefix = studentData.value.institution.substring(0, 3).toUpperCase();
-  const institutionPrefix = studentData.value.neos;
-  // Start with institution prefix and student ID
-  let barcode = institutionPrefix + studentData.value.studentid;
+  // Get first 3 chars of profile, convert to uppercase
+  //const profilePrefix = studentData.value.profile.substring(0, 3).toUpperCase();
+  const profilePrefix = studentData.value.id;
+  // Start with profile prefix and student ID
+  let barcode = profilePrefix + studentData.value.studentid;
   
   // If length is less than 14, pad with random numbers
   while (barcode.length < 14) {
@@ -303,7 +284,7 @@ const generateBarcode = () => {
 
 
 function getStudentProfile(studentData) {
-  const institutionMap = new Map([
+  const profileMap = new Map([
     ['Concordia University', 'EPL_CONCOR'],
     ['Grant MacEwan University', 'EPL_GMU'],
     ['NorQuest College', 'EPL_NORQ'],
@@ -311,7 +292,7 @@ function getStudentProfile(studentData) {
     ['Kings University', 'EPL_KINGS'],
   ]);
 
-  return institutionMap.get(studentData?.value?.institution) || null;
+  return profileMap.get(studentData?.value?.profile) || null;
 }
 
 // Handle form submission
@@ -323,22 +304,22 @@ const submitForm = async () => {
 
     isSubmitting.value = true;
     try {
-        const response = await useFetch('/api/submit-lpass', {
+        const response = await $fetch('/api/submit-lpass', {
             method: 'POST',
             body: {
                 ...studentData.value,
                 password: password.value,
                 barcode: generateBarcode(),
                 profile: getStudentProfile(studentData),
+                country: 'Canada',
+                preferredname: false,
             },
         });
-
-        if (response.status === 200) {
+        console.log('LPASS response', response);
+        if (response) {
             alert('Registration successful!');
             // You can redirect the user or show a success message
-        } else {
-            alert('Registration failed!');
-        }
+        } 
     } catch (error) {
         console.error('Error submitting form:', error);
         alert('Something went wrong.');

@@ -14,10 +14,9 @@ const StudentRecordSchema = z.object({
     province: z.string(),
     postalcode: z.string(),
     studentid: z.string(),
-    institution: z.string(),
-    status: z.string(),
+    profile: z.string(),
     expirydate: z.string(),
-    neos: z.string(),
+    id: z.string(),
 });
 
 export default defineEventHandler(async (event) => {

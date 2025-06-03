@@ -15,7 +15,7 @@ export default defineEventHandler(async (event: H3Event<EventHandlerRequest>) =>
         const body = await readBody(event);
         const access_token = getCookie(event, 'access_token');
         const sanctum_token = getCookie(event, 'x-sanctum-token');
-        console.log('body', body);
+        console.log('LPASS body', body);
      
         const response = await fetch(url, {
             method: 'POST',
