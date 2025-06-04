@@ -571,7 +571,6 @@ const addMinor = () => {
 const deleteMinor = (id: number) => {
     minors.value = minors.value.filter((minor: any) => minor.id !== id)
 }  
-
 const resetMinorForm = () => {
     if (minors.value.length > 0) {
         // Get the last minor record
