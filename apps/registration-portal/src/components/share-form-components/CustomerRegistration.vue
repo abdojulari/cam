@@ -16,7 +16,7 @@
     <div v-if="!isClient">
         <v-skeleton-loader type="card" class="ma-5 rounded-lg" />
     </div>
-    <v-form v-else>
+    <v-form v-else class="px-10">
         <!-- Add New Adult Customer -->
         <v-row>
             <v-col cols="12" sm="12" md="12">
@@ -124,7 +124,8 @@
                 <v-date-input
                     label="Date of Birth" 
                     v-model="dateOfBirth" 
-                    :max="maxAdultDate"
+                    :max="profile === 'Adult' ? maxChildDate : undefined"
+                    :min="profile === 'Child' ? minAdultDate : undefined"
                     prepend-icon=""
                     prepend-inner-icon="$calendar"
                     hide-details="auto"
@@ -157,7 +158,34 @@
             </v-col>
             
         </v-row>
-       
+        <!-- Add minor button-->
+        <v-row class="mb-5" v-if="profile === 'Child'">
+            <v-col cols="12" md="4">
+                <v-btn 
+                    variant="flat" 
+                    color="primary" 
+                    text="Add another child"
+                    @click="addMinor"
+                    size="small"      
+                    prepend-icon="mdi-plus-circle" 
+                    class="w-100 "
+                >
+                </v-btn>
+            </v-col>
+            <v-col cols="12" md="4" >
+                <v-btn
+                    v-if="minors.length > 0"
+                    variant="flat"
+                    color="red" 
+                    text="Cancel"
+                    size="small"
+                    prepend-icon="mdi-minus-circle"
+                    @click="resetMinorForm"
+                    class="ml-0 w-100 "
+                />
+            </v-col>
+        </v-row>
+        <ChildrenList v-if="profile === 'Child'" :minors="minors" :deleteMinor="deleteMinor" />
         <!-- Email/Phone Number -->
         <v-row>
             <v-col cols="12" sm="6" md="4">
@@ -460,6 +488,8 @@ import {
 } from 'vue';
 import DuplicateAlert from '../notification/DuplicateAlert.vue';
 import { apiService } from '../shared-components/src/services/api-service';
+import ChildrenList from '../notification/ChildrenList.vue';
+import { useRouter } from 'vue-router';
 
 // Types for address lookup
 interface AddressResult {
@@ -526,10 +556,10 @@ const emailConsent = ref([
     { value: 'Consent Withheld', text: 'Consent Withheld' },
     { value: 'Consent Given', text: 'Consent Given' },
 ]);
-const title = ref([ 'Mr.', 'Mrs.', 'Ms.', 'Dr.', 'Prof.', 'Rev.', 'Hon.', 'Hon. Prof.', 'Hon. Dr.', 'Hon. Prof. Dr.', 'Hon. Dr.']);
+const title = ref([ 'Mr.', 'Mrs.', 'Ms.', 'Dr.', 'Prof.', 'Rev.', 'Hon.']);
 const selectedTitle = ref(null);
 const selectedEmailConsent = ref(null);
-const selectedHomeBranch = ref(null);
+
 const schools = ref([
     { value: 'Elementary', text: 'Elementary' },
     { value: 'Secondary', text: 'Secondary' },
@@ -545,6 +575,35 @@ const isClient = ref(false);
 const useSecondaryAddress = ref(false);
 const addressSuggestions = ref([]);
 const addressLoading = ref(false);
+const minors = ref([]);
+const router = useRouter();
+
+const addMinor = () => {
+    minors.value.push({ 
+        id: minors.value.length + 1, 
+        firstName: firstName.value , 
+        lastName: lastName.value, 
+        middleName: middleName.value,
+        dateOfBirth: dateOfBirth.value.toISOString().split('T')[0]
+    });
+}
+
+const deleteMinor = (id: number) => {
+    minors.value = minors.value.filter((minor: any) => minor.id !== id)
+}  
+const resetMinorForm = () => {
+    if (minors.value.length > 0) {
+        // Get the last minor record
+        const lastMinor = minors.value[minors.value.length - 1];
+
+        // Populate the form with the last minor's details
+        firstName.value = lastMinor.firstName;
+        lastName.value = lastMinor.lastName;
+        dateOfBirth.value = lastMinor.dateOfBirth;
+        deleteMinor(lastMinor.id);
+
+    }
+}
 const addressCache = new Map(); // Cache for address suggestions
 const addressDetailsCache = new Map(); // Cache for full address details
 let searchTimeout: NodeJS.Timeout | null = null;
@@ -558,15 +617,25 @@ onMounted(() => {
   }
 });
 
-// Add computed property for max date (18 years ago)
-const maxAdultDate = computed(() => {
+const maxChildDate = computed(() => {
   const today = new Date();
+  // Max date for child: must be less than 18 years old (so up to 17 years, 364 days)
+  today.setFullYear(today.getFullYear() - 18);
+  today.setDate(today.getDate() + 1); // allow up to the day before 18th birthday
+  return today.toISOString().split('T')[0];
+});
+
+const minAdultDate = computed(() => {
+  const today = new Date();
+  // Min date for adult: must be at least 18 years old
   today.setFullYear(today.getFullYear() - 18);
   return today.toISOString().split('T')[0];
 });
 
 // Add computed property for barcode error
-const barcodeLengthError = computed(() => barcode.value !== '' && barcode.value.length > 0 && barcode.value.length < 14);
+const barcodeLengthError = computed(
+    () => barcode.value !== '' && barcode.value.length > 0 && barcode.value.length < 14
+);
 
 watch([firstName, lastName, dateOfBirth], async () => {
   if (!firstName.value || !lastName.value || !dateOfBirth.value) {
@@ -775,4 +844,12 @@ const selectAddress = async (selectedItem: unknown) => {
         addressLoading.value = false;
     }
 }
+
+watch(profile, (newProfile) => {
+  if (newProfile === 'Adult') {
+    router.push('/adult');
+  } else if (newProfile === 'Child') {
+    router.push('/child');
+  }
+});
 </script>

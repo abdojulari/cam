@@ -1,5 +1,5 @@
 <template>
-  <v-container class="pa-10" style="height: 100vh">
+  <v-container class="px-10 pb-4" style="height: 100vh">
     <Child />
   </v-container>
 </template>
