@@ -1,5 +1,18 @@
 import { defineEventHandler, EventHandlerRequest, H3Event, readBody, createError } from 'h3';
 
+// Add the missing import for useRuntimeConfig
+const useRuntimeConfig = (event: H3Event) => {
+  // In a real Nuxt environment, this would be automatically imported
+  // For now, we'll create a simple mock or you can import it properly
+  return {
+    public: {
+      CANADA_POST_API_KEY: process.env.CANADA_POST_API_KEY,
+      CANADA_POST_API_FIND_URL: process.env.CANADA_POST_API_FIND_URL,
+      CANADA_POST_API_RETRIEVE_URL: process.env.CANADA_POST_API_RETRIEVE_URL,
+    }
+  };
+};
+
 interface AddressRetrieveRequest {
   addressId: string;
 }

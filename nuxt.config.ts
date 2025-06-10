@@ -10,5 +10,9 @@ export default defineNuxtConfig({
     "@nuxt/scripts",
     "nuxt-gtag",
     "@nuxt/image"
-  ]
+  ],
+  alias: {
+    '@cam/shared-components': './shared-components/src',
+    '@cam/shared-services': './shared-services/src'
+  }
 })

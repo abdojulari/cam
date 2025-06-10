@@ -5,6 +5,11 @@
     "composite": true,
     "declaration": true,       
     "declarationMap": true,
+    "baseUrl": "../../", // Path to the root of the project
+    "paths": {
+      "@cam/shared-components/*": ["shared-components/src/*"],
+      "@cam/shared-services/*": ["shared-services/src/*"]
+    },
     "types": [
       "@nuxt/types"
     ]

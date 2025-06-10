@@ -17,8 +17,8 @@
     "baseUrl": ".",
     "paths": {
      // "#app": ["./node_modules/nuxt/dist/app"],
-      "@cam/shared-components": ["shared-components/src/index.ts"],
-      "@cam/shared-services": ["shared-services/src/index.ts"],
+      "@cam/shared-components/*": ["shared-components/src/*"],
+      "@cam/shared-services/*": ["shared-services/src/*"],
       "@/*": ["src/*"],
       "shared-services/*": ["cam/shared-services/src/*"],
     }
