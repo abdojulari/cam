@@ -486,8 +486,8 @@ import {
     defineProps, 
     defineEmits 
 } from 'vue';
-import DuplicateAlert from '../notification/DuplicateAlert.vue';
 import { apiService } from '../shared-components/src/services/api-service';
+import DuplicateAlert from '../notification/DuplicateAlert.vue';
 import ChildrenList from '../notification/ChildrenList.vue';
 import { useRouter } from 'vue-router';
 

@@ -412,12 +412,13 @@
                 for (const data of userRegistration.registration) {
                     await apiService.registration(data).then((response) => {
                         registrationData = response;
-                        // create a state managenennt for the response then extract the barcode
+                        // create a state management for the response then extract the barcode
+                        console.log('FOR LOOP RESPONSE:', response);
                         userRegistration.setSuccessResponse({
                             name: response?.data?.firstName + ' ' + response?.data?.lastName,
                             barcode: response?.data?.barcode,
                         });
-                        sendEventToGA(buttonName, 'sign_up', response?.data?.profile);
+                       
                     });
                 }
                 // Once all submissions are done, check for errors in the data
@@ -437,7 +438,9 @@
                     });
                     await apiService.reproducibleData(reproducibleData);
                     // Proceed to next page if no errors
-                    router.push('/success-page');
+                    console.log('WHAT IS RESPONSE:', registrationData);
+                    sendEventToGA(buttonName, 'sign_up', registrationData?.data?.profile);
+                    //router.push('/success-page');
                 }
                 
             } catch (error) {

@@ -4,7 +4,7 @@ export default defineEventHandler(async (event: H3Event<EventHandlerRequest>) =>
   const body = await readBody(event);
 
   const config = useRuntimeConfig(event);
-  const duplicateUrl = config.public.CRE_DUPLICATE_URL;
+  const duplicateUrl = config.public.CRE_QUICK_DUPLICATE_URL;
 
   // send the body to the duplicate url
   try{
