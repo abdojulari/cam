@@ -8,10 +8,10 @@
         />
     </v-overlay>
      <!-- Duplicate found-->
-     <DuplicateAlert 
-            :dialog="dialog" 
-            @update:dialog="(val: boolean) => dialog = val" 
-            :duplicateRecord="duplicateRecord"
+    <DuplicateAlert 
+        :dialog="dialog" 
+        @update:dialog="(val: boolean) => dialog = val" 
+        :duplicateRecord="duplicateRecord"
     />
     <div v-if="!isClient">
         <v-skeleton-loader type="card" class="ma-5 rounded-lg" />
@@ -245,7 +245,6 @@
                     hide-details="auto"
                     density="compact" 
                     required
-                    readonly
                 />
             </v-col>
         </v-row>
@@ -498,10 +497,12 @@ import { apiService } from '@cam/shared-components/services/api-service';
 import ChildrenList from '../notification/ChildrenList.vue';
 import { useRouter } from 'vue-router';
 import { useAddressLookup } from '@cam/shared-components/composables/useAddressLookup';
+import { CareOfAddresses, CustomerRegistration, Minors } from '../../types/customer-registration';
+
 
 const props = defineProps<{ profileType?: string, isClient?: boolean }>();
 const emit = defineEmits<{
-  (e: 'submit', payload: { profile: string; form: any }): void
+  (e: 'submit', payload: CustomerRegistration): void
 }>();
 
 const firstName = ref('');
@@ -554,41 +555,8 @@ const barcodeErrorDismiss = ref(false);
 const indigenousStatus = ref('false');
 const isClient = ref(false);
 const useSecondaryAddress = ref(false);
-const minors = ref([]);
+const minors = ref<Minors[]>([]);
 const router = useRouter();
-
-// Setup address lookup composables
-const { 
-    suggestions: primaryAddressSuggestions, 
-    loading: primaryAddressLoading, 
-    selectAddress: selectPrimaryAddress, 
-    searchAddresses: searchPrimaryAddresses, 
-    cleanup: primaryAddressCleanup 
-} = useAddressLookup({
-  addressFields: {
-    address,
-    city,
-    province,
-    postalCode
-  },
-  cachePrefix: 'primary'
-});
-
-const { 
-    suggestions: secondaryAddressSuggestions, 
-    loading: secondaryAddressLoading, 
-    selectAddress: selectSecondaryAddress, 
-    searchAddresses: searchSecondaryAddresses, 
-    cleanup: secondaryAddressCleanup 
-} = useAddressLookup({
-  addressFields: {
-    address: address2,
-    city: city2,
-    province: province2,
-    postalCode: postalCode2
-  },
-  cachePrefix: 'secondary'
-});
 
 const addMinor = () => {
     minors.value.push({ 
@@ -596,7 +564,7 @@ const addMinor = () => {
         firstName: firstName.value , 
         lastName: lastName.value, 
         middleName: middleName.value,
-        dateOfBirth: dateOfBirth.value.toISOString().split('T')[0]
+        dateOfBirth: dateOfBirth.value.toISOString().split('T')[0] as unknown as Date
     });
 }
 
@@ -677,9 +645,9 @@ watch(barcode, async (newVal) => {
   if (newVal && newVal.length === 14) {
     isLoading.value = true;
     try {
-      const response = await apiService.lookupByBarcode({ barcode: newVal });
-      if (response && response.result && response.result.length > 0) {
-        response.result.forEach((item: any) => {
+      const response = await apiService.lookupByBarcode({ barcode: newVal }) as CareOfAddresses;
+      if (response?.result?.length > 0) {
+        response.result.forEach((item) => {
           careOf.value = item.careof || '';
           address.value = item.address || '';
           city.value = item.city || '';
@@ -740,7 +708,11 @@ function handleSubmit() {
       phoneNumber: phoneNumber.value,
       libraryCardBarcode: libraryCardBarcode.value,
       selectedEmailConsent: selectedEmailConsent.value,
-      indigenousStatus: indigenousStatus.value,
+      selectedIndigenousStatus: indigenousStatus.value,
+      useSecondaryAddress: useSecondaryAddress.value,
+      profileType: profile.value,
+      isClient: isClient.value,
+      minors: minors.value,
     }
   });
 }
@@ -751,6 +723,39 @@ watch(profile, (newProfile) => {
   } else if (newProfile === 'Child') {
     router.push('/child');
   }
+});
+
+// Setup address lookup composables
+const { 
+    suggestions: primaryAddressSuggestions, 
+    loading: primaryAddressLoading, 
+    selectAddress: selectPrimaryAddress, 
+    searchAddresses: searchPrimaryAddresses, 
+    cleanup: primaryAddressCleanup 
+} = useAddressLookup({
+  addressFields: {
+    address,
+    city,
+    province,
+    postalCode
+  },
+  cachePrefix: 'primary'
+});
+
+const { 
+    suggestions: secondaryAddressSuggestions, 
+    loading: secondaryAddressLoading, 
+    selectAddress: selectSecondaryAddress, 
+    searchAddresses: searchSecondaryAddresses, 
+    cleanup: secondaryAddressCleanup 
+} = useAddressLookup({
+  addressFields: {
+    address: address2,
+    city: city2,
+    province: province2,
+    postalCode: postalCode2
+  },
+  cachePrefix: 'secondary'
 });
 
 onUnmounted(() => {

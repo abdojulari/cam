@@ -1,46 +1,9 @@
-import { ref, type Ref, toRefs } from 'vue';
-
-// Types for address lookup
-interface AddressResult {
-  id: string;
-  text: string;
-  highlight: string;
-  description: string;
-  address?: {
-    line1: string;
-    line2: string;
-    city: string;
-    province: string;
-    postalCode: string;
-    country: string;
-  }
-}
-
-interface AddressDetailsResponse {
-  address: {
-    line1: string;
-    line2: string;
-    city: string;
-    province: string;
-    postalCode: string;
-    country: string;
-  };
-}
-
-interface AddressFields {
-  address: Ref<string>;
-  city: Ref<string>;
-  province: Ref<string>;
-  postalCode: Ref<string>;
-}
-
-interface UseAddressLookupOptions {
-  addressFields: AddressFields;
-  cachePrefix?: string;
-  debounceMs?: number;
-  cacheExpiryMs?: number;
-  detailsCacheExpiryMs?: number;
-}
+import { ref } from 'vue';
+import { 
+  UseAddressLookupOptions, 
+  AddressResult 
+} from '../types/address';
+import { AddressDetailsResponse } from '../types/address';
 
 // Global caches - shared across all instances
 const globalSuggestionsCache = new Map<string, AddressResult[]>();
