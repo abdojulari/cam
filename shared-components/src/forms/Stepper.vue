@@ -413,7 +413,6 @@
                     await apiService.registration(data).then((response) => {
                         registrationData = response;
                         // create a state management for the response then extract the barcode
-                        console.log('FOR LOOP RESPONSE:', response);
                         userRegistration.setSuccessResponse({
                             name: response?.data?.firstName + ' ' + response?.data?.lastName,
                             barcode: response?.data?.barcode,
@@ -438,9 +437,8 @@
                     });
                     await apiService.reproducibleData(reproducibleData);
                     // Proceed to next page if no errors
-                    console.log('WHAT IS RESPONSE:', registrationData);
                     sendEventToGA(buttonName, 'sign_up', registrationData?.data?.profile);
-                    //router.push('/success-page');
+                    router.push('/success-page');
                 }
                 
             } catch (error) {
