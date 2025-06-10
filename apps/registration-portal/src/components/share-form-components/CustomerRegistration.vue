@@ -284,14 +284,14 @@
                     variant="outlined" 
                     hide-details="auto"
                     v-model="address"
-                    :items="addressSuggestions"
+                    :items="primaryAddressSuggestions"
                     item-title="text"
                     item-value="id"
                     density="compact" 
                     append-inner-icon="mdi-map-marker"
-                    :loading="addressLoading"
-                    @update:search="searchAddresses"
-                    @update:modelValue="selectAddress"
+                    :loading="primaryAddressLoading"
+                    @update:search="searchPrimaryAddresses"
+                    @update:modelValue="selectPrimaryAddress"
                     required 
                 />
             </v-col>
@@ -356,13 +356,19 @@
         <!-- Address2 / Country -->
         <v-row v-if="useSecondaryAddress">
             <v-col cols="12" sm="6" md="4">
-                <v-text-field 
+                <v-combobox 
                     label="Address Line 2" 
-                    v-model="address2"
-                    append-inner-icon="mdi-map-marker"
-                    variant="outlined"
+                    variant="outlined" 
                     hide-details="auto"
-                    density="compact"
+                    v-model="address2"
+                    :items="secondaryAddressSuggestions"
+                    item-title="text"
+                    item-value="id"
+                    density="compact" 
+                    append-inner-icon="mdi-map-marker"
+                    :loading="secondaryAddressLoading"
+                    @update:search="searchSecondaryAddresses"
+                    @update:modelValue="selectSecondaryAddress"
                     required 
                 />
             </v-col>
@@ -480,43 +486,18 @@
 import { 
     ref, 
     onMounted, 
+    onUnmounted,
     shallowRef, 
     computed, 
     watch, 
     defineProps, 
     defineEmits 
 } from 'vue';
-import { apiService } from '../shared-components/src/services/api-service';
 import DuplicateAlert from '../notification/DuplicateAlert.vue';
+import { apiService } from '@cam/shared-components/services/api-service';
 import ChildrenList from '../notification/ChildrenList.vue';
 import { useRouter } from 'vue-router';
-
-// Types for address lookup
-interface AddressResult {
-  id: string;
-  text: string;
-  highlight: string;
-  description: string;
-  address?: {
-    line1: string;
-    line2: string;
-    city: string;
-    province: string;
-    postalCode: string;
-    country: string;
-  }
-}
-
-interface AddressDetailsResponse {
-  address: {
-    line1: string;
-    line2: string;
-    city: string;
-    province: string;
-    postalCode: string;
-    country: string;
-  };
-}
+import { useAddressLookup } from '@cam/shared-components/composables/useAddressLookup';
 
 const props = defineProps<{ profileType?: string, isClient?: boolean }>();
 const emit = defineEmits<{
@@ -573,10 +554,41 @@ const barcodeErrorDismiss = ref(false);
 const indigenousStatus = ref('false');
 const isClient = ref(false);
 const useSecondaryAddress = ref(false);
-const addressSuggestions = ref([]);
-const addressLoading = ref(false);
 const minors = ref([]);
 const router = useRouter();
+
+// Setup address lookup composables
+const { 
+    suggestions: primaryAddressSuggestions, 
+    loading: primaryAddressLoading, 
+    selectAddress: selectPrimaryAddress, 
+    searchAddresses: searchPrimaryAddresses, 
+    cleanup: primaryAddressCleanup 
+} = useAddressLookup({
+  addressFields: {
+    address,
+    city,
+    province,
+    postalCode
+  },
+  cachePrefix: 'primary'
+});
+
+const { 
+    suggestions: secondaryAddressSuggestions, 
+    loading: secondaryAddressLoading, 
+    selectAddress: selectSecondaryAddress, 
+    searchAddresses: searchSecondaryAddresses, 
+    cleanup: secondaryAddressCleanup 
+} = useAddressLookup({
+  addressFields: {
+    address: address2,
+    city: city2,
+    province: province2,
+    postalCode: postalCode2
+  },
+  cachePrefix: 'secondary'
+});
 
 const addMinor = () => {
     minors.value.push({ 
@@ -591,6 +603,7 @@ const addMinor = () => {
 const deleteMinor = (id: number) => {
     minors.value = minors.value.filter((minor: any) => minor.id !== id)
 }  
+
 const resetMinorForm = () => {
     if (minors.value.length > 0) {
         // Get the last minor record
@@ -601,12 +614,8 @@ const resetMinorForm = () => {
         lastName.value = lastMinor.lastName;
         dateOfBirth.value = lastMinor.dateOfBirth;
         deleteMinor(lastMinor.id);
-
     }
 }
-const addressCache = new Map(); // Cache for address suggestions
-const addressDetailsCache = new Map(); // Cache for full address details
-let searchTimeout: NodeJS.Timeout | null = null;
 
 onMounted(() => {
   if (props.profileType) {
@@ -736,120 +745,17 @@ function handleSubmit() {
   });
 }
 
-const searchAddresses = async (query: string) => {
-    if (!query || query.length < 3) {
-        addressSuggestions.value = [];
-        return;
-    }
-    
-    // Check cache first
-    const cacheKey = query.toLowerCase().trim();
-    if (addressCache.has(cacheKey)) {
-        addressSuggestions.value = addressCache.get(cacheKey);
-        return;
-    }
-    
-    // Clear existing timeout
-    if (searchTimeout) {
-        clearTimeout(searchTimeout);
-    }
-    
-    // Debounce the search
-    searchTimeout = setTimeout(async () => {
-        addressLoading.value = true;
-        try {
-            const response = await $fetch('/api/address-lookup', {
-                method: 'POST',
-                body: { query }
-            });
-            
-            const results = response.results || [];
-            addressSuggestions.value = results;
-            
-            // Cache the results for 5 minutes
-            addressCache.set(cacheKey, results);
-            setTimeout(() => {
-                addressCache.delete(cacheKey);
-            }, 5 * 60 * 1000);
-            
-        } catch (error) {
-            console.error('Address lookup error:', error);
-            addressSuggestions.value = [];
-        } finally {
-            addressLoading.value = false;
-        }
-    }, 300); // 300ms debounce
-}
-
-const selectAddress = async (selectedItem: unknown) => {
-    // Handle when user types freely vs selects from dropdown
-    if (typeof selectedItem === 'string') {
-        address.value = selectedItem;
-        return;
-    }
-    
-    const addressItem = selectedItem as AddressResult;
-    if (!addressItem || !addressItem.id) {
-        return;
-    }
-    
-    // If we already have full address details (from mock data), use them directly
-    if (addressItem.address) {
-        address.value = addressItem.address.line1;
-        city.value = addressItem.address.city;
-        province.value = addressItem.address.province;
-        postalCode.value = addressItem.address.postalCode;
-        return;
-    }
-    
-    // Check cache for address details
-    if (addressDetailsCache.has(addressItem.id)) {
-        const cachedAddress = addressDetailsCache.get(addressItem.id);
-        address.value = cachedAddress.line1;
-        city.value = cachedAddress.city;
-        province.value = cachedAddress.province;
-        postalCode.value = cachedAddress.postalCode;
-        return;
-    }
-    
-    // Fetch full address details only when user selects an address
-    addressLoading.value = true;
-    try {
-        const response = await $fetch('/api/address-retrieve', {
-            method: 'POST',
-            body: { addressId: addressItem.id }
-        }) as AddressDetailsResponse;
-        
-        if (response && response.address) {
-            const addressData = response.address;
-            
-            // Auto-fill the address fields
-            address.value = addressData.line1;
-            city.value = addressData.city;
-            province.value = addressData.province;
-            postalCode.value = addressData.postalCode;
-            
-            // Cache the address details
-            addressDetailsCache.set(addressItem.id, addressData);
-            setTimeout(() => {
-                addressDetailsCache.delete(addressItem.id);
-            }, 10 * 60 * 1000); // Cache for 10 minutes
-        }
-    } catch (error) {
-        console.error('Address retrieve error:', error);
-        // Fallback: try to extract info from the display text
-        const text = addressItem.text || '';
-        address.value = text;
-    } finally {
-        addressLoading.value = false;
-    }
-}
-
 watch(profile, (newProfile) => {
   if (newProfile === 'Adult') {
     router.push('/adult');
   } else if (newProfile === 'Child') {
     router.push('/child');
   }
+});
+
+onUnmounted(() => {
+  // Cleanup timeouts when component is destroyed
+  primaryAddressCleanup();
+  secondaryAddressCleanup();
 });
 </script>

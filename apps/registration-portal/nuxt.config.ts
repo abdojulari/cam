@@ -1,6 +1,7 @@
 import { nxViteTsPaths } from '@nx/vite/plugins/nx-tsconfig-paths.plugin';
 import { defineNuxtConfig } from 'nuxt/config';
 import { fileURLToPath  } from 'url';
+import { resolve } from 'path';
 import vuetify, { transformAssetUrls } from 'vite-plugin-vuetify'
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
@@ -10,6 +11,11 @@ export default defineNuxtConfig({
     transpile: ['vuetify'],
   },
   devtools: { enabled: true },
+  alias: {
+    '@cam/shared-components': resolve(__dirname, '../../shared-components/src'),
+    '@cam/shared-services': resolve(__dirname, '../../shared-services/src'),
+    '@shared': resolve(__dirname, '../../'),
+  },
   runtimeConfig:{
     public:{
       NODE_ENV: process?.env.NODE_ENV,
