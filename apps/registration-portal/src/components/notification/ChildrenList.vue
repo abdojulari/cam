@@ -5,12 +5,15 @@
                 <v-card-title>
                     <h3 class="text-uppercase font-weight-black">List of Added Child(ren)</h3>
                 </v-card-title>
-                <v-card-text>
+                <v-card-text class="d-flex justify-center">
                     <v-data-table
                         :headers="headers"
                         :items="props.minors"
                         item-key="id"
-                        :hide-default-footer="true"
+                        :items-per-page="5"
+                        class="ma-6 bg-grey-lighten-5"
+                        density="compact"
+                        :hide-default-footer="(props.minors && props.minors.length < 5)"
                         color="primary"
                     > 
                         <template v-slot:headers="{ columns,toggleSort }">

@@ -22,7 +22,13 @@
         density="compact"
         nav
       >
-
+      <v-list-item prepend-icon="mdi-home">
+        <template #title>
+          <router-link to="/" class="text-decoration-none">
+            Home
+          </router-link>
+        </template>
+      </v-list-item>
       <v-list-group value="add-new-customer">
         <template v-slot:activator="{ props }">
           <v-list-item
@@ -103,12 +109,12 @@ const admins = ref([
       ['Juvenile', '/child', 'mdi-account-group-outline']  
     ]);
 
-    const links = ref([
-      ['Staff Web', 'https://staff.epl.ca', 'mdi-account-group-outline'],
-      ['AV Incomplete', 'https://av.epl.ca', 'mdi-library'],
-      ['Staff Apps', 'https://appsng.epl.ca/', 'mdi-application-brackets'],
-      ['Dayforce', 'https://appsng.epl.ca/', 'mdi-application-brackets']
-    ]);
+const links = ref([
+  ['Staff Web', 'https://staff.epl.ca', 'mdi-account-group-outline'],
+  ['AV Incomplete', 'https://av.epl.ca', 'mdi-library'],
+  ['Staff Apps', 'https://appsng.epl.ca/', 'mdi-application-brackets'],
+  ['Dayforce', 'https://appsng.epl.ca/', 'mdi-application-brackets']
+]);
 </script>
 <style scoped>
 

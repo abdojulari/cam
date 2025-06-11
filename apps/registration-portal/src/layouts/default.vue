@@ -13,7 +13,7 @@
 
         <template v-slot:append>
           <div class="mr-4">
-            <small class="text-body-2 text-weight-bold"> Branch: {{ ipAddress }}</small>
+            <small class="text-body-2 text-weight-bold"> Branch: {{ networkName }}</small>
           </div>
           <v-btn icon="mdi-dots-vertical"></v-btn>
         </template>
@@ -27,21 +27,26 @@
   <Footer />
 </template>
 <script setup>
-    import { ref, onMounted } from 'vue';
-    import Footer from '@/components/Footer.vue';
-    import Sidebar from '@/components/Sidebar.vue';
+  import { ref, onMounted, computed } from 'vue';
+  import Footer from '@/components/Footer.vue';
+  import Sidebar from '@/components/Sidebar.vue';
+  import { getNameByIpRange } from '@/constants/ipRangeMatching';
+  
+  const ipAddress = ref('');
+  const networkName = ref('');
 
-    const ipAddress = ref('');
-
-    onMounted(async () => {
-      try {
-        const res = await fetch('https://api.ipify.org?format=json');
-        const data = await res.json();
-        ipAddress.value = data.ip;
-      } catch (e) {
-        ipAddress.value = 'Unavailable';
-      }
-    });
+  onMounted(async () => {
+    try {
+      const res = await fetch('https://api.ipify.org?format=json');
+      const data = await res.json();
+      ipAddress.value = data.ip;
+      const name = await getNameByIpRange(data.ip);
+      console.log(`IP ${data.ip} belongs to: ${name}`);
+      networkName.value = name;
+    } catch (e) {
+      ipAddress.value = 'Unavailable';
+    }
+  });
 
 </script>
 

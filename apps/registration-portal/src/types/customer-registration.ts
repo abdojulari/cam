@@ -4,6 +4,9 @@ export interface CareOfAddress {
     city: string;
     province: string;
     postalcode: string;
+    firstname?: string;
+    lastname?: string;
+    dateOfBirth?: Date;
 }
 
 export interface CareOfAddresses {
@@ -52,3 +55,13 @@ export interface CustomerRegistration {
         usePreferredName?: boolean;
     }
 }
+
+export interface IPRange {
+    scopeId: string;
+    name: string;
+    status: string;
+    start: string;
+    end: string;
+    subnet: string;
+}
+  

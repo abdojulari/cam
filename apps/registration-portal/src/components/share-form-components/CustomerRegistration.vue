@@ -648,11 +648,20 @@ watch(barcode, async (newVal) => {
       const response = await apiService.lookupByBarcode({ barcode: newVal }) as CareOfAddresses;
       if (response?.result?.length > 0) {
         response.result.forEach((item) => {
-          careOf.value = item.careof || '';
-          address.value = item.address || '';
-          city.value = item.city || '';
-          province.value = item.province || '';
-          postalCode.value = item.postalcode || '';
+            // check if dateofbirth is less than 18 years old
+            const today = new Date();
+            const dob = new Date(item.dateOfBirth);
+            const age = today.getFullYear() - dob.getFullYear();
+            if (age < 18) { 
+                return;
+            }
+            else {
+                careOf.value = item.firstname + ' ' + item.lastname || '';
+                address.value = item.address || '';
+                city.value = item.city || '';
+                province.value = item.province || '';
+                postalCode.value = item.postalcode || '';
+            }
         });
         barcodeError.value = false;
       } else {
@@ -724,6 +733,7 @@ watch(profile, (newProfile) => {
     router.push('/child');
   }
 });
+
 
 // Setup address lookup composables
 const { 
