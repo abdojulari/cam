@@ -437,7 +437,7 @@
                     });
                     await apiService.reproducibleData(reproducibleData);
                     // Proceed to next page if no errors
-                    sendEventToGA(buttonName, 'sign_up', registrationData?.data?.profile);
+                    sendEventToGA(buttonName, 'sign_up', registrationData?.data?.profile?.['@key']);
                     router.push('/success-page');
                 }
                 
