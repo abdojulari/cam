@@ -498,6 +498,16 @@
           linkDisabled.value = false; // Reset this state so the user can try again
           return;
         }
+        // check if careof is not below 18 years old
+        const today = new Date();
+        const dob = new Date(data?.dateofbirth);
+        const age = today.getFullYear() - dob.getFullYear();
+        if (age < 18 || data?.profile === 'EPL_SELFJ' || data?.profile === 'EPL_JUV') {
+          errorLogin.value = 'Guardian must be at least 18 years old!';
+          loading.value = false;
+          linkDisabled.value = false; // Reset this state so the user can try again
+          return;
+        }
         errorLogin.value = '';
         // If minors exist, add their registrations
         if (minors.value.length > 0) {
