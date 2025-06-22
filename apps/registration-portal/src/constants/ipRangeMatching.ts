@@ -79,9 +79,7 @@ const ipRanges: IPRange[] = [
   
     // Find matching range
     for (const range of ipRanges) {
-      console.log(`Checking IP ${ipAddress} against range ${range.start} - ${range.end}`);
       if (isIpInRange(ipAddress, range.start, range.end)) {
-        console.log(`IP ${ipAddress} belongs to: ${range.name}`);
         return range.name;
       }
     }

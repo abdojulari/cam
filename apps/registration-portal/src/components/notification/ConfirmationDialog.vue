@@ -34,6 +34,9 @@
 
 <script setup>
 import { computed } from 'vue'
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
 
 const props = defineProps({
   dialog: {
@@ -76,6 +79,7 @@ const modelValue = computed({
 const handleConfirm = () => {
   emit('confirm')
   emit('update:dialog', false)
+  router.push('/')
 }
 
 const handleCancel = () => {

@@ -66,6 +66,7 @@ export const useRegistrationStore = defineStore({
     linkState: false,
     buttonClickState: false,
     successResponse: [] as SuccessResponse[],
+    networkName: '',
   }),
   actions: {
     async setTurnstile(turnstile: boolean) {
@@ -198,6 +199,13 @@ export const useRegistrationStore = defineStore({
         } catch (error) {
           console.error(error);
         }
+      },
+      async setNetworkName(networkName: string) {
+        try {
+          this.networkName = networkName;
+        } catch (error) {
+          console.error(error);
+        }
       }
   },
   getters: {
@@ -248,6 +256,9 @@ export const useRegistrationStore = defineStore({
     },
     getSuccessResponse(): SuccessResponse[] {
         return this.successResponse;
+    },
+    getNetworkName(): string {
+        return this.networkName;
     }
   },
 

@@ -76,16 +76,15 @@ onMounted(async () => {
                   visibility: visible !important;
                   transition: opacity 0.3s;
                 },
-                
-                    div.bc_core_external select.selectpicker {
-                        display: inline-block !important;
-                    } 
+                div.bc_core_external select.selectpicker {
+                    display: inline-block !important;
+                } 
               `,
             },
             ],
             script: [
                 {
-                    src: 'https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js',
+                    src: 'https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js',
                     type: 'text/javascript',
                     defer: true,
                 },
@@ -95,7 +94,7 @@ onMounted(async () => {
                     defer: true,
                 },
                 {
-                    src: 'https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.8/handlebars.min.js',
+                    src: 'https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0/handlebars.min.js',
                     integrity: 'sha512-E1dSFxg+wsfJ4HKjutk/WaCzK7S2wv1POn1RRPGh8ZK+ag9l244Vqxji3r6wgz9YBf6+vhQEYJZpSjqWFPg9gg==',
                     crossorigin: 'anonymous',
                     referrerpolicy: 'no-referrer',
@@ -179,21 +178,20 @@ onMounted(async () => {
                 },],
                 script: [
                     {
-                        src: 'https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js',
+                        src: 'https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js',
                         type: 'text/javascript',
-                        defer: true,
+                        
                     },
                     {
                     src: 'https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/js/bootstrap.min.js',
                     type: 'text/javascript',
-                    defer: true,
+                    
                     },
                     {
-                        src: 'https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.8/handlebars.min.js',
-                        integrity: 'sha512-E1dSFxg+wsfJ4HKjutk/WaCzK7S2wv1POn1RRPGh8ZK+ag9l244Vqxji3r6wgz9YBf6+vhQEYJZpSjqWFPg9gg==',
+                        src: 'https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0/handlebars.min.js',
                         crossorigin: 'anonymous',
                         referrerpolicy: 'no-referrer',
-                        defer: true,
+                        
                     },
                     {
                         src: 'https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js',
@@ -258,12 +256,9 @@ onMounted(() => {
     const loadResources = async () => {
         try {
             await loadStylesheet('https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css');
-            await loadScript('https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js');
-            await loadScript('https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.8/handlebars.min.js');
-            await loadScript('https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/js/bootstrap.min.js');
-            await loadScript('https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js');      
-            // Now you can safely use selectpicker and Handlebars
-            await loadScript('https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.8/handlebars.min.js');
+            await loadScript('https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js');
+            await loadScript('https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js');
+            await loadScript('https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0/handlebars.min.js');
             $('.selectpicker').selectpicker('refresh');
         } catch (error) {
             console.error('Failed to load resources:', error);

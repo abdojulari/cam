@@ -15,6 +15,7 @@ export default defineNuxtConfig({
     '@cam/shared-components': resolve(__dirname, '../../shared-components/src'),
     '@cam/shared-services': resolve(__dirname, '../../shared-services/src'),
     '@shared': resolve(__dirname, '../../'),
+    '@components': resolve(__dirname, '../')
   },
   runtimeConfig:{
     public:{
@@ -24,6 +25,14 @@ export default defineNuxtConfig({
       gtagId: process?.env.NUXT_PUBLIC_GA_ID,
       CRE_QUICK_DUPLICATE_URL: process?.env.CRE_QUICK_DUPLICATE_URL,
       CRE_BACKCODE_LOOKUP: process?.env.CRE_BACKCODE_LOOKUP,
+      
+    },
+    private: {
+      tokenUrl: process.env.NUXT_CRE_TOKEN,
+      CLIENT_ID: process?.env.CLIENT_ID,
+      CLIENT_SECRET: process?.env.CLIENT_SECRET,
+      VITE_CRE_AUTH_URL: process?.env.VITE_CRE_AUTH_URL,
+      CRE_BARCODE_URL: process?.env.CRE_BARCODE_URL,
     },
   },
   $development: {
@@ -35,6 +44,11 @@ export default defineNuxtConfig({
         CANADA_POST_API_KEY: process?.env.CANADA_POST_API_KEY,
         CANADA_POST_API_FIND_URL: process?.env.CANADA_POST_API_FIND_URL,
         CANADA_POST_API_RETRIEVE_URL: process?.env.CANADA_POST_API_RETRIEVE_URL,
+        CRE_BARCODE_URL: process?.env.CRE_BARCODE_URL,
+        tokenUrl: process.env.NUXT_CRE_TOKEN,
+        CLIENT_ID: process?.env.CLIENT_ID,
+        CLIENT_SECRET: process?.env.CLIENT_SECRET,
+        VITE_CRE_AUTH_URL: process?.env.VITE_CRE_AUTH_URL,
       },
     },
   },
@@ -44,6 +58,11 @@ export default defineNuxtConfig({
         NODE_ENV: 'production',
         CRE_QUICK_DUPLICATE_URL: process?.env.CRE_QUICK_DUPLICATE_URL,
         CRE_BACKCODE_LOOKUP: process?.env.CRE_BACKCODE_LOOKUP,
+        CRE_BARCODE_URL: process?.env.CRE_BARCODE_URL,
+        tokenUrl: process.env.NUXT_CRE_TOKEN,
+        CLIENT_ID: process?.env.CLIENT_ID,
+        CLIENT_SECRET: process?.env.CLIENT_SECRET,
+        VITE_CRE_AUTH_URL: process?.env.VITE_CRE_AUTH_URL,
       },
     },
   },
@@ -55,7 +74,7 @@ export default defineNuxtConfig({
         config.plugins.push(vuetify({ autoImport: true }))
       })
     },
-    '@pinia/nuxt'
+    // '@pinia/nuxt'
   ],
   css: ['~/assets/css/styles.scss'],
   devServer: {

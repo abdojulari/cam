@@ -42,6 +42,6 @@ export default defineNuxtPlugin((app) => {
     },
   })
   const pinia = createPinia()
-  //app.vueApp.use(pinia)
+  app.vueApp.use(pinia)
   app.vueApp.use(vuetify)
 })

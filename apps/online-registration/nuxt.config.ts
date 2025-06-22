@@ -50,7 +50,7 @@ export default defineNuxtConfig({
         password: "",
         db: 0
       }
-    }
+    },
   },
   workspaceDir: '../../',
   build: {

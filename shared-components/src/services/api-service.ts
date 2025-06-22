@@ -134,6 +134,66 @@ export const apiService = {
         body: JSON.stringify(params),
       });
       return await response;
-    }
+    },
+    async getBarcode() {
+      const response = await $fetch('/api/get-barcode', {
+        method: 'GET',
+      });
+      return await response;
+    }, 
+    async postUserData(payload: any) { 
+      try {
+        const access_token = getCookie('access_token');
+        const formattedDateOfBirth = dateFormat(payload.dateOfBirth);
+        const response = await fetch('/api/registration', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'Authorization' :`Bearer ${access_token}`,
+                'X-CRE-Token' : import.meta.env.VITE_CUSTOM_SECURITY_TOKEN,
+            },
+            body: JSON.stringify({
+              firstname: payload?.firstName,
+              lastname: payload?.lastName,
+              middlename: payload?.middleName,
+              dateofbirth: formattedDateOfBirth,
+              address: payload?.address,
+              city: payload?.city,
+              province: payload?.province,
+              postalcode: payload?.postalcode,
+              phone: payload?.phoneNumber,
+              email: payload?.emailAddress,
+              profile: payload?.profile,
+              password: payload?.password,
+              confirmPassword: payload?.confirmPassword,
+              careof: payload?.careof,
+              category5: payload?.selectedEmailConsent ? payload?.selectedEmailConsent : 'ENOCONSENT',
+              preferredname: payload?.preferredname,
+              usepreferredname: payload?.usepreferredname,
+              emailconsent: payload?.emailconsent,
+              indigenousstatus: payload?.indigenousstatus,
+              address2: payload?.address2,
+              city2: payload?.city2,
+              province2: payload?.province2,
+              postalcode2: payload?.postalcode2,  
+              barcode: payload?.libraryCardBarcode,
+              category3: payload?.selectedIndigenousStatus,
+          }),
+          credentials: 'include',
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        return data;
+      } catch (error) {
+          console.error('Error submitting the form:', error);
+          throw error;
+      }
+  
+    },
 };
   

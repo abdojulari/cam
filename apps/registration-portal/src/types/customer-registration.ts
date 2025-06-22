@@ -6,6 +6,8 @@ export interface CareOfAddress {
     postalcode: string;
     firstname?: string;
     lastname?: string;
+    email?: string;
+    phone?: string;
     dateOfBirth?: Date;
 }
 
@@ -18,7 +20,28 @@ export interface Minors {
     firstName: string;
     lastName: string;
     middleName?: string;
+    preferredName?: string;
+    usePreferredName?: boolean;
     dateOfBirth: Date;
+    barcode?: string;
+    careOf?: string;
+    address?: string;
+    city?: string;
+    province?: string;
+    postalCode?: string;
+    emailAddress?: string;
+    phoneNumber?: string;
+    libraryCardBarcode?: string;
+    selectedEmailConsent?: string;
+    selectedIndigenousStatus?: string;
+    useSecondaryAddress?: boolean;
+    profileType?: string;
+    address2?: string;
+    city2?: string;
+    province2?: string;
+    postalCode2?: string;
+    password?: string;
+    confirmPassword?: string;
 }
 
 export interface MinorsList {
@@ -43,7 +66,7 @@ export interface CustomerRegistration {
         city2?: string;
         province2?: string;
         postalCode2?: string;
-        email: string;
+        emailAddress: string;
         phoneNumber: string;
         libraryCardBarcode: string;
         selectedEmailConsent: string;
@@ -53,6 +76,8 @@ export interface CustomerRegistration {
         profileType?: string;
         isClient?: boolean;
         usePreferredName?: boolean;
+        password: string;
+        confirmPassword: string;
     }
 }
 
