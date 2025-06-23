@@ -168,7 +168,7 @@
             <v-row>
               <v-col cols="12" md="6">
                 <v-text-field
-                  v-model="password"
+                  v-model="studentData.password"
                   label="Password"
                   type="password"
                   variant="outlined"
@@ -179,7 +179,7 @@
               </v-col>
               <v-col cols="12" md="6">
                 <v-text-field
-                  v-model="confirmPassword"
+                  v-model="studentData.confirmPassword"
                   label="Confirm Password"
                   type="password"
                   variant="outlined"
@@ -208,11 +208,16 @@
         </v-col>    
       </v-row>
     </v-container>
+    <SystemError :is-active="showSystemErrorDialog" @close="closeErrorDialog" />
 </template>
-
 
 <script setup>
 import { ref, onMounted } from 'vue';
+import { useRegistrationStore } from '../store/registration-store';
+import { useRouter } from 'vue-router';
+import SystemError from './SystemError.vue';
+const userRegistration = useRegistrationStore();
+const router = useRouter();
 
 // Define the data model
 const studentData = ref({
@@ -232,11 +237,19 @@ const studentData = ref({
     expirydate: '',
     id: '',
     country: '',
+    password: '',
+    confirmPassword: '',
 });
 
-const password = ref('');
-const confirmPassword = ref('');
+
 const isSubmitting = ref(false);
+const showSystemErrorDialog = ref(false);
+const closeErrorDialog = async () => {
+    showSystemErrorDialog.value = false;
+    await navigateTo('https://epl.bibliocommons.com/locations', {
+        external: true
+    })
+};
 
 const passwordRules = [
   v => !!v || 'Password is required',
@@ -245,7 +258,7 @@ const passwordRules = [
 
 const confirmPasswordRules = [
   v => !!v || 'Please confirm your password',
-  v => v === password.value || 'Passwords do not match',
+  v => v === studentData.value.password || 'Passwords do not match',
 ];
 
 onMounted(async () => {
@@ -257,7 +270,6 @@ onMounted(async () => {
         return;
     }
     const data = await $fetch(`/api/retrieve-lpass-record?id=${id}`);
-    console.log('Student Data:', data);
     studentData.value = data;
 });
 
@@ -297,7 +309,7 @@ function getStudentProfile(studentData) {
 
 // Handle form submission
 const submitForm = async () => {
-    if (password.value !== confirmPassword.value) {
+    if (studentData.value.password !== studentData.value.confirmPassword) {
         alert('Passwords do not match!');
         return;
     }
@@ -308,21 +320,27 @@ const submitForm = async () => {
             method: 'POST',
             body: {
                 ...studentData.value,
-                password: password.value,
+                password: studentData.value.password,
                 barcode: generateBarcode(),
                 profile: getStudentProfile(studentData),
                 country: 'Canada',
                 preferredname: false,
             },
         });
-        console.log('LPASS response', response);
         if (response) {
-            alert('Registration successful!');
-            // You can redirect the user or show a success message
+           // create a state management for the response then extract the barcode
+          userRegistration.setSuccessResponse({
+              name: response?.data?.firstName + ' ' + response?.data?.lastName,
+              barcode: response?.data?.barcode,
+          });               
+          // redirect to the success page
+          router.push('/success-page');
         } 
     } catch (error) {
         console.error('Error submitting form:', error);
-        alert('Something went wrong.');
+        showSystemErrorDialog.value = true;
+    } finally {
+        isSubmitting.value = false;
     }
 };
 

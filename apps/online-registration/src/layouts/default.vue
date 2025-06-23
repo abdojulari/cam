@@ -78,7 +78,7 @@ onMounted(async () => {
                 },
                 div.bc_core_external select.selectpicker {
                     display: inline-block !important;
-                } 
+                }
               `,
             },
             ],
@@ -269,3 +269,4 @@ onMounted(() => {
 });
 
 </script>
+
