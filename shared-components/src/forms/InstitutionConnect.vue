@@ -329,9 +329,10 @@ const submitForm = async () => {
         });
         if (response) {
            // create a state management for the response then extract the barcode
+          console.log('LPASS response', response);
           userRegistration.setSuccessResponse({
-              name: response?.data?.firstName + ' ' + response?.data?.lastName,
-              barcode: response?.data?.barcode,
+              name: response?.firstName + ' ' + response?.lastName,
+              barcode: response?.barcode,
           });               
           // redirect to the success page
           router.push('/success-page');
