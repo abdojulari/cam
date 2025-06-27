@@ -8,6 +8,7 @@ import {
 } from "h3";
 
 export default defineEventHandler(async (event: H3Event<EventHandlerRequest>) => {
+    // @ts-ignore
     const config  = await useRuntimeConfig(event);
     const payload = new URLSearchParams({
         client_id: config.private.CLIENT_ID,
@@ -17,6 +18,7 @@ export default defineEventHandler(async (event: H3Event<EventHandlerRequest>) =>
     
     const url = config.private.tokenUrl;
     try {
+        // @ts-ignore
         const response = await $fetch(url, {
             method: 'POST',
             headers: {

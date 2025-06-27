@@ -8,6 +8,7 @@ import {
 } from "h3";
 
 export default defineEventHandler(async (event: H3Event<EventHandlerRequest>) => {
+    // @ts-ignore
     const config = useRuntimeConfig(event);
     const url = `${config.private.CRE_DUPLICATE_URL}`;
     const token = `${config.private.VITE_CUSTOM_SECURITY_TOKEN}`;

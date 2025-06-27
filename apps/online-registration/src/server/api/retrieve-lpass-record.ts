@@ -1,11 +1,10 @@
-import { defineEventHandler, getCookie, getQuery, readBody, createError } from 'h3';
+import { defineEventHandler, getQuery, createError } from 'h3';
 
 export default defineEventHandler(async (event) => {
+    // @ts-ignore
     const studentRecords = useStorage('redis');
     try {
-        // Authentication check (optional, commented out in your example)
-        const access_token = getCookie(event, 'access_token');
-        const sanctum_token = getCookie(event, 'x-sanctum-token');
+       
         const { id } = getQuery(event);
 
         if (!id) {
@@ -13,13 +12,6 @@ export default defineEventHandler(async (event) => {
                 statusCode: 400,
                 statusMessage: 'Bad Request',
                 data: { error: 'Missing Student Record ID' },
-            });
-        }
-
-        if (!access_token || !sanctum_token) {
-            throw createError({
-                statusCode: 401,
-                statusMessage: 'Unauthorized',
             });
         }
 

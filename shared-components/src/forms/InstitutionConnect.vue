@@ -216,6 +216,8 @@ import { ref, onMounted } from 'vue';
 import { useRegistrationStore } from '../store/registration-store';
 import { useRouter } from 'vue-router';
 import SystemError from './SystemError.vue';
+import { apiService } from '../services/api-service';
+
 const userRegistration = useRegistrationStore();
 const router = useRouter();
 
@@ -262,6 +264,13 @@ const confirmPasswordRules = [
 ];
 
 onMounted(async () => {
+    await apiService.initializeToken().then((response) => {
+      return response;
+    });
+    await apiService.sanctumToken().then((response) => {
+      return response;
+    });
+        
     const url = new URL(window.location.href);
     const id = url.searchParams.get('id');
     // Check if the id is present in the URL

@@ -8,6 +8,7 @@ import {
 } from "h3";
 
 export default defineEventHandler(async (event: H3Event<EventHandlerRequest>) => {
+    // @ts-ignore
     const config = useRuntimeConfig(event);
     const url = `${config.private.LPASS_URL}`;
     

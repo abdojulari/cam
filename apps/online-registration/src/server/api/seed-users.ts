@@ -11,6 +11,7 @@ async function seedUsers() {
   }
 
   const usersArray = JSON.parse(users);
+  // @ts-ignore
   const storage = useStorage('redis');
 
   for (const user of usersArray) {

@@ -6,14 +6,16 @@ import {
 } from "h3";
 
 export default defineEventHandler(async (event: H3Event<EventHandlerRequest>) => {
-    const config = useRuntimeConfig(event).private;
-    const url = config.VITE_CRE_AUTH_URL;
+    // @ts-ignore
+    const config = useRuntimeConfig(event);
+    const url = config.private.VITE_CRE_AUTH_URL;
     const body = JSON.stringify({
-        email: config.VITE_CRE_LOGIN,
-        password: config.VITE_CRE_PASSWORD,
+        email: config.private.VITE_CRE_LOGIN,
+        password: config.private.VITE_CRE_PASSWORD,
     });
 
     try {
+        // @ts-ignore
         const response = await $fetch(url, {
             method: 'POST',
             headers: {
@@ -31,6 +33,7 @@ export default defineEventHandler(async (event: H3Event<EventHandlerRequest>) =>
        
         return response.sanctum_token;
     } catch (error) {
+        console.log(error);
         return { error: 'Unable to verify the authenticity!' }; 
     }
 });

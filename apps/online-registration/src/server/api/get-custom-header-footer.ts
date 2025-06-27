@@ -13,6 +13,7 @@ export default defineEventHandler(async (event: H3Event<EventHandlerRequest>) =>
     };
 
     try {
+        // @ts-ignore
         const response = await $fetch(url, {
             method: 'GET',
             headers

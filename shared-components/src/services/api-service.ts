@@ -96,7 +96,7 @@ export const apiService = {
         const expires = new Date();
         expires.setHours(expires.getHours() + 1);
         const data = await response as { sanctum_token: string };
-        
+
         if (data) {
             document.cookie = `x-sanctum-token=${ 
               import.meta.env.DEV ? data : data.sanctum_token}; path=/; expires=${expires.toUTCString()};`;

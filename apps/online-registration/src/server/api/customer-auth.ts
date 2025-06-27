@@ -7,6 +7,7 @@ import {
 } from "h3";
 
 export default defineEventHandler(async (event: H3Event<EventHandlerRequest>) => {
+    // @ts-ignore
     const config = useRuntimeConfig(event).private;
     const url = `${config.CRE_CUSTOMER_AUTH_URL}`;
     const access_token = getCookie(event, 'access_token');
@@ -14,6 +15,7 @@ export default defineEventHandler(async (event: H3Event<EventHandlerRequest>) =>
     const body  = await readBody(event);
    
     try {
+        // @ts-ignore
         const response = await $fetch(url, {
             method: 'POST',
             headers: {

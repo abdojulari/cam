@@ -5,8 +5,10 @@ import * as bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
 export default defineEventHandler(async (event) => {
+    // @ts-ignore
   const config = useRuntimeConfig(event);
   const JWT_SECRET = config.private.JWT_SECRET;
+  // @ts-ignore
   const users = useStorage('redis');
   try {
     const body = await readBody(event);
