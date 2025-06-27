@@ -83,7 +83,9 @@ export default defineNuxtConfig({
       CRE_CUSTOMER_AUTH_URL: process?.env.CRE_CUSTOMER_AUTH_URL,
       CRE_STATISTICS_URL: process?.env.CRE_STATISTICS_URL,
       LPASS_URL: process?.env.LPASS_URL,
-    }
+      JWT_SECRET: process.env.JWT_SECRET,
+      userSeed: process.env.USER_SEED,
+    },
   },
   $development: {
     runtimeConfig: {

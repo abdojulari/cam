@@ -14,5 +14,9 @@ export default defineNuxtConfig({
   alias: {
     '@cam/shared-components': './shared-components/src',
     '@cam/shared-services': './shared-services/src'
+  },
+  runtimeConfig: {
+    JWT_SECRET: process.env.JWT_SECRET,
+    userSeed: process.env.USER_SEED,
   }
 })

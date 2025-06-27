@@ -162,8 +162,21 @@
             </v-col>
             
         </v-row>
+        <v-row v-if="profile === 'Adult'">
+            <v-col cols="12" sm="6" md="4">
+                <v-checkbox 
+                    label="Adding a child"
+                    v-model="addingChild"
+                    hint="Create a new account for a child along with the parent's account"
+                    persistent-hint
+                    density="compact"
+                    hide-details="auto"
+                    @click="addingChild = !addingChild"
+                />
+            </v-col>
+        </v-row>
         <!-- Add minor button-->
-        <v-row class="mb-5" v-if="profile === 'Child'">
+        <v-row class="mb-5" v-if="profile === 'Child' || addingChild">
             <v-col cols="12" md="4">
                 <v-btn 
                     variant="flat" 
@@ -544,7 +557,7 @@ const province2 = ref('');
 const postalCode2 = ref('');
 const emailAddress= ref('');
 const phoneNumber = ref('');
-
+const addingChild = ref(false);
 const libraryCardBarcode = ref('');
 const dialog = ref(false);
 const customers = ref([]);
@@ -598,6 +611,13 @@ const router = useRouter();
 const form = ref(null);
 
 const addMinor = () => {
+    // check if the child is less than 18 years old
+    const today = new Date();
+    const dob = new Date(dateOfBirth.value);
+    const age = today.getFullYear() - dob.getFullYear();
+    if (age < 18) {
+        return;
+    }
     minors.value.push({ 
         id: minors.value.length + 1, 
         firstName: firstName.value , 
@@ -626,6 +646,7 @@ const resetMinorForm = () => {
         deleteMinor(lastMinor.id);
     }
 }
+
 
 onMounted(() => {
   apiService.initializeToken();
