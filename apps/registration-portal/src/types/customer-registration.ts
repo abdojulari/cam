@@ -42,6 +42,7 @@ export interface Minors {
     postalCode2?: string;
     password?: string;
     confirmPassword?: string;
+    library?: string;
 }
 
 export interface MinorsList {
@@ -78,6 +79,7 @@ export interface CustomerRegistration {
         usePreferredName?: boolean;
         password: string;
         confirmPassword: string;
+        library?: string;
     }
 }
 

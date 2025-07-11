@@ -20,7 +20,7 @@
         <!-- Add New Adult Customer -->
         <v-row>
             <v-col cols="12" sm="12" md="12">
-                <h1 class="text-h5 font-weight-bold">Add New {{ profile }} Customer</h1>
+                <h1 class="text-h5 font-weight-bold">Add New {{ profileType }} Customer</h1>
             </v-col>
         </v-row>
         <!-- Profile and Home Branch -->
@@ -28,7 +28,7 @@
             <v-col cols="12" sm="6" md="4">
                 <v-combobox 
                     label="Profile" 
-                    :items="profileOptions" 
+                    :items="profileType === 'Adult' ? profileOptions.Adult : profileOptions.Child" 
                     v-model="profile"
                     density="compact"
                     hide-details="auto"
@@ -51,7 +51,7 @@
             </v-col>
         </v-row>
         <!-- School -->
-        <v-row v-if="profile === 'Child'">
+        <v-row v-if="profileType === 'Child'">
             <v-col cols="12" sm="6" md="4">
                 <v-combobox 
                     label="School" 
@@ -128,8 +128,8 @@
                 <v-date-input
                     label="Date of Birth" 
                     v-model="dateOfBirth" 
-                    :max="profile === 'Adult' ? maxChildDate : undefined"
-                    :min="profile === 'Child' ? minAdultDate : undefined"
+                    :max=" profileNames.Adult.includes(profile) ? maxChildDate : undefined"
+                    :min="  profileNames.Child.includes(profile) ? minAdultDate : undefined"
                     prepend-icon=""
                     prepend-inner-icon="$calendar"
                     hide-details="auto"
@@ -162,21 +162,8 @@
             </v-col>
             
         </v-row>
-        <v-row v-if="profile === 'Adult'">
-            <v-col cols="12" sm="6" md="4">
-                <v-checkbox 
-                    label="Adding a child"
-                    v-model="addingChild"
-                    hint="Create a new account for a child along with the parent's account"
-                    persistent-hint
-                    density="compact"
-                    hide-details="auto"
-                    @click="addingChild = !addingChild"
-                />
-            </v-col>
-        </v-row>
         <!-- Add minor button-->
-        <v-row class="mb-5" v-if="profile === 'Child' || addingChild">
+        <v-row class="mb-5" v-if="profileNames.Child.includes(profile)">
             <v-col cols="12" md="4">
                 <v-btn 
                     variant="flat" 
@@ -202,7 +189,7 @@
                 />
             </v-col>
         </v-row>
-        <ChildrenList v-if="profile === 'Child'" :minors="minors" :deleteMinor="deleteMinor" :generateBarcode="generateBarcode" />
+        <ChildrenList v-if="profileNames.Child.includes(profile)" :minors="minors" :deleteMinor="deleteMinor" :generateBarcode="generateBarcode" />
         <!-- Email/Phone Number -->
         <v-row>
             <v-col cols="12" sm="6" md="4">
@@ -500,8 +487,7 @@
             </v-col>
         </v-row>
         <!-- Submit Button   -->
-        <v-row class="mt-6">
-            
+        <v-row class="mt-6">  
             <v-col cols="12" sm="6" md="4">
                 <v-btn 
                     color="primary" 
@@ -511,7 +497,16 @@
                     @click="handleSubmit"
                 />
             </v-col>
-           
+        </v-row>
+        <v-row>
+            <v-col cols="12" sm="12" md="12">
+                <div v-if="successData.length > 0" class="mb-4">
+                   <SuccessAlert :data="successData" /> 
+                </div>
+                <div v-if="failedData.length > 0" class="mb-4">
+                    <FailureAlert :failedData="failedData" />
+                </div>
+            </v-col>
         </v-row>
     </v-form>
 </template>
@@ -533,12 +528,18 @@ import { CareOfAddresses, CustomerRegistration, Minors } from '../../types/custo
 import { ipRanges } from '../../constants/ipRangeMatching';
 import { useRegistrationStore } from '@cam/shared-components/store/registration-store';
 import { vMaska } from 'maska/vue';
+import { profileNames } from '../../constants/profile';
+import SuccessAlert from '../notification/SuccessAlert.vue';
+import FailureAlert from '../notification/FailureAlert.vue';
 
 const props = defineProps<{ profileType?: string, isClient?: boolean, networkName?: string }>();
 const emit = defineEmits<{
   (e: 'submit', payload: CustomerRegistration): void
 }>();
 const registrationStore = useRegistrationStore();
+const successData = registrationStore.getSuccessResponse;
+const failedData = registrationStore.getFailedResponse;
+
 const firstName = ref('');
 const lastName = ref('');
 const middleName = ref('');
@@ -557,21 +558,21 @@ const province2 = ref('');
 const postalCode2 = ref('');
 const emailAddress= ref('');
 const phoneNumber = ref('');
-const addingChild = ref(false);
 const libraryCardBarcode = ref('');
 const dialog = ref(false);
 const customers = ref([]);
-const profileOptions = ref(['Adult', 'Child']);
+const profileOptions = ref(profileNames);
 const cityOptions = ref([
     { value: 'Edmonton', text: 'Edmonton' },
     { value: 'Epoch', text: 'Epoch' },
 ])
 const profile = ref('');
+const profileType = ref('');
 const selectedCustomer = ref('');
 const emailConsent = ref([
-    { value: 'Consent Not Given', text: 'Consent Not Given' },
-    { value: 'Consent Withheld', text: 'Consent Withheld' },
-    { value: 'Consent Given', text: 'Consent Given' },
+    { value: 'ECONSENT', text: 'ECONSENT' },
+    { value: 'EMAILCONV', text: 'EMAILCONV' },
+    { value: 'ENOCONSENT', text: 'ENOCONSENT' },
 ]);
 const title = ref([ 'Mr.', 'Mrs.', 'Ms.', 'Dr.', 'Prof.', 'Rev.', 'Hon.']);
 const selectedTitle = ref(null);
@@ -611,11 +612,11 @@ const router = useRouter();
 const form = ref(null);
 
 const addMinor = () => {
-    // check if the child is less than 18 years old
+    // check if the child is older than 18 years old
     const today = new Date();
     const dob = new Date(dateOfBirth.value);
     const age = today.getFullYear() - dob.getFullYear();
-    if (age < 18) {
+    if (age > 18) {
         return;
     }
     minors.value.push({ 
@@ -650,12 +651,13 @@ const resetMinorForm = () => {
 
 onMounted(() => {
   apiService.initializeToken();
+  apiService.sanctumToken();
    
   const customersList = ipRanges.map((item) => item.name);
   customers.value = customersList.sort();
   
   if (props.profileType) {
-    profile.value = props.profileType;
+    profileType.value = props.profileType;
   }
   if (props.isClient) {
     isClient.value = true;
@@ -816,9 +818,9 @@ watch(
   ) => {
     // --- Profile logic ---
     if (newProfile !== oldProfile) {
-      if (newProfile === 'Adult') {
+      if (profileNames.Adult.includes(newProfile)) {
         router.push('/adult');
-      } else if (newProfile === 'Child') {
+      } else if (profileNames.Child.includes(newProfile)) {
         router.push('/child');
       }
     }
@@ -861,7 +863,7 @@ watch(libraryCardBarcode, (newValue, oldValue) => {
     // Check if the new value is not empty and has changed
     if (newValue && newValue !== oldValue) {
         // each child account should have careof, address, city, province, postal code, email address, phone number, and barcode
-        if (profile.value === 'Child') {
+        if (profileType.value === 'Child') {
             if (minors.value.length > 0) {
                 minors.value.forEach((minor) => {
                     minor.careOf = careOf.value;
@@ -902,6 +904,7 @@ const handleSubmit = async () => {
           firstName: firstName.value,
           lastName: lastName.value,
           middleName: middleName.value,
+          library: selectedCustomer.value,
           preferredName: preferredName.value,
           usePreferredName: usePreferredName.value,
           dateOfBirth: dateOfBirth.value.toISOString().split('T')[0] as unknown as Date,
@@ -934,7 +937,7 @@ const handleSubmit = async () => {
 const password = computed(() => {
     if (!dateOfBirth?.value) return '';
 
-    if (profile.value === 'Child') {
+    if (profileType.value === 'Child') {
         return dateOfBirth?.value?.getFullYear().toString();
     }
     

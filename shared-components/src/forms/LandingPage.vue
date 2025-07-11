@@ -33,6 +33,7 @@
               }" 
               v-if="content.introSection.links.getCard" 
               class="mt-5 text-center text-decoration-none link py-2 rounded border-sm border-primary border-opacity-100"
+              @click="handleClick(content.introSection.buttons.getCard, content.introSection.intro.heading)"
             >
               {{ content.introSection.buttons.getCard }}
             </a>
@@ -91,6 +92,7 @@
                 'bg-primary text-white': !isHovering 
               }" 
               class="mt-5 text-center text-decoration-none link py-2 px-5 rounded border-sm border-primary border-opacity-100"
+              @click="handleClick(content.access.buttons.signUpButton, content.access.heading)"
             >
               {{ content.access.buttons.signUpButton }}
             </a>
@@ -117,6 +119,7 @@
         <p>{{ content.whyGetEPLCard.paragraph }}</p>
       </v-col>
       <v-col v-for="(item, index) in [content.whyGetEPLCard.card1, content.whyGetEPLCard.card2, content.whyGetEPLCard.card3, content.whyGetEPLCard.card4]" :key="index" cols="12" md="3">
+        <!-- @ts-ignore -->
         <v-card variant="outlined" class="mx-auto" :height="$vuetify.display.xs ? 635 : 510" >
           <a :href="item.link" target="_blank" rel="noopener noreferrer">
             <v-img
@@ -155,6 +158,7 @@
             :class="{ 'bg-white text-light-blue-darken-4 border-sm border-primary border-opacity-100': isHovering, 'text-white': isHovering }" 
             rel="noopener noreferrer" 
             class="text-decoration-none link lh-lg bg-primary py-2 px-5 rounded mt-5 d-inline-block"
+            @click="handleClick(content.eplSection.needCard.buttonText,content.eplSection.needCard.title)"
           >
             {{ content.eplSection.needCard.buttonText }}
           </a>
@@ -207,8 +211,17 @@
 </template>
 
 <script setup lang="ts">
+import { useUtmParams } from '../composables/useUtmParams';
+import { useReproducibleData } from '../composables/reproducible-data';
+import { apiService } from '../services/api-service';
+import { onMounted } from 'vue';
+import { useHead } from 'nuxt/app';
 
-defineProps({
+
+const utmParams = useUtmParams();
+// @ts-ignore
+const { gtag } = useGtag()
+const props = defineProps({
   content: {
     type: Object,
     required: true
@@ -219,6 +232,7 @@ defineProps({
 useHead({
   script: [
     {
+      type: 'text/javascript',
       innerHTML: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
       new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
       j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
@@ -226,7 +240,22 @@ useHead({
       })(window,document,'script','dataLayer','GTM-WQQQLN2V');`,
       tagPosition: 'head',
       tagPriority: 'high'
-    }
+    },
+    {
+      type: 'text/javascript',
+      innerHTML: `!function(f,b,e,v,n,t,s) 
+      {if(f.fbq)return;n=f.fbq=function(){n.callMethod? 
+      n.callMethod.apply(n,arguments):n.queue.push(arguments)}; 
+      if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0'; 
+      n.queue=[];t=b.createElement(e);t.async=!0; 
+      t.src=v;s=b.getElementsByTagName(e)[0]; 
+      s.parentNode.insertBefore(t,s)}(window,document,'script', 
+      'https://connect.facebook.net/en_US/fbevents.js'); 
+      fbq('init', '330295490736920');  
+      fbq('track', 'PageView');`,
+      tagPosition: 'head',
+      tagPriority: 'high'
+    },
   ],
   // Add the noscript iframe as a custom head tag
   // This will be added to the body via Nuxt's handling
@@ -234,10 +263,61 @@ useHead({
     {
       innerHTML: `<iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WQQQLN2V"
       height="0" width="0" style="display:none;visibility:hidden"></iframe>`,
+      tag: 'noscript',
+      tagPosition: 'bodyOpen'
+    },
+    {
+      innerHTML: `<img height="1" width="1"
+      src="https://www.facebook.com/tr?id=330295490736920&ev=PageView&noscript=1"/>`,
+      tag: 'noscript',
+      tagPriority: 'high',
       tagPosition: 'bodyOpen'
     }
   ]
 });
+
+onMounted(async () => {
+  const reproducibleData = useReproducibleData({
+    eventCategory: props.content.pageName,
+    eventLabel: 'Landing Page',
+    screenName: props.content.pageName,
+    registrationType: 'Campaign Acquisition',
+    step: 0,
+    ...utmParams
+  });
+  await apiService.reproducibleData(reproducibleData);
+  gtag('event', 'page_view', {
+    app_name: 'EPL | Online Registration | Landing Page',
+    method: 'Campaign Acquisition',
+    screen_name: props.content.pageName,
+    event_category: 'Landing Page',
+    event_label: 'Landing Page',
+    registration_type: 'Campaign Acquisition',
+    ...utmParams
+  });
+});
+
+const handleClick = async (buttonName: string, title: string) => {
+  const reproducibleData = useReproducibleData({
+    eventCategory: title,
+    eventLabel: `${buttonName} button clicked`,
+    screenName: props.content.pageName,
+    registrationType: '',
+    step: 0,
+    ...utmParams
+  });
+  await apiService.reproducibleData(reproducibleData);
+  gtag('event', 'button_click', {
+    app_name: 'EPL | Online Registration | Landing Page',
+    method: 'Campaign Acquisition',
+    screen_name: props.content.pageName,
+    event_category: 'Landing Page',
+    event_label: `${buttonName} button clicked`,
+    registration_type: 'Campaign Acquisition',
+    ...utmParams
+  });
+}
+
 </script>
 
 <style scoped>

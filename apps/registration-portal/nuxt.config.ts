@@ -33,6 +33,10 @@ export default defineNuxtConfig({
       CLIENT_SECRET: process?.env.CLIENT_SECRET,
       VITE_CRE_AUTH_URL: process?.env.VITE_CRE_AUTH_URL,
       CRE_BARCODE_URL: process?.env.CRE_BARCODE_URL,
+      CRE_DUPLICATE_URL: process?.env.CRE_DUPLICATE_URL,
+      VITE_CUSTOM_SECURITY_TOKEN: process?.env.VITE_CUSTOM_SECURITY_TOKEN,
+      VITE_CRE_LOGIN: process?.env.VITE_CRE_LOGIN,
+      VITE_CRE_PASSWORD: process?.env.VITE_CRE_PASSWORD,
     },
   },
   $development: {

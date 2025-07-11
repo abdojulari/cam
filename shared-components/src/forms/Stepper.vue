@@ -246,6 +246,7 @@
                 registrationType: 'EPL_SELF',
                 dob: (formData.value.dateofBirth).toISOString().split('T')[0],
                 step: step.value,
+                ...utmParams
             });
             await apiService.reproducibleData(reproducibleData);
            
@@ -274,6 +275,7 @@
                 registrationType: 'EPL_SELF',
                 postalCode: formData.value.postalCode,
                 step: step.value,
+                ...utmParams
             });
             await apiService.reproducibleData(reproducibleData);
             
@@ -434,6 +436,7 @@
                         screenName: 'Success Page',
                         registrationType: selectedRadio.value === 'Adult' ? 'EPL_SELF' : 'EPL_SELFJ',
                         step: step.value,
+                        ...utmParams
                     });
                     await apiService.reproducibleData(reproducibleData);
                     // Proceed to next page if no errors

@@ -30,7 +30,8 @@ export const apiService = {
               password: payload.data.password,
               confirmPassword: payload.data.confirmPassword,
               careof: payload.data.careof,
-              category5: payload.data.consent ? payload.data.consent : 'ENOCONSENT'
+              category5: payload.data.consent ? payload.data.consent : 'ENOCONSENT',
+              source: 'OLR'
           }),
           credentials: 'include',
         });
@@ -158,36 +159,38 @@ export const apiService = {
               lastname: payload?.lastName,
               middlename: payload?.middleName,
               dateofbirth: formattedDateOfBirth,
+              library: payload?.library,
               address: payload?.address,
               city: payload?.city,
               province: payload?.province,
-              postalcode: payload?.postalcode,
+              postalcode: payload?.postalCode,
               phone: payload?.phoneNumber,
               email: payload?.emailAddress,
-              profile: payload?.profile,
+              profile: payload?.profileType,
               password: payload?.password,
               confirmPassword: payload?.confirmPassword,
-              careof: payload?.careof,
+              careof: payload?.careOf,
               category5: payload?.selectedEmailConsent ? payload?.selectedEmailConsent : 'ENOCONSENT',
-              preferredname: payload?.preferredname,
-              usepreferredname: payload?.usepreferredname,
-              emailconsent: payload?.emailconsent,
-              indigenousstatus: payload?.indigenousstatus,
+              preferredname: payload?.preferredName,
+              usepreferredname: payload?.usePreferredName,
+              emailconsent: payload?.selectedEmailConsent,
+              indigenousstatus: payload?.selectedIndigenousStatus,
               address2: payload?.address2,
               city2: payload?.city2,
               province2: payload?.province2,
-              postalcode2: payload?.postalcode2,  
+              postalcode2: payload?.postalCode2,  
               barcode: payload?.libraryCardBarcode,
-              category3: payload?.selectedIndigenousStatus,
+              category1: payload?.selectedIndigenousStatus ? 'ONRES_SET' : '',
+              source: 'CRP'
           }),
           credentials: 'include',
         });
-
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
 
         const data = await response.json();
+        
         return data;
       } catch (error) {
           console.error('Error submitting the form:', error);

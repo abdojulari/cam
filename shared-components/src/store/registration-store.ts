@@ -44,9 +44,14 @@ interface Password {
 }
 interface SuccessResponse {
     barcode: string;
-    name: string;
-    
+    name: string; 
 }
+interface FailedResponse {
+    barcode?: string;
+    name?: string; 
+    message?: string;
+}
+
 export const useRegistrationStore = defineStore({
   id: 'registration',
   state: () => ({
@@ -66,6 +71,7 @@ export const useRegistrationStore = defineStore({
     linkState: false,
     buttonClickState: false,
     successResponse: [] as SuccessResponse[],
+    failedResponse: [] as FailedResponse[],
     networkName: '',
   }),
   actions: {
@@ -206,6 +212,13 @@ export const useRegistrationStore = defineStore({
         } catch (error) {
           console.error(error);
         }
+      },
+      async setFailedResponse(failedResponse: FailedResponse) {
+        try {
+          this.failedResponse.push(failedResponse);
+        } catch (error) {
+          console.error(error);
+        }
       }
   },
   getters: {
@@ -259,6 +272,9 @@ export const useRegistrationStore = defineStore({
     },
     getNetworkName(): string {
         return this.networkName;
+    },
+    getFailedResponse(): FailedResponse[] {
+        return this.failedResponse;
     }
   },
 

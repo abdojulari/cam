@@ -538,6 +538,7 @@
             postalCode: formData.value.adultPostalCode,
             dob: formData.value.minorDateOfBirth,
             step: 2,
+            ...utmParams
         });
         await apiService.reproducibleData(reproducibleData);
         sendEventToGA('Save Changes');
@@ -592,6 +593,7 @@
           postalCode: formData.value.adultPostalCode,
           dob: formData.value.minorDateOfBirth,
           step: 5,
+          ...utmParams
       });
       await apiService.reproducibleData(reproducibleData);
       sendEventToGA('Save Changes');
@@ -672,6 +674,7 @@
           postalCode: formData.value.adultPostalCode,
           dob: formData.value.minorDateOfBirth,
           step: 2,
+          ...utmParams
       });
       await apiService.reproducibleData(reproducibleData);
       sendEventToGA('Save Changes');

@@ -20,7 +20,7 @@ export function useUtmParams() {
         utmParams[key] = value
       }
     })
-    
+   
     return utmParams
   }
   
