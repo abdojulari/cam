@@ -32,6 +32,11 @@ const onSubmit = async(payload: any) => {
         // after success, clear the form
         clearForm();
       }
+      else if (response?.error === "Posting to ILS failed 409") {
+        userRegistration.setFailedResponse({
+          message: response?.message,
+        });
+      }
     } catch (error) {
       if( error.message === 'HTTP error! status: 409') {
         userRegistration.setFailedResponse({
