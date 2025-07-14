@@ -524,7 +524,7 @@ import { apiService } from '@cam/shared-components/services/api-service';
 import ChildrenList from '../notification/ChildrenList.vue';
 import { useRouter } from 'vue-router';
 import { useAddressLookup } from '@cam/shared-components/composables/useAddressLookup';
-import { CareOfAddresses, CustomerRegistration, Minors } from '../../types/customer-registration';
+import { CustomerRegistration, Minors } from '../../types/customer-registration';
 import { ipRanges } from '../../constants/ipRangeMatching';
 import { useRegistrationStore } from '@cam/shared-components/store/registration-store';
 import { vMaska } from 'maska/vue';
@@ -535,6 +535,7 @@ import FailureAlert from '../notification/FailureAlert.vue';
 const props = defineProps<{ profileType?: string, isClient?: boolean, networkName?: string }>();
 const emit = defineEmits<{
   (e: 'submit', payload: CustomerRegistration): void
+  (e: 'clearForm'): void
 }>();
 const registrationStore = useRegistrationStore();
 const successData = registrationStore.getSuccessResponse;
@@ -1018,6 +1019,10 @@ const onPostalCodeInput = (event) => {
       }
       event.target.value = value;
 };
+
+const clearForm = () => {
+  form.value.reset();
+}
 </script>
 
 <style scoped>

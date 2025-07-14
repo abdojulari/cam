@@ -5,6 +5,7 @@
             title="Success"
             type="success"
             @click="closeAlert(index)"
+            class="text-body-2"
         >
             <span class=text-body-2><strong>{{ entry?.name }}</strong>: {{ entry?.barcode }}</span>
         </v-alert>

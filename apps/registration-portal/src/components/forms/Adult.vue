@@ -3,6 +3,7 @@
         profileType="Adult" 
         @submit="onSubmit" 
         :isClient="isClient"
+        @clearForm="clearForm"
     />
 </template>
 <script setup lang="ts">
@@ -14,16 +15,22 @@ import { useRegistrationStore } from '@cam/shared-components/store/registration-
 const userRegistration = useRegistrationStore();
 const isClient = ref(true);
 
+const clearForm = () => {
+  console.log('clearForm');
+}
+
 const onSubmit = async(payload: any) => {
   // Handle adult form submission here  
     try {
       const response = await apiService.postUserData(payload.form);
       console.log('response', response);
-      if (response.status === 200) {
+      if (response?.message === "Record added successfully.") {
         userRegistration.setSuccessResponse({
             name: response?.data?.firstName + ' ' + response?.data?.lastName,
             barcode: response?.data?.barcode,
         });
+        // after success, clear the form
+        clearForm();
       }
     } catch (error) {
       if( error.message === 'HTTP error! status: 409') {
