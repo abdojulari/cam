@@ -34,7 +34,7 @@ const onSubmit = async(payload: any) => {
       }
       else if (response?.error === "Posting to ILS failed 409") {
         userRegistration.setFailedResponse({
-          message: response?.message,
+          message: response?.error,
         });
       }
     } catch (error) {
