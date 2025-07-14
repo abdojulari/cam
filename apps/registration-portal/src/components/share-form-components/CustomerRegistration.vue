@@ -74,7 +74,7 @@
         </v-row> 
 
         <!-- Title/First Name -->
-        <v-row>
+        <v-row v-if="profileType === 'Adult'">
             <v-col cols="12" sm="6" md="4">
                 <v-combobox 
                     label="Title" 
@@ -163,7 +163,7 @@
             
         </v-row>
         <!-- Add minor button-->
-        <v-row class="mb-5" v-if="profileNames.Child.includes(profile)">
+        <v-row class="mb-5" v-if="profileType === 'Child'">
             <v-col cols="12" md="4">
                 <v-btn 
                     variant="flat" 
@@ -189,7 +189,7 @@
                 />
             </v-col>
         </v-row>
-        <ChildrenList v-if="profileNames.Child.includes(profile)" :minors="minors" :deleteMinor="deleteMinor" :generateBarcode="generateBarcode" />
+        <ChildrenList v-if="profileType === 'Child' && minors.length > 0" :minors="minors" :deleteMinor="deleteMinor" :generateBarcode="generateBarcode" />
         <!-- Email/Phone Number -->
         <v-row>
             <v-col cols="12" sm="6" md="4">
@@ -580,9 +580,10 @@ const selectedTitle = ref(null);
 const selectedEmailConsent = ref(null);
 
 const schools = ref([
-    { value: 'Elementary', text: 'Elementary' },
-    { value: 'Secondary', text: 'Secondary' },
-    { value: 'High School', text: 'High School' },
+    { value: 'EPSB', text: 'EPSB' },
+    { value: 'Catholic', text: 'Catholic' },
+    { value: 'CSCN', text: 'CSCN' },
+    { value: 'Other', text: 'Other' },
 ]);
 const provinceOptions = ref([
     { value: 'AB', text: 'Alberta' },
@@ -755,8 +756,8 @@ const handleAsyncWatch = async (
                 city.value = item.city || '';
                 province.value = item.province || '';
                 postalCode.value = item.postalcode || '';
-                emailAddress.value = item.email || '';
-                phoneNumber.value = item.phone || '';
+                emailAddress.value = emailAddress.value? emailAddress.value : item.email || '';
+                phoneNumber.value = phoneNumber.value? phoneNumber.value : item.phone || '';
             }
             });
             barcodeError.value = false;

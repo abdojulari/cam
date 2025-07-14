@@ -19,11 +19,16 @@ const onSubmit = async (payload: any) => {
       payload.form.minors.forEach(async (minor: any) => {
         const response = await apiService.postUserData(minor);
         try {
-          if (response.status === 200) {
+          if (response?.message === "Record added successfully.") {
             console.log('Child form submitted successfully', response);
             userRegistration.setSuccessResponse({
               name: response?.data?.firstName + ' ' + response?.data?.lastName,
               barcode: response?.data?.barcode,
+            });
+          }
+          else if (response?.error === "Posting to ILS failed 409") {
+            userRegistration.setFailedResponse({
+              message: 'User already exists! Fuzzy matching is enabled.',
             });
           }
         } catch (error) {
@@ -42,11 +47,16 @@ const onSubmit = async (payload: any) => {
     }
     const response = await apiService.postUserData(payload.form);
     try {
-      if (response.status === 200) {
+      if (response?.message === "Record added successfully.") {
         console.log('Child form submitted successfully', response);
         userRegistration.setSuccessResponse({
           name: response?.data?.firstName + ' ' + response?.data?.lastName,
           barcode: response?.data?.barcode,
+        });
+      }
+      else if (response?.error === "Posting to ILS failed 409") {
+        userRegistration.setFailedResponse({
+          message: 'User already exists! Fuzzy matching is enabled.',
         });
       }
     } catch (error) {

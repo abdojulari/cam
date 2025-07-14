@@ -36,6 +36,8 @@
                                     color="primary"
                                     hide-details="auto"
                                     class="small-text"
+                                    required
+                                    :rules="[v => !!v || 'Barcode is required']"
                                 />
                                 <v-btn 
                                     color="primary"
@@ -81,6 +83,7 @@ const props = defineProps({
         required: true
     }
 })
+const isChildBarcodeEmpty = ref(false);
 const headers = [
     { title: 'First Name', key: 'firstName' },
     { title: 'Last Name', key: 'lastName' },
