@@ -22,7 +22,7 @@ export interface Minors {
     middleName?: string;
     preferredName?: string;
     usePreferredName?: boolean;
-    dateOfBirth: Date;
+    dateOfBirth: string;
     barcode?: string;
     careOf?: string;
     address?: string;

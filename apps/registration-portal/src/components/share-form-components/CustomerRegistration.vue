@@ -190,6 +190,16 @@
         </v-row>
         <!-- Add minor button-->
         <v-row class="mb-5" v-if="profileType === 'Child'">
+            <v-col cols="12">
+                <div class="bg-gray w-66 pa-2 d-flex border-s-lg">
+                    <v-icon color="orange">mdi-information</v-icon>
+                    <p class="text-body-2 ma-2 italic font-weight-bold ">
+                    If you are registering more than one child, for example two children, the first child's information will be added to the table when you click "Add another child." 
+                    For the second child, you do not need to click the button again. There is always a child form available for you to fill out.
+                    </p>
+                </div>
+                
+            </v-col>
             <v-col cols="12" md="4">
                 <v-btn 
                     variant="flat" 
@@ -654,8 +664,15 @@ const addMinor = () => {
         firstName: firstName.value , 
         lastName: lastName.value, 
         middleName: middleName.value,
-        dateOfBirth: dateOfBirth.value.toISOString().split('T')[0] as unknown as Date,
-        libraryCardBarcode: libraryCardBarcode.value
+        dateOfBirth: dateOfBirth.value
+          ? (dateOfBirth.value instanceof Date
+              ? dateOfBirth.value.toISOString().split('T')[0]
+              : new Date(dateOfBirth.value).toISOString().split('T')[0]
+            )
+          : '',
+        libraryCardBarcode: libraryCardBarcode.value,
+        usePreferredName: usePreferredName.value,
+        preferredName: preferredName.value
     });
     // clear the fields when successfully added
     firstName.value = '';
@@ -663,6 +680,8 @@ const addMinor = () => {
     middleName.value = '';
     dateOfBirth.value = null;
     libraryCardBarcode.value = '';
+    usePreferredName.value = false;
+    preferredName.value = '';
 }
 
 const deleteMinor = (id: number) => {
@@ -675,8 +694,10 @@ const resetMinorForm = () => {
         // Populate the form with the last minor's details
         firstName.value = lastMinor.firstName;
         lastName.value = lastMinor.lastName;
-        dateOfBirth.value = lastMinor.dateOfBirth;
+        dateOfBirth.value = new Date(lastMinor.dateOfBirth); // Convert string to Date
         libraryCardBarcode.value = lastMinor.libraryCardBarcode;
+        usePreferredName.value = lastMinor.usePreferredName;
+        preferredName.value = lastMinor.preferredName;
         deleteMinor(lastMinor.id);
     }
 }
