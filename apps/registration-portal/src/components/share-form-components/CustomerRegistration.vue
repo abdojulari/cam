@@ -162,6 +162,32 @@
             </v-col>
             
         </v-row>
+        <!-- Library Card Barcode/Provide a digital card Number -->
+        <v-row class="mb-6" v-if="profileType === 'Child'">
+            <v-col cols="12" sm="6" md="4">
+                <v-text-field 
+                    label="Library Card Barcode" 
+                    v-model="libraryCardBarcode" 
+                    variant="outlined" 
+                    density="compact"
+                    append-inner-icon="mdi-barcode-scan"
+                    hide-details="auto"
+                    maxlength="14"
+                    :rules="[v => !!v && v.length === 14 || 'Barcode must be 14 characters']"
+                    required 
+                />
+            </v-col>
+            <v-col cols="12" sm="6" md="4">
+                <v-btn 
+                    color="orange" 
+                    prepend-icon="mdi-barcode"
+                    class="text-capitalize text-white"
+                    text="Generate a digital card Number"
+                    @click="generateDigitalCardNumber"
+                    :disabled="isGenerateBtnDisabled"
+                />   
+            </v-col>
+        </v-row>
         <!-- Add minor button-->
         <v-row class="mb-5" v-if="profileType === 'Child'">
             <v-col cols="12" md="4">
@@ -189,7 +215,12 @@
                 />
             </v-col>
         </v-row>
-        <ChildrenList v-if="profileType === 'Child' && minors.length > 0" :minors="minors" :deleteMinor="deleteMinor" :generateBarcode="generateBarcode" />
+        <ChildrenList 
+        v-if="profileType === 'Child' && minors.length > 0" 
+        :minors="minors" 
+        :deleteMinor="deleteMinor" 
+        
+        />
         <!-- Email/Phone Number -->
         <v-row>
             <v-col cols="12" sm="6" md="4">
@@ -461,7 +492,7 @@
             </v-col>
         </v-row>
         <!-- Library Card Barcode/Provide a digital card Number -->
-        <v-row class="mb-6">
+        <v-row class="mb-6" v-if="profileType === 'Adult'">
             <v-col cols="12" sm="6" md="4">
                 <v-text-field 
                     label="Library Card Barcode" 
@@ -491,7 +522,7 @@
             <v-col cols="12" sm="6" md="4">
                 <v-btn 
                     color="primary" 
-                    prepend-icon="mdi-check"
+                    prepend-icon="mdi-content-save"
                     class="text-capitalize mr-10"
                     text="Submit"
                     @click="handleSubmit"
@@ -500,11 +531,8 @@
         </v-row>
         <v-row>
             <v-col cols="12" sm="12" md="12">
-                <div v-if="successData.length > 0" class="mb-4">
-                   <SuccessAlert :data="successData" /> 
-                </div>
-                <div v-if="failedData.length > 0" class="mb-4">
-                    <FailureAlert :failedData="failedData" />
+                <div v-if="successData.length > 0 || failedData.length > 0" class="mb-4">
+                   <ReturnAlert :data="successData" :failedData="failedData"/> 
                 </div>
             </v-col>
         </v-row>
@@ -529,8 +557,8 @@ import { ipRanges } from '../../constants/ipRangeMatching';
 import { useRegistrationStore } from '@cam/shared-components/store/registration-store';
 import { vMaska } from 'maska/vue';
 import { profileNames } from '../../constants/profile';
-import SuccessAlert from '../notification/SuccessAlert.vue';
-import FailureAlert from '../notification/FailureAlert.vue';
+// @ts-ignore
+import ReturnAlert from '../notification/ReturnAlert.vue';
 
 const props = defineProps<{ profileType?: string, isClient?: boolean, networkName?: string }>();
 const emit = defineEmits<{
@@ -626,13 +654,15 @@ const addMinor = () => {
         firstName: firstName.value , 
         lastName: lastName.value, 
         middleName: middleName.value,
-        dateOfBirth: dateOfBirth.value.toISOString().split('T')[0] as unknown as Date
+        dateOfBirth: dateOfBirth.value.toISOString().split('T')[0] as unknown as Date,
+        libraryCardBarcode: libraryCardBarcode.value
     });
     // clear the fields when successfully added
     firstName.value = '';
     lastName.value = '';
     middleName.value = '';
     dateOfBirth.value = null;
+    libraryCardBarcode.value = '';
 }
 
 const deleteMinor = (id: number) => {
@@ -646,6 +676,7 @@ const resetMinorForm = () => {
         firstName.value = lastMinor.firstName;
         lastName.value = lastMinor.lastName;
         dateOfBirth.value = lastMinor.dateOfBirth;
+        libraryCardBarcode.value = lastMinor.libraryCardBarcode;
         deleteMinor(lastMinor.id);
     }
 }
@@ -853,15 +884,15 @@ const generateDigitalCardNumber = async () => {
     libraryCardBarcode.value = response.barcode;
 }
 
-const generateBarcode = (id: number) => {
-    const minor = minors.value.find((minor) => minor.id === id);
-    if (minor) {
-        apiService.getBarcode().then(response => {
-            minor.libraryCardBarcode = response.barcode;
-        });
-    }
-}
-watch(libraryCardBarcode, (newValue, oldValue) => {
+// const generateBarcode = (id: number) => {
+//     const minor = minors.value.find((minor) => minor.id === id);
+//     if (minor) {
+//         apiService.getBarcode().then(response => {
+//             minor.libraryCardBarcode = response.barcode;
+//         });
+//     }
+// }
+watch(selectedEmailConsent, (newValue, oldValue) => {
     // Check if the new value is not empty and has changed
     if (newValue && newValue !== oldValue) {
         // each child account should have careof, address, city, province, postal code, email address, phone number, and barcode
@@ -875,7 +906,7 @@ watch(libraryCardBarcode, (newValue, oldValue) => {
                     minor.postalCode = postalCode.value;
                     minor.emailAddress = emailAddress.value;
                     minor.phoneNumber = phoneNumber.value;
-                    minor.barcode = newValue;
+                    minor.barcode = barcode.value;
                     minor.address2 = address2.value,
                     minor.city2 = city2.value;
                     minor.province2 = province2.value;
@@ -883,7 +914,7 @@ watch(libraryCardBarcode, (newValue, oldValue) => {
                     minor.emailAddress = emailAddress.value;
                     minor.password =  dateOfBirth.value.getFullYear().toString().slice(-2);
                     minor.confirmPassword =  dateOfBirth.value.getFullYear().toString().slice(-2);
-                    minor.selectedEmailConsent = selectedEmailConsent.value;
+                    minor.selectedEmailConsent = newValue;
                     minor.selectedIndigenousStatus = indigenousStatus.value;
                     minor.useSecondaryAddress = useSecondaryAddress.value;
                     minor.profileType = profile.value;

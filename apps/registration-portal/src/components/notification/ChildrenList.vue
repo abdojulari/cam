@@ -28,28 +28,6 @@
                         </template>
                         <template v-slot:item.actions="{ item }: { item: any }">
                             <div class="d-flex align-center justify-center mt-2">
-                                <v-text-field
-                                    v-model="item.libraryCardBarcode"
-                                    label="Barcode"
-                                    density="compact"
-                                    variant="outlined"
-                                    color="primary"
-                                    hide-details="auto"
-                                    class="small-text"
-                                    required
-                                    :rules="[v => !!v || 'Barcode is required']"
-                                />
-                                <v-btn 
-                                    color="primary"
-                                    @click="props.generateBarcode(item.id)"
-                                    text="Generate Barcode"
-                                    size="small"
-                                    density="compact"
-                                    icon="mdi-barcode"
-                                    class="mx-2"
-                                    :hint="item.libraryCardBarcode"
-                                    persistent-hint
-                                />
                                 <v-btn 
                                     color="red"
                                     :disabled="isClicked" 
@@ -59,8 +37,7 @@
                                     density="compact" 
                                     icon="mdi-delete"
                                 />
-                            </div>
-                           
+                            </div>             
                         </template>
                     </v-data-table>
                 </v-card-text>
@@ -78,17 +55,15 @@ const props = defineProps({
         type: Function,
         required: true
     },
-    generateBarcode: {
-        type: Function,
-        required: true
-    }
+   
 })
 const isChildBarcodeEmpty = ref(false);
 const headers = [
+    { title: 'Barcode', key: 'libraryCardBarcode' },
     { title: 'First Name', key: 'firstName' },
     { title: 'Last Name', key: 'lastName' },
     { title: 'DOB', key: 'dateOfBirth' },
-    { title: 'Actions [Barcode, Delete]', key: 'actions' }
+    { title: 'Actions [Delete]', key: 'actions' }
 ]
 const isClicked = ref(false)
 </script>
