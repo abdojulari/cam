@@ -618,9 +618,9 @@ const selectedTitle = ref(null);
 const selectedEmailConsent = ref(null);
 
 const schools = ref([
-    { value: 'EPSB', text: 'EPSB' },
-    { value: 'Catholic', text: 'Catholic' },
-    { value: 'CSCN', text: 'CSCN' },
+    { value: 'EPSB', text: 'EPSB (Edmonton Public Schools)' },
+    { value: 'ECSD', text: 'ECSD (Edmonton Catholic School Division)' },
+    { value: 'CSCN', text: 'CSCN (Francophone)' },
     { value: 'Other', text: 'Other' },
 ]);
 const provinceOptions = ref([
