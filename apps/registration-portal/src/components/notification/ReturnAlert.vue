@@ -22,7 +22,7 @@
         </div>
         <div v-if="failedData.length > 0" class="w-100">
             <div v-for="(entry, index) in failedData" :key="index" class="mb-1 text-error ml-5">
-                <span class=text-body-2 bg-error pa-2 w-100>
+                <span class="text-body-2 bg-error pa-2 w-100">
                   <v-icon class="mr-3">mdi-close-circle</v-icon>
                   <strong>{{ entry?.message }}</strong>
                 </span>
