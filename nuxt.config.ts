@@ -9,7 +9,8 @@ export default defineNuxtConfig({
     "@nuxtjs/tailwindcss",
     "@nuxt/scripts",
     "nuxt-gtag",
-    "@nuxt/image"
+    "@nuxt/image",
+    "@vite-pwa/nuxt"
   ],
   alias: {
     '@cam/shared-components': './shared-components/src',

@@ -22,11 +22,11 @@
       >
         <v-card
           title="Duplicate Customer"
-          subtitle="Please select the customer you want to create a temporary pass for."
+          subtitle="Please verify the customer's information to ensure there is no duplicate."
           class="pa-5"
           flat
-        >
-          <template v-slot:text>
+          >
+            <template v-slot:text>
             <v-text-field
               v-model="search"
               label="Search"
@@ -62,14 +62,14 @@
               variant="flat"
               class="text-capitalize"
             />
-            <v-btn 
+            <!-- <v-btn 
               color="primary"
               @click="emit('update:dialog', false)"
               text="Create Temporary Pass"
               class="text-capitalize"
               variant="flat"
               :disabled="selected.length === 0"
-            />
+            /> -->
             <v-btn 
               color="green-darken-1"
               @click="emit('update:dialog', false)"

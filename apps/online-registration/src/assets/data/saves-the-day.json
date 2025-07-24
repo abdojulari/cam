@@ -13,7 +13,7 @@
             "startStreaming": "Savings Start at EPL"
         }, 
         "links": {
-            "getCard": "https://cam.epl.ca/",
+            "getCard": "/",
             "startStreaming": " https://www.epl.ca/explore/?post-type=online-resources%2Cwebsite%2Cstaff-list&related-format=online-resources%2Cmovies%2Cvideo-games"
         }
     },
@@ -33,7 +33,7 @@
         "browseButton": "Find Fun at EPL"
       },
       "links": {
-        "signUpButton": "https://cam.epl.ca/",
+        "signUpButton": "/",
         "browseButton": "https://www.epl.ca/explore/?post-type=staff-list%2Conline-resources%2Cwebsite&related-format=movies%2Conline-resources%2Cvideo-games"
       }
       
@@ -81,7 +81,7 @@
         "title": "Need a card?",
         "description": "An EPL card helps you save on books, courses, and more. Sign up instantly online.",
         "buttonText": "Get Your Free Card!",
-        "link": "https://cam.epl.ca/"
+        "link": "/"
       },
       "haveCard": {
         "title": "Have a card?",

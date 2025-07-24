@@ -37,6 +37,7 @@ export default defineNuxtConfig({
       VITE_CUSTOM_SECURITY_TOKEN: process?.env.VITE_CUSTOM_SECURITY_TOKEN,
       VITE_CRE_LOGIN: process?.env.VITE_CRE_LOGIN,
       VITE_CRE_PASSWORD: process?.env.VITE_CRE_PASSWORD,
+      OVERRIDE_URL: process?.env.OVERRIDE_URL,
     },
   },
   $development: {
@@ -53,6 +54,7 @@ export default defineNuxtConfig({
         CLIENT_ID: process?.env.CLIENT_ID,
         CLIENT_SECRET: process?.env.CLIENT_SECRET,
         VITE_CRE_AUTH_URL: process?.env.VITE_CRE_AUTH_URL,
+        OVERRIDE_URL: process?.env.OVERRIDE_URL,
       },
     },
   },
@@ -67,6 +69,7 @@ export default defineNuxtConfig({
         CLIENT_ID: process?.env.CLIENT_ID,
         CLIENT_SECRET: process?.env.CLIENT_SECRET,
         VITE_CRE_AUTH_URL: process?.env.VITE_CRE_AUTH_URL,
+        OVERRIDE_URL: process?.env.OVERRIDE_URL,
       },
     },
   },

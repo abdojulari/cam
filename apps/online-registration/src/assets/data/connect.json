@@ -12,7 +12,7 @@
             "startStreaming": "Stream Endless Resources"
         }, 
         "links": {
-            "getCard": "https://cam.epl.ca/",
+            "getCard": "/",
             "startStreaming": "https://www.epl.ca/explore/?post-type=staff-list%2Conline-resources"
         }
     },
@@ -32,7 +32,7 @@
         "browseButton": "Find Something New"
       },
       "links": {
-        "signUpButton": "https://cam.epl.ca/",
+        "signUpButton": "/",
         "browseButton": "https://www.epl.ca/explore/?post-type=staff-list%2Conline-resources"
       }
       
@@ -80,7 +80,7 @@
         "title": "Need a library card?",
         "description": "Your EPL cards helps you save on books, courses, and more. Sign up instantly online. ",
         "buttonText": "Get Your EPL Card!",
-        "link": "https://cam.epl.ca/"
+        "link": "/"
       },
       "haveCard": {
         "title": "Have a library card?",

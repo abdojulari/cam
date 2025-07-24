@@ -1,4 +1,8 @@
-import { defineStore } from 'pinia'
+import { defineStore, createPinia } from 'pinia'
+import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
+const pinia = createPinia()
+pinia.use(piniaPluginPersistedstate)
+
 interface BioData {
     firstname: string;
     lastname: string;
@@ -52,8 +56,7 @@ interface FailedResponse {
     message?: string;
 }
 
-export const useRegistrationStore = defineStore({
-  id: 'registration',
+export const useRegistrationStore = defineStore('registration', {
   state: () => ({
     registration: [] as Registration[],
     biodata: {} as BioData,
@@ -73,7 +76,9 @@ export const useRegistrationStore = defineStore({
     successResponse: [] as SuccessResponse[],
     failedResponse: [] as FailedResponse[],
     networkName: '',
+    landingPage: '',
   }),
+  
   actions: {
     async setTurnstile(turnstile: boolean) {
         try {
@@ -219,6 +224,13 @@ export const useRegistrationStore = defineStore({
         } catch (error) {
           console.error(error);
         }
+      },
+      async setLandingPage(landingPage: string) {
+        try {
+          this.landingPage = landingPage;
+        } catch (error) {
+          console.error(error);
+        }
       }
   },
   getters: {
@@ -275,7 +287,11 @@ export const useRegistrationStore = defineStore({
     },
     getFailedResponse(): FailedResponse[] {
         return this.failedResponse;
+    },
+    getLandingPage(): string {
+        return this.landingPage;
     }
   },
+  
 
 })

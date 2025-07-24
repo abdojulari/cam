@@ -43,6 +43,7 @@ export interface Minors {
     password?: string;
     confirmPassword?: string;
     library?: string;
+    selectedSchool?: string;
 }
 
 export interface MinorsList {

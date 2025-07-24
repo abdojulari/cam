@@ -5,12 +5,12 @@ export default defineEventHandler(async (event: H3Event<EventHandlerRequest>) =>
 
   // @ts-ignore
   const config = useRuntimeConfig(event);
-  const duplicateUrl = config.public.CRE_QUICK_DUPLICATE_URL;
+  const overrideUrl = config.private.OVERRIDE_URL;
 
-  // send the body to the duplicate url
+  // send the body to the override url
   try{
     // @ts-ignore
-    const response = await $fetch(duplicateUrl, {
+    const response = await $fetch(overrideUrl, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -19,10 +19,7 @@ export default defineEventHandler(async (event: H3Event<EventHandlerRequest>) =>
     });
     return await response.json();
   } catch (error: any) {
-    if (error?.statusCode === 409) {
-      return { data: error.data };
-    }
-    // Optionally handle other errors
+
     return { error: true, message: error.message || 'Unknown error' };
   }
 });

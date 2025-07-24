@@ -119,6 +119,7 @@ export default defineNuxtConfig({
   modules:[
     '@nuxtjs/tailwindcss',
     'nuxt-gtag',
+    
     (_options, nuxt) => {
       nuxt.hooks.hook('vite:extendConfig', (config) => {
         // @ts-expect-error Description of why the error is expected

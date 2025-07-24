@@ -37,6 +37,13 @@
             > 
               <v-icon>mdi-close-circle</v-icon>Close 
             </v-btn>
+            <v-btn 
+              v-if="failedData.length > 0"
+              class="text-capitalize bg-green-darken-1 text-white rounded-pill" 
+              @click="overrideDuplicateAlert"
+            > 
+              <v-icon>mdi-find-replace</v-icon>Override 
+            </v-btn>
           </template>
         </v-card>
       </v-dialog>
@@ -44,6 +51,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
+import { apiService } from '@cam/shared-components/services/api-service';
 const router = useRouter();
 
 const props = defineProps({
@@ -54,9 +62,26 @@ const props = defineProps({
     failedData: {
         type: Array,
         required: true
+    },
+    firstname: {
+        type: String,
+        required: true
+    },
+    lastname: {
+        type: String,
+        required: true
+    },
+    dateOfBirth: {
+        type: String,
+        required: true
+    },
+    formData: {
+        type: Object,
+        required: false,
+        default: () => ({})
     }
 })
-
+const overrideStatus = ref(false);
 const successData = props.data as any;
 const failedData = props.failedData as any;
 // Computed property to control dialog visibility
@@ -69,6 +94,26 @@ const closeDialog = () => {
     failedData.splice(0, failedData.length);
     // redirect to the home page
     router.push('/');
+}
+
+const overrideDuplicateAlert = async () => {
+    // redirect to the home page
+    // send the status to the backend to ensure the duplicate is suppressed.
+    
+    // Now we have access to all form data
+    console.log('Complete form data:', props.formData);
+    
+    // const response = await apiService.overrideDuplicate({
+    //   // Pass all form data to the backend
+    //   ...props.formData,
+    //   firstname: props.firstname,
+    //   lastname: props.lastname,
+    //   dateofbirth: props.dateOfBirth,
+    //   status: true
+    // });
+
+    //console.log(response);
+    //router.push('/');
 }
 
 </script>

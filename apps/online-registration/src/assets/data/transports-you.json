@@ -13,7 +13,7 @@
             "startStreaming": "Upgrade Your Commute"
         }, 
         "links": {
-            "getCard": "https://cam.epl.ca/",
+            "getCard": "/",
             "startStreaming": "https://www.epl.ca/explore/?post-type=staff-list%2Conline-resources"
         }
     },
@@ -31,7 +31,7 @@
         "browseButton": "Find the Best Digital Content"
       },
       "links": {
-        "signUpButton": "https://cam.epl.ca/",
+        "signUpButton": "/",
         "browseButton": "https://www.epl.ca/explore/?post-type=staff-list%2Conline-resources"
       }
       
@@ -79,7 +79,7 @@
         "title": "Need a library card?",
         "description": "EPL cards help Edmonton residents save on books, courses, and more. Sign up instantly online.",
         "buttonText": "Get Your Free Card!",
-        "link": "https://cam.epl.ca/"
+        "link": "/"
       },
       "haveCard": {
         "title": "Have a library card?",

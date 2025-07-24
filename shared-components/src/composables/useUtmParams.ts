@@ -2,8 +2,18 @@
 export function useUtmParams() {
   const getUtmParams = () => {
     if (typeof window === 'undefined') return {}
+    // get the url from the window
+    const url = window.location.href
+    // remove the base url from the url
+    const baseUrl =
+    process.env.NODE_ENV === 'production'
+      ? 'https://cam.epl.ca'
+      : 'http://localhost:4500/';
+      const urlWithoutBase = url.replace(baseUrl, '')
+    console.log('url', urlWithoutBase)
 
     const urlParams = new URLSearchParams(window.location.search)
+    
     const utmParams: { [key: string]: string } = {}
     // List of UTM parameters to capture
     const utmKeys = [
@@ -20,8 +30,8 @@ export function useUtmParams() {
         utmParams[key] = value
       }
     })
-   
-    return utmParams
+    console.log('utmParams', utmParams)
+    return { utmParams, urlWithoutBase }
   }
   
   return getUtmParams()

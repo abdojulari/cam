@@ -50,23 +50,7 @@
                 />
             </v-col>
         </v-row>
-        <!-- School -->
-        <v-row v-if="profileType === 'Child'">
-            <v-col cols="12" sm="6" md="4">
-                <v-combobox 
-                    label="School" 
-                    :items="schools"
-                    v-model="selectedSchool"
-                    item-title="text"
-                    item-value="value"
-                    variant="outlined"
-                    hide-details="auto"
-                    density="compact"  
-                />  
-            </v-col>
-        </v-row>
-        
-       
+        <!-- Customer Information -->
         <v-row class="mt-4">
             <v-col cols="12" sm="12" md="12">
                 <h2 class="text-h6 font-weight-medium">Customer Information</h2>
@@ -83,7 +67,6 @@
                     variant="outlined"
                     hide-details="auto"
                     density="compact"  
-                    required 
                 />
             </v-col>
         </v-row>
@@ -160,7 +143,21 @@
                     density="compact" 
                 />
             </v-col>
-            
+        </v-row>
+         <!-- School -->
+         <v-row v-if="profileType === 'Child'">
+            <v-col cols="12" sm="6" md="4">
+                <v-combobox 
+                    label="School" 
+                    :items="schools"
+                    v-model="selectedSchool"
+                    item-title="text"
+                    item-value="value"
+                    variant="outlined"
+                    hide-details="auto"
+                    density="compact"  
+                />  
+            </v-col>
         </v-row>
         <!-- Library Card Barcode/Provide a digital card Number -->
         <v-row class="mb-6" v-if="profileType === 'Child'">
@@ -492,10 +489,8 @@
             </v-col>
             <v-col cols="12" sm="6" md="4">
                 <v-checkbox 
-                    label="Indigenous Status"
+                    label="Living on-reserve or on-settlement"
                     v-model="indigenousStatus"
-                    hint="Living on-reserve or on-settlement"
-                    persistent-hint
                     density="compact"
                     hide-details="auto"
                 />
@@ -542,7 +537,14 @@
         <v-row>
             <v-col cols="12" sm="12" md="12">
                 <div v-if="successData.length > 0 || failedData.length > 0" class="mb-4">
-                   <ReturnAlert :data="successData" :failedData="failedData"/> 
+                    <ReturnAlert 
+                        :data="successData" 
+                        :failedData="failedData"
+                        :firstname="firstName"
+                        :lastname="lastName"
+                        :dateOfBirth="dateOfBirth.toISOString().split('T')[0]"
+                        :formData="submittedFormData"
+                    /> 
                 </div>
             </v-col>
         </v-row>
@@ -609,9 +611,8 @@ const profile = ref('');
 const profileType = ref('');
 const selectedCustomer = ref('');
 const emailConsent = ref([
-    { value: 'ECONSENT', text: 'ECONSENT' },
-    { value: 'EMAILCONV', text: 'EMAILCONV' },
-    { value: 'ENOCONSENT', text: 'ENOCONSENT' },
+    { value: 'ECONSENT', text: 'Yes, I consent to receive e-mail from Edmonton Public Library.' },
+    { value: 'ENOCONSENT', text: 'No, I do not consent to receive e-mail from Edmonton Public Library.' },
 ]);
 const title = ref([ 'Mr.', 'Mrs.', 'Ms.', 'Dr.', 'Prof.', 'Rev.', 'Hon.']);
 const selectedTitle = ref(null);
@@ -646,6 +647,7 @@ const isClient = ref(false);
 const useSecondaryAddress = ref(false);
 const minors = ref<Minors[]>([]);
 const networkName = ref('')
+const submittedFormData = ref({});
 const router = useRouter();
 
 // create a validation rules for the form
@@ -672,7 +674,8 @@ const addMinor = () => {
           : '',
         libraryCardBarcode: libraryCardBarcode.value,
         usePreferredName: usePreferredName.value,
-        preferredName: preferredName.value
+        preferredName: preferredName.value,
+        selectedSchool: selectedSchool.value
     });
     // clear the fields when successfully added
     firstName.value = '';
@@ -682,6 +685,7 @@ const addMinor = () => {
     libraryCardBarcode.value = '';
     usePreferredName.value = false;
     preferredName.value = '';
+    selectedSchool.value = null;
 }
 
 const deleteMinor = (id: number) => {
@@ -698,6 +702,7 @@ const resetMinorForm = () => {
         libraryCardBarcode.value = lastMinor.libraryCardBarcode;
         usePreferredName.value = lastMinor.usePreferredName;
         preferredName.value = lastMinor.preferredName;
+        selectedSchool.value = lastMinor.selectedSchool;
         deleteMinor(lastMinor.id);
     }
 }
@@ -952,7 +957,7 @@ const handleSubmit = async () => {
   }
   
   if (dateOfBirth.value) {
-    emit('submit', {
+    const formData = {
         profile: profile.value,
         form: {
           firstName: firstName.value,
@@ -984,7 +989,12 @@ const handleSubmit = async () => {
           password: password.value,
           confirmPassword: password.value,
         }
-    });
+    };
+    
+    // Store the form data for use in ReturnAlert
+    submittedFormData.value = formData.form;
+    
+    emit('submit', formData);
   }
 }
 

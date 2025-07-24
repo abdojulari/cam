@@ -125,7 +125,7 @@
    
     const { gtag } = useGtag()
     const userRegistration = useRegistrationStore();
-    const utmParams = useUtmParams()
+    const { utmParams, urlWithoutBase } = useUtmParams()
     const router = useRouter();
     const props = defineProps({
         page: {
@@ -181,6 +181,7 @@
     const buttonClickState = computed(() => userRegistration.getButtonClickState);
     const showErrorDialog = ref(false);
     const showSystemErrorDialog = ref(false);
+    const landingPage = ref('');
     const closeErrorDialog = async () => {
         showErrorDialog.value = false;
         showSystemErrorDialog.value = false;
@@ -200,7 +201,10 @@
         apiService.sanctumToken().then((response) => {
             return response;
         });
-        
+       
+        // local storage to get the first part
+        landingPage.value = localStorage.getItem('firstPart');
+        console.log(utmParams, urlWithoutBase , landingPage.value)
         return formData.value.radios = selectedRadio.value;
     });
     // Filter items based on the current page
@@ -242,12 +246,15 @@
             const reproducibleData = useReproducibleData({
                 eventCategory: 'EPL_SELF',
                 eventLabel: `${buttonName} button clicked`,
-                screenName: filteredSteps.value[step.value - 1].title,
+                screenName: filteredSteps.value[step.value - 1].title + ' | ' + landingPage.value,
                 registrationType: 'EPL_SELF',
                 dob: (formData.value.dateofBirth).toISOString().split('T')[0],
                 step: step.value,
-                ...utmParams
+                utmParams,
+                url: urlWithoutBase
             });
+            console.log('about you', reproducibleData)
+            console.log(utmParams, urlWithoutBase , landingPage.value)
             await apiService.reproducibleData(reproducibleData);
            
         } else if (filteredSteps.value[step.value - 1].title === 'Contact') {
@@ -271,12 +278,14 @@
             const reproducibleData = useReproducibleData({
                 eventCategory: 'EPL_SELF',
                 eventLabel: `${buttonName} button clicked`,
-                screenName: filteredSteps.value[step.value - 1].title,
+                screenName: filteredSteps.value[step.value - 1].title + ' | ' + landingPage.value,
                 registrationType: 'EPL_SELF',
                 postalCode: formData.value.postalCode,
                 step: step.value,
                 ...utmParams
             });
+            console.log('contact', reproducibleData)
+            console.log(utmParams, urlWithoutBase , landingPage.value)
             await apiService.reproducibleData(reproducibleData);
             
         } else if (filteredSteps.value[step.value - 1].title === 'Profile') {
@@ -289,10 +298,12 @@
             const reproducibleData = useReproducibleData({
                 eventCategory: 'EPL_SELF',
                 eventLabel: `${buttonName} button clicked`,
-                screenName: filteredSteps.value[step.value - 1].title,
+                screenName: filteredSteps.value[step.value - 1].title + ' | ' + landingPage.value,
                 registrationType: 'EPL_SELF',
                 step: step.value,
             });
+            console.log('profile', reproducibleData)
+            console.log(utmParams, urlWithoutBase , landingPage.value)
             await apiService.reproducibleData(reproducibleData);
         } 
        
@@ -397,7 +408,7 @@
         gtag('event', eventName, {
             app_name: 'EPL | Online Registration',
             method: `Online Card Reg, ${profile}`,
-            screen_name: `${filteredSteps.value[step.value - 1].title} Screen`,
+            screen_name: `${filteredSteps.value[step.value - 1].title} Screen | ${landingPage.value}`,
             event_category: `${buttonName} button clicked`,
             event_label: filteredSteps.value[step.value - 1].title,
             registration_type: profile,
@@ -433,11 +444,13 @@
                     const reproducibleData = useReproducibleData({
                         eventCategory: 'Complete Registration',
                         eventLabel: `${buttonName} button clicked`,
-                        screenName: 'Success Page',
+                        screenName: 'Success Page | ' + landingPage.value,
                         registrationType: selectedRadio.value === 'Adult' ? 'EPL_SELF' : 'EPL_SELFJ',
                         step: step.value,
                         ...utmParams
                     });
+                    console.log('submit form', reproducibleData)
+                    console.log(utmParams, urlWithoutBase , landingPage.value)
                     await apiService.reproducibleData(reproducibleData);
                     // Proceed to next page if no errors
                     sendEventToGA(buttonName, 'sign_up', registrationData?.data?.profile?.['@key']);
@@ -447,6 +460,7 @@
             } catch (error) {
                 if( error.message === 'HTTP error! status: 409') {
                     showErrorDialog.value = true
+                    sendEventToGA(buttonName, 'sign_up', 'Not successful!');
                 }
                 else {
                     showSystemErrorDialog.value = true;

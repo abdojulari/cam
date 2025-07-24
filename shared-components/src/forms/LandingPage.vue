@@ -24,8 +24,8 @@
         <div class="d-flex flex-column">
           <v-hover v-slot="{ isHovering, props }">
             <a 
-              :href="`${content.introSection.links.getCard}`" 
-              target="_blank" rel="noopener noreferrer"
+              :href="`${content.introSection.links.getCard}?${secondPart}`" 
+              target="_self" rel="noopener noreferrer"
               v-bind="props"
               :class="{ 
                 'bg-white text-light-blue-darken-4': isHovering, 
@@ -37,12 +37,12 @@
             >
               {{ content.introSection.buttons.getCard }}
             </a>
-          </v-hover>
+          </v-hover>  
           <v-hover v-slot="{ isHovering, props }">
             <a 
               :href="`${content.introSection.links.startStreaming}`"
               variant="outlined" 
-              target="_blank" rel="noopener noreferrer"
+              target="_self" rel="noopener noreferrer"
               v-bind="props"
               :class="{ 'bg-primary': isHovering, 'text-white': isHovering }" 
               v-if="content.introSection.links.startStreaming" 
@@ -84,7 +84,7 @@
         <div class="w-100 d-flex flex-column flex-md-row justify-space-around my-5">
           <v-hover v-slot="{ isHovering, props }">
             <a 
-              :href="content.access.links.signUpButton" 
+              :href="`${content.access.links.signUpButton}?${secondPart}`" 
               target="_blank" rel="noopener noreferrer"
               v-bind="props"
               :class="{ 
@@ -121,7 +121,7 @@
       <v-col v-for="(item, index) in [content.whyGetEPLCard.card1, content.whyGetEPLCard.card2, content.whyGetEPLCard.card3, content.whyGetEPLCard.card4]" :key="index" cols="12" md="3">
         <!-- @ts-ignore -->
         <v-card variant="outlined" class="mx-auto" :height="$vuetify.display.xs ? 635 : 510" >
-          <a :href="item.link" target="_blank" rel="noopener noreferrer">
+          <a :href="`${item.link}?${secondPart}`" target="_blank" rel="noopener noreferrer">
             <v-img
               :src="`/images/${item.image}`"
               :alt="item.heading"
@@ -152,8 +152,8 @@
         <p class="text-body-1 lh-lg mb-6">{{ content.eplSection.needCard.description }}</p>
         <v-hover v-slot="{ isHovering, props }">
           <a 
-            :href="content.eplSection.needCard.link" 
-            target="_blank"
+            :href="`${content.eplSection.needCard.link}?${secondPart}`" 
+            target="_self"
             v-bind="props"
             :class="{ 'bg-white text-light-blue-darken-4 border-sm border-primary border-opacity-100': isHovering, 'text-white': isHovering }" 
             rel="noopener noreferrer" 
@@ -169,14 +169,14 @@
         <p class="text-body-1 lh-lg mb-6">{{ content.eplSection.haveCard.description }}</p>
         <v-hover v-slot="{ isHovering, props }">
         <a 
-          :href="content.eplSection.haveCard.link"
+          :href="`${content.eplSection.haveCard.link}`"
           target="_blank"
           v-bind="props"
           :class="{ 'bg-primary': isHovering, 'text-white': isHovering }"
           rel="noopener noreferrer"
           class="mt-5 text-center link text-decoration-none text-primary border-sm border-primary py-2 px-5 d-inline-block rounded border-opacity-100"
         >
-          {{ content.eplSection.haveCard.buttonText }}
+          {{ content.eplSection.haveCard.buttonText }} 
         </a>
         </v-hover>
       </v-col>
@@ -214,11 +214,10 @@
 import { useUtmParams } from '../composables/useUtmParams';
 import { useReproducibleData } from '../composables/reproducible-data';
 import { apiService } from '../services/api-service';
-import { onMounted } from 'vue';
+import { onMounted, ref } from 'vue';
 import { useHead } from 'nuxt/app';
 
-
-const utmParams = useUtmParams();
+const { utmParams, urlWithoutBase } = useUtmParams();
 // @ts-ignore
 const { gtag } = useGtag()
 const props = defineProps({
@@ -227,6 +226,8 @@ const props = defineProps({
     required: true
   }
 });
+const firstPart = ref<string | undefined>(undefined);
+const secondPart = ref<string | undefined>(undefined);
 
 // Add Google Tag Manager scripts specifically for this page
 useHead({
@@ -277,6 +278,11 @@ useHead({
 });
 
 onMounted(async () => {
+  const urlParts = urlWithoutBase?.split('?');
+ 
+  firstPart.value = urlParts?.[0];
+  secondPart.value = urlParts?.[1];
+  
   const reproducibleData = useReproducibleData({
     eventCategory: props.content.pageName,
     eventLabel: 'Landing Page',
@@ -292,12 +298,21 @@ onMounted(async () => {
     screen_name: props.content.pageName,
     event_category: 'Landing Page',
     event_label: 'Landing Page',
+    event_name: 'Landing Page',
     registration_type: 'Campaign Acquisition',
     ...utmParams
   });
+  
+ console.log('firstPart', firstPart.value)
+ console.log('secondPart', '?' + secondPart.value)
+
+ localStorage.setItem('firstPart', firstPart.value as string);
+
+ 
 });
 
 const handleClick = async (buttonName: string, title: string) => {
+
   const reproducibleData = useReproducibleData({
     eventCategory: title,
     eventLabel: `${buttonName} button clicked`,
@@ -307,11 +322,12 @@ const handleClick = async (buttonName: string, title: string) => {
     ...utmParams
   });
   await apiService.reproducibleData(reproducibleData);
-  gtag('event', 'button_click', {
+  gtag('event', `button_click_landing_page ${props.content.pageName}` , {
     app_name: 'EPL | Online Registration | Landing Page',
     method: 'Campaign Acquisition',
     screen_name: props.content.pageName,
     event_category: 'Landing Page',
+    event_name: 'Landing Page',
     event_label: `${buttonName} button clicked`,
     registration_type: 'Campaign Acquisition',
     ...utmParams

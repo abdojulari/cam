@@ -467,9 +467,10 @@
   const streetNamePattern = /^[a-zA-Z0-9\s\-\'\/#]+$/;
   const alphanumericRule = (value: string) => /^[a-zA-Z0-9\s\-\'\/#]+$/.test(value) || 'Invalid characters';
   const alphanumeric = /^[a-zA-Z0-9\s\-\'\/#]+$/
+  // @ts-ignore
   const { gtag } = useGtag();
-  const utmParams = useUtmParams()
-
+  const { utmParams, urlWithoutBase } = useUtmParams()
+  const landingPage = ref(localStorage.getItem('firstPart'));
   let minorId = 0;
   const confirmPinRules = computed(() => {
     return props.formData.minorConfirmPassword !== props.formData.minorPassword ? 'Pins do not match' : true;
@@ -533,13 +534,14 @@
         const reproducibleData = useReproducibleData({
             eventCategory: 'Link your child(ren) to your EPL card',
             eventLabel: 'Save Changes button clicked',
-            screenName: 'Child Details',
+            screenName: 'Child Details | ' + landingPage.value,
             registrationType: 'EPL_SELFJ',
             postalCode: formData.value.adultPostalCode,
             dob: formData.value.minorDateOfBirth,
             step: 2,
             ...utmParams
         });
+        console.log(reproducibleData)
         await apiService.reproducibleData(reproducibleData);
         sendEventToGA('Save Changes');
         return data;
@@ -588,13 +590,14 @@
       const reproducibleData = useReproducibleData({
           eventCategory: 'Adding a child to your existing account',
           eventLabel: 'Save Changes button clicked',
-          screenName: 'Child Details',
+          screenName: 'Child Details | ' + landingPage.value,
           registrationType: 'EPL_SELFJ',
           postalCode: formData.value.adultPostalCode,
           dob: formData.value.minorDateOfBirth,
           step: 5,
           ...utmParams
       });
+      console.log(reproducibleData)
       await apiService.reproducibleData(reproducibleData);
       sendEventToGA('Save Changes');
     
@@ -669,13 +672,14 @@
       const reproducibleData = useReproducibleData({
           eventCategory: 'Details of Adult responsible for the child(ren)',
           eventLabel: 'Save Changes button clicked',
-          screenName: 'Child Details',
+          screenName: 'Child Details | ' + landingPage.value  ,
           registrationType: 'EPL_SELFJ',
           postalCode: formData.value.adultPostalCode,
           dob: formData.value.minorDateOfBirth,
           step: 2,
           ...utmParams
       });
+      console.log(reproducibleData)
       await apiService.reproducibleData(reproducibleData);
       sendEventToGA('Save Changes');
       
@@ -784,7 +788,7 @@
     const sendEventToGA = (buttonName: string) => {
     gtag('event', 'child_details', {
         app_name: 'EPL | Online Registration',
-        screen_name: 'Child Screen',
+        screen_name: 'Child Screen | ' + landingPage.value,
         event_category: `${buttonName} button clicked`,
         event_label: 'Child Details',
         registration_type: 'EPL_SELFJ',

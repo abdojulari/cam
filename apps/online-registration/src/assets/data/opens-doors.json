@@ -13,7 +13,7 @@
             "startStreaming": "Explore New Opportunities"
         }, 
         "links": {
-            "getCard": "https://cam.epl.ca/",
+            "getCard": "/",
             "startStreaming": "https://www.epl.ca/explore/?post-type=online-resources"
         }
     },
@@ -33,7 +33,7 @@
         "browseButton": "Discover Learning Tools and Resources"
       },
       "links": {
-        "signUpButton": "https://cam.epl.ca/",
+        "signUpButton": "/",
         "browseButton": "https://www.epl.ca/explore/?post-type=online-resources"
       }
       
@@ -81,7 +81,7 @@
         "title": "Need a library card?",
         "description": "Your EPL cards helps you save on books, courses, and more. Sign up instantly online. ",
         "buttonText": "Get Your EPL Card!",
-        "link": "https://cam.epl.ca/"
+        "link": "/"
       },
       "haveCard": {
         "title": "Have a library card?",
@@ -103,7 +103,7 @@
         },
         {
           "title": "Do I need a library card to access online learning resources? ",
-          "text": "Yes, you need an active EPL card to access all library resources. You must be an Edmonton resident to qualify. <a class=\"text-primary text-decoration-underline\" target=\"_blank\" href=\"https://cam.epl.ca/\">Sign up today! </a>"
+          "text": "Yes, you need an active EPL card to access all library resources. You must be an Edmonton resident to qualify. <a class=\"text-primary text-decoration-underline\" target=\"_blank\" href=\"/\">Sign up today! </a>"
         }
       ]
     }

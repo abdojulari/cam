@@ -126,6 +126,16 @@ export const apiService = {
       });
       return await response;
     },
+    async overrideDuplicate(params: any) {
+      const response = await $fetch('/api/override', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(params),
+      });
+      return await response;
+    },
     async lookupByBarcode(params: any) {
       const response = await $fetch('/api/barcode-lookup', {
         method: 'POST',
@@ -198,5 +208,6 @@ export const apiService = {
       }
   
     },
+
 };
   
