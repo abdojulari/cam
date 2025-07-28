@@ -25,6 +25,7 @@ export default defineNuxtConfig({
       gtagId: process?.env.NUXT_PUBLIC_GA_ID,
       CRE_QUICK_DUPLICATE_URL: process?.env.CRE_QUICK_DUPLICATE_URL,
       CRE_BACKCODE_LOOKUP: process?.env.CRE_BACKCODE_LOOKUP,
+      STATISTIC_API_URL: process?.env.STATISTIC_API_URL,
       
     },
     private: {
@@ -38,6 +39,7 @@ export default defineNuxtConfig({
       VITE_CRE_LOGIN: process?.env.VITE_CRE_LOGIN,
       VITE_CRE_PASSWORD: process?.env.VITE_CRE_PASSWORD,
       OVERRIDE_URL: process?.env.OVERRIDE_URL,
+      STATISTIC_API_URL: process?.env.STATISTIC_API_URL,
     },
   },
   $development: {
@@ -55,6 +57,7 @@ export default defineNuxtConfig({
         CLIENT_SECRET: process?.env.CLIENT_SECRET,
         VITE_CRE_AUTH_URL: process?.env.VITE_CRE_AUTH_URL,
         OVERRIDE_URL: process?.env.OVERRIDE_URL,
+        STATISTIC_API_URL: process?.env.STATISTIC_API_URL,
       },
     },
   },
@@ -70,6 +73,8 @@ export default defineNuxtConfig({
         CLIENT_SECRET: process?.env.CLIENT_SECRET,
         VITE_CRE_AUTH_URL: process?.env.VITE_CRE_AUTH_URL,
         OVERRIDE_URL: process?.env.OVERRIDE_URL,
+        STATISTIC_API_URL: process?.env.STATISTIC_API_URL,
+     
       },
     },
   },

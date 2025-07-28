@@ -20,14 +20,10 @@ const ipRanges: IPRange[] = [
     { scopeId: '10.2.16.0', name: 'EPLLHL', status: 'Active', start: '10.2.16.110', end: '10.2.16.240', subnet: '255.255.255.0' },
     { scopeId: '10.2.17.0', name: 'EPLIDY', status: 'Active', start: '10.2.17.110', end: '10.2.17.209', subnet: '255.255.255.0' },
     { scopeId: '10.2.19.0', name: 'EPLMCN', status: 'Active', start: '10.2.19.110', end: '10.2.19.209', subnet: '255.255.255.0' },
-    { scopeId: '10.2.21.0', name: 'EPLDC-Staff-VM', status: 'Active', start: '10.2.21.10', end: '10.2.21.250', subnet: '255.255.255.0' },
-    { scopeId: '10.2.25.0', name: 'EPLVPN_Public_Telus', status: 'Active', start: '10.2.25.110', end: '10.2.25.209', subnet: '255.255.255.0' },
     { scopeId: '10.2.28.0', name: 'VPN_EPL-Corp', status: 'Active', start: '10.2.28.10', end: '10.2.28.254', subnet: '255.255.255.0' },
-    { scopeId: '10.2.29.0', name: 'TEST2 VPN', status: 'Active', start: '10.2.29.10', end: '10.2.29.254', subnet: '255.255.255.0' },
     { scopeId: '10.2.30.0', name: 'EPLON', status: 'Active', start: '10.2.30.10', end: '10.2.30.250', subnet: '255.255.255.0' },
     { scopeId: '10.2.41.0', name: 'EPLCAL', status: 'Active', start: '10.2.41.10', end: '10.2.41.254', subnet: '255.255.255.0' },
     { scopeId: '10.2.44.0', name: 'EPLHVY', status: 'Active', start: '10.2.44.10', end: '10.2.44.250', subnet: '255.255.255.0' },
-    { scopeId: '10.2.45.0', name: 'EPLFortigate-Test-Staff', status: 'Active', start: '10.2.45.10', end: '10.2.45.250', subnet: '255.255.255.0' },
     { scopeId: '10.2.50.0', name: 'EPLMNA', status: 'Active', start: '10.2.50.10', end: '10.2.51.250', subnet: '255.255.254.0' },
     { scopeId: '10.2.52.0', name: 'EPLMNA', status: 'Active', start: '10.2.52.10', end: '10.2.53.250', subnet: '255.255.254.0' },
     { scopeId: '10.2.54.0', name: 'EPLMNA', status: 'Active', start: '10.2.54.10', end: '10.2.55.250', subnet: '255.255.254.0' },
@@ -35,8 +31,7 @@ const ipRanges: IPRange[] = [
     { scopeId: '10.2.58.0', name: 'EPLMNA', status: 'Active', start: '10.2.58.10', end: '10.2.59.250', subnet: '255.255.254.0' },
     { scopeId: '10.2.60.0', name: 'EPLMNA', status: 'Active', start: '10.2.60.10', end: '10.2.61.250', subnet: '255.255.254.0' },
     { scopeId: '10.2.62.0', name: 'EPLMNA', status: 'Active', start: '10.2.62.10', end: '10.2.63.250', subnet: '255.255.254.0' },
-    { scopeId: '209.91.103.65', name: 'Home', status: 'Active', start: '209.91.103.65', end: '209.91.103.65', subnet: '255.255.254.0' },
-    { scopeId: '198.161.203.6', name: 'ITS-Staff', status: 'Active', start: '198.161.203.6', end: '198.161.203.6', subnet: '255.255.254.0' },
+    
   ];
   
   /**

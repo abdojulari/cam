@@ -110,10 +110,10 @@ const admins = ref([
     ]);
 
 const links = ref([
-  ['Staff Web', 'https://staff.epl.ca', 'mdi-account-group-outline'],
+  ['Staff Web', 'https://staffweb.epl.ca/', 'mdi-account-group-outline'],
   ['AV Incomplete', 'https://av.epl.ca', 'mdi-library'],
   ['Staff Apps', 'https://appsng.epl.ca/', 'mdi-application-brackets'],
-  ['Dayforce', 'https://appsng.epl.ca/', 'mdi-application-brackets']
+  ['Dayforce', 'https://www.dayforcehcm.com/MyDayforce/MyDayforce.aspx#SG9tZT8maXNGaXJzdEZlYXR1cmU9dHJ1ZQ%3D%3D', 'mdi-application-brackets']
 ]);
 </script>
 <style scoped>

@@ -7,6 +7,7 @@ import {
 } from "h3";
 
 export default defineEventHandler(async (event: H3Event<EventHandlerRequest>) => {
+    // @ts-ignore
     const config = useRuntimeConfig(event).private;
     const url = `${config.CRE_BARCODE_URL}`;
     console.log('URL', url);

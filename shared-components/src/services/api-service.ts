@@ -208,6 +208,15 @@ export const apiService = {
       }
   
     },
+    async dashboardData(filters = {}) {
+      const queryParams = new URLSearchParams(filters).toString();
+      const url = queryParams ? `/api/dashboard?${queryParams}` : '/api/dashboard';
+      
+      const response = await $fetch(url, {
+        method: 'GET',
+      });
+      return await response;
+    }
 
 };
   

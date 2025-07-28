@@ -7,7 +7,7 @@ import CreatePin from '../forms/CreatePin.vue';
 export const validationRules = (formData: any) => {
     return [
         {
-            title: 'Profile ',
+            title: 'Profile',
             component: ProfileSelection,
             props: {
                 formData: formData,

@@ -1,0 +1,1605 @@
+
+> nx run registration-portal-e2e:e2e --project=chromium --reporter=json
+
+> playwright test --project=chromium --reporter=json
+
+{
+  "config": {
+    "configFile": "/Users/abdul.ojulari/Frontends/cam/apps/registration-portal-e2e/playwright.config.ts",
+    "rootDir": "/Users/abdul.ojulari/Frontends/cam/apps/registration-portal-e2e/src",
+    "forbidOnly": false,
+    "fullyParallel": true,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 4
+    },
+    "preserveOutput": "always",
+    "reporter": [
+      [
+        "json"
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "quiet": false,
+    "projects": [
+      {
+        "outputDir": "/Users/abdul.ojulari/Frontends/cam/dist/.playwright/apps/registration-portal-e2e/test-output",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 4
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "/Users/abdul.ojulari/Frontends/cam/apps/registration-portal-e2e/src",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/Users/abdul.ojulari/Frontends/cam/dist/.playwright/apps/registration-portal-e2e/test-output",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 4
+        },
+        "id": "firefox",
+        "name": "firefox",
+        "testDir": "/Users/abdul.ojulari/Frontends/cam/apps/registration-portal-e2e/src",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/Users/abdul.ojulari/Frontends/cam/dist/.playwright/apps/registration-portal-e2e/test-output",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 4
+        },
+        "id": "webkit",
+        "name": "webkit",
+        "testDir": "/Users/abdul.ojulari/Frontends/cam/apps/registration-portal-e2e/src",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      }
+    ],
+    "shard": null,
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.53.0",
+    "workers": 4,
+    "webServer": {
+      "command": "npx nx run registration-portal:serve",
+      "url": "http://localhost:4200",
+      "reuseExistingServer": true,
+      "cwd": "/Users/abdul.ojulari/Frontends/cam"
+    }
+  },
+  "suites": [
+    {
+      "title": "customer-registration-simple.spec.ts",
+      "file": "customer-registration-simple.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Customer Registration - Basic Tests",
+          "file": "customer-registration-simple.spec.ts",
+          "line": 3,
+          "column": 6,
+          "specs": [
+            {
+              "title": "should load adult registration page",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 14290,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-07-26T14:48:43.463Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "4d0a5db78a7b6e426c2a-500b21a811e05f8ad908",
+              "file": "customer-registration-simple.spec.ts",
+              "line": 21,
+              "column": 7
+            },
+            {
+              "title": "should load child registration page",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 12595,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-07-26T14:48:43.494Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "4d0a5db78a7b6e426c2a-0b46964e6b3f4bef14e5",
+              "file": "customer-registration-simple.spec.ts",
+              "line": 35,
+              "column": 7
+            },
+            {
+              "title": "should have submit button",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 2,
+                      "status": "passed",
+                      "duration": 11373,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-07-26T14:48:43.526Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "4d0a5db78a7b6e426c2a-031ec31f379a0c2964cd",
+              "file": "customer-registration-simple.spec.ts",
+              "line": 49,
+              "column": 7
+            },
+            {
+              "title": "should have generate barcode button",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 9926,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-07-26T14:48:43.499Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "4d0a5db78a7b6e426c2a-e6ab4358bbd037a0d1ba",
+              "file": "customer-registration-simple.spec.ts",
+              "line": 57,
+              "column": 7
+            },
+            {
+              "title": "should be able to click generate barcode button",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 7300,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-07-26T14:48:53.755Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "4d0a5db78a7b6e426c2a-e89d62d930d5f6970456",
+              "file": "customer-registration-simple.spec.ts",
+              "line": 65,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "customer-registration.spec.ts",
+      "file": "customer-registration.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Customer Registration Component",
+          "file": "customer-registration.spec.ts",
+          "line": 3,
+          "column": 6,
+          "specs": [],
+          "suites": [
+            {
+              "title": "Adult Registration",
+              "file": "customer-registration.spec.ts",
+              "line": 58,
+              "column": 8,
+              "specs": [
+                {
+                  "title": "should display adult registration form",
+                  "ok": false,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 2,
+                          "parallelIndex": 2,
+                          "status": "failed",
+                          "duration": 22889,
+                          "error": {
+                            "message": "Error: expect.toBeVisible: Error: strict mode violation: locator('label:has-text(\"Title\")') resolved to 2 elements:\n    1) <label for=\"input-v-0-9\" class=\"v-label v-field-label\">…</label> aka getByText('Title').first()\n    2) <label for=\"input-v-0-9\" aria-hidden=\"true\" class=\"v-label v-field-label v-field-label--floating\">…</label> aka getByText('Title').nth(1)\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('label:has-text(\"Title\")')\u001b[22m\n",
+                            "stack": "Error: expect.toBeVisible: Error: strict mode violation: locator('label:has-text(\"Title\")') resolved to 2 elements:\n    1) <label for=\"input-v-0-9\" class=\"v-label v-field-label\">…</label> aka getByText('Title').first()\n    2) <label for=\"input-v-0-9\" aria-hidden=\"true\" class=\"v-label v-field-label v-field-label--floating\">…</label> aka getByText('Title').nth(1)\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('label:has-text(\"Title\")')\u001b[22m\n\n    at /Users/abdul.ojulari/Frontends/cam/apps/registration-portal-e2e/src/customer-registration.spec.ts:68:61",
+                            "location": {
+                              "file": "/Users/abdul.ojulari/Frontends/cam/apps/registration-portal-e2e/src/customer-registration.spec.ts",
+                              "column": 61,
+                              "line": 68
+                            },
+                            "snippet": "\u001b[0m \u001b[90m 66 |\u001b[39m       \n \u001b[90m 67 |\u001b[39m       \u001b[90m// Check for adult-specific fields\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 68 |\u001b[39m       \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m'label:has-text(\"Title\")'\u001b[39m))\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                             \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 69 |\u001b[39m       \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m'label:has-text(\"Profile\")'\u001b[39m))\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m 70 |\u001b[39m       \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m'label:has-text(\"Home Branch\")'\u001b[39m))\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m 71 |\u001b[39m       \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m'label:has-text(\"First Name\")'\u001b[39m))\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\u001b[0m"
+                          },
+                          "errors": [
+                            {
+                              "location": {
+                                "file": "/Users/abdul.ojulari/Frontends/cam/apps/registration-portal-e2e/src/customer-registration.spec.ts",
+                                "column": 61,
+                                "line": 68
+                              },
+                              "message": "Error: expect.toBeVisible: Error: strict mode violation: locator('label:has-text(\"Title\")') resolved to 2 elements:\n    1) <label for=\"input-v-0-9\" class=\"v-label v-field-label\">…</label> aka getByText('Title').first()\n    2) <label for=\"input-v-0-9\" aria-hidden=\"true\" class=\"v-label v-field-label v-field-label--floating\">…</label> aka getByText('Title').nth(1)\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('label:has-text(\"Title\")')\u001b[22m\n\n\n\u001b[0m \u001b[90m 66 |\u001b[39m       \n \u001b[90m 67 |\u001b[39m       \u001b[90m// Check for adult-specific fields\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 68 |\u001b[39m       \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m'label:has-text(\"Title\")'\u001b[39m))\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                             \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 69 |\u001b[39m       \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m'label:has-text(\"Profile\")'\u001b[39m))\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m 70 |\u001b[39m       \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m'label:has-text(\"Home Branch\")'\u001b[39m))\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m 71 |\u001b[39m       \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m'label:has-text(\"First Name\")'\u001b[39m))\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\u001b[0m\n\u001b[2m    at /Users/abdul.ojulari/Frontends/cam/apps/registration-portal-e2e/src/customer-registration.spec.ts:68:61\u001b[22m"
+                            }
+                          ],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "startTime": "2025-07-26T14:48:55.377Z",
+                          "annotations": [],
+                          "attachments": [
+                            {
+                              "name": "error-context",
+                              "contentType": "text/markdown",
+                              "path": "/Users/abdul.ojulari/Frontends/cam/dist/.playwright/apps/registration-portal-e2e/test-output/customer-registration-Cust-ab93f-lay-adult-registration-form-chromium/error-context.md"
+                            }
+                          ],
+                          "errorLocation": {
+                            "file": "/Users/abdul.ojulari/Frontends/cam/apps/registration-portal-e2e/src/customer-registration.spec.ts",
+                            "column": 61,
+                            "line": 68
+                          }
+                        }
+                      ],
+                      "status": "unexpected"
+                    }
+                  ],
+                  "id": "d8aa8ac9953c97db7c0d-3c19b914d707dab2b6d4",
+                  "file": "customer-registration.spec.ts",
+                  "line": 64,
+                  "column": 9
+                },
+                {
+                  "title": "should validate required fields",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 1,
+                          "parallelIndex": 1,
+                          "status": "passed",
+                          "duration": 29226,
+                          "errors": [],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "startTime": "2025-07-26T14:48:56.633Z",
+                          "annotations": [],
+                          "attachments": []
+                        }
+                      ],
+                      "status": "expected"
+                    }
+                  ],
+                  "id": "d8aa8ac9953c97db7c0d-693606298f3620acc77f",
+                  "file": "customer-registration.spec.ts",
+                  "line": 77,
+                  "column": 9
+                },
+                {
+                  "title": "should validate email format",
+                  "ok": false,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 0,
+                          "parallelIndex": 0,
+                          "status": "timedOut",
+                          "duration": 30116,
+                          "error": {
+                            "message": "\u001b[31mTest timeout of 30000ms exceeded while running \"beforeEach\" hook.\u001b[39m",
+                            "stack": "\u001b[31mTest timeout of 30000ms exceeded while running \"beforeEach\" hook.\u001b[39m\n    at /Users/abdul.ojulari/Frontends/cam/apps/registration-portal-e2e/src/customer-registration.spec.ts:59:10",
+                            "location": {
+                              "file": "/Users/abdul.ojulari/Frontends/cam/apps/registration-portal-e2e/src/customer-registration.spec.ts",
+                              "column": 10,
+                              "line": 59
+                            },
+                            "snippet": "\u001b[0m \u001b[90m 57 |\u001b[39m\n \u001b[90m 58 |\u001b[39m   test\u001b[33m.\u001b[39mdescribe(\u001b[32m'Adult Registration'\u001b[39m\u001b[33m,\u001b[39m () \u001b[33m=>\u001b[39m {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 59 |\u001b[39m     test\u001b[33m.\u001b[39mbeforeEach(\u001b[36masync\u001b[39m ({ page }) \u001b[33m=>\u001b[39m {\n \u001b[90m    |\u001b[39m          \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 60 |\u001b[39m       \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgoto(\u001b[32m'/adult'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 61 |\u001b[39m       \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mwaitForLoadState(\u001b[32m'networkidle'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 62 |\u001b[39m     })\u001b[33m;\u001b[39m\u001b[0m"
+                          },
+                          "errors": [
+                            {
+                              "location": {
+                                "file": "/Users/abdul.ojulari/Frontends/cam/apps/registration-portal-e2e/src/customer-registration.spec.ts",
+                                "column": 10,
+                                "line": 59
+                              },
+                              "message": "\u001b[31mTest timeout of 30000ms exceeded while running \"beforeEach\" hook.\u001b[39m\n\n\u001b[0m \u001b[90m 57 |\u001b[39m\n \u001b[90m 58 |\u001b[39m   test\u001b[33m.\u001b[39mdescribe(\u001b[32m'Adult Registration'\u001b[39m\u001b[33m,\u001b[39m () \u001b[33m=>\u001b[39m {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 59 |\u001b[39m     test\u001b[33m.\u001b[39mbeforeEach(\u001b[36masync\u001b[39m ({ page }) \u001b[33m=>\u001b[39m {\n \u001b[90m    |\u001b[39m          \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 60 |\u001b[39m       \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgoto(\u001b[32m'/adult'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 61 |\u001b[39m       \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mwaitForLoadState(\u001b[32m'networkidle'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 62 |\u001b[39m     })\u001b[33m;\u001b[39m\u001b[0m\n\u001b[2m    at /Users/abdul.ojulari/Frontends/cam/apps/registration-portal-e2e/src/customer-registration.spec.ts:59:10\u001b[22m"
+                            },
+                            {
+                              "location": {
+                                "file": "/Users/abdul.ojulari/Frontends/cam/apps/registration-portal-e2e/src/customer-registration.spec.ts",
+                                "column": 18,
+                                "line": 61
+                              },
+                              "message": "Error: page.waitForLoadState: Test timeout of 30000ms exceeded.\n\n\u001b[0m \u001b[90m 59 |\u001b[39m     test\u001b[33m.\u001b[39mbeforeEach(\u001b[36masync\u001b[39m ({ page }) \u001b[33m=>\u001b[39m {\n \u001b[90m 60 |\u001b[39m       \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgoto(\u001b[32m'/adult'\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 61 |\u001b[39m       \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mwaitForLoadState(\u001b[32m'networkidle'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                  \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 62 |\u001b[39m     })\u001b[33m;\u001b[39m\n \u001b[90m 63 |\u001b[39m\n \u001b[90m 64 |\u001b[39m     test(\u001b[32m'should display adult registration form'\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m ({ page }) \u001b[33m=>\u001b[39m {\u001b[0m\n\u001b[2m    at /Users/abdul.ojulari/Frontends/cam/apps/registration-portal-e2e/src/customer-registration.spec.ts:61:18\u001b[22m"
+                            }
+                          ],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "startTime": "2025-07-26T14:48:58.277Z",
+                          "annotations": [],
+                          "attachments": [
+                            {
+                              "name": "error-context",
+                              "contentType": "text/markdown",
+                              "path": "/Users/abdul.ojulari/Frontends/cam/dist/.playwright/apps/registration-portal-e2e/test-output/customer-registration-Cust-aed6f-hould-validate-email-format-chromium/error-context.md"
+                            }
+                          ],
+                          "errorLocation": {
+                            "file": "/Users/abdul.ojulari/Frontends/cam/apps/registration-portal-e2e/src/customer-registration.spec.ts",
+                            "column": 10,
+                            "line": 59
+                          }
+                        }
+                      ],
+                      "status": "unexpected"
+                    }
+                  ],
+                  "id": "d8aa8ac9953c97db7c0d-617a4bee2a1f409aad82",
+                  "file": "customer-registration.spec.ts",
+                  "line": 90,
+                  "column": 9
+                },
+                {
+                  "title": "should fill out complete adult registration form",
+                  "ok": false,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 3,
+                          "parallelIndex": 3,
+                          "status": "timedOut",
+                          "duration": 30059,
+                          "error": {
+                            "message": "\u001b[31mTest timeout of 30000ms exceeded while running \"beforeEach\" hook.\u001b[39m",
+                            "stack": "\u001b[31mTest timeout of 30000ms exceeded while running \"beforeEach\" hook.\u001b[39m\n    at /Users/abdul.ojulari/Frontends/cam/apps/registration-portal-e2e/src/customer-registration.spec.ts:59:10",
+                            "location": {
+                              "file": "/Users/abdul.ojulari/Frontends/cam/apps/registration-portal-e2e/src/customer-registration.spec.ts",
+                              "column": 10,
+                              "line": 59
+                            },
+                            "snippet": "\u001b[0m \u001b[90m 57 |\u001b[39m\n \u001b[90m 58 |\u001b[39m   test\u001b[33m.\u001b[39mdescribe(\u001b[32m'Adult Registration'\u001b[39m\u001b[33m,\u001b[39m () \u001b[33m=>\u001b[39m {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 59 |\u001b[39m     test\u001b[33m.\u001b[39mbeforeEach(\u001b[36masync\u001b[39m ({ page }) \u001b[33m=>\u001b[39m {\n \u001b[90m    |\u001b[39m          \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 60 |\u001b[39m       \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgoto(\u001b[32m'/adult'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 61 |\u001b[39m       \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mwaitForLoadState(\u001b[32m'networkidle'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 62 |\u001b[39m     })\u001b[33m;\u001b[39m\u001b[0m"
+                          },
+                          "errors": [
+                            {
+                              "location": {
+                                "file": "/Users/abdul.ojulari/Frontends/cam/apps/registration-portal-e2e/src/customer-registration.spec.ts",
+                                "column": 10,
+                                "line": 59
+                              },
+                              "message": "\u001b[31mTest timeout of 30000ms exceeded while running \"beforeEach\" hook.\u001b[39m\n\n\u001b[0m \u001b[90m 57 |\u001b[39m\n \u001b[90m 58 |\u001b[39m   test\u001b[33m.\u001b[39mdescribe(\u001b[32m'Adult Registration'\u001b[39m\u001b[33m,\u001b[39m () \u001b[33m=>\u001b[39m {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 59 |\u001b[39m     test\u001b[33m.\u001b[39mbeforeEach(\u001b[36masync\u001b[39m ({ page }) \u001b[33m=>\u001b[39m {\n \u001b[90m    |\u001b[39m          \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 60 |\u001b[39m       \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgoto(\u001b[32m'/adult'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 61 |\u001b[39m       \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mwaitForLoadState(\u001b[32m'networkidle'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 62 |\u001b[39m     })\u001b[33m;\u001b[39m\u001b[0m\n\u001b[2m    at /Users/abdul.ojulari/Frontends/cam/apps/registration-portal-e2e/src/customer-registration.spec.ts:59:10\u001b[22m"
+                            },
+                            {
+                              "location": {
+                                "file": "/Users/abdul.ojulari/Frontends/cam/apps/registration-portal-e2e/src/customer-registration.spec.ts",
+                                "column": 18,
+                                "line": 61
+                              },
+                              "message": "Error: page.waitForLoadState: Test timeout of 30000ms exceeded.\n\n\u001b[0m \u001b[90m 59 |\u001b[39m     test\u001b[33m.\u001b[39mbeforeEach(\u001b[36masync\u001b[39m ({ page }) \u001b[33m=>\u001b[39m {\n \u001b[90m 60 |\u001b[39m       \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgoto(\u001b[32m'/adult'\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 61 |\u001b[39m       \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mwaitForLoadState(\u001b[32m'networkidle'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                  \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 62 |\u001b[39m     })\u001b[33m;\u001b[39m\n \u001b[90m 63 |\u001b[39m\n \u001b[90m 64 |\u001b[39m     test(\u001b[32m'should display adult registration form'\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m ({ page }) \u001b[33m=>\u001b[39m {\u001b[0m\n\u001b[2m    at /Users/abdul.ojulari/Frontends/cam/apps/registration-portal-e2e/src/customer-registration.spec.ts:61:18\u001b[22m"
+                            }
+                          ],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "startTime": "2025-07-26T14:49:01.196Z",
+                          "annotations": [],
+                          "attachments": [
+                            {
+                              "name": "error-context",
+                              "contentType": "text/markdown",
+                              "path": "/Users/abdul.ojulari/Frontends/cam/dist/.playwright/apps/registration-portal-e2e/test-output/customer-registration-Cust-9a548-ete-adult-registration-form-chromium/error-context.md"
+                            }
+                          ],
+                          "errorLocation": {
+                            "file": "/Users/abdul.ojulari/Frontends/cam/apps/registration-portal-e2e/src/customer-registration.spec.ts",
+                            "column": 10,
+                            "line": 59
+                          }
+                        }
+                      ],
+                      "status": "unexpected"
+                    }
+                  ],
+                  "id": "d8aa8ac9953c97db7c0d-bd5f2d1ea97c14c2b2c7",
+                  "file": "customer-registration.spec.ts",
+                  "line": 97,
+                  "column": 9
+                },
+                {
+                  "title": "should handle barcode lookup functionality",
+                  "ok": false,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 4,
+                          "parallelIndex": 2,
+                          "status": "failed",
+                          "duration": 13872,
+                          "error": {
+                            "message": "Error: locator.fill: Error: strict mode violation: locator('input[aria-label=\"Barcode (Scan or Type)\"], input[label=\"Barcode (Scan or Type)\"], .v-text-field:has-text(\"Barcode\") input') resolved to 2 elements:\n    1) <input size=\"1\" value=\"\" type=\"number\" max-length=\"14\" id=\"input-v-0-30\" class=\"v-field__input\" aria-describedby=\"input-v-0-30-messages\"/> aka getByRole('spinbutton', { name: 'Barcode (Scan or Type)' })\n    2) <input size=\"1\" value=\"\" type=\"text\" required=\"\" maxlength=\"14\" id=\"input-v-0-53\" class=\"v-field__input\" aria-describedby=\"input-v-0-53-messages\"/> aka getByRole('textbox', { name: 'Library Card Barcode Library' })\n\nCall log:\n\u001b[2m  - waiting for locator('input[aria-label=\"Barcode (Scan or Type)\"], input[label=\"Barcode (Scan or Type)\"], .v-text-field:has-text(\"Barcode\") input')\u001b[22m\n",
+                            "stack": "Error: locator.fill: Error: strict mode violation: locator('input[aria-label=\"Barcode (Scan or Type)\"], input[label=\"Barcode (Scan or Type)\"], .v-text-field:has-text(\"Barcode\") input') resolved to 2 elements:\n    1) <input size=\"1\" value=\"\" type=\"number\" max-length=\"14\" id=\"input-v-0-30\" class=\"v-field__input\" aria-describedby=\"input-v-0-30-messages\"/> aka getByRole('spinbutton', { name: 'Barcode (Scan or Type)' })\n    2) <input size=\"1\" value=\"\" type=\"text\" required=\"\" maxlength=\"14\" id=\"input-v-0-53\" class=\"v-field__input\" aria-describedby=\"input-v-0-53-messages\"/> aka getByRole('textbox', { name: 'Library Card Barcode Library' })\n\nCall log:\n\u001b[2m  - waiting for locator('input[aria-label=\"Barcode (Scan or Type)\"], input[label=\"Barcode (Scan or Type)\"], .v-text-field:has-text(\"Barcode\") input')\u001b[22m\n\n    at /Users/abdul.ojulari/Frontends/cam/apps/registration-portal-e2e/src/customer-registration.spec.ts:145:152",
+                            "location": {
+                              "file": "/Users/abdul.ojulari/Frontends/cam/apps/registration-portal-e2e/src/customer-registration.spec.ts",
+                              "column": 152,
+                              "line": 145
+                            },
+                            "snippet": "\u001b[0m \u001b[90m 143 |\u001b[39m     test(\u001b[32m'should handle barcode lookup functionality'\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m ({ page }) \u001b[33m=>\u001b[39m {\n \u001b[90m 144 |\u001b[39m       \u001b[90m// Enter a 14-digit barcode\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 145 |\u001b[39m       \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mlocator(\u001b[32m'input[aria-label=\"Barcode (Scan or Type)\"], input[label=\"Barcode (Scan or Type)\"], .v-text-field:has-text(\"Barcode\") input'\u001b[39m)\u001b[33m.\u001b[39mfill(\u001b[32m'12345678901234'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                                                                                                                                                        \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 146 |\u001b[39m       \n \u001b[90m 147 |\u001b[39m       \u001b[90m// Wait for the API call and form population\u001b[39m\n \u001b[90m 148 |\u001b[39m       \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mwaitForTimeout(\u001b[35m1000\u001b[39m)\u001b[33m;\u001b[39m\u001b[0m"
+                          },
+                          "errors": [
+                            {
+                              "location": {
+                                "file": "/Users/abdul.ojulari/Frontends/cam/apps/registration-portal-e2e/src/customer-registration.spec.ts",
+                                "column": 152,
+                                "line": 145
+                              },
+                              "message": "Error: locator.fill: Error: strict mode violation: locator('input[aria-label=\"Barcode (Scan or Type)\"], input[label=\"Barcode (Scan or Type)\"], .v-text-field:has-text(\"Barcode\") input') resolved to 2 elements:\n    1) <input size=\"1\" value=\"\" type=\"number\" max-length=\"14\" id=\"input-v-0-30\" class=\"v-field__input\" aria-describedby=\"input-v-0-30-messages\"/> aka getByRole('spinbutton', { name: 'Barcode (Scan or Type)' })\n    2) <input size=\"1\" value=\"\" type=\"text\" required=\"\" maxlength=\"14\" id=\"input-v-0-53\" class=\"v-field__input\" aria-describedby=\"input-v-0-53-messages\"/> aka getByRole('textbox', { name: 'Library Card Barcode Library' })\n\nCall log:\n\u001b[2m  - waiting for locator('input[aria-label=\"Barcode (Scan or Type)\"], input[label=\"Barcode (Scan or Type)\"], .v-text-field:has-text(\"Barcode\") input')\u001b[22m\n\n\n\u001b[0m \u001b[90m 143 |\u001b[39m     test(\u001b[32m'should handle barcode lookup functionality'\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m ({ page }) \u001b[33m=>\u001b[39m {\n \u001b[90m 144 |\u001b[39m       \u001b[90m// Enter a 14-digit barcode\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 145 |\u001b[39m       \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mlocator(\u001b[32m'input[aria-label=\"Barcode (Scan or Type)\"], input[label=\"Barcode (Scan or Type)\"], .v-text-field:has-text(\"Barcode\") input'\u001b[39m)\u001b[33m.\u001b[39mfill(\u001b[32m'12345678901234'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                                                                                                                                                        \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 146 |\u001b[39m       \n \u001b[90m 147 |\u001b[39m       \u001b[90m// Wait for the API call and form population\u001b[39m\n \u001b[90m 148 |\u001b[39m       \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mwaitForTimeout(\u001b[35m1000\u001b[39m)\u001b[33m;\u001b[39m\u001b[0m\n\u001b[2m    at /Users/abdul.ojulari/Frontends/cam/apps/registration-portal-e2e/src/customer-registration.spec.ts:145:152\u001b[22m"
+                            }
+                          ],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "startTime": "2025-07-26T14:49:27.025Z",
+                          "annotations": [],
+                          "attachments": [
+                            {
+                              "name": "error-context",
+                              "contentType": "text/markdown",
+                              "path": "/Users/abdul.ojulari/Frontends/cam/dist/.playwright/apps/registration-portal-e2e/test-output/customer-registration-Cust-87484-arcode-lookup-functionality-chromium/error-context.md"
+                            }
+                          ],
+                          "errorLocation": {
+                            "file": "/Users/abdul.ojulari/Frontends/cam/apps/registration-portal-e2e/src/customer-registration.spec.ts",
+                            "column": 152,
+                            "line": 145
+                          }
+                        }
+                      ],
+                      "status": "unexpected"
+                    }
+                  ],
+                  "id": "d8aa8ac9953c97db7c0d-23ccbdb5c341aa90625c",
+                  "file": "customer-registration.spec.ts",
+                  "line": 143,
+                  "column": 9
+                }
+              ]
+            },
+            {
+              "title": "Child Registration",
+              "file": "customer-registration.spec.ts",
+              "line": 156,
+              "column": 8,
+              "specs": [
+                {
+                  "title": "should display child registration form",
+                  "ok": false,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 1,
+                          "parallelIndex": 1,
+                          "status": "failed",
+                          "duration": 14545,
+                          "error": {
+                            "message": "Error: expect.toBeVisible: Error: strict mode violation: locator('label:has-text(\"School\")') resolved to 2 elements:\n    1) <label for=\"input-v-0-23\" class=\"v-label v-field-label\">…</label> aka getByText('School').first()\n    2) <label aria-hidden=\"true\" for=\"input-v-0-23\" class=\"v-label v-field-label v-field-label--floating\">…</label> aka getByText('School').nth(1)\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('label:has-text(\"School\")')\u001b[22m\n",
+                            "stack": "Error: expect.toBeVisible: Error: strict mode violation: locator('label:has-text(\"School\")') resolved to 2 elements:\n    1) <label for=\"input-v-0-23\" class=\"v-label v-field-label\">…</label> aka getByText('School').first()\n    2) <label aria-hidden=\"true\" for=\"input-v-0-23\" class=\"v-label v-field-label v-field-label--floating\">…</label> aka getByText('School').nth(1)\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('label:has-text(\"School\")')\u001b[22m\n\n    at /Users/abdul.ojulari/Frontends/cam/apps/registration-portal-e2e/src/customer-registration.spec.ts:166:62",
+                            "location": {
+                              "file": "/Users/abdul.ojulari/Frontends/cam/apps/registration-portal-e2e/src/customer-registration.spec.ts",
+                              "column": 62,
+                              "line": 166
+                            },
+                            "snippet": "\u001b[0m \u001b[90m 164 |\u001b[39m       \n \u001b[90m 165 |\u001b[39m       \u001b[90m// Check for child-specific fields\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 166 |\u001b[39m       \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m'label:has-text(\"School\")'\u001b[39m))\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                                                              \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 167 |\u001b[39m       \n \u001b[90m 168 |\u001b[39m       \u001b[90m// Title field should NOT be visible for children\u001b[39m\n \u001b[90m 169 |\u001b[39m       \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m'label:has-text(\"Title\")'\u001b[39m))\u001b[33m.\u001b[39mnot\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\u001b[0m"
+                          },
+                          "errors": [
+                            {
+                              "location": {
+                                "file": "/Users/abdul.ojulari/Frontends/cam/apps/registration-portal-e2e/src/customer-registration.spec.ts",
+                                "column": 62,
+                                "line": 166
+                              },
+                              "message": "Error: expect.toBeVisible: Error: strict mode violation: locator('label:has-text(\"School\")') resolved to 2 elements:\n    1) <label for=\"input-v-0-23\" class=\"v-label v-field-label\">…</label> aka getByText('School').first()\n    2) <label aria-hidden=\"true\" for=\"input-v-0-23\" class=\"v-label v-field-label v-field-label--floating\">…</label> aka getByText('School').nth(1)\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('label:has-text(\"School\")')\u001b[22m\n\n\n\u001b[0m \u001b[90m 164 |\u001b[39m       \n \u001b[90m 165 |\u001b[39m       \u001b[90m// Check for child-specific fields\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 166 |\u001b[39m       \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m'label:has-text(\"School\")'\u001b[39m))\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                                                              \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 167 |\u001b[39m       \n \u001b[90m 168 |\u001b[39m       \u001b[90m// Title field should NOT be visible for children\u001b[39m\n \u001b[90m 169 |\u001b[39m       \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m'label:has-text(\"Title\")'\u001b[39m))\u001b[33m.\u001b[39mnot\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\u001b[0m\n\u001b[2m    at /Users/abdul.ojulari/Frontends/cam/apps/registration-portal-e2e/src/customer-registration.spec.ts:166:62\u001b[22m"
+                            }
+                          ],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "startTime": "2025-07-26T14:49:25.903Z",
+                          "annotations": [],
+                          "attachments": [
+                            {
+                              "name": "error-context",
+                              "contentType": "text/markdown",
+                              "path": "/Users/abdul.ojulari/Frontends/cam/dist/.playwright/apps/registration-portal-e2e/test-output/customer-registration-Cust-87377-lay-child-registration-form-chromium/error-context.md"
+                            }
+                          ],
+                          "errorLocation": {
+                            "file": "/Users/abdul.ojulari/Frontends/cam/apps/registration-portal-e2e/src/customer-registration.spec.ts",
+                            "column": 62,
+                            "line": 166
+                          }
+                        }
+                      ],
+                      "status": "unexpected"
+                    }
+                  ],
+                  "id": "d8aa8ac9953c97db7c0d-f282c3473c5cd71d4066",
+                  "file": "customer-registration.spec.ts",
+                  "line": 162,
+                  "column": 9
+                },
+                {
+                  "title": "should show school dropdown for children",
+                  "ok": false,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 5,
+                          "parallelIndex": 0,
+                          "status": "failed",
+                          "duration": 9684,
+                          "error": {
+                            "message": "Error: locator.click: Error: strict mode violation: locator('text=School').locator('..') resolved to 2 elements:\n    1) <div data-no-activator=\"\" class=\"v-field__field\">…</div> aka locator('div').filter({ hasText: /^School$/ }).first()\n    2) <div class=\"v-field__outline__notch\">…</div> aka locator('div').filter({ hasText: /^School$/ }).nth(2)\n\nCall log:\n\u001b[2m  - waiting for locator('text=School').locator('..')\u001b[22m\n",
+                            "stack": "Error: locator.click: Error: strict mode violation: locator('text=School').locator('..') resolved to 2 elements:\n    1) <div data-no-activator=\"\" class=\"v-field__field\">…</div> aka locator('div').filter({ hasText: /^School$/ }).first()\n    2) <div class=\"v-field__outline__notch\">…</div> aka locator('div').filter({ hasText: /^School$/ }).nth(2)\n\nCall log:\n\u001b[2m  - waiting for locator('text=School').locator('..')\u001b[22m\n\n    at /Users/abdul.ojulari/Frontends/cam/apps/registration-portal-e2e/src/customer-registration.spec.ts:173:55",
+                            "location": {
+                              "file": "/Users/abdul.ojulari/Frontends/cam/apps/registration-portal-e2e/src/customer-registration.spec.ts",
+                              "column": 55,
+                              "line": 173
+                            },
+                            "snippet": "\u001b[0m \u001b[90m 171 |\u001b[39m\n \u001b[90m 172 |\u001b[39m     test(\u001b[32m'should show school dropdown for children'\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m ({ page }) \u001b[33m=>\u001b[39m {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 173 |\u001b[39m       \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mlocator(\u001b[32m'text=School'\u001b[39m)\u001b[33m.\u001b[39mlocator(\u001b[32m'..'\u001b[39m)\u001b[33m.\u001b[39mclick()\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                                                       \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 174 |\u001b[39m       \n \u001b[90m 175 |\u001b[39m       \u001b[90m// Check if school options are available\u001b[39m\n \u001b[90m 176 |\u001b[39m       \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m'text=EPSB (Edmonton Public Schools)'\u001b[39m))\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\u001b[0m"
+                          },
+                          "errors": [
+                            {
+                              "location": {
+                                "file": "/Users/abdul.ojulari/Frontends/cam/apps/registration-portal-e2e/src/customer-registration.spec.ts",
+                                "column": 55,
+                                "line": 173
+                              },
+                              "message": "Error: locator.click: Error: strict mode violation: locator('text=School').locator('..') resolved to 2 elements:\n    1) <div data-no-activator=\"\" class=\"v-field__field\">…</div> aka locator('div').filter({ hasText: /^School$/ }).first()\n    2) <div class=\"v-field__outline__notch\">…</div> aka locator('div').filter({ hasText: /^School$/ }).nth(2)\n\nCall log:\n\u001b[2m  - waiting for locator('text=School').locator('..')\u001b[22m\n\n\n\u001b[0m \u001b[90m 171 |\u001b[39m\n \u001b[90m 172 |\u001b[39m     test(\u001b[32m'should show school dropdown for children'\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m ({ page }) \u001b[33m=>\u001b[39m {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 173 |\u001b[39m       \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mlocator(\u001b[32m'text=School'\u001b[39m)\u001b[33m.\u001b[39mlocator(\u001b[32m'..'\u001b[39m)\u001b[33m.\u001b[39mclick()\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                                                       \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 174 |\u001b[39m       \n \u001b[90m 175 |\u001b[39m       \u001b[90m// Check if school options are available\u001b[39m\n \u001b[90m 176 |\u001b[39m       \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m'text=EPSB (Edmonton Public Schools)'\u001b[39m))\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\u001b[0m\n\u001b[2m    at /Users/abdul.ojulari/Frontends/cam/apps/registration-portal-e2e/src/customer-registration.spec.ts:173:55\u001b[22m"
+                            }
+                          ],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "startTime": "2025-07-26T14:49:33.221Z",
+                          "annotations": [],
+                          "attachments": [
+                            {
+                              "name": "error-context",
+                              "contentType": "text/markdown",
+                              "path": "/Users/abdul.ojulari/Frontends/cam/dist/.playwright/apps/registration-portal-e2e/test-output/customer-registration-Cust-08625-chool-dropdown-for-children-chromium/error-context.md"
+                            }
+                          ],
+                          "errorLocation": {
+                            "file": "/Users/abdul.ojulari/Frontends/cam/apps/registration-portal-e2e/src/customer-registration.spec.ts",
+                            "column": 55,
+                            "line": 173
+                          }
+                        }
+                      ],
+                      "status": "unexpected"
+                    }
+                  ],
+                  "id": "d8aa8ac9953c97db7c0d-2a71782df991f1a1cc9d",
+                  "file": "customer-registration.spec.ts",
+                  "line": 172,
+                  "column": 9
+                },
+                {
+                  "title": "should handle multiple children registration",
+                  "ok": false,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 6,
+                          "parallelIndex": 3,
+                          "status": "failed",
+                          "duration": 14129,
+                          "error": {
+                            "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: locator('text=Jane Doe')\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('text=Jane Doe')\u001b[22m\n",
+                            "stack": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: locator('text=Jane Doe')\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('text=Jane Doe')\u001b[22m\n\n    at /Users/abdul.ojulari/Frontends/cam/apps/registration-portal-e2e/src/customer-registration.spec.ts:198:51",
+                            "location": {
+                              "file": "/Users/abdul.ojulari/Frontends/cam/apps/registration-portal-e2e/src/customer-registration.spec.ts",
+                              "column": 51,
+                              "line": 198
+                            },
+                            "snippet": "\u001b[0m \u001b[90m 196 |\u001b[39m       \n \u001b[90m 197 |\u001b[39m       \u001b[90m// Check if child was added to the list\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 198 |\u001b[39m       \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m'text=Jane Doe'\u001b[39m))\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                                                   \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 199 |\u001b[39m       \n \u001b[90m 200 |\u001b[39m       \u001b[90m// Form should be cleared for next child\u001b[39m\n \u001b[90m 201 |\u001b[39m       \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m'input[aria-label=\"First Name\"], input[label=\"First Name\"], .v-text-field:has-text(\"First Name\") input'\u001b[39m))\u001b[33m.\u001b[39mtoHaveValue(\u001b[32m''\u001b[39m)\u001b[33m;\u001b[39m\u001b[0m"
+                          },
+                          "errors": [
+                            {
+                              "location": {
+                                "file": "/Users/abdul.ojulari/Frontends/cam/apps/registration-portal-e2e/src/customer-registration.spec.ts",
+                                "column": 51,
+                                "line": 198
+                              },
+                              "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: locator('text=Jane Doe')\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('text=Jane Doe')\u001b[22m\n\n\n\u001b[0m \u001b[90m 196 |\u001b[39m       \n \u001b[90m 197 |\u001b[39m       \u001b[90m// Check if child was added to the list\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 198 |\u001b[39m       \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m'text=Jane Doe'\u001b[39m))\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                                                   \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 199 |\u001b[39m       \n \u001b[90m 200 |\u001b[39m       \u001b[90m// Form should be cleared for next child\u001b[39m\n \u001b[90m 201 |\u001b[39m       \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m'input[aria-label=\"First Name\"], input[label=\"First Name\"], .v-text-field:has-text(\"First Name\") input'\u001b[39m))\u001b[33m.\u001b[39mtoHaveValue(\u001b[32m''\u001b[39m)\u001b[33m;\u001b[39m\u001b[0m\n\u001b[2m    at /Users/abdul.ojulari/Frontends/cam/apps/registration-portal-e2e/src/customer-registration.spec.ts:198:51\u001b[22m"
+                            }
+                          ],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "startTime": "2025-07-26T14:49:35.744Z",
+                          "annotations": [],
+                          "attachments": [
+                            {
+                              "name": "error-context",
+                              "contentType": "text/markdown",
+                              "path": "/Users/abdul.ojulari/Frontends/cam/dist/.playwright/apps/registration-portal-e2e/test-output/customer-registration-Cust-f6cd9-tiple-children-registration-chromium/error-context.md"
+                            }
+                          ],
+                          "errorLocation": {
+                            "file": "/Users/abdul.ojulari/Frontends/cam/apps/registration-portal-e2e/src/customer-registration.spec.ts",
+                            "column": 51,
+                            "line": 198
+                          }
+                        }
+                      ],
+                      "status": "unexpected"
+                    }
+                  ],
+                  "id": "d8aa8ac9953c97db7c0d-e41a800770fdd244606c",
+                  "file": "customer-registration.spec.ts",
+                  "line": 182,
+                  "column": 9
+                },
+                {
+                  "title": "should show cancel button when children are added",
+                  "ok": false,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 7,
+                          "parallelIndex": 1,
+                          "status": "timedOut",
+                          "duration": 30074,
+                          "error": {
+                            "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m",
+                            "stack": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                          },
+                          "errors": [
+                            {
+                              "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                            },
+                            {
+                              "location": {
+                                "file": "/Users/abdul.ojulari/Frontends/cam/apps/registration-portal-e2e/src/customer-registration.spec.ts",
+                                "column": 18,
+                                "line": 218
+                              },
+                              "message": "Error: page.fill: Test timeout of 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('input[label=\"First Name\"]')\u001b[22m\n\n\n\u001b[0m \u001b[90m 216 |\u001b[39m       \n \u001b[90m 217 |\u001b[39m       \u001b[90m// Fill basic info and add a child\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 218 |\u001b[39m       \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mfill(\u001b[32m'input[label=\"First Name\"]'\u001b[39m\u001b[33m,\u001b[39m \u001b[32m'Test'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                  \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 219 |\u001b[39m       \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mfill(\u001b[32m'input[label=\"Last Name\"]'\u001b[39m\u001b[33m,\u001b[39m \u001b[32m'Child'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 220 |\u001b[39m       \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mfill(\u001b[32m'input[label=\"Date of Birth\"]'\u001b[39m\u001b[33m,\u001b[39m \u001b[32m'2010-01-01'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 221 |\u001b[39m       \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mlocator(\u001b[32m'button:has-text(\"Add another child\")'\u001b[39m)\u001b[33m.\u001b[39mclick()\u001b[33m;\u001b[39m\u001b[0m\n\u001b[2m    at /Users/abdul.ojulari/Frontends/cam/apps/registration-portal-e2e/src/customer-registration.spec.ts:218:18\u001b[22m"
+                            }
+                          ],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "startTime": "2025-07-26T14:49:44.399Z",
+                          "annotations": [],
+                          "attachments": [
+                            {
+                              "name": "error-context",
+                              "contentType": "text/markdown",
+                              "path": "/Users/abdul.ojulari/Frontends/cam/dist/.playwright/apps/registration-portal-e2e/test-output/customer-registration-Cust-ab4d5-ton-when-children-are-added-chromium/error-context.md"
+                            }
+                          ]
+                        }
+                      ],
+                      "status": "unexpected"
+                    }
+                  ],
+                  "id": "d8aa8ac9953c97db7c0d-0465d326fd57ed89111a",
+                  "file": "customer-registration.spec.ts",
+                  "line": 213,
+                  "column": 9
+                },
+                {
+                  "title": "should handle cancel functionality",
+                  "ok": false,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 8,
+                          "parallelIndex": 2,
+                          "status": "timedOut",
+                          "duration": 30086,
+                          "error": {
+                            "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m",
+                            "stack": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                          },
+                          "errors": [
+                            {
+                              "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                            },
+                            {
+                              "location": {
+                                "file": "/Users/abdul.ojulari/Frontends/cam/apps/registration-portal-e2e/src/customer-registration.spec.ts",
+                                "column": 18,
+                                "line": 229
+                              },
+                              "message": "Error: page.fill: Test timeout of 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('input[label=\"First Name\"]')\u001b[22m\n\n\n\u001b[0m \u001b[90m 227 |\u001b[39m     test(\u001b[32m'should handle cancel functionality'\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m ({ page }) \u001b[33m=>\u001b[39m {\n \u001b[90m 228 |\u001b[39m       \u001b[90m// Add a child\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 229 |\u001b[39m       \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mfill(\u001b[32m'input[label=\"First Name\"]'\u001b[39m\u001b[33m,\u001b[39m \u001b[32m'Test'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                  \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 230 |\u001b[39m       \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mfill(\u001b[32m'input[label=\"Last Name\"]'\u001b[39m\u001b[33m,\u001b[39m \u001b[32m'Child'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 231 |\u001b[39m       \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mfill(\u001b[32m'input[label=\"Date of Birth\"]'\u001b[39m\u001b[33m,\u001b[39m \u001b[32m'2010-01-01'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 232 |\u001b[39m       \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mlocator(\u001b[32m'button:has-text(\"Add another child\")'\u001b[39m)\u001b[33m.\u001b[39mclick()\u001b[33m;\u001b[39m\u001b[0m\n\u001b[2m    at /Users/abdul.ojulari/Frontends/cam/apps/registration-portal-e2e/src/customer-registration.spec.ts:229:18\u001b[22m"
+                            }
+                          ],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "startTime": "2025-07-26T14:49:44.452Z",
+                          "annotations": [],
+                          "attachments": [
+                            {
+                              "name": "error-context",
+                              "contentType": "text/markdown",
+                              "path": "/Users/abdul.ojulari/Frontends/cam/dist/.playwright/apps/registration-portal-e2e/test-output/customer-registration-Cust-5a510-handle-cancel-functionality-chromium/error-context.md"
+                            }
+                          ]
+                        }
+                      ],
+                      "status": "unexpected"
+                    }
+                  ],
+                  "id": "d8aa8ac9953c97db7c0d-fa8cd56838cd906e01f3",
+                  "file": "customer-registration.spec.ts",
+                  "line": 227,
+                  "column": 9
+                },
+                {
+                  "title": "should validate child age restrictions",
+                  "ok": false,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 9,
+                          "parallelIndex": 0,
+                          "status": "timedOut",
+                          "duration": 30078,
+                          "error": {
+                            "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m",
+                            "stack": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                          },
+                          "errors": [
+                            {
+                              "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                            },
+                            {
+                              "location": {
+                                "file": "/Users/abdul.ojulari/Frontends/cam/apps/registration-portal-e2e/src/customer-registration.spec.ts",
+                                "column": 18,
+                                "line": 249
+                              },
+                              "message": "Error: page.fill: Test timeout of 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('input[label=\"Date of Birth\"]')\u001b[22m\n\n\n\u001b[0m \u001b[90m 247 |\u001b[39m     test(\u001b[32m'should validate child age restrictions'\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m ({ page }) \u001b[33m=>\u001b[39m {\n \u001b[90m 248 |\u001b[39m       \u001b[90m// Try to enter an adult birth date (older than 18)\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 249 |\u001b[39m       \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mfill(\u001b[32m'input[label=\"Date of Birth\"]'\u001b[39m\u001b[33m,\u001b[39m \u001b[32m'2000-01-01'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                  \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 250 |\u001b[39m       \n \u001b[90m 251 |\u001b[39m       \u001b[90m// The form should have age validation\u001b[39m\n \u001b[90m 252 |\u001b[39m       \u001b[90m// This would depend on the specific validation implementation\u001b[39m\u001b[0m\n\u001b[2m    at /Users/abdul.ojulari/Frontends/cam/apps/registration-portal-e2e/src/customer-registration.spec.ts:249:18\u001b[22m"
+                            }
+                          ],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "startTime": "2025-07-26T14:49:47.175Z",
+                          "annotations": [],
+                          "attachments": [
+                            {
+                              "name": "error-context",
+                              "contentType": "text/markdown",
+                              "path": "/Users/abdul.ojulari/Frontends/cam/dist/.playwright/apps/registration-portal-e2e/test-output/customer-registration-Cust-a9ed1-date-child-age-restrictions-chromium/error-context.md"
+                            }
+                          ]
+                        }
+                      ],
+                      "status": "unexpected"
+                    }
+                  ],
+                  "id": "d8aa8ac9953c97db7c0d-c815e1daa1471e96a529",
+                  "file": "customer-registration.spec.ts",
+                  "line": 247,
+                  "column": 9
+                }
+              ]
+            },
+            {
+              "title": "Common Functionality",
+              "file": "customer-registration.spec.ts",
+              "line": 256,
+              "column": 8,
+              "specs": [
+                {
+                  "title": "should handle secondary address functionality",
+                  "ok": false,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 10,
+                          "parallelIndex": 3,
+                          "status": "failed",
+                          "duration": 5369,
+                          "error": {
+                            "message": "Error: locator.check: Unexpected token \"=\" while parsing css selector \"input[type=\"checkbox\"]:near(text=\"Use Secondary Address\")\". Did you mean to CSS.escape it?",
+                            "stack": "Error: locator.check: Unexpected token \"=\" while parsing css selector \"input[type=\"checkbox\"]:near(text=\"Use Secondary Address\")\". Did you mean to CSS.escape it?\n    at /Users/abdul.ojulari/Frontends/cam/apps/registration-portal-e2e/src/customer-registration.spec.ts:264:87",
+                            "location": {
+                              "file": "/Users/abdul.ojulari/Frontends/cam/apps/registration-portal-e2e/src/customer-registration.spec.ts",
+                              "column": 87,
+                              "line": 264
+                            },
+                            "snippet": "\u001b[0m \u001b[90m 262 |\u001b[39m       \n \u001b[90m 263 |\u001b[39m       \u001b[90m// Check \"Use Secondary Address\"\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 264 |\u001b[39m       \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mlocator(\u001b[32m'input[type=\"checkbox\"]:near(text=\"Use Secondary Address\")'\u001b[39m)\u001b[33m.\u001b[39mcheck()\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                                                                                       \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 265 |\u001b[39m       \n \u001b[90m 266 |\u001b[39m       \u001b[90m// Secondary address fields should now be visible\u001b[39m\n \u001b[90m 267 |\u001b[39m       \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m'label:has-text(\"Address Line 2\")'\u001b[39m))\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\u001b[0m"
+                          },
+                          "errors": [
+                            {
+                              "location": {
+                                "file": "/Users/abdul.ojulari/Frontends/cam/apps/registration-portal-e2e/src/customer-registration.spec.ts",
+                                "column": 87,
+                                "line": 264
+                              },
+                              "message": "Error: locator.check: Unexpected token \"=\" while parsing css selector \"input[type=\"checkbox\"]:near(text=\"Use Secondary Address\")\". Did you mean to CSS.escape it?\n\n\u001b[0m \u001b[90m 262 |\u001b[39m       \n \u001b[90m 263 |\u001b[39m       \u001b[90m// Check \"Use Secondary Address\"\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 264 |\u001b[39m       \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mlocator(\u001b[32m'input[type=\"checkbox\"]:near(text=\"Use Secondary Address\")'\u001b[39m)\u001b[33m.\u001b[39mcheck()\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                                                                                       \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 265 |\u001b[39m       \n \u001b[90m 266 |\u001b[39m       \u001b[90m// Secondary address fields should now be visible\u001b[39m\n \u001b[90m 267 |\u001b[39m       \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m'label:has-text(\"Address Line 2\")'\u001b[39m))\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\u001b[0m\n\u001b[2m    at /Users/abdul.ojulari/Frontends/cam/apps/registration-portal-e2e/src/customer-registration.spec.ts:264:87\u001b[22m"
+                            }
+                          ],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "startTime": "2025-07-26T14:49:54.887Z",
+                          "annotations": [],
+                          "attachments": [
+                            {
+                              "name": "error-context",
+                              "contentType": "text/markdown",
+                              "path": "/Users/abdul.ojulari/Frontends/cam/dist/.playwright/apps/registration-portal-e2e/test-output/customer-registration-Cust-5e07b-ndary-address-functionality-chromium/error-context.md"
+                            }
+                          ],
+                          "errorLocation": {
+                            "file": "/Users/abdul.ojulari/Frontends/cam/apps/registration-portal-e2e/src/customer-registration.spec.ts",
+                            "column": 87,
+                            "line": 264
+                          }
+                        }
+                      ],
+                      "status": "unexpected"
+                    }
+                  ],
+                  "id": "d8aa8ac9953c97db7c0d-0fe6b014c528960b53df",
+                  "file": "customer-registration.spec.ts",
+                  "line": 257,
+                  "column": 9
+                },
+                {
+                  "title": "should format postal code automatically",
+                  "ok": false,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 11,
+                          "parallelIndex": 3,
+                          "status": "timedOut",
+                          "duration": 30096,
+                          "error": {
+                            "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m",
+                            "stack": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                          },
+                          "errors": [
+                            {
+                              "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                            },
+                            {
+                              "location": {
+                                "file": "/Users/abdul.ojulari/Frontends/cam/apps/registration-portal-e2e/src/customer-registration.spec.ts",
+                                "column": 18,
+                                "line": 275
+                              },
+                              "message": "Error: page.fill: Test timeout of 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('input[label=\"Postal Code\"]')\u001b[22m\n\n\n\u001b[0m \u001b[90m 273 |\u001b[39m       \n \u001b[90m 274 |\u001b[39m       \u001b[90m// Enter postal code without formatting\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 275 |\u001b[39m       \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mfill(\u001b[32m'input[label=\"Postal Code\"]'\u001b[39m\u001b[33m,\u001b[39m \u001b[32m'1a1a1a'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                  \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 276 |\u001b[39m       \n \u001b[90m 277 |\u001b[39m       \u001b[90m// Should be automatically formatted to T1A 1A1\u001b[39m\n \u001b[90m 278 |\u001b[39m       \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m'input[label=\"Postal Code\"]'\u001b[39m))\u001b[33m.\u001b[39mtoHaveValue(\u001b[32m'T1A 1A1'\u001b[39m)\u001b[33m;\u001b[39m\u001b[0m\n\u001b[2m    at /Users/abdul.ojulari/Frontends/cam/apps/registration-portal-e2e/src/customer-registration.spec.ts:275:18\u001b[22m"
+                            }
+                          ],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "startTime": "2025-07-26T14:50:03.550Z",
+                          "annotations": [],
+                          "attachments": [
+                            {
+                              "name": "error-context",
+                              "contentType": "text/markdown",
+                              "path": "/Users/abdul.ojulari/Frontends/cam/dist/.playwright/apps/registration-portal-e2e/test-output/customer-registration-Cust-b8956-t-postal-code-automatically-chromium/error-context.md"
+                            }
+                          ]
+                        }
+                      ],
+                      "status": "unexpected"
+                    }
+                  ],
+                  "id": "d8aa8ac9953c97db7c0d-b7d4272090f16c649713",
+                  "file": "customer-registration.spec.ts",
+                  "line": 271,
+                  "column": 9
+                },
+                {
+                  "title": "should handle duplicate detection",
+                  "ok": false,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 12,
+                          "parallelIndex": 1,
+                          "status": "timedOut",
+                          "duration": 30059,
+                          "error": {
+                            "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m",
+                            "stack": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                          },
+                          "errors": [
+                            {
+                              "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                            },
+                            {
+                              "location": {
+                                "file": "/Users/abdul.ojulari/Frontends/cam/apps/registration-portal-e2e/src/customer-registration.spec.ts",
+                                "column": 18,
+                                "line": 285
+                              },
+                              "message": "Error: page.fill: Test timeout of 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('input[label=\"First Name\"]')\u001b[22m\n\n\n\u001b[0m \u001b[90m 283 |\u001b[39m       \n \u001b[90m 284 |\u001b[39m       \u001b[90m// Fill name and DOB that would trigger duplicate check\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 285 |\u001b[39m       \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mfill(\u001b[32m'input[label=\"First Name\"]'\u001b[39m\u001b[33m,\u001b[39m \u001b[32m'Duplicate'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                  \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 286 |\u001b[39m       \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mfill(\u001b[32m'input[label=\"Last Name\"]'\u001b[39m\u001b[33m,\u001b[39m \u001b[32m'User'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 287 |\u001b[39m       \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mfill(\u001b[32m'input[label=\"Date of Birth\"]'\u001b[39m\u001b[33m,\u001b[39m \u001b[32m'1980-01-01'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 288 |\u001b[39m       \u001b[0m\n\u001b[2m    at /Users/abdul.ojulari/Frontends/cam/apps/registration-portal-e2e/src/customer-registration.spec.ts:285:18\u001b[22m"
+                            }
+                          ],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "startTime": "2025-07-26T14:50:16.821Z",
+                          "annotations": [],
+                          "attachments": [
+                            {
+                              "name": "error-context",
+                              "contentType": "text/markdown",
+                              "path": "/Users/abdul.ojulari/Frontends/cam/dist/.playwright/apps/registration-portal-e2e/test-output/customer-registration-Cust-29d3d--handle-duplicate-detection-chromium/error-context.md"
+                            }
+                          ]
+                        }
+                      ],
+                      "status": "unexpected"
+                    }
+                  ],
+                  "id": "d8aa8ac9953c97db7c0d-6dc2c1d32333912e344c",
+                  "file": "customer-registration.spec.ts",
+                  "line": 281,
+                  "column": 9
+                },
+                {
+                  "title": "should disable generate button when barcode is already filled",
+                  "ok": false,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 13,
+                          "parallelIndex": 2,
+                          "status": "timedOut",
+                          "duration": 30067,
+                          "error": {
+                            "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m",
+                            "stack": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                          },
+                          "errors": [
+                            {
+                              "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                            },
+                            {
+                              "location": {
+                                "file": "/Users/abdul.ojulari/Frontends/cam/apps/registration-portal-e2e/src/customer-registration.spec.ts",
+                                "column": 18,
+                                "line": 303
+                              },
+                              "message": "Error: page.fill: Test timeout of 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('input[label=\"Library Card Barcode\"]')\u001b[22m\n\n\n\u001b[0m \u001b[90m 301 |\u001b[39m       \n \u001b[90m 302 |\u001b[39m       \u001b[90m// Fill the barcode field manually\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 303 |\u001b[39m       \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mfill(\u001b[32m'input[label=\"Library Card Barcode\"]'\u001b[39m\u001b[33m,\u001b[39m \u001b[32m'12345678901234'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                  \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 304 |\u001b[39m       \n \u001b[90m 305 |\u001b[39m       \u001b[90m// Generate button should now be disabled\u001b[39m\n \u001b[90m 306 |\u001b[39m       \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m'button:has-text(\"Generate a digital card Number\")'\u001b[39m))\u001b[33m.\u001b[39mtoBeDisabled()\u001b[33m;\u001b[39m\u001b[0m\n\u001b[2m    at /Users/abdul.ojulari/Frontends/cam/apps/registration-portal-e2e/src/customer-registration.spec.ts:303:18\u001b[22m"
+                            }
+                          ],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "startTime": "2025-07-26T14:50:16.866Z",
+                          "annotations": [],
+                          "attachments": [
+                            {
+                              "name": "error-context",
+                              "contentType": "text/markdown",
+                              "path": "/Users/abdul.ojulari/Frontends/cam/dist/.playwright/apps/registration-portal-e2e/test-output/customer-registration-Cust-0771e-n-barcode-is-already-filled-chromium/error-context.md"
+                            }
+                          ]
+                        }
+                      ],
+                      "status": "unexpected"
+                    }
+                  ],
+                  "id": "d8aa8ac9953c97db7c0d-c4d9c9b631b458912f76",
+                  "file": "customer-registration.spec.ts",
+                  "line": 296,
+                  "column": 9
+                },
+                {
+                  "title": "should validate barcode length",
+                  "ok": false,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 14,
+                          "parallelIndex": 0,
+                          "status": "timedOut",
+                          "duration": 30102,
+                          "error": {
+                            "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m",
+                            "stack": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                          },
+                          "errors": [
+                            {
+                              "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                            },
+                            {
+                              "location": {
+                                "file": "/Users/abdul.ojulari/Frontends/cam/apps/registration-portal-e2e/src/customer-registration.spec.ts",
+                                "column": 18,
+                                "line": 313
+                              },
+                              "message": "Error: page.fill: Test timeout of 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('input[label=\"Library Card Barcode\"]')\u001b[22m\n\n\n\u001b[0m \u001b[90m 311 |\u001b[39m       \n \u001b[90m 312 |\u001b[39m       \u001b[90m// Enter a barcode that's too short\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 313 |\u001b[39m       \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mfill(\u001b[32m'input[label=\"Library Card Barcode\"]'\u001b[39m\u001b[33m,\u001b[39m \u001b[32m'123456'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                  \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 314 |\u001b[39m       \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mlocator(\u001b[32m'button:has-text(\"Submit\")'\u001b[39m)\u001b[33m.\u001b[39mclick()\u001b[33m;\u001b[39m\n \u001b[90m 315 |\u001b[39m       \n \u001b[90m 316 |\u001b[39m       \u001b[90m// Should show validation error\u001b[39m\u001b[0m\n\u001b[2m    at /Users/abdul.ojulari/Frontends/cam/apps/registration-portal-e2e/src/customer-registration.spec.ts:313:18\u001b[22m"
+                            }
+                          ],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "startTime": "2025-07-26T14:50:21.335Z",
+                          "annotations": [],
+                          "attachments": [
+                            {
+                              "name": "error-context",
+                              "contentType": "text/markdown",
+                              "path": "/Users/abdul.ojulari/Frontends/cam/dist/.playwright/apps/registration-portal-e2e/test-output/customer-registration-Cust-8f254-uld-validate-barcode-length-chromium/error-context.md"
+                            }
+                          ]
+                        }
+                      ],
+                      "status": "unexpected"
+                    }
+                  ],
+                  "id": "d8aa8ac9953c97db7c0d-3a28b6214c6b7a365dd3",
+                  "file": "customer-registration.spec.ts",
+                  "line": 309,
+                  "column": 9
+                },
+                {
+                  "title": "should handle phone number formatting",
+                  "ok": false,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 15,
+                          "parallelIndex": 3,
+                          "status": "timedOut",
+                          "duration": 30056,
+                          "error": {
+                            "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m",
+                            "stack": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                          },
+                          "errors": [
+                            {
+                              "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                            },
+                            {
+                              "location": {
+                                "file": "/Users/abdul.ojulari/Frontends/cam/apps/registration-portal-e2e/src/customer-registration.spec.ts",
+                                "column": 18,
+                                "line": 324
+                              },
+                              "message": "Error: page.fill: Test timeout of 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('input[label=\"Phone Number\"]')\u001b[22m\n\n\n\u001b[0m \u001b[90m 322 |\u001b[39m       \n \u001b[90m 323 |\u001b[39m       \u001b[90m// Enter phone number\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 324 |\u001b[39m       \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mfill(\u001b[32m'input[label=\"Phone Number\"]'\u001b[39m\u001b[33m,\u001b[39m \u001b[32m'7801234567'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                  \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 325 |\u001b[39m       \n \u001b[90m 326 |\u001b[39m       \u001b[90m// Should be formatted to 780-123-4567\u001b[39m\n \u001b[90m 327 |\u001b[39m       \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m'input[label=\"Phone Number\"]'\u001b[39m))\u001b[33m.\u001b[39mtoHaveValue(\u001b[32m'780-123-4567'\u001b[39m)\u001b[33m;\u001b[39m\u001b[0m\n\u001b[2m    at /Users/abdul.ojulari/Frontends/cam/apps/registration-portal-e2e/src/customer-registration.spec.ts:324:18\u001b[22m"
+                            }
+                          ],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "startTime": "2025-07-26T14:50:35.518Z",
+                          "annotations": [],
+                          "attachments": [
+                            {
+                              "name": "error-context",
+                              "contentType": "text/markdown",
+                              "path": "/Users/abdul.ojulari/Frontends/cam/dist/.playwright/apps/registration-portal-e2e/test-output/customer-registration-Cust-8f9fe-dle-phone-number-formatting-chromium/error-context.md"
+                            }
+                          ]
+                        }
+                      ],
+                      "status": "unexpected"
+                    }
+                  ],
+                  "id": "d8aa8ac9953c97db7c0d-3e7fa4cdec074183d988",
+                  "file": "customer-registration.spec.ts",
+                  "line": 320,
+                  "column": 9
+                },
+                {
+                  "title": "should handle preferred name functionality",
+                  "ok": false,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 16,
+                          "parallelIndex": 1,
+                          "status": "timedOut",
+                          "duration": 30036,
+                          "error": {
+                            "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m",
+                            "stack": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                          },
+                          "errors": [
+                            {
+                              "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                            },
+                            {
+                              "location": {
+                                "file": "/Users/abdul.ojulari/Frontends/cam/apps/registration-portal-e2e/src/customer-registration.spec.ts",
+                                "column": 18,
+                                "line": 334
+                              },
+                              "message": "Error: page.fill: Test timeout of 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('input[label=\"Preferred Name\"]')\u001b[22m\n\n\n\u001b[0m \u001b[90m 332 |\u001b[39m       \n \u001b[90m 333 |\u001b[39m       \u001b[90m// Fill preferred name\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 334 |\u001b[39m       \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mfill(\u001b[32m'input[label=\"Preferred Name\"]'\u001b[39m\u001b[33m,\u001b[39m \u001b[32m'Johnny'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                  \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 335 |\u001b[39m       \n \u001b[90m 336 |\u001b[39m       \u001b[90m// Check \"Use Preferred Name\"\u001b[39m\n \u001b[90m 337 |\u001b[39m       \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mlocator(\u001b[32m'input[type=\"checkbox\"]:near(text=\"Use Preferred Name\")'\u001b[39m)\u001b[33m.\u001b[39mcheck()\u001b[33m;\u001b[39m\u001b[0m\n\u001b[2m    at /Users/abdul.ojulari/Frontends/cam/apps/registration-portal-e2e/src/customer-registration.spec.ts:334:18\u001b[22m"
+                            }
+                          ],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "startTime": "2025-07-26T14:50:47.866Z",
+                          "annotations": [],
+                          "attachments": [
+                            {
+                              "name": "error-context",
+                              "contentType": "text/markdown",
+                              "path": "/Users/abdul.ojulari/Frontends/cam/dist/.playwright/apps/registration-portal-e2e/test-output/customer-registration-Cust-e6e75-referred-name-functionality-chromium/error-context.md"
+                            }
+                          ]
+                        }
+                      ],
+                      "status": "unexpected"
+                    }
+                  ],
+                  "id": "d8aa8ac9953c97db7c0d-a1c489e006f54f9d7eab",
+                  "file": "customer-registration.spec.ts",
+                  "line": 330,
+                  "column": 9
+                }
+              ]
+            },
+            {
+              "title": "Error Handling",
+              "file": "customer-registration.spec.ts",
+              "line": 344,
+              "column": 8,
+              "specs": [
+                {
+                  "title": "should show error when barcode lookup fails",
+                  "ok": false,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 17,
+                          "parallelIndex": 2,
+                          "status": "timedOut",
+                          "duration": 30040,
+                          "error": {
+                            "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m",
+                            "stack": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                          },
+                          "errors": [
+                            {
+                              "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                            },
+                            {
+                              "location": {
+                                "file": "/Users/abdul.ojulari/Frontends/cam/apps/registration-portal-e2e/src/customer-registration.spec.ts",
+                                "column": 18,
+                                "line": 358
+                              },
+                              "message": "Error: page.fill: Test timeout of 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('input[label=\"Barcode (Scan or Type)\"]')\u001b[22m\n\n\n\u001b[0m \u001b[90m 356 |\u001b[39m       \n \u001b[90m 357 |\u001b[39m       \u001b[90m// Enter a barcode that will fail lookup\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 358 |\u001b[39m       \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mfill(\u001b[32m'input[label=\"Barcode (Scan or Type)\"]'\u001b[39m\u001b[33m,\u001b[39m \u001b[32m'99999999999999'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                  \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 359 |\u001b[39m       \n \u001b[90m 360 |\u001b[39m       \u001b[90m// Should show error banner\u001b[39m\n \u001b[90m 361 |\u001b[39m       \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m'text=Barcode not found'\u001b[39m))\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\u001b[0m\n\u001b[2m    at /Users/abdul.ojulari/Frontends/cam/apps/registration-portal-e2e/src/customer-registration.spec.ts:358:18\u001b[22m"
+                            }
+                          ],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "startTime": "2025-07-26T14:50:47.883Z",
+                          "annotations": [],
+                          "attachments": [
+                            {
+                              "name": "error-context",
+                              "contentType": "text/markdown",
+                              "path": "/Users/abdul.ojulari/Frontends/cam/dist/.playwright/apps/registration-portal-e2e/test-output/customer-registration-Cust-29302-r-when-barcode-lookup-fails-chromium/error-context.md"
+                            }
+                          ]
+                        }
+                      ],
+                      "status": "unexpected"
+                    }
+                  ],
+                  "id": "d8aa8ac9953c97db7c0d-5b5effa41990a3a5c4e0",
+                  "file": "customer-registration.spec.ts",
+                  "line": 345,
+                  "column": 9
+                },
+                {
+                  "title": "should handle network errors gracefully",
+                  "ok": false,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 18,
+                          "parallelIndex": 0,
+                          "status": "timedOut",
+                          "duration": 30048,
+                          "error": {
+                            "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m",
+                            "stack": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                          },
+                          "errors": [
+                            {
+                              "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                            },
+                            {
+                              "location": {
+                                "file": "/Users/abdul.ojulari/Frontends/cam/apps/registration-portal-e2e/src/customer-registration.spec.ts",
+                                "column": 68,
+                                "line": 381
+                              },
+                              "message": "Error: locator.fill: Test timeout of 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[data-testid=\"profile-combobox\"] input')\u001b[22m\n\n\n\u001b[0m \u001b[90m 379 |\u001b[39m       \n \u001b[90m 380 |\u001b[39m       \u001b[90m// Fill and submit a valid form\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 381 |\u001b[39m       \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mlocator(\u001b[32m'[data-testid=\"profile-combobox\"] input'\u001b[39m)\u001b[33m.\u001b[39mfill(\u001b[32m'Adult'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                                                                    \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 382 |\u001b[39m       \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mfill(\u001b[32m'input[label=\"First Name\"]'\u001b[39m\u001b[33m,\u001b[39m \u001b[32m'Test'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 383 |\u001b[39m       \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mfill(\u001b[32m'input[label=\"Last Name\"]'\u001b[39m\u001b[33m,\u001b[39m \u001b[32m'User'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 384 |\u001b[39m       \u001b[90m// ... fill other required fields\u001b[39m\u001b[0m\n\u001b[2m    at /Users/abdul.ojulari/Frontends/cam/apps/registration-portal-e2e/src/customer-registration.spec.ts:381:68\u001b[22m"
+                            }
+                          ],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "startTime": "2025-07-26T14:50:54.209Z",
+                          "annotations": [],
+                          "attachments": [
+                            {
+                              "name": "error-context",
+                              "contentType": "text/markdown",
+                              "path": "/Users/abdul.ojulari/Frontends/cam/dist/.playwright/apps/registration-portal-e2e/test-output/customer-registration-Cust-323cb-e-network-errors-gracefully-chromium/error-context.md"
+                            }
+                          ]
+                        }
+                      ],
+                      "status": "unexpected"
+                    }
+                  ],
+                  "id": "d8aa8ac9953c97db7c0d-ea3eb590a50fb554d354",
+                  "file": "customer-registration.spec.ts",
+                  "line": 368,
+                  "column": 9
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "example.spec.ts",
+      "file": "example.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "has title",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 19,
+                  "parallelIndex": 3,
+                  "status": "failed",
+                  "duration": 703,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoContain\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // indexOf\u001b[22m\n\nExpected substring: \u001b[32m\"Welcome\"\u001b[39m\nReceived string:    \u001b[31m\"Dashboard\"\u001b[39m",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoContain\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // indexOf\u001b[22m\n\nExpected substring: \u001b[32m\"Welcome\"\u001b[39m\nReceived string:    \u001b[31m\"Dashboard\"\u001b[39m\n    at /Users/abdul.ojulari/Frontends/cam/apps/registration-portal-e2e/src/example.spec.ts:7:48",
+                    "location": {
+                      "file": "/Users/abdul.ojulari/Frontends/cam/apps/registration-portal-e2e/src/example.spec.ts",
+                      "column": 48,
+                      "line": 7
+                    },
+                    "snippet": "\u001b[0m \u001b[90m 5 |\u001b[39m\n \u001b[90m 6 |\u001b[39m   \u001b[90m// Expect h1 to contain a substring.\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 7 |\u001b[39m   expect(\u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mlocator(\u001b[32m'h1'\u001b[39m)\u001b[33m.\u001b[39minnerText())\u001b[33m.\u001b[39mtoContain(\u001b[32m'Welcome'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m   |\u001b[39m                                                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 8 |\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m 9 |\u001b[39m\u001b[0m"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Users/abdul.ojulari/Frontends/cam/apps/registration-portal-e2e/src/example.spec.ts",
+                        "column": 48,
+                        "line": 7
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoContain\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // indexOf\u001b[22m\n\nExpected substring: \u001b[32m\"Welcome\"\u001b[39m\nReceived string:    \u001b[31m\"Dashboard\"\u001b[39m\n\n\u001b[0m \u001b[90m 5 |\u001b[39m\n \u001b[90m 6 |\u001b[39m   \u001b[90m// Expect h1 to contain a substring.\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 7 |\u001b[39m   expect(\u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mlocator(\u001b[32m'h1'\u001b[39m)\u001b[33m.\u001b[39minnerText())\u001b[33m.\u001b[39mtoContain(\u001b[32m'Welcome'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m   |\u001b[39m                                                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 8 |\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m 9 |\u001b[39m\u001b[0m\n\u001b[2m    at /Users/abdul.ojulari/Frontends/cam/apps/registration-portal-e2e/src/example.spec.ts:7:48\u001b[22m"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2025-07-26T14:51:06.196Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/Users/abdul.ojulari/Frontends/cam/dist/.playwright/apps/registration-portal-e2e/test-output/example-has-title-chromium/error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/Users/abdul.ojulari/Frontends/cam/apps/registration-portal-e2e/src/example.spec.ts",
+                    "column": 48,
+                    "line": 7
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "a30a6eba6312f6b87ea5-b06063a3e613764d08f8",
+          "file": "example.spec.ts",
+          "line": 3,
+          "column": 5
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2025-07-26T14:48:42.312Z",
+    "duration": 162338.19499999998,
+    "expected": 6,
+    "skipped": 0,
+    "unexpected": 20,
+    "flaky": 0
+  }
+}
+
+
+
+ NX   Running target e2e for project registration-portal-e2e failed
+
+Failed tasks:
+
+- registration-portal-e2e:e2e
+
+Hint: run the command with --verbose for more details.
+
+View structured, searchable error logs at https://nx.app/runs/YhMpVln7o8
+

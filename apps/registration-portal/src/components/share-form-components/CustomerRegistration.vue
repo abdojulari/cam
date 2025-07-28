@@ -675,7 +675,8 @@ const addMinor = () => {
         libraryCardBarcode: libraryCardBarcode.value,
         usePreferredName: usePreferredName.value,
         preferredName: preferredName.value,
-        selectedSchool: selectedSchool.value
+        selectedSchool: selectedSchool.value,
+        library: selectedCustomer.value
     });
     // clear the fields when successfully added
     firstName.value = '';

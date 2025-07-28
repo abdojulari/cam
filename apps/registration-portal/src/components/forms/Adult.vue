@@ -23,7 +23,7 @@ const onSubmit = async(payload: any) => {
   // Handle adult form submission here  
     try {
       const response = await apiService.postUserData(payload.form);
-      console.log('response', response);
+      console.log('response', await response);
       if (response?.message === "Record added successfully.") {
         userRegistration.setSuccessResponse({
             name: response?.data?.firstName + ' ' + response?.data?.lastName,
