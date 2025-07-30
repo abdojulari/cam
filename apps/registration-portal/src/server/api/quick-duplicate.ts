@@ -19,10 +19,6 @@ export default defineEventHandler(async (event: H3Event<EventHandlerRequest>) =>
     });
     return await response.json();
   } catch (error: any) {
-    if (error?.statusCode === 409) {
-      return { data: error.data };
-    }
-    // Optionally handle other errors
-    return { error: true, message: error.message || 'Unknown error' };
+      return { error: true, message: error.message || 'Unknown error' };
   }
 });
