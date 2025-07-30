@@ -117,14 +117,22 @@ export const apiService = {
       return response;
     },
     async quickDuplicate(params: any) {
-      const response = await $fetch('/api/quick-duplicate', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(params),
-      });
-      return await response;
+      try {
+        const response = await $fetch('/api/quick-duplicate', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(params),
+        });
+        console.log('response from quick duplicate: ', response);
+        const data = await response;
+        return data;
+      } catch (error) {
+        console.error('Error during quick duplicate:', error);
+        throw new Error('Quick duplicate failed');
+      }
+      
     },
     async overrideDuplicate(params: any) {
       const response = await $fetch('/api/override', {
