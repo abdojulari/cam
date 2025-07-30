@@ -124,21 +124,28 @@ export const apiService = {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify(params),
-        }) as any;
-        console.log('response from quick duplicate: ', response);
-        
-        // Check if response indicates a duplicate was found
-        if (response.match === true) {
-          return {
-            success: false,
-            isDuplicate: true,
-            message: response.message || 'Duplicate record found',
-            matchedRecord: response.matched_record
-          };
+        }) as { ok: boolean, status: number, json: () => Promise<any> };
+       
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
         }
+
+        const data = await response.json();
+        console.log('data from quick duplicate: ', data);
+        return data;
         
-        // No duplicate found - success case
-        return { success: true, data: response };
+        // // Check if response indicates a duplicate was found
+        // if (response.match === true) {
+        //   return {
+        //     success: false,
+        //     isDuplicate: true,
+        //     message: response.message || 'Duplicate record found',
+        //     matchedRecord: response.matched_record
+        //   };
+        // }
+        
+        // // No duplicate found - success case
+        // return { success: true, data: response };
       } catch (error: any) {
         console.error('Error during quick duplicate:', error);
         
