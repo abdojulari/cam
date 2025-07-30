@@ -117,49 +117,17 @@ export const apiService = {
       return response;
     },
     async quickDuplicate(params: any) {
-      try {
         const response = await $fetch('/api/quick-duplicate', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify(params),
-        }) as { ok: boolean, status: number, json: () => Promise<any> };
-       
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
-        const data = await response.json();
-        console.log('data from quick duplicate: ', data);
+        });
+        const data = await response;
+    
         return data;
-        
-        // // Check if response indicates a duplicate was found
-        // if (response.match === true) {
-        //   return {
-        //     success: false,
-        //     isDuplicate: true,
-        //     message: response.message || 'Duplicate record found',
-        //     matchedRecord: response.matched_record
-        //   };
-        // }
-        
-        // // No duplicate found - success case
-        // return { success: true, data: response };
-      } catch (error: any) {
-        console.error('Error during quick duplicate:', error);
-        
-        // Return structured error information for actual errors
-        return {
-          success: false,
-          isDuplicate: false,
-          error: {
-            status: error.status || error.statusCode,
-            message: error.message || 'Quick duplicate failed'
-          }
-        };
-      }
-      
+    
     },
     async overrideDuplicate(params: any) {
       const response = await $fetch('/api/override', {
