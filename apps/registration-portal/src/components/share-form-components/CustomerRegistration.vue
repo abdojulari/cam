@@ -776,9 +776,9 @@ const handleAsyncWatch = async (
 
     isLoading.value = false;
     console.log('response from this component: ', response);
-    if (response?.data?.match) {
-        duplicateRecord.value = response.data.matched_record
-        ? [response.data.matched_record]
+    if (response?.match) {
+        duplicateRecord.value = response.matched_record
+        ? [response.matched_record]
         : [];
         dialog.value = true;
     }
