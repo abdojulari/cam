@@ -950,6 +950,7 @@ const handleSubmit = async () => {
   isLoading.value = true;
   const { valid } = await form.value.validate();
   if (!valid) {
+    isLoading.value = false;
     return;
   }
   
@@ -990,7 +991,7 @@ const handleSubmit = async () => {
     };    
     // Store the form data for use in ReturnAlert
     submittedFormData.value = formData.form;
-    
+    isLoading.value = false;
     emit('submit', formData);
     } catch (error) {
       console.error(error);
