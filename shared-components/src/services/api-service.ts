@@ -124,20 +124,31 @@ export const apiService = {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify(params),
-        });
+        }) as any;
         console.log('response from quick duplicate: ', response);
-        const data = await response;
-        return { success: true, data };
+        
+        // Check if response indicates a duplicate was found
+        if (response.match === true) {
+          return {
+            success: false,
+            isDuplicate: true,
+            message: response.message || 'Duplicate record found',
+            matchedRecord: response.matched_record
+          };
+        }
+        
+        // No duplicate found - success case
+        return { success: true, data: response };
       } catch (error: any) {
         console.error('Error during quick duplicate:', error);
         
-        // Return structured error information
+        // Return structured error information for actual errors
         return {
           success: false,
+          isDuplicate: false,
           error: {
             status: error.status || error.statusCode,
-            message: error.message || 'Quick duplicate failed',
-            isDuplicate: error.status === 409
+            message: error.message || 'Quick duplicate failed'
           }
         };
       }

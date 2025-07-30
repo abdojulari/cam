@@ -775,7 +775,7 @@ const handleAsyncWatch = async (
     });
 
     isLoading.value = false;
-    console.log('response', response);
+    console.log('response from this component: ', response);
     if (response?.data?.match) {
         duplicateRecord.value = response.data.matched_record
         ? [response.data.matched_record]
