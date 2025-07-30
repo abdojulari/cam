@@ -953,6 +953,7 @@ watch(selectedEmailConsent, (newValue, oldValue) => {
 })
 
 const handleSubmit = async () => {
+  isLoading.value = true;
   const { valid } = await form.value.validate();
   if (!valid) {
     return;
@@ -997,6 +998,7 @@ const handleSubmit = async () => {
     submittedFormData.value = formData.form;
     
     emit('submit', formData);
+    isLoading.value = false;
   }
 }
 

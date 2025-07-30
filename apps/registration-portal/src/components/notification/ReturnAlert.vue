@@ -47,6 +47,7 @@
                 v-if="failedData.length > 0"
                 class="text-capitalize bg-green-darken-1 text-white rounded-pill" 
                 @click="overrideDuplicateAlert"
+                :loading="isLoading"
               > 
                 <v-icon>mdi-find-replace</v-icon>Override 
               </v-btn>
@@ -90,6 +91,7 @@ const props = defineProps({
 })
 const overrideStatus = ref(false);
 const errorMessage = ref('');
+const isLoading = ref(false);
 const successData = props.data as any;
 const failedData = props.failedData as any;
 // Computed property to control dialog visibility
@@ -105,13 +107,10 @@ const closeDialog = () => {
 }
 
 const overrideDuplicateAlert = async () => {
-    // redirect to the home page
-    // send the status to the backend to ensure the duplicate is suppressed.
-    
-    // Now we have access to all form data
- 
+    isLoading.value = true;
     const payloads = props.formData;
-    if (payloads.minors.length > 0) {
+    try {
+      if (payloads.minors.length > 0) {
       payloads.minors.forEach(async (payload: any) => {
         const response = await apiService.overrideDuplicate({
           firstname: payload?.firstName,
@@ -157,9 +156,16 @@ const overrideDuplicateAlert = async () => {
         }
       });
     }
+    isLoading.value = false;
+    } catch (error) {
+      isLoading.value = false;
+      console.error(error);
+    }
+   
     
     
     try {
+      isLoading.value = true;
       const response = await apiService.overrideDuplicate({
         firstname: payloads?.firstName,
               lastname: payloads?.lastName,
@@ -191,14 +197,17 @@ const overrideDuplicateAlert = async () => {
       });
          if (response?.message === "Override status set successfully.") {
          console.log('Record submitted successfully', response);
+         isLoading.value = false;
          overrideStatus.value = true;
          closeDialog();
        } else {
          console.log('Record not submitted', response);
+         isLoading.value = false;
          errorMessage.value = response?.message;
        }
     
     } catch (error) {
+      isLoading.value = false;
       console.error(error);
    }
     
