@@ -781,6 +781,7 @@ const handleAsyncWatch = async (
         ? [response.matched_record]
         : [];
         dialog.value = true;
+        isLoading.value = false;
     }
     }
 
