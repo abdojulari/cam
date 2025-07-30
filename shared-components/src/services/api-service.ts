@@ -127,10 +127,19 @@ export const apiService = {
         });
         console.log('response from quick duplicate: ', response);
         const data = await response;
-        return data;
-      } catch (error) {
+        return { success: true, data };
+      } catch (error: any) {
         console.error('Error during quick duplicate:', error);
-        throw new Error('Quick duplicate failed');
+        
+        // Return structured error information
+        return {
+          success: false,
+          error: {
+            status: error.status || error.statusCode,
+            message: error.message || 'Quick duplicate failed',
+            isDuplicate: error.status === 409
+          }
+        };
       }
       
     },
