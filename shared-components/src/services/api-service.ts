@@ -124,6 +124,7 @@ export const apiService = {
           },
           body: JSON.stringify(params),
         });
+        console.log('response from quick duplicate: ', response);
         const data = await response;
     
         return data;
