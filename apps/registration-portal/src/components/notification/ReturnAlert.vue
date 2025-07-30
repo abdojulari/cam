@@ -48,6 +48,7 @@
                 class="text-capitalize bg-green-darken-1 text-white rounded-pill" 
                 @click="overrideDuplicateAlert"
                 :loading="isLoading"
+                :disabled="isLoading"
               > 
                 <v-icon>mdi-find-replace</v-icon>Override 
               </v-btn>

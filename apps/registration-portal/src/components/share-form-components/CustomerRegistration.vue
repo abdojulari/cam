@@ -531,6 +531,8 @@
                     class="text-capitalize mr-10"
                     text="Submit"
                     @click="handleSubmit"
+                    :loading="isLoading"
+                    :disabled="isLoading"
                 />
             </v-col>
         </v-row>
@@ -912,14 +914,6 @@ const generateDigitalCardNumber = async () => {
     libraryCardBarcode.value = response.barcode;
 }
 
-// const generateBarcode = (id: number) => {
-//     const minor = minors.value.find((minor) => minor.id === id);
-//     if (minor) {
-//         apiService.getBarcode().then(response => {
-//             minor.libraryCardBarcode = response.barcode;
-//         });
-//     }
-// }
 watch(selectedEmailConsent, (newValue, oldValue) => {
     // Check if the new value is not empty and has changed
     if (newValue && newValue !== oldValue) {
@@ -960,7 +954,8 @@ const handleSubmit = async () => {
   }
   
   if (dateOfBirth.value) {
-    const formData = {
+    try {
+        const formData = {
         profile: profile.value,
         form: {
           firstName: firstName.value,
@@ -992,13 +987,17 @@ const handleSubmit = async () => {
           password: password.value,
           confirmPassword: password.value,
         }
-    };
-    
+    };    
     // Store the form data for use in ReturnAlert
     submittedFormData.value = formData.form;
     
     emit('submit', formData);
-    isLoading.value = false;
+    } catch (error) {
+      console.error(error);
+    } finally {
+      isLoading.value = false;
+    }
+
   }
 }
 
