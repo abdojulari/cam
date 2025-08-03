@@ -111,8 +111,8 @@
                 <v-date-input
                     label="Date of Birth" 
                     v-model="dateOfBirth" 
-                    :max=" profileNames.Adult.includes(profile) ? maxChildDate : undefined"
-                    :min="  profileNames.Child.includes(profile) ? minAdultDate : undefined"
+                    :max=" profileType === 'Adult' ? maxChildDate : undefined"
+                    :min="  profileType === 'Child' ? minAdultDate : undefined"
                     prepend-icon=""
                     prepend-inner-icon="$calendar"
                     hide-details="auto"
@@ -252,8 +252,7 @@
                     density="compact"
                     append-inner-icon="mdi-phone"
                     v-maska="'###-###-####'"
-                    
-                     
+                    :rules="phoneRules"
                 />
             </v-col>
         </v-row>
@@ -531,8 +530,8 @@
                     class="text-capitalize mr-10"
                     text="Submit"
                     @click="handleSubmit"
-                    :loading="isLoading"
                     :disabled="isLoading"
+                    variant="outlined"
                 />
             </v-col>
         </v-row>
@@ -582,6 +581,7 @@ const emit = defineEmits<{
 const registrationStore = useRegistrationStore();
 const successData = registrationStore.getSuccessResponse;
 const failedData = registrationStore.getFailedResponse;
+const isLoading = computed(() => registrationStore.getIsLoading);
 
 const firstName = ref('');
 const lastName = ref('');
@@ -641,7 +641,6 @@ const provinceOptions = ref([
 ]);
 const selectedSchool = ref(null);
 const duplicateRecord = ref([]);
-const isLoading = ref(false);
 const barcodeError = ref(false);    
 const barcodeErrorDismiss = ref(false);
 const indigenousStatus = ref('false');
@@ -764,7 +763,7 @@ const handleAsyncWatch = async (
     (newFirstName !== oldFirstName || newLastName !== oldLastName || newDateOfBirth !== oldDateOfBirth) &&
     newFirstName && newLastName && newDateOfBirth
     ) {
-    isLoading.value = true;
+    registrationStore.setIsLoading(true);
     const dob = typeof newDateOfBirth === 'string'
         ? newDateOfBirth
         : newDateOfBirth.toISOString().split('T')[0];
@@ -776,21 +775,20 @@ const handleAsyncWatch = async (
         middlename: middleName.value,
     });
 
-    isLoading.value = false;
+    registrationStore.setIsLoading(false);
     
     if (response?.match) {
         duplicateRecord.value = response.matched_record
         ? [response.matched_record]
         : [];
         dialog.value = true;
-        isLoading.value = false;
     }
     }
 
     // --- Barcode logic ---
     if (newBarcode !== oldBarcode) {
     if (newBarcode && newBarcode.length === 14) {
-        isLoading.value = true;
+        registrationStore.setIsLoading(true);
         try {
         const response = await apiService.lookupByBarcode({ barcode: newBarcode }) as any;
         
@@ -838,7 +836,7 @@ const handleAsyncWatch = async (
         barcodeError.value = true;
         barcodeErrorDismiss.value = false;
         } finally {
-        isLoading.value = false;
+        registrationStore.setIsLoading(false);
         }
     } else {
         // Clear the fields if barcode is not 14 characters
@@ -947,10 +945,10 @@ watch(selectedEmailConsent, (newValue, oldValue) => {
 })
 
 const handleSubmit = async () => {
-  isLoading.value = true;
+  registrationStore.setIsLoading(true);
   const { valid } = await form.value.validate();
   if (!valid) {
-    isLoading.value = false;
+    registrationStore.setIsLoading(false);
     return;
   }
   
@@ -991,14 +989,11 @@ const handleSubmit = async () => {
     };    
     // Store the form data for use in ReturnAlert
     submittedFormData.value = formData.form;
-    isLoading.value = false;
     emit('submit', formData);
     } catch (error) {
       console.error(error);
-    } finally {
-      isLoading.value = false;
+      registrationStore.setIsLoading(false);
     }
-
   }
 }
 
@@ -1060,7 +1055,7 @@ const isGenerateBtnDisabled = computed(() => {
   return libraryCardBarcode.value !== '' && libraryCardBarcode.value.length === 14;
 });
 
-const onPostalCodeInput = (event) => {
+const onPostalCodeInput = (event: any) => {
       let value = event.target.value || '';
       // Convert the value to uppercase and remove spaces
       value = value.replace(/\s/g, '').toUpperCase();
@@ -1090,6 +1085,21 @@ const onPostalCodeInput = (event) => {
 const clearForm = () => {
   form.value.reset();
 }
+
+const phoneRules = [
+  (value: string) => {
+    // Allow empty values (optional)
+    if (!value || value.length === 0) return true
+    
+    // Check format
+    const phoneRegex = /^\d{3}-\d{3}-\d{4}$/
+    if (!phoneRegex.test(value)) {
+      return 'Phone number must follow format: ###-###-####'
+    }
+    
+    return true
+  }
+]
 </script>
 
 <style scoped>

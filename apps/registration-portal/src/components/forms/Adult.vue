@@ -48,7 +48,9 @@ const onSubmit = async(payload: any) => {
           message: error.message,
         });
       }
+    } finally {
+      // Set loading to false when submission is complete
+      userRegistration.setIsLoading(false);
     }
-
 }
 </script>

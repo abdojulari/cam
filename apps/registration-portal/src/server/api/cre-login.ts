@@ -6,6 +6,7 @@ import {
 } from "h3";
 
 export default defineEventHandler(async (event: H3Event<EventHandlerRequest>) => {
+    // @ts-ignore
     const config = useRuntimeConfig(event).private;
     const url = config.VITE_CRE_AUTH_URL;
     const body = JSON.stringify({
@@ -14,6 +15,7 @@ export default defineEventHandler(async (event: H3Event<EventHandlerRequest>) =>
     });
 
     try {
+        // @ts-ignore
         const response = await $fetch(url, {
             method: 'POST',
             headers: {

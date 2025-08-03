@@ -77,6 +77,7 @@ export const useRegistrationStore = defineStore('registration', {
     failedResponse: [] as FailedResponse[],
     networkName: '',
     landingPage: '',
+    isLoading: false,
   }),
   
   actions: {
@@ -231,6 +232,13 @@ export const useRegistrationStore = defineStore('registration', {
         } catch (error) {
           console.error(error);
         }
+      },
+      async setIsLoading(isLoading: boolean) {
+        try {
+          this.isLoading = isLoading;
+        } catch (error) {
+          console.error(error);
+        }
       }
   },
   getters: {
@@ -290,6 +298,9 @@ export const useRegistrationStore = defineStore('registration', {
     },
     getLandingPage(): string {
         return this.landingPage;
+    },
+    getIsLoading(): boolean {
+        return this.isLoading;
     }
   },
   

@@ -62,18 +62,30 @@
           </template>
         </v-list-item>
       </v-list-group>
-        <v-list-item
-          prepend-icon="mdi-laptop"
-          title="Computer Pass"
-          value="computer-pass"
-        />
-        <v-list-item
-          prepend-icon="mdi-book-open-page-variant"
-          title="Guides and Resources"
-          value="guides-and-resources"
-        />
+        <v-list-group value="guides-and-resources">
+          <template v-slot:activator="{ props }">
+            <v-list-item
+              v-bind="props"
+              prepend-icon="mdi-book-open-page-variant"
+              title="Guides and Resources"
+              value="guides-and-resources"
+            />
+          </template>
+          <v-list-item
+            v-for="([title, value, icon], i) in resources"
+            :key="i"
+            :prepend-icon="icon"
+          >
+            <template #title>
+              <a :href="value" target="_blank" rel="noopener" class="text-decoration-none">
+                {{ title }}
+              </a>
+            </template>
+          </v-list-item>
+        </v-list-group>
+        
         <v-divider />
-        <v-list-group value="add-quick-links">
+      <v-list-group value="add-quick-links">
         <template v-slot:activator="{ props }">
           <v-list-item
             v-bind="props"
@@ -111,9 +123,13 @@ const admins = ref([
 
 const links = ref([
   ['Staff Web', 'https://staffweb.epl.ca/', 'mdi-account-group-outline'],
-  ['AV Incomplete', 'https://av.epl.ca', 'mdi-library'],
   ['Staff Apps', 'https://appsng.epl.ca/', 'mdi-application-brackets'],
   ['Dayforce', 'https://www.dayforcehcm.com/MyDayforce/MyDayforce.aspx#SG9tZT8maXNGaXJzdEZlYXR1cmU9dHJ1ZQ%3D%3D', 'mdi-application-brackets']
+]);
+
+const resources = ref([
+  ['Vacancy Shift', 'https://appsng.epl.ca/vacant-shifts', 'mdi-calendar-check'],
+  
 ]);
 </script>
 <style scoped>

@@ -24,7 +24,7 @@ export default defineNuxtConfig({
       turnstile_url: process?.env.NUXT_TURNSTILE_VERIFY_URL,
       gtagId: process?.env.NUXT_PUBLIC_GA_ID,
       CRE_QUICK_DUPLICATE_URL: process?.env.CRE_QUICK_DUPLICATE_URL,
-      CRE_BACKCODE_LOOKUP: process?.env.CRE_BACKCODE_LOOKUP,
+      CRE_BARCODE_LOOKUP: process?.env.CRE_BARCODE_LOOKUP,
       STATISTIC_API_URL: process?.env.STATISTIC_API_URL,
       
     },
@@ -47,7 +47,7 @@ export default defineNuxtConfig({
       public: {
         NODE_ENV: 'development',
         CRE_QUICK_DUPLICATE_URL: process?.env.CRE_QUICK_DUPLICATE_URL,
-        CRE_BACKCODE_LOOKUP: process?.env.CRE_BACKCODE_LOOKUP,
+        CRE_BARCODE_LOOKUP: process?.env.CRE_BARCODE_LOOKUP,
         CANADA_POST_API_KEY: process?.env.CANADA_POST_API_KEY,
         CANADA_POST_API_FIND_URL: process?.env.CANADA_POST_API_FIND_URL,
         CANADA_POST_API_RETRIEVE_URL: process?.env.CANADA_POST_API_RETRIEVE_URL,
@@ -66,7 +66,7 @@ export default defineNuxtConfig({
       public: {
         NODE_ENV: 'production',
         CRE_QUICK_DUPLICATE_URL: process?.env.CRE_QUICK_DUPLICATE_URL,
-        CRE_BACKCODE_LOOKUP: process?.env.CRE_BACKCODE_LOOKUP,
+        CRE_BARCODE_LOOKUP: process?.env.CRE_BARCODE_LOOKUP,
         CRE_BARCODE_URL: process?.env.CRE_BARCODE_URL,
         tokenUrl: process.env.NUXT_CRE_TOKEN,
         CLIENT_ID: process?.env.CLIENT_ID,
