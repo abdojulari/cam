@@ -30,7 +30,7 @@
         </div>
       </v-col>
 
-      <v-col cols="12">
+      <v-col cols="12" v-if="data[0]?.programType === 'OLR'">
         <div 
           variant="body1" 
           class="text-body-1 mb-4"
@@ -46,7 +46,7 @@
         </div>
       </v-col>
 
-      <v-col cols="12">
+      <v-col cols="12" v-if="data[0]?.programType === 'OLR'">
         <div 
           variant="body1" 
           class="text-body-1 mb-6"

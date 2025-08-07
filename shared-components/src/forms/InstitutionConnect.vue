@@ -353,6 +353,7 @@ const submitForm = async () => {
           userRegistration.setSuccessResponse({
               name: response?.data?.firstName + ' ' + response?.data?.lastName,
               barcode: response?.data?.barcode,
+              programType: 'LPASS',
           });               
           // redirect to the success page
           router.push('/success-page');

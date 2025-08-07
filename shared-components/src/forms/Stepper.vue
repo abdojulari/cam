@@ -429,6 +429,7 @@
                         userRegistration.setSuccessResponse({
                             name: response?.data?.firstName + ' ' + response?.data?.lastName,
                             barcode: response?.data?.barcode,
+                            programType: 'OLR',
                         });
                        
                     });

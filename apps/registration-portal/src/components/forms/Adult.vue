@@ -28,6 +28,7 @@ const onSubmit = async(payload: any) => {
         userRegistration.setSuccessResponse({
             name: response?.data?.firstName + ' ' + response?.data?.lastName,
             barcode: response?.data?.barcode,
+            programType: 'CRP',
         });
         // after success, clear the form
         clearForm();

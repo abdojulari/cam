@@ -25,6 +25,7 @@ const onSubmit = async (payload: any) => {
               userRegistration.setSuccessResponse({
                 name: response?.data?.firstName + ' ' + response?.data?.lastName,
                 barcode: response?.data?.barcode,
+                programType: 'CRP',
               });
             }
             else if (response?.error === "Posting to ILS failed 409") {
@@ -52,6 +53,7 @@ const onSubmit = async (payload: any) => {
         userRegistration.setSuccessResponse({
           name: response?.data?.firstName + ' ' + response?.data?.lastName,
           barcode: response?.data?.barcode,
+          programType: 'CRP',
         });
       }
       else if (response?.error === "Posting to ILS failed 409") {

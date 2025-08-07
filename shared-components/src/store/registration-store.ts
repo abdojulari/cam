@@ -49,6 +49,7 @@ interface Password {
 interface SuccessResponse {
     barcode: string;
     name: string; 
+    programType?: string;
 }
 interface FailedResponse {
     barcode?: string;
