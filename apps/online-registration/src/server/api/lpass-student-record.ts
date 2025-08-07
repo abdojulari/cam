@@ -16,6 +16,7 @@ const StudentRecordSchema = z.object({
     city: z.string(),
     province: z.string(),
     postalcode: z.string(),
+    country: z.string(),
     studentid: z.string(),
     profile: z.string(),
     expirydate: z.string(),

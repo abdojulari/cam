@@ -98,7 +98,7 @@
   
             <!-- Address Row -->
             <v-row> 
-              <v-col cols="12" md="4">
+              <v-col cols="12" md="6">
                 <v-text-field
                   v-model="studentData.city"
                   label="City"
@@ -107,7 +107,7 @@
                   hide-details
                 />
               </v-col>
-              <v-col cols="12" md="4">
+              <v-col cols="12" md="6">
                 <v-text-field
                   v-model="studentData.province"
                   label="Province"
@@ -116,10 +116,22 @@
                   hide-details 
                 />
               </v-col>
-              <v-col cols="12" md="4">
+             
+            </v-row>
+            <v-row>
+              <v-col cols="12" md="6">
                 <v-text-field
                   v-model="studentData.postalcode"
                   label="Postal Code"
+                  variant="outlined"
+                  density="compact"
+                  hide-details
+                />
+              </v-col>
+              <v-col cols="12" md="6">
+                <v-text-field
+                  v-model="studentData.country"
+                  label="Country"
                   variant="outlined"
                   density="compact"
                   hide-details
@@ -297,7 +309,7 @@ const generateBarcode = () => {
   
   // If longer than 14, truncate
   if (barcode.length > 14) {
-    barcode = barcode.substring(0, 13);
+    barcode = barcode.substring(0, 14);
   }
 
   return barcode;
@@ -307,9 +319,9 @@ const generateBarcode = () => {
 function getStudentProfile(studentData) {
   const profileMap = new Map([
     ['Concordia University', 'EPL_CONCOR'],
-    ['Grant MacEwan University', 'EPL_GMU'],
+    ['MacEwan University', 'EPL_GMU'],
     ['NorQuest College', 'EPL_NORQ'],
-    ['University of Alberta Cameron', 'EPL_UAL'],
+    ['University of Alberta', 'EPL_UAL'],
     ['Kings University', 'EPL_KINGS'],
   ]);
 
@@ -332,8 +344,8 @@ const submitForm = async () => {
                 password: studentData.value.password,
                 barcode: generateBarcode(),
                 profile: getStudentProfile(studentData),
-                country: 'Canada',
-                preferredname: false,
+                country: studentData.value.country,
+                preferredname: '',
             },
         });
         if (response) {
