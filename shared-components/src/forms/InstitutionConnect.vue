@@ -348,6 +348,7 @@ const submitForm = async () => {
                 preferredname: '',
             },
         });
+
         if (response) {
            // create a state management for the response then extract the barcode
           userRegistration.setSuccessResponse({
@@ -356,7 +357,7 @@ const submitForm = async () => {
               programType: 'LPASS',
           });               
           // redirect to the success page
-          router.push('/success-page');
+          response?.data?.firstName !== undefined ? router.push('/success-page') : showSystemErrorDialog.value = true;
         } 
     } catch (error) {
         console.error('Error submitting form:', error);
