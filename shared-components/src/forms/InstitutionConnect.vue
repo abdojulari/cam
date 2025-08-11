@@ -16,204 +16,213 @@
           <p class="mb-5 text-h6 text-primary">If any of your information isn't correct, please contact your institution.</p>
           <v-card class="pa-10 bg-grey-lighten-5" variant="flat">
             <v-form fast-fail ref="form" class="p-4 rounded shadow-sm">
-            <!-- Name Row -->
-            <v-row>
-              <v-col cols="12" md="6">
-                <v-text-field
-                  v-model="studentData.firstname"
-                  label="First Name"
-                  variant="outlined"
-                  density="compact"
-                  disabled
-                  hide-details
-                  readonly
-                />
-              </v-col>
-              <v-col cols="12" md="6">
-                <v-text-field
-                  v-model="studentData.lastname"
-                  label="Last Name"
-                  variant="outlined"
-                  density="compact"
-                  disabled
-                  hide-details
-                  readonly
-                />
-              </v-col>
-            </v-row>
-            <v-row>
-              <v-col cols="12" md="6">
-                <v-text-field
-                  v-model="studentData.middlename"
-                  label="Middle Name"
-                  variant="outlined"
-                  density="compact"
-                  disabled
-                  hide-details
-                  readonly
-                />
-              </v-col>
-              <v-col cols="12" md="6">
-                <v-text-field
-                  v-model="studentData.dateofbirth"
-                  label="Date of Birth"
-                  variant="outlined"
-                  density="compact"
-                  disabled
-                  hide-details
-                  readonly
-                />
-              </v-col>
-            </v-row>
-            <!-- Contact Info Row -->
-            <v-row>
-              <v-col cols="12" md="5">
-                <v-text-field
-                  v-model="studentData.email"
-                  label="Email"
-                  variant="outlined"
-                  density="compact"
-                  hide-details
-                />
-              </v-col>
-              <v-col cols="12" md="3">
-                <v-text-field
-                  v-model="studentData.phone"
-                  label="Phone"
-                  variant="outlined"
-                  density="compact"
-                  hide-details
-                />
-              </v-col>
-              <v-col cols="12" md="4">
-                <v-text-field
-                  v-model="studentData.address"
-                  label="Address"
-                  variant="outlined"
-                  density="compact"
-                  hide-details
-                />
-              </v-col>
-            </v-row>
-  
-            <!-- Address Row -->
-            <v-row> 
-              <v-col cols="12" md="6">
-                <v-text-field
-                  v-model="studentData.city"
-                  label="City"
-                  variant="outlined"
-                  density="compact"
-                  hide-details
-                />
-              </v-col>
-              <v-col cols="12" md="6">
-                <v-text-field
-                  v-model="studentData.province"
-                  label="Province"
-                  variant="outlined"
-                  density="compact"
-                  hide-details 
-                />
-              </v-col>
-             
-            </v-row>
-            <v-row>
-              <v-col cols="12" md="6">
-                <v-text-field
-                  v-model="studentData.postalcode"
-                  label="Postal Code"
-                  variant="outlined"
-                  density="compact"
-                  hide-details
-                />
-              </v-col>
-              <v-col cols="12" md="6">
-                <v-text-field
-                  v-model="studentData.country"
-                  label="Country"
-                  variant="outlined"
-                  density="compact"
-                  hide-details
-                />
-              </v-col>
-            </v-row>
-
-            <!-- profile Info Row -->
-            <v-row>
-              <v-col cols="12" md="3">
-                <v-text-field
-                  v-model="studentData.studentid"
-                  label="Student ID"
-                  variant="outlined"
-                  density="compact"
-                  disabled
-                  hide-details
-                  readonly
-                />
-              </v-col>
-              <v-col cols="12" md="6">
-                <v-text-field
-                  v-model="studentData.profile"
-                  label="Institution"
-                  variant="outlined"
-                  density="compact"
-                  disabled
-                  hide-details
-                  readonly
-                />
-              </v-col>
+              <!-- Name Row -->
+              <v-row>
+                <v-col cols="12" md="6">
+                  <v-text-field
+                    v-model="studentData.firstname"
+                    label="First Name"
+                    variant="outlined"
+                    density="compact"
+                    disabled
+                    hide-details
+                    readonly
+                  />
+                </v-col>
+                <v-col cols="12" md="6">
+                  <v-text-field
+                    v-model="studentData.lastname"
+                    label="Last Name"
+                    variant="outlined"
+                    density="compact"
+                    disabled
+                    hide-details
+                    readonly
+                  />
+                </v-col>
+              </v-row>
+              <v-row>
+                <v-col cols="12" md="6">
+                  <v-text-field
+                    v-model="studentData.middlename"
+                    label="Middle Name"
+                    variant="outlined"
+                    density="compact"
+                    disabled
+                    hide-details
+                    readonly
+                  />
+                </v-col>
+                <v-col cols="12" md="6">
+                  <v-text-field
+                    v-model="studentData.dateofbirth"
+                    label="Date of Birth"
+                    variant="outlined"
+                    density="compact"
+                    disabled
+                    hide-details
+                    readonly
+                  />
+                </v-col>
+              </v-row>
+              <!-- Contact Info Row -->
+              <v-row>
+                <v-col cols="12" md="5">
+                  <v-text-field
+                    v-model="studentData.email"
+                    label="Email"
+                    variant="outlined"
+                    density="compact"
+                    :rules="emailRules"
+                    required
+                  />
+                </v-col>
+                <v-col cols="12" md="3">
+                  <v-text-field
+                    v-model="studentData.phone"
+                    label="Phone"
+                    variant="outlined"
+                    density="compact"
+                    v-maska="'###-###-####'"
+                    :rules="phoneRules"
+                    required
+                  />
+                </v-col>
+                <v-col cols="12" md="4">
+                  <v-text-field
+                    v-model="studentData.address"
+                    label="Address"
+                    variant="outlined"
+                    density="compact"
+                    hide-details
+                    required
+                  />
+                </v-col>
+              </v-row>
+    
+              <!-- Address Row -->
+              <v-row> 
+                <v-col cols="12" md="6">
+                  <v-text-field
+                    v-model="studentData.city"
+                    label="City"
+                    variant="outlined"
+                    density="compact"
+                    hide-details
+                    required
+                  />
+                </v-col>
+                <v-col cols="12" md="6">
+                  <v-text-field
+                    v-model="studentData.province"
+                    label="Province"
+                    variant="outlined"
+                    density="compact"
+                    hide-details 
+                    required
+                  />
+                </v-col>
               
-              <v-col cols="12" md="3">
-                <v-text-field
-                  v-model="studentData.expirydate"
-                  label="Expiry Date"
-                  variant="outlined"
-                  density="compact"
-                  disabled
-                  hide-details
-                />
-              </v-col>
-            </v-row>
-            
-            <!-- Password Row -->
-            <v-row>
-              <v-col cols="12" md="6">
-                <v-text-field
-                  v-model="studentData.password"
-                  label="Password"
-                  type="password"
-                  variant="outlined"
-                  density="compact"
-                  hide-details
-                  :rules="passwordRules"
-                />
-              </v-col>
-              <v-col cols="12" md="6">
-                <v-text-field
-                  v-model="studentData.confirmPassword"
-                  label="Confirm Password"
-                  type="password"
-                  variant="outlined"
-                  density="compact"
-                  hide-details
-                  :rules="confirmPasswordRules"
-                />
-              </v-col>
-            </v-row>
-  
-            <!-- Submit Button -->
-            <v-row>
-              <v-col cols="12" class="text-right">
-                <v-btn 
-                  color="primary" 
-                  @click="submitForm"
-                  :loading="isSubmitting"
-                >
-                  Submit
-                </v-btn>
-              </v-col>
-            </v-row>
+              </v-row>
+              <v-row>
+                <v-col cols="12" md="6">
+                  <v-text-field
+                    v-model="studentData.postalcode"
+                    label="Postal Code"
+                    variant="outlined"
+                    density="compact"
+                    hide-details
+                    required
+                  />
+                </v-col>
+                <v-col cols="12" md="6">
+                  <v-text-field
+                    v-model="studentData.country"
+                    label="Country"
+                    variant="outlined"
+                    density="compact"
+                    hide-details
+                    required
+                  />
+                </v-col>
+              </v-row>
+
+              <!-- profile Info Row -->
+              <v-row>
+                <v-col cols="12" md="3">
+                  <v-text-field
+                    v-model="studentData.studentid"
+                    label="Student ID"
+                    variant="outlined"
+                    density="compact"
+                    disabled
+                    hide-details
+                    readonly
+                  />
+                </v-col>
+                <v-col cols="12" md="6">
+                  <v-text-field
+                    v-model="studentData.profile"
+                    label="Institution"
+                    variant="outlined"
+                    density="compact"
+                    disabled
+                    hide-details
+                    readonly
+                  />
+                </v-col>
+                
+                <v-col cols="12" md="3">
+                  <v-text-field
+                    v-model="studentData.expirydate"
+                    label="Expiry Date"
+                    variant="outlined"
+                    density="compact"
+                    disabled
+                    hide-details
+                    required
+                  />
+                </v-col>
+              </v-row>
+              
+              <!-- Password Row -->
+              <v-row>
+                <v-col cols="12" md="6">
+                  <v-text-field
+                    v-model="studentData.password"
+                    label="Password"
+                    type="password"
+                    variant="outlined"
+                    density="compact"
+                    :rules="passwordRules"
+                    required
+                  />
+                </v-col>
+                <v-col cols="12" md="6">
+                  <v-text-field
+                    v-model="studentData.confirmPassword"
+                    label="Confirm Password"
+                    type="password"
+                    variant="outlined"
+                    density="compact"
+                    :rules="confirmPasswordRules"
+                    required
+                  />
+                </v-col>
+              </v-row>
+    
+              <!-- Submit Button -->
+              <v-row>
+                <v-col cols="12" class="text-right">
+                  <v-btn 
+                    color="primary" 
+                    @click="submitForm"
+                    :loading="isSubmitting"
+                  >
+                    Submit
+                  </v-btn>
+                </v-col>
+              </v-row>
             </v-form>
           </v-card>
           
@@ -229,9 +238,12 @@ import { useRegistrationStore } from '../store/registration-store';
 import { useRouter } from 'vue-router';
 import SystemError from './SystemError.vue';
 import { apiService } from '../services/api-service';
+import { vMaska } from "maska/vue"
 
 const userRegistration = useRegistrationStore();
 const router = useRouter();
+// create a validation rules for the form
+const form = ref(null);
 
 // Define the data model
 const studentData = ref({
@@ -273,6 +285,16 @@ const passwordRules = [
 const confirmPasswordRules = [
   v => !!v || 'Please confirm your password',
   v => v === studentData.value.password || 'Passwords do not match',
+];
+
+const emailRules = [
+  v => !!v || 'Email is required',
+  v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v) || 'Invalid email address',
+];
+
+const phoneRules = [
+  v => !!v || 'Phone is required',
+  v => /^[0-9]{3}-[0-9]{3}-[0-9]{4}$/.test(v) || 'Invalid phone number',
 ];
 
 onMounted(async () => {
@@ -330,6 +352,11 @@ function getStudentProfile(studentData) {
 
 // Handle form submission
 const submitForm = async () => {
+  // check if the form is valid
+    const { valid } = await form.value.validate();
+    if (!valid) {
+      return;
+    } 
     if (studentData.value.password !== studentData.value.confirmPassword) {
         alert('Passwords do not match!');
         return;

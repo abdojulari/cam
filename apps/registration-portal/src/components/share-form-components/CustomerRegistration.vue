@@ -791,7 +791,6 @@ const handleAsyncWatch = async (
         registrationStore.setIsLoading(true);
         try {
         const response = await apiService.lookupByBarcode({ barcode: newBarcode }) as any;
-        
         let results = [];
         if (response?.result) {
             if (Array.isArray(response.result)) {
@@ -812,9 +811,13 @@ const handleAsyncWatch = async (
             } else {
                 careOf.value = item.firstname + ' ' + item.lastname || '';
                 address.value = item.address || '';
+                address2.value = item.address2 || '';
                 city.value = item.city || '';
+                city2.value = item.city2 || '';
                 province.value = item.province || '';
+                province2.value = item.province2 || '';
                 postalCode.value = item.postalcode || '';
+                postalCode2.value = item.postalcode2 || '';
                 emailAddress.value = emailAddress.value? emailAddress.value : item.email || '';
                 phoneNumber.value = phoneNumber.value? phoneNumber.value : item.phone || '';
             }
@@ -827,6 +830,7 @@ const handleAsyncWatch = async (
             // Optionally clear fields
             careOf.value = '';
             address.value = '';
+            address2.value = '';
             city.value = '';
             province.value = '';
             postalCode.value = '';
@@ -845,6 +849,10 @@ const handleAsyncWatch = async (
         city.value = '';
         province.value = '';
         postalCode.value = '';
+        address2.value = '';
+        city2.value = '';
+        province2.value = '';
+        postalCode2.value = '';
         barcodeError.value = false;
     }
     }
