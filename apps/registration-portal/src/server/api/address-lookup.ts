@@ -1,3 +1,4 @@
+import { log } from 'console';
 import { defineEventHandler, EventHandlerRequest, H3Event, readBody, createError } from 'h3';
 
 // Add the missing import for useRuntimeConfig
@@ -123,6 +124,9 @@ export default defineEventHandler(async (event: H3Event<EventHandlerRequest>) =>
   }
 
   try {
+    const city = body.city?.value || ""; // default to empty string if not provided
+    const searchTerm = `${city}, ${body.query}`;
+
     // Only call Find API to get address suggestions
     const findResponse = await fetch(findUrl, {
       method: 'POST',
@@ -131,7 +135,7 @@ export default defineEventHandler(async (event: H3Event<EventHandlerRequest>) =>
       },
       body: new URLSearchParams({
         Key: apiKey,
-        SearchTerm: body.query,
+        SearchTerm: searchTerm,
         Country: 'CAN',
         MaxSuggestions: '5',
         LanguagePreference: 'en'
@@ -144,14 +148,14 @@ export default defineEventHandler(async (event: H3Event<EventHandlerRequest>) =>
 
     const findData: CanadaPostFindResponse = await findResponse.json();
     
-    // Return only the basic suggestion data - no detailed address info yet
-    const addressResults: AddressResult[] = findData.Items.map(item => ({
-      id: item.Id,
-      text: item.Text,
-      highlight: item.Highlight,
-      description: item.Description,
-      // No address field populated yet - will be filled when user selects
-    }));
+    const addressResults: AddressResult[] = findData.Items
+      .filter(item => item.Description.includes(city))
+      .map(item => ({
+        id: item.Id,
+        text: item.Text,
+        highlight: item.Highlight,
+        description: item.Description,
+      }));
 
     return {
       results: addressResults,
