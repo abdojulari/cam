@@ -5,11 +5,6 @@ import {
 } from '../types/address';
 import { AddressDetailsResponse } from '../types/address';
 
-// Global caches - shared across all instances
-const globalSuggestionsCache = new Map<string, AddressResult[]>();
-const globalDetailsCache = new Map<string, AddressDetailsResponse['address']>();
-const globalTimeouts = new Map<string, NodeJS.Timeout>();
-
 export function useAddressLookup(options: UseAddressLookupOptions) {
   const {
     addressFields,
@@ -22,62 +17,48 @@ export function useAddressLookup(options: UseAddressLookupOptions) {
   // Reactive state
   const suggestions = ref<AddressResult[]>([]);
   const loading = ref(false);
+  const isMenuOpen = ref(false);
 
-  // Generate unique cache keys
-  const getSuggestionsCacheKey = (query: string) => `${cachePrefix}_suggestions_${query.toLowerCase().trim()}`;
-  const getDetailsCacheKey = (addressId: string) => `${cachePrefix}_details_${addressId}`;
-  const getTimeoutKey = () => `${cachePrefix}_timeout`;
-
-  const searchAddresses = async (query: string) => {
+  const searchAddresses = async (query: string, city?: string) => {
     if (!query || query.length < 3) {
       suggestions.value = [];
+      isMenuOpen.value = false;
       return;
-    }
-
-    // Check cache first
-    const cacheKey = getSuggestionsCacheKey(query);
-    if (globalSuggestionsCache.has(cacheKey)) {
-      suggestions.value = globalSuggestionsCache.get(cacheKey) || [];
-      return;
-    }
-
-    // Clear existing timeout for this instance
-    const timeoutKey = getTimeoutKey();
-    if (globalTimeouts.has(timeoutKey)) {
-      clearTimeout(globalTimeouts.get(timeoutKey));
     }
 
     // Debounce the search
-    const timeout = setTimeout(async () => {
+    setTimeout(async () => {
       loading.value = true;
       try {
         const response = await $fetch('/api/address-lookup', {
           method: 'POST',
-          body: { query }
+          body: { query, city }
         }) as { results: AddressResult[] };
 
         const results = response.results || [];
-        suggestions.value = results;
-
-        // Cache the results
-        globalSuggestionsCache.set(cacheKey, results);
-        setTimeout(() => {
-          globalSuggestionsCache.delete(cacheKey);
-        }, cacheExpiryMs);
-
+        // map over results and concat text and description
+        suggestions.value = results.map(result => ({
+          ...result,
+          text: `${result.text} ${result.description ? `- ${result.description}` : ''}`
+        }));
+        
+        // Open the dropdown when we have results
+        if (results.length > 0) {
+          isMenuOpen.value = true;
+        }
       } catch (error) {
         console.error('Address lookup error:', error);
         suggestions.value = [];
       } finally {
         loading.value = false;
-        globalTimeouts.delete(timeoutKey);
       }
     }, debounceMs);
-
-    globalTimeouts.set(timeoutKey, timeout);
   };
 
   const selectAddress = async (selectedItem: unknown) => {
+    // Close the menu when an item is selected
+    isMenuOpen.value = false;
+    
     // Handle when user types freely vs selects from dropdown
     if (typeof selectedItem === 'string') {
       addressFields.address.value = selectedItem;
@@ -98,17 +79,6 @@ export function useAddressLookup(options: UseAddressLookupOptions) {
       return;
     }
 
-    // Check cache for address details
-    const detailsCacheKey = getDetailsCacheKey(addressItem.id);
-    if (globalDetailsCache.has(detailsCacheKey)) {
-      const cachedAddress = globalDetailsCache.get(detailsCacheKey)!;
-      addressFields.address.value = cachedAddress.line1;
-      addressFields.city.value = cachedAddress.city;
-      addressFields.province.value = cachedAddress.province;
-      addressFields.postalCode.value = cachedAddress.postalCode;
-      return;
-    }
-
     // Fetch full address details only when user selects an address
     loading.value = true;
     try {
@@ -119,18 +89,11 @@ export function useAddressLookup(options: UseAddressLookupOptions) {
 
       if (response && response.address) {
         const addressData = response.address;
-
         // Auto-fill the address fields
         addressFields.address.value = addressData.line1;
         addressFields.city.value = addressData.city;
         addressFields.province.value = addressData.province;
         addressFields.postalCode.value = addressData.postalCode;
-
-        // Cache the address details
-        globalDetailsCache.set(detailsCacheKey, addressData);
-        setTimeout(() => {
-          globalDetailsCache.delete(detailsCacheKey);
-        }, detailsCacheExpiryMs);
       }
     } catch (error) {
       console.error('Address retrieve error:', error);
@@ -142,35 +105,31 @@ export function useAddressLookup(options: UseAddressLookupOptions) {
     }
   };
 
-  // Cleanup function to clear timeouts
-  const cleanup = () => {
-    const timeoutKey = getTimeoutKey();
-    if (globalTimeouts.has(timeoutKey)) {
-      clearTimeout(globalTimeouts.get(timeoutKey));
-      globalTimeouts.delete(timeoutKey);
+  // Cleanup function to clear timeouts (no cache to clear now)
+  const cleanup = () => {};
+
+  // Function to manually control menu state
+  const openMenu = () => {
+    if (suggestions.value.length > 0) {
+      isMenuOpen.value = true;
     }
+  };
+
+  const closeMenu = () => {
+    isMenuOpen.value = false;
   };
 
   return {
     // Reactive state - direct refs for template
     suggestions,
     loading,
+    isMenuOpen,
     
     // Functions
     searchAddresses,
     selectAddress,
     cleanup,
-    
-    // Cache management (for debugging/advanced use)
-    clearCache: () => {
-      // Clear only this instance's cache entries
-      Array.from(globalSuggestionsCache.keys())
-        .filter(key => key.startsWith(`${cachePrefix}_suggestions_`))
-        .forEach(key => globalSuggestionsCache.delete(key));
-      
-      Array.from(globalDetailsCache.keys())
-        .filter(key => key.startsWith(`${cachePrefix}_details_`))
-        .forEach(key => globalDetailsCache.delete(key));
-    }
+    openMenu,
+    closeMenu
   };
 } 
