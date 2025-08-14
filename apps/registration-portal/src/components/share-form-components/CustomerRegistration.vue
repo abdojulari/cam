@@ -333,14 +333,22 @@
                     density="compact" 
                     append-inner-icon="mdi-map-marker"
                     :loading="primaryAddressLoading"
-                    @update:search="searchPrimaryAddresses"
+                    @update:search="q => searchPrimaryAddresses(q, city)"
                     @update:modelValue="selectPrimaryAddress"
+                    @focus="openPrimaryMenu"
+                    @blur="closePrimaryMenu"
                     :rules="[v => !!v || 'Address is required']"
                     required 
+                    :menu-props="{
+                      closeOnContentClick: false,
+                      closeOnClick: false,
+                      persistent: true
+                    }"
+                    v-model:menu="primaryAddressMenuOpen"
                 />
             </v-col>
             <v-col cols="12" sm="6" md="4">
-                <v-select 
+                <v-combobox 
                     label="City" 
                     v-model="city"
                     :items="cityOptions"
@@ -351,6 +359,7 @@
                     item-title="text"
                     item-value="value"
                     :rules="[v => !!v || 'City is required']"
+                    clearable
                     required 
                 />
             </v-col>
@@ -358,14 +367,15 @@
         <!-- Province, Postal Code -->
         <v-row>
             <v-col cols="12" sm="6" md="4">
-                <v-text-field 
+                <v-combobox
                     label="Province" 
+                    v-model="province"
+                    :items="provinceOptions"
                     variant="outlined"
                     hide-details="auto"
-                    v-model="province"
                     density="compact"
-                    readonly
-                    append-inner-icon="mdi-map-marker"
+                    item-title="text"
+                    item-value="value"
                     :rules="[v => !!v || 'Province is required']"
                     required 
                 />
@@ -415,21 +425,33 @@
                     density="compact" 
                     append-inner-icon="mdi-map-marker"
                     :loading="secondaryAddressLoading"
-                    @update:search="searchSecondaryAddresses"
+                    @update:search="q => searchSecondaryAddresses(q, city2)"
                     @update:modelValue="selectSecondaryAddress"
+                    @focus="openSecondaryMenu"
+                    @blur="closeSecondaryMenu"
                     :rules="[v => !!v || 'Address is required']"
                     required 
+                    :menu-props="{
+                      closeOnContentClick: false,
+                      closeOnClick: false,
+                      persistent: true
+                    }"
+                    v-model:menu="secondaryAddressMenuOpen"
                 />
             </v-col>
             <v-col cols="12" sm="6" md="4">
-                <v-text-field 
+                <v-combobox 
                     label="City" 
                     v-model="city2"
+                    :items="cityOptions"
                     append-inner-icon="mdi-city"
                     variant="outlined"
                     hide-details="auto"
                     density="compact"
+                    item-title="text"
+                    item-value="value"
                     :rules="[v => !!v || 'City is required']"
+                    clearable
                     required 
                 />
             </v-col>
@@ -570,6 +592,7 @@ import { ipRanges } from '../../constants/ipRangeMatching';
 import { useRegistrationStore } from '@cam/shared-components/store/registration-store';
 import { vMaska } from 'maska/vue';
 import { profileNames } from '../../constants/profile';
+import metisAddressList from '../../constants/metis-address-list';
 // @ts-ignore
 import ReturnAlert from '../notification/ReturnAlert.vue';
 
@@ -607,7 +630,7 @@ const customers = ref([]);
 const profileOptions = ref(profileNames);
 const cityOptions = ref([
     { value: 'Edmonton', text: 'Edmonton' },
-    { value: 'Epoch', text: 'Epoch' },
+    ...metisAddressList 
 ])
 const profile = ref('');
 const profileType = ref('');
@@ -1024,9 +1047,12 @@ const password = computed(() => {
 const { 
     suggestions: primaryAddressSuggestions, 
     loading: primaryAddressLoading, 
+    isMenuOpen: primaryAddressMenuOpen,
     selectAddress: selectPrimaryAddress, 
     searchAddresses: searchPrimaryAddresses, 
-    cleanup: primaryAddressCleanup 
+    cleanup: primaryAddressCleanup,
+    openMenu: openPrimaryMenu,
+    closeMenu: closePrimaryMenu
 } = useAddressLookup({
   addressFields: {
     address,
@@ -1034,15 +1060,17 @@ const {
     province,
     postalCode
   },
-  cachePrefix: 'primary'
 });
 
 const { 
     suggestions: secondaryAddressSuggestions, 
     loading: secondaryAddressLoading, 
+    isMenuOpen: secondaryAddressMenuOpen,
     selectAddress: selectSecondaryAddress, 
     searchAddresses: searchSecondaryAddresses, 
-    cleanup: secondaryAddressCleanup 
+    cleanup: secondaryAddressCleanup,
+    openMenu: openSecondaryMenu,
+    closeMenu: closeSecondaryMenu
 } = useAddressLookup({
   addressFields: {
     address: address2,
@@ -1050,7 +1078,6 @@ const {
     province: province2,
     postalCode: postalCode2
   },
-  cachePrefix: 'secondary'
 });
 
 onUnmounted(() => {
