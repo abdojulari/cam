@@ -14,6 +14,7 @@
         
         <v-col cols="12" md="8">
           <p class="mb-5 text-h6 text-primary">If any of your information isn't correct, please contact your institution.</p>
+          <span class="text-body-1 font-weight-light">Fields marked with an asterisk (*) are required</span>  
           <v-card class="pa-10 bg-grey-lighten-5" variant="flat">
             <v-form fast-fail ref="form" class="p-4 rounded shadow-sm">
               <!-- Name Row -->
@@ -56,12 +57,13 @@
                 <v-col cols="12" md="6">
                   <v-text-field
                     v-model="studentData.dateofbirth"
-                    label="Date of Birth"
+                    label="Date of Birth *"
                     variant="outlined"
                     density="compact"
-                    disabled
-                    hide-details
-                    readonly
+                    v-maska="'####-##-##'"
+                    :rules="dateOfBirthRules"
+                    placeholder="YYYY-MM-DD"
+                    required
                   />
                 </v-col>
               </v-row>
@@ -70,7 +72,7 @@
                 <v-col cols="12" md="5">
                   <v-text-field
                     v-model="studentData.email"
-                    label="Email"
+                    label="Email *"
                     variant="outlined"
                     density="compact"
                     :rules="emailRules"
@@ -80,7 +82,7 @@
                 <v-col cols="12" md="3">
                   <v-text-field
                     v-model="studentData.phone"
-                    label="Phone"
+                    label="Phone *"
                     variant="outlined"
                     density="compact"
                     v-maska="'###-###-####'"
@@ -91,7 +93,7 @@
                 <v-col cols="12" md="4">
                   <v-text-field
                     v-model="studentData.address"
-                    label="Address"
+                    label="Address *"
                     variant="outlined"
                     density="compact"
                     hide-details
@@ -105,7 +107,7 @@
                 <v-col cols="12" md="6">
                   <v-text-field
                     v-model="studentData.city"
-                    label="City"
+                    label="City *"
                     variant="outlined"
                     density="compact"
                     hide-details
@@ -115,7 +117,7 @@
                 <v-col cols="12" md="6">
                   <v-text-field
                     v-model="studentData.province"
-                    label="Province"
+                    label="Province *"
                     variant="outlined"
                     density="compact"
                     hide-details 
@@ -128,7 +130,7 @@
                 <v-col cols="12" md="6">
                   <v-text-field
                     v-model="studentData.postalcode"
-                    label="Postal Code"
+                    label="Postal Code *"
                     variant="outlined"
                     density="compact"
                     hide-details
@@ -138,7 +140,7 @@
                 <v-col cols="12" md="6">
                   <v-text-field
                     v-model="studentData.country"
-                    label="Country"
+                    label="Country *"
                     variant="outlined"
                     density="compact"
                     hide-details
@@ -152,7 +154,7 @@
                 <v-col cols="12" md="3">
                   <v-text-field
                     v-model="studentData.studentid"
-                    label="Student ID"
+                    label="Student ID *"
                     variant="outlined"
                     density="compact"
                     disabled
@@ -163,7 +165,7 @@
                 <v-col cols="12" md="6">
                   <v-text-field
                     v-model="studentData.profile"
-                    label="Institution"
+                    label="Institution *"
                     variant="outlined"
                     density="compact"
                     disabled
@@ -175,7 +177,7 @@
                 <v-col cols="12" md="3">
                   <v-text-field
                     v-model="studentData.expirydate"
-                    label="Expiry Date"
+                    label="Expiry Date *"
                     variant="outlined"
                     density="compact"
                     disabled
@@ -190,7 +192,7 @@
                 <v-col cols="12" md="6">
                   <v-text-field
                     v-model="studentData.password"
-                    label="Password"
+                    label="Password *"
                     type="password"
                     variant="outlined"
                     density="compact"
@@ -201,7 +203,7 @@
                 <v-col cols="12" md="6">
                   <v-text-field
                     v-model="studentData.confirmPassword"
-                    label="Confirm Password"
+                    label="Confirm Password *"
                     type="password"
                     variant="outlined"
                     density="compact"
@@ -295,6 +297,29 @@ const emailRules = [
 const phoneRules = [
   v => !!v || 'Phone is required',
   v => /^[0-9]{3}-[0-9]{3}-[0-9]{4}$/.test(v) || 'Invalid phone number',
+];
+
+const dateOfBirthRules = [
+  v => !!v || 'Date of birth is required',
+  v => /^\d{4}-\d{2}-\d{2}$/.test(v) || 'Date must be in YYYY-MM-DD format',
+  v => {
+    if (!v) return true; // Let the required rule handle empty values
+    const date = new Date(v);
+    const today = new Date();
+    return date <= today || 'Date of birth cannot be in the future';
+  },
+  v => {
+    if (!v) return true; // Let the required rule handle empty values
+    const date = new Date(v);
+    const minDate = new Date();
+    minDate.setFullYear(minDate.getFullYear() - 120); // 120 years ago
+    return date >= minDate || 'Date of birth is too far in the past';
+  },
+  v => {
+    if (!v) return true; // Let the required rule handle empty values
+    const date = new Date(v);
+    return !isNaN(date.getTime()) || 'Invalid date';
+  }
 ];
 
 onMounted(async () => {
