@@ -142,13 +142,14 @@ const overrideDuplicateAlert = async () => {
               category1: payload?.selectedIndigenousStatus ? 'ONRES_SET' : '',
               source: 'CRP'
         });
+        console.log('response before try', response);
         try {
           if (response?.message === "Override status set successfully.") {
             console.log('Child form submitted successfully', response);
             overrideStatus.value = true;
           }
           else {
-            console.log('Record not submitted', response);
+            console.log('Record not submitted', response?.message);
             errorMessage.value = response?.message;
           }
     
@@ -163,8 +164,6 @@ const overrideDuplicateAlert = async () => {
       console.error(error);
     }
    
-    
-    
     try {
       isLoading.value = true;
       const response = await apiService.overrideDuplicate({
@@ -202,7 +201,7 @@ const overrideDuplicateAlert = async () => {
          overrideStatus.value = true;
          closeDialog();
        } else {
-         console.log('Record not submitted', response);
+         console.log('Record not submitted', response?.message);
          isLoading.value = false;
          errorMessage.value = response?.message;
        }

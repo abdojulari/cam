@@ -17,7 +17,7 @@ export default defineEventHandler(async (event: H3Event<EventHandlerRequest>) =>
       },
       body: JSON.stringify(body),
     });
-    return await response.json();
+    return await response;
   } catch (error: any) {
 
     return { error: true, message: error.message || 'Unknown error' };
