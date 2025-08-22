@@ -195,11 +195,11 @@ const overrideDuplicateAlert = async () => {
               category1: payloads?.selectedIndigenousStatus ? 'ONRES_SET' : '',
               source: 'CRP'
       });
-         if (response?.message === "Override status set successfully.") {
-         console.log('Record submitted successfully', response);
-         isLoading.value = false;
-         overrideStatus.value = true;
-         closeDialog();
+        if (response?.message  === "Override status set successfully.") {
+            console.log('Record submitted successfully', response);
+            isLoading.value = false;
+            overrideStatus.value = true;
+            closeDialog();
        } else {
          console.log('Record not submitted', response?.message);
          isLoading.value = false;

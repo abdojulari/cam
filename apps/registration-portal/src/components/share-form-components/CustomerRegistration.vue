@@ -144,6 +144,34 @@
                 />
             </v-col>
         </v-row>
+        
+        <!-- Email/Phone Number -->
+        <v-row>
+            <v-col cols="12" sm="6" md="4">
+                <v-text-field 
+                    label="Email" 
+                    v-model="emailAddress" 
+                    variant="outlined" 
+                    hide-details="auto"
+                    density="compact" 
+                    :rules="[
+                        (v) => !v || /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v) || 'A valid email is required'
+                    ]" 
+                />
+            </v-col>
+            <v-col cols="12" sm="6" md="4">
+                <v-text-field 
+                    label="Phone Number" 
+                    v-model="phoneNumber" 
+                    variant="outlined" 
+                    hide-details="auto"
+                    density="compact"
+                    append-inner-icon="mdi-phone"
+                    v-maska="'###-###-####'"
+                    :rules="phoneRules"
+                />
+            </v-col>
+        </v-row>
          <!-- School -->
          <v-row v-if="profileType === 'Child'">
             <v-col cols="12" sm="6" md="4">
@@ -185,6 +213,7 @@
                 />   
             </v-col>
         </v-row>
+        
         <!-- Add minor button-->
         <v-row class="mb-5" v-if="profileType === 'Child'">
             <v-col cols="12">
@@ -228,33 +257,7 @@
         :deleteMinor="deleteMinor" 
         
         />
-        <!-- Email/Phone Number -->
-        <v-row>
-            <v-col cols="12" sm="6" md="4">
-                <v-text-field 
-                    label="Email" 
-                    v-model="emailAddress" 
-                    variant="outlined" 
-                    hide-details="auto"
-                    density="compact" 
-                    :rules="[
-                        (v) => !v || /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v) || 'A valid email is required'
-                    ]" 
-                />
-            </v-col>
-            <v-col cols="12" sm="6" md="4">
-                <v-text-field 
-                    label="Phone Number" 
-                    v-model="phoneNumber" 
-                    variant="outlined" 
-                    hide-details="auto"
-                    density="compact"
-                    append-inner-icon="mdi-phone"
-                    v-maska="'###-###-####'"
-                    :rules="phoneRules"
-                />
-            </v-col>
-        </v-row>
+        
         <!-- Contact info required banner -->
         <v-row v-if="contactError && !contactErrorDismiss">
             <v-col cols="12" sm="6">
@@ -273,6 +276,27 @@
                             </v-btn>
                         </template>
                 </v-banner>
+            </v-col>
+        </v-row>
+        <v-row>
+            <v-col cols="12" sm="6" md="4">
+                <v-text-field
+                    label="Password"
+                    v-model="password"
+                    variant="outlined"
+                    hide-details="auto"
+                    density="compact"
+                    :type="showPassword ? 'text' : 'password'"
+                    :rules="[v => !!v || 'Password is required']"
+                />
+            </v-col>
+            <v-col cols="12" sm="6" md="4" class="d-flex align-center">
+                <v-checkbox 
+                    v-model="showPassword" 
+                    label="Show password" 
+                    hide-details="auto"
+                    density="compact"
+                />
             </v-col>
         </v-row>
          
@@ -360,7 +384,6 @@
                     required 
                     :menu-props="{
                       closeOnContentClick: false,
-                      closeOnClick: false,
                       persistent: true
                     }"
                     v-model:menu="primaryAddressMenuOpen"
@@ -452,7 +475,6 @@
                     required 
                     :menu-props="{
                       closeOnContentClick: false,
-                      closeOnClick: false,
                       persistent: true
                     }"
                     v-model:menu="secondaryAddressMenuOpen"
@@ -651,12 +673,13 @@ const cityOptions = ref([
     { value: 'Edmonton', text: 'Edmonton' },
     ...metisAddressList 
 ])
+
 const profile = ref('');
 const profileType = ref('');
 const selectedCustomer = ref('');
 const emailConsent = ref([
-    { value: 'ECONSENT', text: 'Yes, I consent to receive e-mail from Edmonton Public Library.' },
-    { value: 'ENOCONSENT', text: 'No, I do not consent to receive e-mail from Edmonton Public Library.' },
+    { value: 'ECONSENT', text: 'Yes, I consent to receive emails from the Edmonton Public Library about EPL news and events.' },
+    { value: 'ENOCONSENT', text: 'No, I do not consent to receive emails from the Edmonton Public Library about EPL news and events.' },
 ]);
 const title = ref([ 'Mr.', 'Mrs.', 'Ms.', 'Dr.', 'Prof.', 'Rev.', 'Hon.']);
 const selectedTitle = ref(null);
@@ -694,6 +717,8 @@ const minors = ref<Minors[]>([]);
 const networkName = ref('')
 const submittedFormData = ref({});
 const router = useRouter();
+const manualPassword = ref('');
+const showPassword = ref(false);
 
 // create a validation rules for the form
 const form = ref(null);
@@ -721,7 +746,9 @@ const addMinor = () => {
         usePreferredName: usePreferredName.value,
         preferredName: preferredName.value,
         selectedSchool: selectedSchool.value,
-        library: selectedCustomer.value
+        library: selectedCustomer.value,
+        emailAddress: emailAddress.value,
+        phoneNumber: phoneNumber.value,
     });
     // clear the fields when successfully added
     firstName.value = '';
@@ -732,6 +759,8 @@ const addMinor = () => {
     usePreferredName.value = false;
     preferredName.value = '';
     selectedSchool.value = null;
+    emailAddress.value = '';
+    phoneNumber.value = '';
 }
 
 const deleteMinor = (id: number) => {
@@ -749,6 +778,8 @@ const resetMinorForm = () => {
         usePreferredName.value = lastMinor.usePreferredName;
         preferredName.value = lastMinor.preferredName;
         selectedSchool.value = lastMinor.selectedSchool;
+        emailAddress.value = lastMinor.emailAddress;
+        phoneNumber.value = lastMinor.phoneNumber;
         deleteMinor(lastMinor.id);
     }
 }
@@ -766,6 +797,12 @@ onMounted(() => {
   }
   if (props.isClient) {
     isClient.value = true;
+  }
+  // Preselect profile based on profileType
+  if (profileType.value === 'Adult') {
+    profile.value = 'EPL_ADULT';
+  } else if (profileType.value === 'Child') {
+    profile.value = 'EPL_JUV';
   }
   
   // Ensure province is set
@@ -1055,19 +1092,25 @@ const handleSubmit = async () => {
   }
 }
 
-const password = computed(() => {
-    if (!dateOfBirth?.value) return '';
+const password = computed<string>({
+    get() {
+        if (manualPassword.value) return manualPassword.value;
+        if (!dateOfBirth?.value) return '';
 
-    if (profileType.value === 'Child') {
+        if (profileType.value === 'Child') {
+            return dateOfBirth?.value?.getFullYear().toString();
+        }
+        
+        const phone = phoneNumber.value ? phoneNumber.value.replace(/\D/g, '') : '';
+        if (phone.length >= 4) {
+            return phone.slice(-4);
+        }
+        
         return dateOfBirth?.value?.getFullYear().toString();
+    },
+    set(value: string) {
+        manualPassword.value = value || '';
     }
-    
-    const phone = phoneNumber.value ? phoneNumber.value.replace(/\D/g, '') : '';
-    if (phone.length >= 4) {
-        return phone.slice(-4);
-    }
-    
-    return dateOfBirth?.value?.getFullYear().toString();
 });
 
 // Setup address lookup composables
@@ -1119,6 +1162,11 @@ watch([emailAddress, phoneNumber], ([newEmail, newPhone]) => {
     contactError.value = false;
     contactErrorDismiss.value = false;
   }
+});
+
+// Reset manual password when inputs change so computed can re-derive
+watch([dateOfBirth, phoneNumber, profileType], () => {
+  manualPassword.value = '';
 });
 
 const isGenerateBtnDisabled = computed(() => {

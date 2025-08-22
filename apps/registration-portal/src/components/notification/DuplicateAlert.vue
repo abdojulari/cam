@@ -48,7 +48,6 @@
             class="ma-6 bg-grey-lighten-5"
             density="compact"
             :hide-default-footer="(items && items.length < 5)"
-            show-select
             select-strategy="single"
           >
           </v-data-table>
