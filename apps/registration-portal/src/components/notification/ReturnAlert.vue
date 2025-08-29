@@ -34,6 +34,12 @@
           </p> 
           <span class="text-body-2 italic">This message is coming from ILS. Click the close button to exit the application.</span>
         </div>
+        <div v-if="successMessage" class="pa-4 text-center mt-2">
+          <p class="text-success ma-0">
+            Override was successful. 
+          </p>
+          <span class="text-body-2 italic"> Click the close button to exit the application.</span>
+        </div>
           <template v-slot:actions>
             <v-spacer></v-spacer>
             <div class="d-flex">
@@ -92,6 +98,7 @@ const props = defineProps({
 })
 const overrideStatus = ref(false);
 const errorMessage = ref('');
+const successMessage = ref('');
 const isLoading = ref(false);
 const successData = props.data as any;
 const failedData = props.failedData as any;
@@ -113,7 +120,7 @@ const overrideDuplicateAlert = async () => {
     try {
       if (payloads.minors.length > 0) {
       payloads.minors.forEach(async (payload: any) => {
-        const response = await apiService.overrideDuplicate({
+        const response: any = await apiService.overrideDuplicate({
           firstname: payload?.firstName,
               lastname: payload?.lastName,
               middlename: payload?.middleName,
@@ -166,7 +173,7 @@ const overrideDuplicateAlert = async () => {
    
     try {
       isLoading.value = true;
-      const response = await apiService.overrideDuplicate({
+      const response: any = await apiService.overrideDuplicate({
         firstname: payloads?.firstName,
               lastname: payloads?.lastName,
               middlename: payloads?.middleName,
@@ -199,7 +206,8 @@ const overrideDuplicateAlert = async () => {
             console.log('Record submitted successfully', response);
             isLoading.value = false;
             overrideStatus.value = true;
-            closeDialog();
+            successMessage.value = response?.message;
+           // closeDialog();
        } else {
          console.log('Record not submitted', response?.message);
          isLoading.value = false;
@@ -210,18 +218,6 @@ const overrideDuplicateAlert = async () => {
       isLoading.value = false;
       console.error(error);
    }
-    
-    // const response = await apiService.overrideDuplicate({
-    //   // Pass all form data to the backend
-    //   ...props.formData,
-    //   firstname: props.firstname,
-    //   lastname: props.lastname,
-    //   dateofbirth: props.dateOfBirth,
-    //   status: true
-    // });
-
-    //console.log(response);
-    //router.push('/');
 }
 
 </script>

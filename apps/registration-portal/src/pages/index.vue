@@ -1,8 +1,9 @@
 <template>
-  <Dashboard />
+  <Adult />
 </template>
 
 <script setup lang="ts">
-  import Dashboard from '../components/Dashboard.vue'
+import Adult from '../components/forms/Adult.vue';
+ // import Dashboard from '../components/Dashboard.vue'
 
 </script>

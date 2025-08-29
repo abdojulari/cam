@@ -189,6 +189,7 @@
             
             <!-- Password Row -->
             <v-row>
+              <p class="text-body-1 font-weight-light mb-2 text-red px-3"> Choose a different password for your EPL account</p>
               <v-col cols="12" md="6">
                 <v-text-field
                   v-model="studentData.password"
@@ -279,10 +280,16 @@ const closeErrorDialog = async () => {
   })
 };
 
-const passwordRules = [
-v => !!v || 'Password is required',
-v => (v && v.length >= 8) || 'Password must be at least 8 characters',
-];
+// const passwordRules = [
+// v => !!v || 'Password is required',
+// v => (v && v.length >= 8) || 'Password must be at least 8 characters',
+// ];
+const passwordRegex = /^(?=[A-Za-z0-9]{6,20}$)(?!.*\s).*$/;
+const passwordRules =  [
+  v => !!v || 'Password is required',
+  v => passwordRegex.test(v) || 'Password must be 6-20 characters long and no special characters allowed.',
+]
+   
 
 const confirmPasswordRules = [
 v => !!v || 'Please confirm your password',
