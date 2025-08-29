@@ -189,7 +189,7 @@
             
             <!-- Password Row -->
             <v-row>
-              <p class="text-body-1 font-weight-light mb-2 text-red px-3"> Choose a different password for your EPL account</p>
+              <p class="font-weight-light mt-1 text-body-2 px-3"> Please do NOT use your institution password. Set a new password for your EPL Library account.</p>
               <v-col cols="12" md="6">
                 <v-text-field
                   v-model="studentData.password"
@@ -280,21 +280,22 @@ const closeErrorDialog = async () => {
   })
 };
 
-// const passwordRules = [
-// v => !!v || 'Password is required',
-// v => (v && v.length >= 8) || 'Password must be at least 8 characters',
-// ];
 const passwordRegex = /^(?=[A-Za-z0-9]{6,20}$)(?!.*\s).*$/;
 const passwordRules =  [
   v => !!v || 'Password is required',
   v => passwordRegex.test(v) || 'Password must be 6-20 characters long and no special characters allowed.',
 ]
-   
-
-const confirmPasswordRules = [
-v => !!v || 'Please confirm your password',
-v => v === studentData.value.password || 'Passwords do not match',
-];
+const confirmPasswordRules = ref([v => !!v || 'Password is required', 
+v => passwordRegex.test(v) || 'Password must be 6-20 characters long and no special characters allowed.']);
+// watch the password and confirm password variables
+watch([() => studentData.value.password, () => studentData.value.confirmPassword], ([password, confirmPassword]) => {
+  if (password !== confirmPassword) {
+    confirmPasswordRules.value = [v => v === password || 'Passwords do not match'];
+  } else {
+    confirmPasswordRules.value = [v => !!v || 'Password is required',
+    v => passwordRegex.test(v) || 'Password must be 6-20 characters long and no special characters allowed.'];
+  }
+});
 
 const emailRules = [
 v => !!v || 'Email is required',
