@@ -418,6 +418,7 @@
                     density="compact"
                     item-title="text"
                     item-value="value"
+                    :return-object="false"
                     :rules="[v => !!v || 'Province is required']"
                     required 
                 />
@@ -509,6 +510,7 @@
                     density="compact"
                     item-title="text"
                     item-value="value"
+                    :return-object="false"
                     :rules="[v => !!v || 'Province is required']"
                     required 
                 />
@@ -1011,14 +1013,14 @@ watch(selectedEmailConsent, (newValue, oldValue) => {
                     minor.careOf = careOf.value;
                     minor.address = address.value;
                     minor.city = city.value;
-                    minor.province = province.value;
+                    minor.province = typeof province.value === 'string' ? province.value : (province.value && typeof province.value === 'object' ? (province.value as any).value : '');
                     minor.postalCode = postalCode.value;
                     minor.emailAddress = emailAddress.value;
                     minor.phoneNumber = phoneNumber.value;
                     minor.barcode = barcode.value;
                     minor.address2 = address2.value,
                     minor.city2 = city2.value;
-                    minor.province2 = province2.value;
+                    minor.province2 = typeof province2.value === 'string' ? province2.value : (province2.value && typeof province2.value === 'object' ? (province2.value as any).value : '');
                     minor.postalCode2 = postalCode2.value;
                     minor.emailAddress = emailAddress.value;
                     minor.password =  dateOfBirth.value.getFullYear().toString().slice(-2);
@@ -1063,11 +1065,11 @@ const handleSubmit = async () => {
           careOf: careOf.value,
           address: address.value,
           city: city.value,
-          province: province.value,
+          province: typeof province.value === 'string' ? province.value : (province.value && typeof province.value === 'object' ? (province.value as any).value : ''),
           postalCode: postalCode.value,
           address2: address2.value,
           city2: city2.value,
-          province2: province2.value,
+          province2: typeof province2.value === 'string' ? province2.value : (province2.value && typeof province2.value === 'object' ? (province2.value as any).value : ''),
           postalCode2: postalCode2.value,
           emailAddress: emailAddress.value,
           phoneNumber: phoneNumber.value,

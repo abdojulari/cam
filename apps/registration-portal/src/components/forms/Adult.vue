@@ -23,7 +23,6 @@ const onSubmit = async(payload: any) => {
   // Handle adult form submission here  
     try {
       const response = await apiService.postUserData(payload.form);
-      console.log('response', await response);
       if (response?.message === "Record added successfully.") {
         userRegistration.setSuccessResponse({
             name: response?.data?.firstName + ' ' + response?.data?.lastName,
@@ -40,6 +39,11 @@ const onSubmit = async(payload: any) => {
       }
     } catch (error) {
       if( error.message === 'HTTP error! status: 409') {
+        userRegistration.setFailedResponse({
+          message: error.message,
+        });
+      }
+      else if( error.message === 'Posting to ILS failed 422') {
         userRegistration.setFailedResponse({
           message: error.message,
         });
