@@ -151,17 +151,7 @@
 
             <!-- profile Info Row -->
             <v-row>
-              <v-col cols="12" md="3">
-                <v-text-field
-                  v-model="studentData.studentid"
-                  label="Student ID *"
-                  variant="outlined"
-                  density="compact"
-                  disabled
-                  hide-details
-                  readonly
-                />
-              </v-col>
+            
               <v-col cols="12" md="6">
                 <v-text-field
                   v-model="studentData.profile"
@@ -174,7 +164,7 @@
                 />
               </v-col>
               
-              <v-col cols="12" md="3">
+              <v-col cols="12" md="6">
                 <v-text-field
                   v-model="studentData.expirydate"
                   label="Expiry Date *"
@@ -369,6 +359,23 @@ onMounted(async () => {
   studentData.value = data;
 });
 
+// get id using institution name 
+// const getInstitutionId = (institutionName) => {
+//   const prefixes = {
+//     "Concordia University": "1510",
+//     "Kings University": "1530",
+//     "NorQuest College": "13800",
+//     "MacEwan University": "13200",
+//     "University of Alberta": ["1010", "1011", "1110", "1111"],
+//   };
+//   const value = prefixes[institutionName];
+//   if (!value) return undefined;
+//   if (Array.isArray(value)) {
+//     const randomIndex = Math.floor(Math.random() * value.length);
+//     return value[randomIndex];
+//   }
+//   return value;
+// }
 
 const generateBarcode = () => {
 // Get first 3 chars of profile, convert to uppercase
@@ -376,16 +383,6 @@ const generateBarcode = () => {
 const profilePrefix = studentData.value.id;
 // Start with profile prefix and student ID
 let barcode = profilePrefix + studentData.value.studentid;
-
-// If length is less than 14, pad with random numbers
-while (barcode.length < 14) {
-  barcode += Math.floor(Math.random() * 10);
-}
-
-// If longer than 14, truncate
-if (barcode.length > 14) {
-  barcode = barcode.substring(0, 14);
-}
 
 return barcode;
 };
