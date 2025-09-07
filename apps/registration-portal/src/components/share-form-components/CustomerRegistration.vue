@@ -145,33 +145,6 @@
             </v-col>
         </v-row>
         
-        <!-- Email/Phone Number -->
-        <v-row>
-            <v-col cols="12" sm="6" md="4">
-                <v-text-field 
-                    label="Email" 
-                    v-model="emailAddress" 
-                    variant="outlined" 
-                    hide-details="auto"
-                    density="compact" 
-                    :rules="[
-                        (v) => !v || /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v) || 'A valid email is required'
-                    ]" 
-                />
-            </v-col>
-            <v-col cols="12" sm="6" md="4">
-                <v-text-field 
-                    label="Phone Number" 
-                    v-model="phoneNumber" 
-                    variant="outlined" 
-                    hide-details="auto"
-                    density="compact"
-                    append-inner-icon="mdi-phone"
-                    v-maska="'###-###-####'"
-                    :rules="phoneRules"
-                />
-            </v-col>
-        </v-row>
          <!-- School -->
          <v-row v-if="profileType === 'Child'">
             <v-col cols="12" sm="6" md="4">
@@ -307,7 +280,7 @@
             </v-col>
         </v-row>
         <!-- Barcode to copy address information form-->
-        <v-row>
+        <v-row v-if="profileType === 'Child'">
             <v-col cols="12" sm="6" md="4">
                 <v-text-field 
                     hint="Enter barcode to copy care/of contact & address information"
@@ -360,6 +333,33 @@
         <v-row class="mt-4">
             <v-col cols="12" sm="12" md="12">
                 <h3 class="text-body-1">Primary Address</h3>
+            </v-col>
+        </v-row>
+         <!-- Email/Phone Number -->
+         <v-row>
+            <v-col cols="12" sm="6" md="4">
+                <v-text-field 
+                    label="Email" 
+                    v-model="emailAddress" 
+                    variant="outlined" 
+                    hide-details="auto"
+                    density="compact" 
+                    :rules="[
+                        (v) => !v || /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v) || 'A valid email is required'
+                    ]" 
+                />
+            </v-col>
+            <v-col cols="12" sm="6" md="4">
+                <v-text-field 
+                    label="Phone Number" 
+                    v-model="phoneNumber" 
+                    variant="outlined" 
+                    hide-details="auto"
+                    density="compact"
+                    append-inner-icon="mdi-phone"
+                    v-maska="'###-###-####'"
+                    :rules="phoneRules"
+                />
             </v-col>
         </v-row>
         <!-- Address1 / City -->
