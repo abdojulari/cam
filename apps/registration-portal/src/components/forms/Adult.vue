@@ -23,7 +23,7 @@ const onSubmit = async(payload: any) => {
   // Handle adult form submission here  
     try {
       const response = await apiService.postUserData(payload.form);
-      if (response?.message === `Customer ${response?.data?.firstName} ${response?.data?.lastName} has been successfully registered!`) {
+      if (response?.message === "Record added successfully.") {
         userRegistration.setSuccessResponse({
             name: response?.data?.firstName + ' ' + response?.data?.lastName,
             barcode: response?.data?.barcode,
@@ -45,7 +45,7 @@ const onSubmit = async(payload: any) => {
       }
       else if( error.message === 'Posting to ILS failed 422' || error.message === 'HTTP error! status: 422') {
         userRegistration.setFailedResponse({
-          message: error.message,
+          message: 'Error posting to ILS! Please contact the helpdesk.',
         });
       }
       else {
