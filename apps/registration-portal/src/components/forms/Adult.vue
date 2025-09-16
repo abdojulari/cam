@@ -21,6 +21,7 @@ const clearForm = () => {
 
 const onSubmit = async(payload: any) => {
   // Handle adult form submission here  
+  
     try {
       const response = await apiService.postUserData(payload.form);
       if (response?.message === "Record added successfully.") {

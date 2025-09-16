@@ -648,7 +648,8 @@ const registrationStore = useRegistrationStore();
 const successData = registrationStore.getSuccessResponse;
 const failedData = registrationStore.getFailedResponse;
 const isLoading = computed(() => registrationStore.getIsLoading);
-
+const addressError = ref(false);
+const addressErrorDismiss = ref(false);
 const firstName = ref('');
 const lastName = ref('');
 const middleName = ref('');
@@ -721,6 +722,7 @@ const submittedFormData = ref({});
 const router = useRouter();
 const manualPassword = ref('');
 const showPassword = ref(false);
+const selectedIndigenousStatus = ref('');
 
 // create a validation rules for the form
 const form = ref(null);
@@ -811,6 +813,15 @@ onMounted(() => {
   province.value = 'AB';
 });
 
+// create watch for indigenousStatus
+watch(indigenousStatus, (newValue, oldValue) => {
+  if (newValue !== oldValue) {
+    console.log('Indigenous Status:', newValue);
+    selectedIndigenousStatus.value = newValue ? 'ONRES_SET' : '';
+    
+  }
+});
+
 const maxChildDate = computed(() => {
   const today = new Date();
   // Max date for child: must be less than 18 years old (so up to 17 years, 364 days)
@@ -859,9 +870,11 @@ const handleAsyncWatch = async (
     });
 
     registrationStore.setIsLoading(false);
-    
+    // @ts-ignore
     if (response?.match) {
+        // @ts-ignore
         duplicateRecord.value = response.matched_record
+        // @ts-ignore
         ? [response.matched_record]
         : [];
         dialog.value = true;
@@ -1012,23 +1025,23 @@ watch(selectedEmailConsent, (newValue, oldValue) => {
                 minors.value.forEach((minor) => {
                     minor.careOf = careOf.value;
                     minor.address = address.value;
-                    minor.city = city.value;
+                    minor.city = typeof city.value === 'string' ? city.value : (city.value && typeof city.value === 'object' ? (city.value as any).value : '');
                     minor.province = typeof province.value === 'string' ? province.value : (province.value && typeof province.value === 'object' ? (province.value as any).value : '');
                     minor.postalCode = postalCode.value;
                     minor.emailAddress = emailAddress.value;
                     minor.phoneNumber = phoneNumber.value;
                     minor.barcode = barcode.value;
                     minor.address2 = address2.value,
-                    minor.city2 = city2.value;
+                    minor.city2 = typeof city2.value === 'string' ? city2.value : (city2.value && typeof city2.value === 'object' ? (city2.value as any).value : '');
                     minor.province2 = typeof province2.value === 'string' ? province2.value : (province2.value && typeof province2.value === 'object' ? (province2.value as any).value : '');
                     minor.postalCode2 = postalCode2.value;
                     minor.emailAddress = emailAddress.value;
                     minor.password =  dateOfBirth.value.getFullYear().toString().slice(-2);
                     minor.confirmPassword =  dateOfBirth.value.getFullYear().toString().slice(-2);
                     minor.selectedEmailConsent = newValue;
-                    minor.selectedIndigenousStatus = indigenousStatus.value;
+                    minor.selectedIndigenousStatus = selectedIndigenousStatus.value;
                     minor.useSecondaryAddress = useSecondaryAddress.value;
-                    minor.profileType = profile.value;
+                    minor.profileType = profile.value;  
                 });
             }
         }
@@ -1048,7 +1061,13 @@ const handleSubmit = async () => {
     registrationStore.setIsLoading(false);
     return;
   }
-  
+  if (!city.value || !province.value || !postalCode.value) {
+    addressError.value = true;
+    addressErrorDismiss.value = false;
+    registrationStore.setIsLoading(false);
+    return;
+  }
+
   if (dateOfBirth.value) {
     try {
         const formData = {
@@ -1064,18 +1083,18 @@ const handleSubmit = async () => {
           barcode: barcode.value,
           careOf: careOf.value,
           address: address.value,
-          city: city.value,
+          city: typeof city.value === 'string' ? city.value : (city.value && typeof city.value === 'object' ? (city.value as any).value : ''),
           province: typeof province.value === 'string' ? province.value : (province.value && typeof province.value === 'object' ? (province.value as any).value : ''),
           postalCode: postalCode.value,
           address2: address2.value,
-          city2: city2.value,
+          city2: typeof city2.value === 'string' ? city2.value : (city2.value && typeof city2.value === 'object' ? (city2.value as any).value : ''),
           province2: typeof province2.value === 'string' ? province2.value : (province2.value && typeof province2.value === 'object' ? (province2.value as any).value : ''),
           postalCode2: postalCode2.value,
           emailAddress: emailAddress.value,
           phoneNumber: phoneNumber.value,
           libraryCardBarcode: libraryCardBarcode.value,
           selectedEmailConsent: selectedEmailConsent.value,
-          selectedIndigenousStatus: indigenousStatus.value,
+          selectedIndigenousStatus: selectedIndigenousStatus.value,
           useSecondaryAddress: useSecondaryAddress.value,
           profileType: profile.value,
           isClient: isClient.value,
@@ -1087,6 +1106,7 @@ const handleSubmit = async () => {
     // Store the form data for use in ReturnAlert
     submittedFormData.value = formData.form;
     emit('submit', formData);
+    console.log('record submitted', formData);
     } catch (error) {
       console.error(error);
       registrationStore.setIsLoading(false);

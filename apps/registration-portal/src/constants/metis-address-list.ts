@@ -50,6 +50,7 @@ const metisAddressList = [
         "Elizabeth",
         "Elizabeth Metis Settlement",
         "Enoch",
+        "Epoch",
         "Enoch Cree Nation",
         "Ermineskin",
         "Fishing Lake",

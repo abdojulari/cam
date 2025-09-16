@@ -12,7 +12,7 @@
                         :items="props.minors"
                         item-key="id"
                         :items-per-page="5"
-                        class="ma-1 bg-grey-lighten-5"
+                        class="ma-1 bg-blue-grey-lighten-5"
                         density="compact"
                         :hide-default-footer="(props.minors && props.minors.length < 5)"
                         color="primary"

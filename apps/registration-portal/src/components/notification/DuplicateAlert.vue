@@ -45,7 +45,7 @@
             :items="itemsWithFullname"
             :search="search"
             :items-per-page="5"
-            class="ma-6 bg-grey-lighten-5"
+            class="ma-6 bg-blue-grey-lighten-5"
             density="compact"
             :hide-default-footer="(items && items.length < 5)"
             select-strategy="single"
