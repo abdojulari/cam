@@ -203,68 +203,27 @@
       <v-switch
         label="Add child(ren) to your existing account"
         v-model="linkMinor"
-        :disabled="(!loading && linkDisabled && !errorLogin) || (disabled && !errorLogin) "
+        :disabled="linkDisabled || (disabled && !errorLogin)"
       >
       </v-switch>
     </v-row>
     <v-row class="bg-grey-lighten-2 p-5" v-if="props.formData.radios !== 'Adult'">
-        <v-card flat v-if="linkMinor">
-        <v-card-title class="mb-2">
-          <h3>Link your child(ren) to your EPL card</h3>
-        </v-card-title>
-        <v-card-text>
-        <v-row>
-          <v-col cols="12" sm="6">
-            <v-text-field 
-              v-model="formData.barcode" 
-              label="Library Card Number" 
-              :rules="[props.rules.required]"
-              density="compact"
-              variant="outlined"
-            />
-          </v-col>
-          <v-col cols="12" sm="6">
-            <v-text-field 
-              v-model="formData.pin" 
-              label="Password" 
-              :rules="[props.rules.required]"
-              density="compact"
-              variant="outlined"
-              type="password"
-            />
-          </v-col>
-          <v-col cols="12" v-if="errorLogin" class="mt-n10 ">
-            <span class="text-red font-italic font-weight-medium">
-              {{ errorLogin }}
-            </span>
-          </v-col>
-        </v-row>
-        <v-row v-if="!loading && linkDisabled && !errorLogin">
-          <v-col cols="12">
-            <span class="text-green-darken-4 font-italic font-weight-medium">Record saved successfully!</span>
-          </v-col>
-        </v-row>
-        </v-card-text>
-        <v-card-actions class="d-flex flex-column align-start justify-start">
-          <v-btn 
-            variant="flat" 
-            color="primary" 
-            :disabled="loading || formData.barcode === '' || formData.pin === '' || isMinorInvalid || (isClicked && errorLogin !== 'Invalid library card number or password!')"
-            :loading="loading"
-            :text="linkDisabled && !errorLogin ? 'Saved' : 'Save Changes'"
-            @click="loading = !loading"
-            class="ml-2"
-            prepend-icon="mdi-content-save"
-          />
-        </v-card-actions>
-        <v-alert
-          density="compact"
-          text="Please click the 'SAVE CHANGES' button to save your progress before proceeding to the 'SUBMIT' button."
-          type="warning"
-          class="mt-5 mx-4"
-        >
-        </v-alert>
-      </v-card>
+      <LibraryCardAuth
+        v-if="linkMinor"
+        v-model:barcode="formData.barcode"
+        v-model:pin="formData.pin"
+        :rules="props.rules"
+        :disabled="disabled"
+        title="Link your child(ren) to your EPL card"
+        success-message="Record saved successfully!"
+        button-text="Save Changes"
+        alert-text="Please click the 'SAVE CHANGES' button to save your progress before proceeding to the 'SUBMIT' button."
+        :show-alert="true"
+        :min-age="18"
+        :allowed-profiles="['EPL_ADULT', 'EPL_SELF', 'EPL_ADU01', 'EPL_ADU05', 'EPL_ADU10', 'EPL_CORP', 'EPL_NOVIDG', 'EPL_ONLIN', 'EPL_VISITR', 'EPL_TRESID']"
+        @authentication-success="handleAuthSuccess"
+        @authentication-error="handleAuthError"
+      />
       <v-card flat v-if="!linkMinor">
         <v-card-title>
             <h4>Details of Adult responsible for the child(ren)</h4>
@@ -434,6 +393,7 @@
   } from '../constants/minor-form-data';
   import { useReproducibleData } from '../composables/reproducible-data';
   import { useUtmParams } from '../composables/useUtmParams';
+  import LibraryCardAuth from './LibraryCardAuth.vue';
 
   interface Minor {
     id: number;
@@ -449,7 +409,6 @@
   const linkMinor = ref(false);
   const minorsContact = ref(false);
   const isClicked =ref(false);
-  const loading = ref(false);
   const isLoading = ref(false);
   const loader = ref(false);
   const disabled = ref(false);
@@ -479,79 +438,57 @@
     formData.value.confirmPassword = '';
     formData.value.password = '';
   });
-  // create watch for loading 
-    watch(loading, async (value) => {
-      if (!value) return;
-
+    // Authentication handlers for LibraryCardAuth component
+    const handleAuthSuccess = async (data: any) => {
       try {
-        // Prepare request body
-        const body = {
-          barcode: props.formData.barcode,
-          password: props.formData.pin,
-        };
-
-        // Authenticate the user
-        const data = await apiService.authenticate(body);
-        // Check if authentication failed
-        if (data?.original?.message) {
-          errorLogin.value = 'Invalid library card number or password!';
-          loading.value = false;
-          linkDisabled.value = false; // Reset this state so the user can try again
-          return;
-        }
-        // check if careof is not below 18 years old
-        const today = new Date();
-        const dob = new Date(data?.dateofbirth);
-        const age = today.getFullYear() - dob.getFullYear();
-        if (age < 18 || data?.profile === 'EPL_SELFJ' || data?.profile === 'EPL_JUV') {
-          errorLogin.value = 'Guardian must be at least 18 years old!';
-          loading.value = false;
-          linkDisabled.value = false; // Reset this state so the user can try again
-          return;
-        }
-        errorLogin.value = '';
         // If minors exist, add their registrations
         if (minors.value.length > 0) {
           minors.value.forEach(async (minor) => {
             userRegistration.setMinor(createRegistrationData(props.formData, minor, data));
-            userRegistration.minor.consent = userRegistration.getConsent
+            userRegistration.minor.consent = userRegistration.getConsent;
             userRegistration.addRegistration({ data: userRegistration.minor });
           });
         }
 
         // Register the main user if no minors
         userRegistration.setMinor(createRegistrationData(props.formData, undefined, data));
-        userRegistration.minor.consent = userRegistration.getConsent
+        userRegistration.minor.consent = userRegistration.getConsent;
         userRegistration.addRegistration({ data: userRegistration.minor });
 
-        // Reset loading and linkDisabled states
-        loading.value = false;
+        // Update states
         linkDisabled.value = true;
         isClicked.value = true;
-        userRegistration.setLinkState(isClicked.value);
-        
-        userRegistration.setButtonClickState(isClicked.value);
+        errorLogin.value = '';
+
+        // Set store states
+        userRegistration.setLinkState(true);
+        userRegistration.setButtonClickState(true);
+
+        // Analytics
         const reproducibleData = useReproducibleData({
-            eventCategory: 'Link your child(ren) to your EPL card',
-            eventLabel: 'Save Changes button clicked',
-            screenName: 'Child Details | ' + landingPage.value,
-            registrationType: 'EPL_SELFJ',
-            postalCode: formData.value.adultPostalCode,
-            dob: formData.value.minorDateOfBirth,
-            step: 2,
-            ...utmParams
+          eventCategory: 'Link your child(ren) to your EPL card',
+          eventLabel: 'Save Changes button clicked',
+          screenName: 'Child Details | ' + landingPage.value,
+          registrationType: 'EPL_SELFJ',
+          postalCode: props.formData.adultPostalCode,
+          dob: props.formData.minorDateOfBirth,
+          step: 2,
+          ...utmParams
         });
-        console.log(reproducibleData)
+        
+        console.log(reproducibleData);
         await apiService.reproducibleData(reproducibleData);
         sendEventToGA('Save Changes');
-        return data;
       } catch (err) {
-        loading.value = false;  // Ensure loading state is reset if an error occurs
-        linkDisabled.value = false;  // Allow the user to try again
-        errorLogin.value = `An error occurred: ${(err as any).message}`;
-        return (err as any).message;
+        console.error('Error in handleAuthSuccess:', err);
+        handleAuthError(`Registration failed: ${(err as any).message}`);
       }
-    });
+    };
+
+    const handleAuthError = (error: string) => {
+      errorLogin.value = error;
+      linkDisabled.value = false;
+    };
 
     const isMenuOpen = ref(false);
     const formattedDate = computed(() => {
