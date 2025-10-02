@@ -38,7 +38,7 @@
               {{ content.introSection.buttons.getCard }}
             </a>
           </v-hover>  
-          <v-hover v-slot="{ isHovering, props }">
+          <!-- <v-hover v-slot="{ isHovering, props }">
             <a 
               :href="`${content.introSection.links.startStreaming}`"
               variant="outlined" 
@@ -50,7 +50,7 @@
             >
               {{ content.introSection.buttons.startStreaming }}
             </a>
-          </v-hover>
+          </v-hover> -->
         </div>
       </v-col>    
     </v-row>
@@ -81,7 +81,7 @@
         </v-sheet>
       </v-col>
       <v-col cols="12">
-        <div class="w-100 d-flex flex-column flex-md-row justify-space-around my-5">
+        <div class="w-100 d-flex flex-column flex-md-row  my-5">
           <v-hover v-slot="{ isHovering, props }">
             <a 
               :href="`${content.access.links.signUpButton}?${secondPart}`" 
@@ -97,7 +97,7 @@
               {{ content.access.buttons.signUpButton }}
             </a>
           </v-hover>
-          <v-hover v-slot="{ isHovering, props }">
+          <!-- <v-hover v-slot="{ isHovering, props }">
             <a 
               :href="content.access.links.browseButton" 
               target="_blank" rel="noopener noreferrer"
@@ -107,7 +107,7 @@
             >
               {{ content.access.buttons.browseButton }}
             </a>
-          </v-hover>
+          </v-hover> -->
         </div>
       </v-col>
     </v-row>
@@ -167,7 +167,7 @@
       <v-col cols="12" md="6">
         <h3 class="mb-4 font-weight-bold">{{ content.eplSection.haveCard.title }}</h3>
         <p class="text-body-1 lh-lg mb-6">{{ content.eplSection.haveCard.description }}</p>
-        <v-hover v-slot="{ isHovering, props }">
+        <!-- <v-hover v-slot="{ isHovering, props }">
         <a 
           :href="`${content.eplSection.haveCard.link}`"
           target="_blank"
@@ -178,7 +178,7 @@
         >
           {{ content.eplSection.haveCard.buttonText }} 
         </a>
-        </v-hover>
+        </v-hover> -->
       </v-col>
     </v-row>
 
