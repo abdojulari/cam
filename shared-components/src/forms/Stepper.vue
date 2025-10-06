@@ -435,7 +435,7 @@
                     });
                 }
                 // Once all submissions are done, check for errors in the data
-                if (registrationData?.message === "Duplicate record found with fuzzy logic.") {
+                if (registrationData?.message === "Duplicate record found with fuzzy logic." || registrationData?.error === "Posting to ILS failed 409") {
                     showErrorDialog.value = true; 
                     return;
                 } else if (registrationData === undefined || registrationData?.message === "Error posting to ILS API" || registrationData?.error === "Posting to ILS failed 500") {
@@ -450,8 +450,7 @@
                         step: step.value,
                         ...utmParams
                     });
-                    console.log('submit form', reproducibleData)
-                    console.log(utmParams, urlWithoutBase , landingPage.value)
+                    
                     await apiService.reproducibleData(reproducibleData);
                     // Proceed to next page if no errors
                     sendEventToGA(buttonName, 'sign_up', registrationData?.data?.profile?.['@key']);
@@ -459,7 +458,8 @@
                 }
                 
             } catch (error) {
-                if( error.message === 'HTTP error! status: 409') {
+                console.log('Error Message:', error.message);
+                if( error.message === 'HTTP error! status: 409' || error.message === 'Posting to ILS failed 409' || error === 'Posting to ILS failed 409') {
                     showErrorDialog.value = true
                     sendEventToGA(buttonName, 'sign_up', 'Not successful!');
                 }

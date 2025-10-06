@@ -3,7 +3,7 @@
     <v-row>
       <v-col cols="12" md="4">
         <div class="d-flex flex-column align-start">
-          <img src="~/assets/images/lpass2.jpg" alt="L-Pass logo">
+          <img src="../public/images/lpass2.jpg" alt="L-Pass logo">
           <p class="mt-4">
             The L-Pass (Library Pass) Registration is a program connected to the Edmonton Public Library, 
             allowing both students and staff of participating institutions to register and gain access 
@@ -76,6 +76,8 @@
                   variant="outlined"
                   density="compact"
                   :rules="emailRules"
+                  disabled
+
                   required
                 />
               </v-col>
@@ -91,13 +93,28 @@
                 />
               </v-col>
               <v-col cols="12" md="4">
-                <v-text-field
-                  v-model="studentData.address"
-                  label="Address *"
-                  variant="outlined"
-                  density="compact"
-                  :rules="addressRules"
-                  required
+                <v-combobox 
+                    label="Address *" 
+                    variant="outlined" 
+                    hide-details="auto"
+                    v-model="address"
+                    :items="primaryAddressSuggestions"
+                    item-title="text"
+                    item-value="id"
+                    density="compact" 
+                    append-inner-icon="mdi-map-marker"
+                    :loading="primaryAddressLoading"
+                    @update:search="q => searchPrimaryAddresses(q, city)"
+                    @update:modelValue="selectPrimaryAddress"
+                    @focus="openPrimaryMenu"
+                    @blur="closePrimaryMenu"
+                    :rules="[v => !!v || 'Address is required']"
+                    required 
+                    :menu-props="{
+                      closeOnContentClick: false,
+                      persistent: true
+                    }"
+                    v-model:menu="primaryAddressMenuOpen"
                 />
               </v-col>
             </v-row>
@@ -106,7 +123,7 @@
             <v-row> 
               <v-col cols="12" md="6">
                 <v-text-field
-                  v-model="studentData.city"
+                  v-model="city"
                   label="City *"
                   variant="outlined"
                   density="compact"
@@ -116,7 +133,7 @@
               </v-col>
               <v-col cols="12" md="6">
                 <v-text-field
-                  v-model="studentData.province"
+                  v-model="province"
                   label="Province *"
                   variant="outlined"
                   density="compact"
@@ -129,11 +146,13 @@
             <v-row>
               <v-col cols="12" md="6">
                 <v-text-field
-                  v-model="studentData.postalcode"
+                  v-model="postalCode"
                   label="Postal Code *"
                   variant="outlined"
                   density="compact"
                   :rules="postalCodeRules"
+                  @input="onPostalCodeInput"
+                  :maxLength="7"
                   required
                 />
               </v-col>
@@ -226,12 +245,13 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, onUnmounted, watch } from 'vue';
 import { useRegistrationStore } from '../store/registration-store';
 import { useRouter } from 'vue-router';
 import SystemError from './SystemError.vue';
 import { apiService } from '../services/api-service';
 import { vMaska } from "maska/vue"
+import { useAddressLookup } from '../composables/useAddressLookup';
 
 const userRegistration = useRegistrationStore();
 const router = useRouter();
@@ -263,6 +283,12 @@ const studentData = ref({
 
 const isSubmitting = ref(false);
 const showSystemErrorDialog = ref(false);
+
+// Individual refs for address fields (required by useAddressLookup composable)
+const address = ref('');
+const city = ref('');
+const province = ref('');
+const postalCode = ref('');
 const closeErrorDialog = async () => {
   showSystemErrorDialog.value = false;
   await navigateTo('https://epl.bibliocommons.com/locations', {
@@ -357,6 +383,80 @@ onMounted(async () => {
   }
   const data = await $fetch(`/api/retrieve-lpass-record?id=${id}`);
   studentData.value = data;
+  
+  // Sync the individual refs with the loaded studentData
+  address.value = data.address || '';
+  city.value = data.city || '';
+  province.value = data.province || '';
+  postalCode.value = data.postalcode || '';
+});
+
+// Watch for changes in studentData and sync with individual refs
+watch(() => studentData.value.address, (newValue) => {
+  if (newValue !== address.value) {
+    address.value = newValue || '';
+  }
+});
+
+watch(() => studentData.value.city, (newValue) => {
+  if (newValue !== city.value) {
+    city.value = newValue || '';
+  }
+});
+
+watch(() => studentData.value.province, (newValue) => {
+  if (newValue !== province.value) {
+    province.value = newValue || '';
+  }
+});
+
+watch(() => studentData.value.postalcode, (newValue) => {
+  if (newValue !== postalCode.value) {
+    postalCode.value = newValue || '';
+  }
+});
+
+// Watch for changes in individual refs and sync back to studentData
+watch(address, (newValue) => {
+  if (newValue !== studentData.value.address) {
+    studentData.value.address = newValue;
+  }
+});
+
+watch(city, (newValue) => {
+  if (newValue !== studentData.value.city) {
+    studentData.value.city = newValue;
+  }
+});
+
+watch(province, (newValue) => {
+  if (newValue !== studentData.value.province) {
+    studentData.value.province = newValue;
+  }
+});
+
+watch(postalCode, (newValue) => {
+  if (newValue !== studentData.value.postalcode) {
+    studentData.value.postalcode = newValue;
+  }
+});
+
+const { 
+    suggestions: primaryAddressSuggestions, 
+    loading: primaryAddressLoading, 
+    isMenuOpen: primaryAddressMenuOpen,
+    selectAddress: selectPrimaryAddress, 
+    searchAddresses: searchPrimaryAddresses, 
+    cleanup: primaryAddressCleanup,
+    openMenu: openPrimaryMenu,
+    closeMenu: closePrimaryMenu
+} = useAddressLookup({
+  addressFields: {
+    address,
+    city,
+    province,
+    postalCode
+  },
 });
 
 // get id using institution name 
@@ -376,6 +476,12 @@ onMounted(async () => {
 //   }
 //   return value;
 // }
+
+onUnmounted(() => {
+  // Cleanup timeouts when component is destroyed
+  primaryAddressCleanup();
+});
+
 
 const generateBarcode = () => {
 // Get first 3 chars of profile, convert to uppercase
@@ -418,6 +524,10 @@ const submitForm = async () => {
           method: 'POST',
           body: {
               ...studentData.value,
+              address: address.value,
+              city: city.value,
+              province: province.value,
+              postalcode: postalCode.value,
               password: studentData.value.password,
               barcode: generateBarcode(),
               profile: getStudentProfile(studentData),
@@ -443,5 +553,30 @@ const submitForm = async () => {
       isSubmitting.value = false;
   }
 };
+
+const onPostalCodeInput = (event) => {
+      let value = event.target.value || '';
+      // Convert the value to uppercase and remove spaces
+      value = value.replace(/\s/g, '').toUpperCase();
+
+      // Automatically prepend 'T' if it's not already there
+      if (value.length === 0 || value[0] !== 'T') {
+          value = 'T' + value;
+      }
+
+      // Only accept up to 6 characters (postal code length)
+      if (value.length > 6) {
+          value = value.slice(0, 6);
+      }
+
+      // Add space after the first 3 characters for formatting (e.g., T1A 1A1)
+      if (value.length > 3) {
+          value = value.slice(0, 3) + ' ' + value.slice(3, 6);
+      }
+
+      postalCode.value = value.trim().toUpperCase();
+      event.target.value = value;
+    };
+
 
 </script>

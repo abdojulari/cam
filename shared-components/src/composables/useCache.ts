@@ -1,6 +1,6 @@
 // ~/composables/useCache.ts
 import { useStorage } from '@vueuse/core';
-import { defineCachedEventHandler } from '@nuxt/server';
+// import { defineCachedEventHandler } from '@nuxt/server';
 
 export default async (key: string, data: any) => {
   const cached = useStorage(key, null, { serializer: StorageSerializers.object });

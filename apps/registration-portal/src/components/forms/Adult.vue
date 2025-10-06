@@ -34,6 +34,7 @@ const onSubmit = async(payload: any) => {
         clearForm();
       }
       else if (response?.error === "Posting to ILS failed 409" || response?.error === "HTTP error! status: 409") {
+        console.log('User already exists!', response);
         userRegistration.setFailedResponse({
           message: 'User already exists!',
         });

@@ -32,6 +32,10 @@ export default defineEventHandler(async (event: H3Event<EventHandlerRequest>) =>
         if (!response.ok) {
             console.error('Failed to post to ILS:', await response.text());
             throw new Error(`Posting to ILS failed ${response.status}`);
+        //    const responseText = await response.text();
+        //     console.error('Failed to post to ILS:', responseText);
+        //     throw new Error(`Posting to ILS failed ${response.status}: ${responseText}`);
+          
         }
 
         const data = await response.json();

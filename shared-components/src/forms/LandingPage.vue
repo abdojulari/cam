@@ -82,7 +82,36 @@
       </v-col>
       <v-col cols="12">
         <div class="w-100 d-flex flex-column flex-md-row  my-5">
-          <v-hover v-slot="{ isHovering, props }">
+          <!-- <v-hover v-slot="{ isHovering, props }">
+            <a 
+              :href="`${content.access.links.signUpButton}?${secondPart}`" 
+              target="_blank" rel="noopener noreferrer"
+              v-bind="props"
+              :class="{ 
+                'bg-white text-light-blue-darken-4': isHovering, 
+                'bg-primary text-white': !isHovering 
+              }" 
+              class="mt-5 text-center text-decoration-none link py-2 px-5 rounded border-sm border-primary border-opacity-100"
+              @click="handleClick(content.access.buttons.signUpButton, content.access.heading)"
+            >
+              {{ content.access.buttons.signUpButton }}
+            </a>
+          </v-hover> -->
+          <!-- <v-hover v-slot="{ isHovering, props }">
+            <a 
+              :href="content.access.links.browseButton" 
+              target="_blank" rel="noopener noreferrer"
+              v-bind="props"
+              :class="{ 'bg-primary': isHovering, 'text-white': isHovering }"  
+              class="mt-5 text-center text-decoration-none link text-primary border-sm border-primary py-2 px-5 rounded border-opacity-100"
+            >
+              {{ content.access.buttons.browseButton }}
+            </a>
+          </v-hover> -->
+        </div>
+      </v-col>
+      <v-col cols="12" class=" d-flex justify-center align-center">
+        <v-hover v-slot="{ isHovering, props }">
             <a 
               :href="`${content.access.links.signUpButton}?${secondPart}`" 
               target="_blank" rel="noopener noreferrer"
@@ -97,18 +126,6 @@
               {{ content.access.buttons.signUpButton }}
             </a>
           </v-hover>
-          <!-- <v-hover v-slot="{ isHovering, props }">
-            <a 
-              :href="content.access.links.browseButton" 
-              target="_blank" rel="noopener noreferrer"
-              v-bind="props"
-              :class="{ 'bg-primary': isHovering, 'text-white': isHovering }"  
-              class="mt-5 text-center text-decoration-none link text-primary border-sm border-primary py-2 px-5 rounded border-opacity-100"
-            >
-              {{ content.access.buttons.browseButton }}
-            </a>
-          </v-hover> -->
-        </div>
       </v-col>
     </v-row>
 
@@ -150,7 +167,7 @@
       <v-col cols="12" md="6">
         <h3 class="mb-4 font-weight-bold">{{ content.eplSection.needCard.title }}</h3>
         <p class="text-body-1 lh-lg mb-6">{{ content.eplSection.needCard.description }}</p>
-        <v-hover v-slot="{ isHovering, props }">
+        <!-- <v-hover v-slot="{ isHovering, props }">
           <a 
             :href="`${content.eplSection.needCard.link}?${secondPart}`" 
             target="_self"
@@ -162,7 +179,7 @@
           >
             {{ content.eplSection.needCard.buttonText }}
           </a>
-        </v-hover>
+        </v-hover> -->
       </v-col>
       <v-col cols="12" md="6">
         <h3 class="mb-4 font-weight-bold">{{ content.eplSection.haveCard.title }}</h3>
@@ -179,6 +196,21 @@
           {{ content.eplSection.haveCard.buttonText }} 
         </a>
         </v-hover> -->
+      </v-col>
+      <v-col cols="12" class=" d-flex justify-center align-center">
+        <v-hover v-slot="{ isHovering, props }">
+          <a 
+            :href="`${content.eplSection.needCard.link}?${secondPart}`" 
+            target="_self"
+            v-bind="props"
+            :class="{ 'bg-white text-light-blue-darken-4 border-sm border-primary border-opacity-100': isHovering, 'text-white': isHovering }" 
+            rel="noopener noreferrer" 
+            class="text-decoration-none link lh-lg bg-primary py-2 px-5 rounded mt-5 d-inline-block"
+            @click="handleClick(content.eplSection.needCard.buttonText,content.eplSection.needCard.title)"
+          >
+            {{ content.eplSection.needCard.buttonText }}
+          </a>
+        </v-hover>
       </v-col>
     </v-row>
 
