@@ -26,7 +26,7 @@ export default defineNuxtConfig({
       CRE_QUICK_DUPLICATE_URL: process?.env.CRE_QUICK_DUPLICATE_URL,
       CRE_BARCODE_LOOKUP: process?.env.CRE_BARCODE_LOOKUP,
       STATISTIC_API_URL: process?.env.STATISTIC_API_URL,
-      
+      IS_MAINTENANCE: process?.env.IS_MAINTENANCE,
     },
     private: {
       tokenUrl: process.env.NUXT_CRE_TOKEN,
@@ -40,6 +40,7 @@ export default defineNuxtConfig({
       VITE_CRE_PASSWORD: process?.env.VITE_CRE_PASSWORD,
       OVERRIDE_URL: process?.env.OVERRIDE_URL,
       STATISTIC_API_URL: process?.env.STATISTIC_API_URL,
+      IS_MAINTENANCE: process?.env.IS_MAINTENANCE,
     },
   },
   $development: {
@@ -58,6 +59,7 @@ export default defineNuxtConfig({
         VITE_CRE_AUTH_URL: process?.env.VITE_CRE_AUTH_URL,
         OVERRIDE_URL: process?.env.OVERRIDE_URL,
         STATISTIC_API_URL: process?.env.STATISTIC_API_URL,
+        IS_MAINTENANCE: process?.env.IS_MAINTENANCE,
       },
     },
   },
@@ -74,7 +76,7 @@ export default defineNuxtConfig({
         VITE_CRE_AUTH_URL: process?.env.VITE_CRE_AUTH_URL,
         OVERRIDE_URL: process?.env.OVERRIDE_URL,
         STATISTIC_API_URL: process?.env.STATISTIC_API_URL,
-     
+        IS_MAINTENANCE: process?.env.IS_MAINTENANCE,
       },
     },
   },

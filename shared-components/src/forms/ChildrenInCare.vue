@@ -125,11 +125,11 @@
                     :rules="[(v: any) => !!v || 'Address is required']"
                     required 
                     :menu-props="{
-                      closeOnContentClick: false,
-                      persistent: true
+                      closeOnContentClick: true,
+                      persistent: false
                     }"
                     v-model:menu="primaryAddressMenuOpen"
-                />
+                  />
                 </v-col>
         
                 <v-col cols="12" md="4" sm="6">

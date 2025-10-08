@@ -64,6 +64,7 @@ export default defineNuxtConfig({
       site_key: process?.env.NUXT_PUBLIC_TURNSTILE_SITE_KEY,
       turnstile_url: process?.env.NUXT_TURNSTILE_VERIFY_URL,
       gtagId: process?.env.NUXT_PUBLIC_GA_ID,
+      IS_MAINTENANCE: process?.env.IS_MAINTENANCE,
     },
     private: {
       CRE_BASE_URL: process?.env.CRE_BASE_URL,
@@ -85,6 +86,7 @@ export default defineNuxtConfig({
       LPASS_URL: process?.env.LPASS_URL,
       JWT_SECRET: process.env.JWT_SECRET,
       userSeed: process.env.USER_SEED,
+      IS_MAINTENANCE: process?.env.IS_MAINTENANCE,
     },
   },
   $development: {
@@ -94,6 +96,7 @@ export default defineNuxtConfig({
         tokenUrl: process.env.NUXT_CRE_TOKEN,
         CLIENT_ID: process?.env.CLIENT_ID,
         CLIENT_SECRET: process?.env.CLIENT_SECRET,
+        IS_MAINTENANCE: process?.env.IS_MAINTENANCE,
       },
     },
   },
@@ -101,6 +104,7 @@ export default defineNuxtConfig({
     runtimeConfig: {
       public: {
         baseUrl: 'https://cam.epl.ca/api',
+        IS_MAINTENANCE: process?.env.IS_MAINTENANCE,
       }
     },
     routeRules: {
@@ -112,6 +116,7 @@ export default defineNuxtConfig({
       runtimeConfig: {
         public: {
           baseUrl: 'https://cam-dev.epl.ca/api',
+          IS_MAINTENANCE: process?.env.IS_MAINTENANCE,
         },
       },
     },

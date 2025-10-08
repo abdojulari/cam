@@ -7,8 +7,10 @@ import Stepper from 'shared-components/src/forms/Stepper.vue'
 import { ref, watchEffect } from 'vue'
 import { useRouter } from 'vue-router'
 
+const config = useRuntimeConfig()
+
 const router = useRouter()
-const isMaintenance = ref(false)
+const isMaintenance = ref(config.public.IS_MAINTENANCE)
 
 watchEffect(() => {
   if (isMaintenance.value) {
