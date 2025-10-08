@@ -231,26 +231,7 @@
         
         />
         
-        <!-- Contact info required banner -->
-        <v-row v-if="contactError && !contactErrorDismiss">
-            <v-col cols="12" sm="6">
-                <v-banner    
-                    color="error"
-                    icon="mdi-alert-circle"
-                    text="You need to enter either email or phone number, the two can't be empty!"
-                    density="compact"
-                    class="border-0 shadow-md bg-red-lighten-5 pa-2 ma-0"
-                    >
-                        <template v-slot:actions>
-                            <v-btn 
-                            @click="contactErrorDismiss = true" 
-                            class="text-capitalize mb-2">   
-                                Dismiss
-                            </v-btn>
-                        </template>
-                </v-banner>
-            </v-col>
-        </v-row>
+        
         <v-row>
             <v-col cols="12" sm="6" md="4">
                 <v-text-field
@@ -360,6 +341,26 @@
                     v-maska="'###-###-####'"
                     :rules="phoneRules"
                 />
+            </v-col>
+        </v-row>
+        <!-- Contact info required banner -->
+        <v-row v-if="contactError && !contactErrorDismiss">
+            <v-col cols="12" sm="6">
+                <v-banner    
+                    color="error"
+                    icon="mdi-alert-circle"
+                    text="You need to enter either email or phone number, the two can't be empty!"
+                    density="compact"
+                    class="border-0 shadow-md bg-red-lighten-5 pa-2 ma-0"
+                    >
+                        <template v-slot:actions>
+                            <v-btn 
+                            @click="contactErrorDismiss = true" 
+                            class="text-capitalize mb-2">   
+                                Dismiss
+                            </v-btn>
+                        </template>
+                </v-banner>
             </v-col>
         </v-row>
         <!-- Address1 / City -->
