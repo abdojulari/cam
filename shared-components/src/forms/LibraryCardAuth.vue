@@ -208,7 +208,14 @@ const handleAuthentication = async () => {
       emit('authentication-error', errorMessage.value);
       return;
     }
-
+    // validate network error 500
+    if (data?.error) {
+      errorMessage.value = 'There was an error with the authentication process. Please try again.';
+      loading.value = false;
+      emit('authentication-error', errorMessage.value);
+      return;
+    }
+    console.log(data);
     // Authentication successful
     errorMessage.value = '';
     isAuthenticated.value = true;
