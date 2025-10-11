@@ -14,7 +14,7 @@
         :duplicateRecord="duplicateRecord"
     />
     <div v-if="!isClient">
-        <v-skeleton-loader type="card" class="ma-5 rounded-lg" />
+        <v-skeleton-loader type="card" class="mt-15 mx-5 rounded-lg" />
     </div>
     <v-form ref="form" v-else class="px-10">
         <!-- Add New Adult Customer -->
@@ -317,7 +317,7 @@
             </v-col>
         </v-row>
          <!-- Email/Phone Number -->
-         <v-row>
+        <v-row>
             <v-col cols="12" sm="6" md="4">
                 <v-text-field 
                     label="Email" 
@@ -609,7 +609,7 @@
                         :failedData="failedData"
                         :firstname="firstName"
                         :lastname="lastName"
-                        :dateOfBirth="dateOfBirth.toISOString().split('T')[0]"
+                        :dateOfBirth="dateOfBirth ? dateOfBirth.toISOString().split('T')[0] : ''"
                         :formData="submittedFormData"
                     /> 
                 </div>
@@ -847,113 +847,113 @@ const uniqueCustomers = computed(() => {
   return [...new Set(customers.value)];
 });
 
-const handleAsyncWatch = async (
-    newFirstName, oldFirstName,
-    newLastName, oldLastName,
-    newDateOfBirth, oldDateOfBirth,
-    newBarcode, oldBarcode
-) => {
-    // --- Name/DOB logic ---
-    if (
-    (newFirstName !== oldFirstName || newLastName !== oldLastName || newDateOfBirth !== oldDateOfBirth) &&
-    newFirstName && newLastName && newDateOfBirth
-    ) {
-    registrationStore.setIsLoading(true);
-    const dob = typeof newDateOfBirth === 'string'
-        ? newDateOfBirth
-        : newDateOfBirth.toISOString().split('T')[0];
+// const handleAsyncWatch = async (
+//     newFirstName, oldFirstName,
+//     newLastName, oldLastName,
+//     newDateOfBirth, oldDateOfBirth,
+//     newBarcode, oldBarcode
+// ) => {
+//     // --- Name/DOB logic ---
+//     if (
+//     (newFirstName !== oldFirstName || newLastName !== oldLastName || newDateOfBirth !== oldDateOfBirth) &&
+//     newFirstName && newLastName && newDateOfBirth
+//     ) {
+//     registrationStore.setIsLoading(true);
+//     const dob = typeof newDateOfBirth === 'string'
+//         ? newDateOfBirth
+//         : newDateOfBirth.toISOString().split('T')[0];
 
-    const response = await apiService.quickDuplicate({
-        firstname: newFirstName,
-        lastname: newLastName,
-        dateofbirth: dob,
-        middlename: middleName.value,
-    });
+//     const response = await apiService.quickDuplicate({
+//         firstname: newFirstName,
+//         lastname: newLastName,
+//         dateofbirth: dob,
+//         middlename: middleName.value,
+//     });
 
-    registrationStore.setIsLoading(false);
-    // @ts-ignore
-    if (response?.match) {
-        // @ts-ignore
-        duplicateRecord.value = response.matched_record
-        // @ts-ignore
-        ? [response.matched_record]
-        : [];
-        dialog.value = true;
-    }
-    }
+//     registrationStore.setIsLoading(false);
+//     // @ts-ignore
+//     if (response?.match) {
+//         // @ts-ignore
+//         duplicateRecord.value = response.matched_record
+//         // @ts-ignore
+//         ? [response.matched_record]
+//         : [];
+//         dialog.value = true;
+//     }
+// }
 
-    // --- Barcode logic ---
-    if (newBarcode !== oldBarcode) {
-    if (newBarcode && newBarcode.length === 14) {
-        registrationStore.setIsLoading(true);
-        try {
-        const response = await apiService.lookupByBarcode({ barcode: newBarcode }) as any;
-        let results = [];
-        if (response?.result) {
-            if (Array.isArray(response.result)) {
-            results = response.result;
-            } else if (typeof response.result === 'object' && response.result !== null) {
-            results = Object.values(response.result);
-            }
-        }
+//     // --- Barcode logic ---
+//     if (newBarcode !== oldBarcode) {
+//     if (newBarcode && newBarcode.length === 14) {
+//         registrationStore.setIsLoading(true);
+//         try {
+//         const response = await apiService.lookupByBarcode({ barcode: newBarcode }) as any;
+//         let results = [];
+//         if (response?.result) {
+//             if (Array.isArray(response.result)) {
+//             results = response.result;
+//             } else if (typeof response.result === 'object' && response.result !== null) {
+//             results = Object.values(response.result);
+//             }
+//         }
 
-        if (results.length > 0) {
-            results.forEach((item: any) => {
-            // check if dateofbirth is less than 18 years old
-            const today = new Date();
-            const dob = new Date(item.dateOfBirth);
-            const age = today.getFullYear() - dob.getFullYear();
-            if (age < 18) { 
-                return;
-            } else {
-                careOf.value = item.firstname + ' ' + item.lastname || '';
-                address.value = item.address || '';
-                address2.value = item.address2 || '';
-                city.value = item.city || '';
-                city2.value = item.city2 || '';
-                province.value = item.province || '';
-                province2.value = item.province2 || '';
-                postalCode.value = item.postalcode || '';
-                postalCode2.value = item.postalcode2 || '';
-                emailAddress.value = emailAddress.value? emailAddress.value : item.email || '';
-                phoneNumber.value = phoneNumber.value? phoneNumber.value : item.phone || '';
-            }
-            });
-            barcodeError.value = false;
-        } else {
-            // No result found
-            barcodeError.value = true;
-            barcodeErrorDismiss.value = false;
-            // Optionally clear fields
-            careOf.value = '';
-            address.value = '';
-            address2.value = '';
-            city.value = '';
-            province.value = '';
-            postalCode.value = '';
-        }
-        } catch (e) {
-        console.log(e);
-        barcodeError.value = true;
-        barcodeErrorDismiss.value = false;
-        } finally {
-        registrationStore.setIsLoading(false);
-        }
-    } else {
-        // Clear the fields if barcode is not 14 characters
-        careOf.value = '';
-        address.value = '';
-        city.value = '';
-        province.value = '';
-        postalCode.value = '';
-        address2.value = '';
-        city2.value = '';
-        province2.value = '';
-        postalCode2.value = '';
-        barcodeError.value = false;
-    }
-    }
-};
+//         if (results.length > 0) {
+//             results.forEach((item: any) => {
+//             // check if dateofbirth is less than 18 years old
+//             const today = new Date();
+//             const dob = new Date(item.dateOfBirth);
+//             const age = today.getFullYear() - dob.getFullYear();
+//             if (age < 18) { 
+//                 return;
+//             } else {
+//                 careOf.value = item.firstname + ' ' + item.lastname || '';
+//                 address.value = item.address || '';
+//                 address2.value = item.address2 || '';
+//                 city.value = item.city || '';
+//                 city2.value = item.city2 || '';
+//                 province.value = item.province || '';
+//                 province2.value = item.province2 || '';
+//                 postalCode.value = item.postalcode || '';
+//                 postalCode2.value = item.postalcode2 || '';
+//                 emailAddress.value = emailAddress.value? emailAddress.value : item.email || '';
+//                 phoneNumber.value = phoneNumber.value? phoneNumber.value : item.phone || '';
+//             }
+//             });
+//             barcodeError.value = false;
+//         } else {
+//             // No result found
+//             barcodeError.value = true;
+//             barcodeErrorDismiss.value = false;
+//             // Optionally clear fields
+//             careOf.value = '';
+//             address.value = '';
+//             address2.value = '';
+//             city.value = '';
+//             province.value = '';
+//             postalCode.value = '';
+//         }
+//         } catch (e) {
+//         console.log(e);
+//         barcodeError.value = true;
+//         barcodeErrorDismiss.value = false;
+//         } finally {
+//         registrationStore.setIsLoading(false);
+//         }
+//     } else {
+//         // Clear the fields if barcode is not 14 characters
+//         careOf.value = '';
+//         address.value = '';
+//         city.value = '';
+//         province.value = '';
+//         postalCode.value = '';
+//         address2.value = '';
+//         city2.value = '';
+//         province2.value = '';
+//         postalCode2.value = '';
+//         barcodeError.value = false;
+//     }
+//     }
+// };
 
 watch(
   [
@@ -991,12 +991,12 @@ watch(
       }
     }
 
-    handleAsyncWatch(
-        newFirstName, oldFirstName, 
-        newLastName, oldLastName, 
-        newDateOfBirth, oldDateOfBirth, 
-        newBarcode, oldBarcode
-    );
+    // handleAsyncWatch(
+    //     newFirstName, oldFirstName, 
+    //     newLastName, oldLastName, 
+    //     newDateOfBirth, oldDateOfBirth, 
+    //     newBarcode, oldBarcode
+    // );
 
     // --- Network Name logic ---
     if (newNetworkName && newNetworkName !== oldNetworkName) {
@@ -1048,6 +1048,7 @@ watch(selectedEmailConsent, (newValue, oldValue) => {
         }
     }
 })
+
 
 const handleSubmit = async () => {
   registrationStore.setIsLoading(true);

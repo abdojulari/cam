@@ -30,12 +30,21 @@ export default defineEventHandler(async (event: H3Event<EventHandlerRequest>) =>
             body: JSON.stringify(body)
         });
         if (!response.ok) {
-            console.error('Failed to post to ILS:', await response.text());
+            // Handle 409 conflict - return the conflicting record
+            if (response.status === 409) {
+                const conflictData = await response.json();
+                console.log('Conflict detected:', conflictData);
+                return {
+                    status: 409,
+                    conflict: true,
+                    data: conflictData
+                };
+            }
+            
+            // Handle other error statuses
+            const errorText = await response.text();
+            console.error('Failed to post to ILS:', errorText);
             throw new Error(`Posting to ILS failed ${response.status}`);
-        //    const responseText = await response.text();
-        //     console.error('Failed to post to ILS:', responseText);
-        //     throw new Error(`Posting to ILS failed ${response.status}: ${responseText}`);
-          
         }
 
         const data = await response.json();

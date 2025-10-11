@@ -1,6 +1,6 @@
 <template>
   <div v-if="!isClient">
-    <v-skeleton-loader type="card" class="ma-5 rounded-lg" :width="320" height="600" />
+    <v-skeleton-loader type="card" class="-mt-20 mx-5 rounded-lg" :width="320" height="600" />
   </div>
   <div v-else>
     <v-navigation-drawer
@@ -136,7 +136,7 @@ const resources = ref([
 
 :deep(.custom-drawer-height) {
   height: calc(100% - 100px) !important;
-  top: 60px !important;
+  top: -60px !important;
 }
 
 :deep(.v-list-item--nav .v-list-item-title) {

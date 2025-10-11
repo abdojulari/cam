@@ -24,6 +24,7 @@ const onSubmit = async(payload: any) => {
   
     try {
       const response = await apiService.postUserData(payload.form);
+      console.log('response', response);
       if (response?.message === "Record added successfully.") {
         userRegistration.setSuccessResponse({
             name: response?.data?.firstName + ' ' + response?.data?.lastName,
@@ -33,12 +34,13 @@ const onSubmit = async(payload: any) => {
         // after success, clear the form
         clearForm();
       }
-      else if (response?.error === "Posting to ILS failed 409" || response?.error === "HTTP error! status: 409") {
-        console.log('User already exists!', response);
+      else if (response?.conflict && response?.status === 409) {
         userRegistration.setFailedResponse({
           message: 'User already exists!',
+          duplicate: response?.data?.duplicate,
         });
       }
+      
     } catch (error) {
       if( error.message === 'HTTP error! status: 409' || error.message === 'Posting to ILS failed 409') {
         userRegistration.setFailedResponse({

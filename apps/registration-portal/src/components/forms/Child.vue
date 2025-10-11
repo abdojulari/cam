@@ -28,9 +28,10 @@ const onSubmit = async (payload: any) => {
                 programType: 'CRP',
               });
             }
-            else if (response?.error === "Posting to ILS failed 409") {
+            else if (response?.conflict && response?.status === 409) {
               userRegistration.setFailedResponse({
                 message: 'User already exists!',
+                duplicate: response?.data?.duplicate,
               });
             }
           } catch (error) {
@@ -56,9 +57,10 @@ const onSubmit = async (payload: any) => {
           programType: 'CRP',
         });
       }
-      else if (response?.error === "Posting to ILS failed 409" || response?.error === "HTTP error! status: 409") {
+      else if (response?.conflict && response?.status === 409) {
         userRegistration.setFailedResponse({
           message: 'User already exists!',
+          duplicate: response?.data?.duplicate,
         });
       }
     } catch (error) {

@@ -198,13 +198,17 @@ export const apiService = {
           }),
           credentials: 'include',
         });
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
+        // if (!response.ok) {
+        //     throw new Error(`HTTP error! status: ${response.status}`);
+        // }
         const data = await response.json();
-        
+        if (data?.conflict && data?.status === 409) {
+          console.log('Conflicting record:', data);
+          return data;
+        }
+        console.log('Record submitted successfully:', data);
         return data;
+        
       } catch (error) {
           console.error('Error submitting the form:', error);
           throw error;

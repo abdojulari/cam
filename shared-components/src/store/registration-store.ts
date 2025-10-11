@@ -51,10 +51,25 @@ interface SuccessResponse {
     name: string; 
     programType?: string;
 }
+interface DuplicateRecord {
+    firstname: string;
+    lastname: string;
+    dateofbirth: string;
+    barcode: string;
+    address: string;
+    city: string;
+    province: string;
+    postalcode: string;
+    phone: string;
+    email: string;
+    profile: string;
+    library: string;
+}
 interface FailedResponse {
     barcode?: string;
     name?: string; 
     message?: string;
+    duplicate?: DuplicateRecord[];
 }
 
 export const useRegistrationStore = defineStore('registration', {

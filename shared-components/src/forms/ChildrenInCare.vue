@@ -179,6 +179,22 @@
             <v-card-text>
               <v-row>
                 <v-col cols="12" md="6">
+                  <v-combobox 
+                    label="Profile *"
+                    :items="[
+                      { value: 'EPL_JUV', text: '40' }, 
+                      { value: 'EPL_JUV01', text: '1' }, 
+                      { value: 'EPL_JUV05', text: '5' }, 
+                      { value: 'EPL_JUV10', text: '10' }
+                    ]"
+                    v-model="profile"
+                    density="compact"
+                    variant="outlined"
+                  />
+                </v-col>
+              </v-row>
+              <v-row>
+                <v-col cols="12" md="6">
                   <v-text-field 
                     v-model="formData.minorFirstname" 
                     label="First Name *" 
@@ -335,13 +351,7 @@
                 <span class="text-green-darken-4 font-italic font-weight-medium">Record saved successfully!</span>
               </v-col>
             </v-row>  
-            <v-alert
-              density="compact"
-              text="Please click the 'SAVE CHANGES' button to save your progress before proceeding to the 'SUBMIT' button."
-              type="warning"
-              class="mt-5 mx-3"
-            >
-            </v-alert>
+           
           </v-card>
         </v-stepper-window-item>
       </v-stepper-window>
@@ -405,6 +415,7 @@ interface Minor {
     dateOfBirth: string;
     password: string;
     confirmPassword: string;
+
     address: string;
     city: string;
     province: string;
@@ -459,11 +470,11 @@ const minors = ref<Minor[]>([]);
 const minorsContact = ref(false);
 const disabled = ref(false);
 const currentStep = ref(1);
-
 const address = ref('');
 const city = ref('Edmonton');
 const province = ref('Alberta');
 const postalCode = ref('');
+const profile = ref('');
 
 // Use props.formData directly instead of creating a separate ref
 const formData = ref(props.formData);
@@ -622,7 +633,7 @@ const addMinor = () => {
         firstname: formData.value.minorFirstname,
         lastname: formData.value.minorLastname,
         middlename: formData.value.minorMiddlename,
-        dateOfBirth: dateFormat(formData.value.minorDateOfBirth?.toString() || ''),
+        dateOfBirth: dateFormat(formData.value.minorDateOfBirth || ''),
         password: formData.value.minorPassword,
         confirmPassword: formData.value.minorConfirmPassword,
         address: address.value,
@@ -673,14 +684,13 @@ const addMinor = () => {
   const submitForm = async () => {
     loader.value = true;
     try {
-
       await new Promise(resolve => setTimeout(resolve, 1000));
       showSuccessMessage.value = true;
       const payload = {
         firstname: formData.value.firstname,
         lastname: formData.value.lastname,
         middlename: formData.value.middlename,
-        dateofbirth: dateFormat(formData.value.minorDateOfBirth?.toString() || ''),
+        dateOfBirth: dateFormat(formData.value.minorDateOfBirth || ''),
         library: formData.value.library,
         address: address.value,
         city: city.value,
@@ -689,8 +699,9 @@ const addMinor = () => {
         email: formData.value.email,
         phone: formData.value.phone,
         careof: formData.value.firstname + ' ' + formData.value.lastname,
-        password: formData.value.password,
-        confirmPassword: formData.value.confirmPassword,
+        password: formData.value.minorPassword,
+        confirmPassword: formData.value.minorConfirmPassword,
+        profile: profile.value,
        
       }
       // iterate over minors and submit each minor

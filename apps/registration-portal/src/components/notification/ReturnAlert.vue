@@ -2,7 +2,7 @@
      <!-- Main Dialog -->
      <v-dialog
         v-model="showDialog"
-        max-width="600"
+        max-width="1300"
         persistent
       >
         <v-card
@@ -23,8 +23,21 @@
             <div v-for="(entry, index) in failedData" :key="index" class="mb-1 text-error ml-5">
                 <span class="text-body-2 text-error pa-2 w-100">
                   <v-icon class="mr-3">mdi-close-circle</v-icon>
-                  <strong>{{ entry?.message }}</strong>
+                  <strong>{{ entry?.message }}</strong>        
                 </span>
+                <v-data-table
+                  v-if="entry?.duplicate"
+                  :items="Array.isArray(entry?.duplicate) ? entry.duplicate : [entry.duplicate]"
+                  :headers="duplicateHeaders"
+                >
+                  <template v-slot:item.firstname="{ item }">
+                    {{ [(item as any).firstname, (item as any).lastname].filter(Boolean).join(' ') }}
+                  </template>
+                  <template v-slot:item.address="{ item }">
+                    {{ [(item as any).address, (item as any).city, (item as any).province, (item as any).postalcode].filter(Boolean).join(', ') }}
+                  </template>
+                </v-data-table>
+                
             </div>
         </div>
          <!-- Error message below the card/buttons -->
@@ -219,5 +232,13 @@ const overrideDuplicateAlert = async () => {
       console.error(error);
    }
 }
-
+const duplicateHeaders = [
+  { title: 'Barcode', key: 'barcode' },
+  { title: 'Name', key: 'firstname' },
+  { title: 'DOB', key: 'dateofbirth' },
+  { title: 'Address', key: 'address' },
+  { title: 'Phone', key: 'phone' },
+  { title: 'Email', key: 'email' },
+ 
+]
 </script>
