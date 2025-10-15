@@ -1,18 +1,10 @@
 <template>
     <v-overlay :model-value="isLoading" class="d-flex align-center justify-center" persistent>
-        <v-progress-circular
-            color="primary"
-            indeterminate
-            size="48"
-            width="4"
-        />
+        <v-progress-circular color="primary" indeterminate size="48" width="4" />
     </v-overlay>
-     <!-- Duplicate found-->
-    <DuplicateAlert 
-        :dialog="dialog" 
-        @update:dialog="(val: boolean) => dialog = val" 
-        :duplicateRecord="duplicateRecord"
-    />
+    <!-- Duplicate found-->
+    <DuplicateAlert :dialog="dialog" @update:dialog="(val: boolean) => dialog = val"
+        :duplicateRecord="duplicateRecord" />
     <div v-if="!isClient">
         <v-skeleton-loader type="card" class="mt-20 mx-5 rounded-lg" />
     </div>
@@ -26,28 +18,14 @@
         <!-- Profile and Home Branch -->
         <v-row>
             <v-col cols="12" sm="6" md="4">
-                <v-combobox 
-                    label="Profile" 
-                    :items="profileType === 'Adult' ? profileOptions.Adult : profileOptions.Child" 
-                    v-model="profile"
-                    density="compact"
-                    hide-details="auto"
-                    variant="outlined"
-                    :rules="[v => !!v || 'Profile is required']"
-                    required 
-                />
+                <v-combobox label="Profile"
+                    :items="profileType === 'Adult' ? profileOptions.Adult : profileOptions.Child" v-model="profile"
+                    density="compact" hide-details="auto" variant="outlined"
+                    :rules="[v => !!v || 'Profile is required']" required />
             </v-col>
             <v-col cols="12" sm="6" md="4">
-                <v-combobox 
-                    label="Home Branch" 
-                    :items="uniqueCustomers" 
-                    v-model="selectedCustomer"
-                    variant="outlined"
-                    hide-details="auto"
-                    density="compact"  
-                    :rules="[v => !!v || 'Home Branch is required']"
-                    required 
-                />
+                <v-combobox label="Home Branch" :items="uniqueCustomers" v-model="selectedCustomer" variant="outlined"
+                    hide-details="auto" density="compact" :rules="[v => !!v || 'Home Branch is required']" required />
             </v-col>
         </v-row>
         <!-- Customer Information -->
@@ -55,173 +33,97 @@
             <v-col cols="12" sm="12" md="12">
                 <h2 class="text-h6 font-weight-medium">Customer Information</h2>
             </v-col>
-        </v-row> 
+        </v-row>
 
         <!-- Title/First Name -->
         <v-row v-if="profileType === 'Adult'">
             <v-col cols="12" sm="6" md="4">
-                <v-combobox 
-                    label="Title" 
-                    :items="title" 
-                    v-model="selectedTitle"
-                    variant="outlined"
-                    hide-details="auto"
-                    density="compact"  
-                />
+                <v-combobox label="Title" :items="title" v-model="selectedTitle" variant="outlined" hide-details="auto"
+                    density="compact" />
             </v-col>
         </v-row>
         <!-- Middle/Last Names -->
         <v-row>
             <v-col cols="12" sm="6" md="4">
-                <v-text-field 
-                    label="First Name" 
-                    v-model="firstName" 
-                    variant="outlined"
-                    hide-details="auto"
-                    density="compact" 
-                    :rules="[v => !!v || 'First Name is required']"
-                    required 
-                />
+                <v-text-field label="First Name" v-model="firstName" variant="outlined" hide-details="auto"
+                    density="compact" :rules="[v => !!v || 'First Name is required']" required />
             </v-col>
             <v-col cols="12" sm="6" md="4">
-                <v-text-field 
-                    label="Middle Name" 
-                    v-model="middleName" 
-                    variant="outlined" 
-                    hide-details="auto"
-                    density="compact" 
-                />
+                <v-text-field label="Middle Name" v-model="middleName" variant="outlined" hide-details="auto"
+                    density="compact" />
             </v-col>
-            
+
         </v-row>
         <!-- Last Name/Date of Birth -->
         <v-row>
             <v-col cols="12" sm="6" md="4">
-                <v-text-field 
-                    label="Last Name" 
-                    v-model="lastName" 
-                    variant="outlined" 
-                    hide-details="auto"
-                    density="compact" 
-                    :rules="[v => !!v || 'Last Name is required']"
-                    required 
-                />
+                <v-text-field label="Last Name" v-model="lastName" variant="outlined" hide-details="auto"
+                    density="compact" :rules="[v => !!v || 'Last Name is required']" required />
             </v-col>
             <v-col cols="12" sm="6" md="4">
-                <v-date-input
-                    label="Date of Birth" 
-                    v-model="dateOfBirth" 
-                    :max=" profileType === 'Adult' ? maxChildDate : undefined"
-                    :min="  profileType === 'Child' ? minAdultDate : undefined"
-                    prepend-icon=""
-                    prepend-inner-icon="$calendar"
-                    hide-details="auto"
-                    variant="outlined" 
-                    density="compact" 
-                    :rules="[v => !!v || 'Date of Birth is required']"
-                    required 
-                />
+                <v-date-input label="Date of Birth" v-model="dateOfBirth"
+                    :max="profileType === 'Adult' ? maxChildDate : undefined"
+                    :min="profileType === 'Child' ? minAdultDate : undefined" prepend-icon=""
+                    prepend-inner-icon="$calendar" hide-details="auto" variant="outlined" density="compact"
+                    :rules="[v => !!v || 'Date of Birth is required']" required />
             </v-col>
-        </v-row>  
-       
+        </v-row>
+
         <!-- Preferred Name/Use Preferred Name -->
         <v-row>
             <v-col cols="12" sm="6" md="4">
-                <v-text-field 
-                    label="Preferred Name" 
-                    v-model="preferredName" 
-                    variant="outlined" 
-                    hide-details="auto"
-                    density="compact" 
-                />
+                <v-text-field label="Preferred Name" v-model="preferredName" variant="outlined" hide-details="auto"
+                    density="compact" />
             </v-col>
             <v-col cols="12" sm="6" md="4">
-                <v-checkbox 
-                    label="Use Preferred Name" 
-                    v-model="usePreferredName" 
-                    hide-details="auto"
-                    density="compact" 
-                />
+                <v-checkbox label="Use Preferred Name" v-model="usePreferredName" hide-details="auto"
+                    density="compact" />
             </v-col>
         </v-row>
         
          <!-- School -->
          <v-row v-if="profileType === 'Child'">
             <v-col cols="12" sm="6" md="4">
-                <v-combobox 
-                    label="School" 
-                    :items="schools"
-                    v-model="selectedSchool"
-                    item-title="text"
-                    item-value="value"
-                    variant="outlined"
-                    hide-details="auto"
-                    density="compact"  
-                />  
+                <v-combobox label="School" :items="schools" v-model="selectedSchool" item-title="text"
+                    item-value="value" variant="outlined" hide-details="auto" density="compact" />
             </v-col>
         </v-row>
         <!-- Library Card Barcode/Provide a digital card Number -->
         <v-row class="mb-6" v-if="profileType === 'Child'">
             <v-col cols="12" sm="6" md="4">
-                <v-text-field 
-                    label="Library Card Barcode" 
-                    v-model="libraryCardBarcode" 
-                    variant="outlined" 
-                    density="compact"
-                    append-inner-icon="mdi-barcode-scan"
-                    hide-details="auto"
-                    maxlength="14"
-                    :rules="[v => !!v && v.length === 14 || 'Barcode must be 14 characters']"
-                    required 
-                />
+                <v-text-field label="Library Card Barcode" v-model="libraryCardBarcode" variant="outlined"
+                    density="compact" append-inner-icon="mdi-barcode-scan" hide-details="auto" maxlength="14"
+                    :rules="[v => !!v && v.length === 14 || 'Barcode must be 14 characters']" required />
             </v-col>
             <v-col cols="12" sm="6" md="4">
-                <v-btn 
-                    color="orange" 
-                    prepend-icon="mdi-barcode"
-                    class="text-capitalize text-white"
-                    text="Generate a digital card Number"
-                    @click="generateDigitalCardNumber"
-                    :disabled="isGenerateBtnDisabled"
-                />   
+                <v-btn color="orange" prepend-icon="mdi-barcode" class="text-capitalize text-white"
+                    text="Generate a digital card Number" @click="generateDigitalCardNumber"
+                    :disabled="isGenerateBtnDisabled" />
             </v-col>
         </v-row>
-        
+
         <!-- Add minor button-->
         <v-row class="mb-5" v-if="profileType === 'Child'">
             <v-col cols="12">
                 <div class="bg-gray w-66 pa-2 d-flex border-s-lg">
                     <v-icon color="orange">mdi-information</v-icon>
                     <p class="text-body-2 ma-2 italic font-weight-bold ">
-                    If you are registering more than one child, for example two children, the first child's information will be added to the table when you click "Add another child." 
-                    For the second child, you do not need to click the button again. There is always a child form available for you to fill out.
+                        If you are registering more than one child, for example two children, the first child's
+                        information will be added to the table when you click "Add another child."
+                        For the second child, you do not need to click the button again. There is always a child form
+                        available for you to fill out.
                     </p>
                 </div>
-                
+
             </v-col>
             <v-col cols="12" md="4">
-                <v-btn 
-                    variant="flat" 
-                    color="primary" 
-                    text="Add another child"
-                    @click="addMinor"
-                    size="small"      
-                    prepend-icon="mdi-plus-circle" 
-                    class="w-100 "
-                >
+                <v-btn variant="flat" color="primary" text="Add another child" @click="addMinor" size="small"
+                    prepend-icon="mdi-plus-circle" class="w-100 ">
                 </v-btn>
             </v-col>
-            <v-col cols="12" md="4" >
-                <v-btn
-                    v-if="minors.length > 0"
-                    variant="flat"
-                    color="red" 
-                    text="Cancel"
-                    size="small"
-                    prepend-icon="mdi-minus-circle"
-                    @click="resetMinorForm"
-                    class="ml-0 w-100 "
-                />
+            <v-col cols="12" md="4">
+                <v-btn v-if="minors.length > 0" variant="flat" color="red" text="Cancel" size="small"
+                    prepend-icon="mdi-minus-circle" @click="resetMinorForm" class="ml-0 w-100 " />
             </v-col>
         </v-row>
         <ChildrenList 
@@ -234,26 +136,15 @@
         
         <v-row>
             <v-col cols="12" sm="6" md="4">
-                <v-text-field
-                    label="Password"
-                    v-model="password"
-                    variant="outlined"
-                    hide-details="auto"
-                    density="compact"
-                    :type="showPassword ? 'text' : 'password'"
-                    :rules="[v => !!v || 'Password is required']"
-                />
+                <v-text-field label="Password" v-model="password" variant="outlined" hide-details="auto"
+                    density="compact" :type="showPassword ? 'text' : 'password'"
+                    :rules="[v => !!v || 'Password is required']" />
             </v-col>
             <v-col cols="12" sm="6" md="4" class="d-flex align-center">
-                <v-checkbox 
-                    v-model="showPassword" 
-                    label="Show password" 
-                    hide-details="auto"
-                    density="compact"
-                />
+                <v-checkbox v-model="showPassword" label="Show password" hide-details="auto" density="compact" />
             </v-col>
         </v-row>
-         
+
         <!-- Customer Contact Information -->
         <v-row class="mt-4">
             <v-col cols="12" sm="12" md="12">
@@ -263,53 +154,31 @@
         <!-- Barcode to copy address information form-->
         <v-row v-if="profileType === 'Child'">
             <v-col cols="12" sm="6" md="4">
-                <v-text-field 
-                    hint="Enter barcode to copy care/of contact & address information"
-                    persistent-hint
-                    label="Barcode (Scan or Type)"
-                    v-model="barcode"
-                    variant="outlined" 
-                    append-inner-icon="mdi-barcode-scan"
-                    hide-details="auto"
-                    density="compact" 
-                    type="number"
-                    :max-length="14"
-                    :error="barcodeLengthError"
-                    :error-messages="barcodeLengthError ? 'Barcode must be 14 characters' : ''"
-                />
+                <v-text-field hint="Enter barcode to copy care/of contact & address information" persistent-hint
+                    label="Barcode (Scan or Type)" v-model="barcode" variant="outlined"
+                    append-inner-icon="mdi-barcode-scan" hide-details="auto" density="compact" type="number"
+                    :max-length="14" :error="barcodeLengthError"
+                    :error-messages="barcodeLengthError ? 'Barcode must be 14 characters' : ''" />
             </v-col>
             <v-col cols="12" sm="6" md="4">
-                <v-text-field 
-                    label="Care/Of" 
-                    v-model="careOf"
-                    append-inner-icon="mdi-account-supervisor"
-                    variant="outlined"   
-                    hide-details="auto"
-                    density="compact" 
-                />
+                <v-text-field label="Care/Of" v-model="careOf" append-inner-icon="mdi-account-supervisor"
+                    variant="outlined" hide-details="auto" density="compact" />
             </v-col>
         </v-row>
         <!-- To display error if barcode is not found-->
         <v-row v-if="barcodeError && !barcodeErrorDismiss">
             <v-col cols="12" sm="6">
-                <v-banner    
-                    color="error"
-                    icon="mdi-alert-circle"
-                    text="Barcode not found"
-                    density="compact"
-                    class="border-0 shadow-md bg-red-lighten-5 pa-2 ma-0"
-                    >
-                        <template v-slot:actions>
-                            <v-btn 
-                            @click="barcodeErrorDismiss = true" 
-                            class="text-capitalize mb-2">   
-                                Dismiss
-                            </v-btn>
-                        </template>
+                <v-banner color="error" icon="mdi-alert-circle" text="Barcode not found" density="compact"
+                    class="border-0 shadow-md bg-red-lighten-5 pa-2 ma-0">
+                    <template v-slot:actions>
+                        <v-btn @click="barcodeErrorDismiss = true" class="text-capitalize mb-2">
+                            Dismiss
+                        </v-btn>
+                    </template>
                 </v-banner>
             </v-col>
         </v-row>
-                
+
         <!-- Primary Address -->
         <v-row class="mt-4">
             <v-col cols="12" sm="12" md="12">
@@ -366,45 +235,18 @@
         <!-- Address1 / City -->
         <v-row>
             <v-col cols="12" sm="6" md="4">
-                <v-combobox 
-                    label="Address Line 1" 
-                    variant="outlined" 
-                    hide-details="auto"
-                    v-model="address"
-                    :items="primaryAddressSuggestions"
-                    item-title="text"
-                    item-value="id"
-                    density="compact" 
-                    append-inner-icon="mdi-map-marker"
-                    :loading="primaryAddressLoading"
-                    @update:search="q => searchPrimaryAddresses(q, city)"
-                    @update:modelValue="selectPrimaryAddress"
-                    @focus="openPrimaryMenu"
-                    @blur="closePrimaryMenu"
-                    :rules="[v => !!v || 'Address is required']"
-                    required 
-                    :menu-props="{
-                      closeOnContentClick: false,
-                      persistent: true
-                    }"
-                    v-model:menu="primaryAddressMenuOpen"
-                />
+                <v-combobox label="Address Line 1" variant="outlined" hide-details="auto" v-model="address"
+                    :items="primaryAddressSuggestions" item-title="text" item-value="id" density="compact"
+                    append-inner-icon="mdi-map-marker" :loading="primaryAddressLoading"
+                    @update:search="q => searchPrimaryAddresses(q, city)" @update:modelValue="selectPrimaryAddress"
+                    @focus="openPrimaryMenu" @blur="closePrimaryMenu" :rules="[v => !!v || 'Address is required']"
+                    required :menu-props="{
+                    }" v-model:menu="primaryAddressMenuOpen" />
             </v-col>
             <v-col cols="12" sm="6" md="4">
-                <v-combobox 
-                    label="City" 
-                    v-model="city"
-                    :items="cityOptions"
-                    append-inner-icon="mdi-city"
-                    variant="outlined"
-                    hide-details="auto"
-                    density="compact"
-                    item-title="text"
-                    item-value="value"
-                    :rules="[v => !!v || 'City is required']"
-                    clearable
-                    required 
-                />
+                <v-combobox label="City" v-model="city" :items="cityOptions" append-inner-icon="mdi-city"
+                    variant="outlined" hide-details="auto" density="compact" item-title="text" item-value="value"
+                    :rules="[v => !!v || 'City is required']" clearable required />
             </v-col>
         </v-row>
         <!-- Province, Postal Code -->
@@ -425,78 +267,40 @@
                 />
             </v-col>
             <v-col cols="12" sm="6" md="4">
-                <v-text-field 
-                    label="Postal Code" 
-                    variant="outlined"
-                    v-model="postalCode"
-                    hide-details="auto"
-                    density="compact"
-                    append-inner-icon="mdi-mailbox"
-                    @input="onPostalCodeInput"
-                    :max-length="7"
-                    :rules="[v => !!v || 'Postal Code is required']"
-                    required 
-                />
+                <v-text-field label="Postal Code" variant="outlined" v-model="postalCode" hide-details="auto"
+                    density="compact" append-inner-icon="mdi-mailbox" @input="onPostalCodeInput" :max-length="7"
+                    :rules="[v => !!v || 'Postal Code is required']" required />
             </v-col>
         </v-row>
         <!-- Secondary Address -->
         <v-row class="mt-4">
             <v-col cols="12" sm="12" md="12">
-                <v-checkbox 
-                    label="Use Secondary Address" 
-                    v-model="useSecondaryAddress" 
-                    hide-details="auto"
-                    density="compact" 
-                />  
+                <v-checkbox label="Use Secondary Address" v-model="useSecondaryAddress" hide-details="auto"
+                    density="compact" />
             </v-col>
         </v-row>
         <v-row v-if="useSecondaryAddress">
             <v-col cols="12" sm="12" md="12">
                 <h3 class="text-body-1">Secondary Address</h3>
-            </v-col> 
+            </v-col>
         </v-row>
         <!-- Address2 / Country -->
         <v-row v-if="useSecondaryAddress">
             <v-col cols="12" sm="6" md="4">
-                <v-combobox 
-                    label="Address Line 2" 
-                    variant="outlined" 
-                    hide-details="auto"
-                    v-model="address2"
-                    :items="secondaryAddressSuggestions"
-                    item-title="text"
-                    item-value="id"
-                    density="compact" 
-                    append-inner-icon="mdi-map-marker"
-                    :loading="secondaryAddressLoading"
-                    @update:search="q => searchSecondaryAddresses(q, city2)"
-                    @update:modelValue="selectSecondaryAddress"
-                    @focus="openSecondaryMenu"
-                    @blur="closeSecondaryMenu"
-                    :rules="[v => !!v || 'Address is required']"
-                    required 
-                    :menu-props="{
-                      closeOnContentClick: false,
-                      persistent: true
-                    }"
-                    v-model:menu="secondaryAddressMenuOpen"
-                />
+                <v-combobox label="Address Line 2" variant="outlined" hide-details="auto" v-model="address2"
+                    :items="secondaryAddressSuggestions" item-title="text" item-value="id" density="compact"
+                    append-inner-icon="mdi-map-marker" :loading="secondaryAddressLoading"
+                    @update:search="q => searchSecondaryAddresses(q, city2)" @update:modelValue="selectSecondaryAddress"
+                    @focus="openSecondaryMenu" @blur="closeSecondaryMenu" :rules="[v => !!v || 'Address is required']"
+                    required :menu-props="{
+                        closeOnContentClick: false,
+                        persistent: true
+                    }" v-model:menu="secondaryAddressMenuOpen" />
             </v-col>
             <v-col cols="12" sm="6" md="4">
-                <v-combobox 
-                    label="City" 
-                    v-model="city2"
-                    :items="cityOptions"
-                    append-inner-icon="mdi-city"
-                    variant="outlined"
-                    hide-details="auto"
-                    density="compact"
-                    item-title="text"
-                    item-value="value"
-                    :rules="[v => !!v || 'City is required']"
-                    clearable
-                    required 
-                />
+                <v-combobox label="City" v-model="city2" :items="cityOptions" append-inner-icon="mdi-city"
+                    variant="outlined" hide-details="auto" density="compact" item-title="text" item-value="value"
+                    :rules="[v => !!v || 'City is required']" clearable required />
             </v-col>
         </v-row>
         <!-- Province, Postal Code -->
@@ -517,17 +321,9 @@
                 />
             </v-col>
             <v-col cols="12" sm="6" md="4">
-                <v-text-field 
-                    label="Postal Code" 
-                    v-model="postalCode2"
-                    variant="outlined"
-                    hide-details="auto"
-                    density="compact"
-                    @input="onPostalCodeInput"
-                    :max-length="7"
-                    :rules="[v => !!v || 'Postal Code is required']"
-                    required 
-                />
+                <v-text-field label="Postal Code" v-model="postalCode2" variant="outlined" hide-details="auto"
+                    density="compact" @input="onPostalCodeInput" :max-length="7"
+                    :rules="[v => !!v || 'Postal Code is required']" required />
             </v-col>
         </v-row>
         <!-- Marketing Consent -->
@@ -539,66 +335,33 @@
         <!-- E-mail consent dropdown -->
         <v-row>
             <v-col cols="12" sm="6" md="4">
-                <v-select 
-                    label="Choose e-mail consent" 
-                    :items="emailConsent" 
-                    item-title="text"
-                    item-value="value"
-                    v-model="selectedEmailConsent"
-                    variant="outlined"
-                    density="compact"
-                    hide-details="auto"
-                    :rules="[v => !!v || 'E-mail consent is required']"
-                    required 
-                />
+                <v-select label="Choose e-mail consent" :items="emailConsent" item-title="text" item-value="value"
+                    v-model="selectedEmailConsent" variant="outlined" density="compact" hide-details="auto"
+                    :rules="[v => !!v || 'E-mail consent is required']" required />
             </v-col>
             <v-col cols="12" sm="6" md="4">
-                <v-checkbox 
-                    label="Living on-reserve or on-settlement"
-                    v-model="indigenousStatus"
-                    density="compact"
-                    hide-details="auto"
-                />
+                <v-checkbox label="Living on-reserve or on-settlement" v-model="indigenousStatus" density="compact"
+                    hide-details="auto" />
             </v-col>
         </v-row>
         <!-- Library Card Barcode/Provide a digital card Number -->
         <v-row class="mb-6" v-if="profileType === 'Adult'">
             <v-col cols="12" sm="6" md="4">
-                <v-text-field 
-                    label="Library Card Barcode" 
-                    v-model="libraryCardBarcode" 
-                    variant="outlined" 
-                    density="compact"
-                    append-inner-icon="mdi-barcode-scan"
-                    hide-details="auto"
-                    maxlength="14"
-                    :rules="[v => !!v && v.length === 14 || 'Barcode must be 14 characters']"
-                    required 
-                />
+                <v-text-field label="Library Card Barcode" v-model="libraryCardBarcode" variant="outlined"
+                    density="compact" append-inner-icon="mdi-barcode-scan" hide-details="auto" maxlength="14"
+                    :rules="[v => !!v && v.length === 14 || 'Barcode must be 14 characters']" required />
             </v-col>
             <v-col cols="12" sm="6" md="4">
-                <v-btn 
-                    color="orange" 
-                    prepend-icon="mdi-barcode"
-                    class="text-capitalize text-white text-body-2"
-                    text="Generate a digital card Number"
-                    @click="generateDigitalCardNumber"
-                    :disabled="isGenerateBtnDisabled"
-                />   
+                <v-btn color="orange" prepend-icon="mdi-barcode" class="text-capitalize text-white text-body-2"
+                    text="Generate a digital card Number" @click="generateDigitalCardNumber"
+                    :disabled="isGenerateBtnDisabled" />
             </v-col>
         </v-row>
         <!-- Submit Button   -->
-        <v-row class="mt-6">  
+        <v-row class="mt-6">
             <v-col cols="12" sm="6" md="4">
-                <v-btn 
-                    color="primary" 
-                    prepend-icon="mdi-content-save"
-                    class="text-capitalize mr-10"
-                    text="Submit"
-                    @click="handleSubmit"
-                    :disabled="isLoading"
-                    variant="outlined"
-                />
+                <v-btn color="primary" prepend-icon="mdi-content-save" class="text-capitalize mr-10" text="Submit"
+                    @click="handleSubmit" :disabled="isLoading" variant="outlined" />
             </v-col>
         </v-row>
         <v-row>
@@ -618,12 +381,12 @@
     </v-form>
 </template>
 <script setup lang="ts">
-import { 
-    ref, 
-    onMounted, 
+import {
+    ref,
+    onMounted,
     onUnmounted,
-    shallowRef, 
-    computed, 
+    shallowRef,
+    computed,
     watch
 } from 'vue';
 import DuplicateAlert from '../notification/DuplicateAlert.vue';
@@ -642,8 +405,8 @@ import ReturnAlert from '../notification/ReturnAlert.vue';
 
 const props = defineProps<{ profileType?: string, isClient?: boolean, networkName?: string }>();
 const emit = defineEmits<{
-  (e: 'submit', payload: CustomerRegistration): void
-  (e: 'clearForm'): void
+    (e: 'submit', payload: CustomerRegistration): void
+    (e: 'clearForm'): void
 }>();
 const registrationStore = useRegistrationStore();
 const successData = registrationStore.getSuccessResponse;
@@ -667,7 +430,7 @@ const address2 = ref('');
 const city2 = ref('');
 const province2 = ref('');
 const postalCode2 = ref('');
-const emailAddress= ref('');
+const emailAddress = ref('');
 const phoneNumber = ref('');
 const libraryCardBarcode = ref('');
 const dialog = ref(false);
@@ -675,7 +438,7 @@ const customers = ref([]);
 const profileOptions = ref(profileNames);
 const cityOptions = ref([
     { value: 'Edmonton', text: 'Edmonton' },
-    ...metisAddressList 
+    ...metisAddressList
 ])
 
 const profile = ref('');
@@ -685,7 +448,7 @@ const emailConsent = ref([
     { value: 'ECONSENT', text: 'Yes, I consent to receive emails from the Edmonton Public Library about EPL news and events.' },
     { value: 'ENOCONSENT', text: 'No, I do not consent to receive emails from the Edmonton Public Library about EPL news and events.' },
 ]);
-const title = ref([ 'Mr.', 'Mrs.', 'Ms.', 'Dr.', 'Prof.', 'Rev.', 'Hon.']);
+const title = ref(['Mr.', 'Mrs.', 'Ms.', 'Dr.', 'Prof.', 'Rev.', 'Hon.']);
 const selectedTitle = ref(null);
 const selectedEmailConsent = ref(null);
 
@@ -710,7 +473,7 @@ const provinceOptions = ref([
 ]);
 const selectedSchool = ref(null);
 const duplicateRecord = ref([]);
-const barcodeError = ref(false);    
+const barcodeError = ref(false);
 const barcodeErrorDismiss = ref(false);
 const contactError = ref(false);
 const contactErrorDismiss = ref(false);
@@ -736,17 +499,17 @@ const addMinor = () => {
     if (age > 18) {
         return;
     }
-    minors.value.push({ 
-        id: minors.value.length + 1, 
-        firstName: firstName.value , 
-        lastName: lastName.value, 
+    minors.value.push({
+        id: minors.value.length + 1,
+        firstName: firstName.value,
+        lastName: lastName.value,
         middleName: middleName.value,
         dateOfBirth: dateOfBirth.value
-          ? (dateOfBirth.value instanceof Date
-              ? dateOfBirth.value.toISOString().split('T')[0]
-              : new Date(dateOfBirth.value).toISOString().split('T')[0]
+            ? (dateOfBirth.value instanceof Date
+                ? dateOfBirth.value.toISOString().split('T')[0]
+                : new Date(dateOfBirth.value).toISOString().split('T')[0]
             )
-          : '',
+            : '',
         libraryCardBarcode: libraryCardBarcode.value,
         usePreferredName: usePreferredName.value,
         preferredName: preferredName.value,
@@ -770,7 +533,7 @@ const addMinor = () => {
 
 const deleteMinor = (id: number) => {
     minors.value = minors.value.filter((minor: any) => minor.id !== id)
-}  
+}
 const resetMinorForm = () => {
     if (minors.value.length > 0) {
         // Get the last minor record
@@ -791,27 +554,27 @@ const resetMinorForm = () => {
 
 
 onMounted(() => {
-  apiService.initializeToken();
-  apiService.sanctumToken();
-   
-  const customersList = ipRanges.map((item) => item.name);
-  customers.value = customersList.sort();
-  
-  if (props.profileType) {
-    profileType.value = props.profileType;
-  }
-  if (props.isClient) {
-    isClient.value = true;
-  }
-  // Preselect profile based on profileType
-  if (profileType.value === 'Adult') {
-    profile.value = 'EPL_ADULT';
-  } else if (profileType.value === 'Child') {
-    profile.value = 'EPL_JUV';
-  }
-  
-  // Ensure province is set
-  province.value = 'AB';
+    apiService.initializeToken();
+    apiService.sanctumToken();
+
+    const customersList = ipRanges.map((item) => item.name);
+    customers.value = customersList.sort();
+
+    if (props.profileType) {
+        profileType.value = props.profileType;
+    }
+    if (props.isClient) {
+        isClient.value = true;
+    }
+    // Preselect profile based on profileType
+    if (profileType.value === 'Adult') {
+        profile.value = 'EPL_ADULT';
+    } else if (profileType.value === 'Child') {
+        profile.value = 'EPL_JUV';
+    }
+
+    // Ensure province is set
+    province.value = 'AB';
 });
 
 // create watch for indigenousStatus
@@ -824,18 +587,18 @@ watch(indigenousStatus, (newValue, oldValue) => {
 });
 
 const maxChildDate = computed(() => {
-  const today = new Date();
-  // Max date for child: must be less than 18 years old (so up to 17 years, 364 days)
-  today.setFullYear(today.getFullYear() - 18);
-  today.setDate(today.getDate() + 1); // allow up to the day before 18th birthday
-  return today.toISOString().split('T')[0];
+    const today = new Date();
+    // Max date for child: must be less than 18 years old (so up to 17 years, 364 days)
+    today.setFullYear(today.getFullYear() - 18);
+    today.setDate(today.getDate() + 1); // allow up to the day before 18th birthday
+    return today.toISOString().split('T')[0];
 });
 
 const minAdultDate = computed(() => {
-  const today = new Date();
-  // Min date for adult: must be at least 18 years old
-  today.setFullYear(today.getFullYear() - 18);
-  return today.toISOString().split('T')[0];
+    const today = new Date();
+    // Min date for adult: must be at least 18 years old
+    today.setFullYear(today.getFullYear() - 18);
+    return today.toISOString().split('T')[0];
 });
 
 // Add computed property for barcode error
@@ -844,7 +607,7 @@ const barcodeLengthError = computed(
 );
 
 const uniqueCustomers = computed(() => {
-  return [...new Set(customers.value)];
+    return [...new Set(customers.value)];
 });
 
 // const handleAsyncWatch = async (
@@ -956,40 +719,40 @@ const uniqueCustomers = computed(() => {
 // };
 
 watch(
-  [
-    profile,
-    firstName,
-    lastName,
-    dateOfBirth,
-    barcode,
-    () => registrationStore.networkName
-  ],
-  async (
     [
-      newProfile,
-      newFirstName,
-      newLastName,
-      newDateOfBirth,
-      newBarcode,
-      newNetworkName
+        profile,
+        firstName,
+        lastName,
+        dateOfBirth,
+        barcode,
+        () => registrationStore.networkName
     ],
-    [
-      oldProfile,
-      oldFirstName,
-      oldLastName,
-      oldDateOfBirth,
-      oldBarcode,
-      oldNetworkName
-    ]
-  ) => {
-    // --- Profile logic ---
-    if (newProfile !== oldProfile) {
-      if (profileNames.Adult.includes(newProfile)) {
-        router.push('/adult');
-      } else if (profileNames.Child.includes(newProfile)) {
-        router.push('/child');
-      }
-    }
+    async (
+        [
+            newProfile,
+            newFirstName,
+            newLastName,
+            newDateOfBirth,
+            newBarcode,
+            newNetworkName
+        ],
+        [
+            oldProfile,
+            oldFirstName,
+            oldLastName,
+            oldDateOfBirth,
+            oldBarcode,
+            oldNetworkName
+        ]
+    ) => {
+        // --- Profile logic ---
+        if (newProfile !== oldProfile) {
+            if (profileNames.Adult.includes(newProfile)) {
+                router.push('/adult');
+            } else if (profileNames.Child.includes(newProfile)) {
+                router.push('/child');
+            }
+        }
 
     // handleAsyncWatch(
     //     newFirstName, oldFirstName, 
@@ -998,18 +761,18 @@ watch(
     //     newBarcode, oldBarcode
     // );
 
-    // --- Network Name logic ---
-    if (newNetworkName && newNetworkName !== oldNetworkName) {
-      networkName.value = newNetworkName;
-      console.log('Network Name:', newNetworkName);
+        // --- Network Name logic ---
+        if (newNetworkName && newNetworkName !== oldNetworkName) {
+            networkName.value = newNetworkName;
+            console.log('Network Name:', newNetworkName);
 
-      // Pre-select the branch if it exists in the list
-      if (uniqueCustomers.value.includes(newNetworkName)) {
-        selectedCustomer.value = newNetworkName;
-      }
-    }
-  },
-  { immediate: true }
+            // Pre-select the branch if it exists in the list
+            if (uniqueCustomers.value.includes(newNetworkName)) {
+                selectedCustomer.value = newNetworkName;
+            }
+        }
+    },
+    { immediate: true }
 );
 
 const generateDigitalCardNumber = async () => {
@@ -1037,8 +800,8 @@ watch(selectedEmailConsent, (newValue, oldValue) => {
                     minor.province2 = typeof province2.value === 'string' ? province2.value : (province2.value && typeof province2.value === 'object' ? (province2.value as any).value : '');
                     minor.postalCode2 = postalCode2.value;
                     minor.emailAddress = emailAddress.value;
-                    minor.password =  dateOfBirth.value.getFullYear().toString().slice(-2);
-                    minor.confirmPassword =  dateOfBirth.value.getFullYear().toString().slice(-2);
+                    minor.password = dateOfBirth.value.getFullYear().toString().slice(-2);
+                    minor.confirmPassword = dateOfBirth.value.getFullYear().toString().slice(-2);
                     minor.selectedEmailConsent = newValue;
                     minor.selectedIndigenousStatus = selectedIndigenousStatus.value;
                     minor.useSecondaryAddress = useSecondaryAddress.value;
@@ -1124,12 +887,12 @@ const password = computed<string>({
         if (profileType.value === 'Child') {
             return dateOfBirth?.value?.getFullYear().toString();
         }
-        
+
         const phone = phoneNumber.value ? phoneNumber.value.replace(/\D/g, '') : '';
         if (phone.length >= 4) {
             return phone.slice(-4);
         }
-        
+
         return dateOfBirth?.value?.getFullYear().toString();
     },
     set(value: string) {
@@ -1138,112 +901,110 @@ const password = computed<string>({
 });
 
 // Setup address lookup composables
-const { 
-    suggestions: primaryAddressSuggestions, 
-    loading: primaryAddressLoading, 
+const {
+    suggestions: primaryAddressSuggestions,
+    loading: primaryAddressLoading,
     isMenuOpen: primaryAddressMenuOpen,
-    selectAddress: selectPrimaryAddress, 
-    searchAddresses: searchPrimaryAddresses, 
+    selectAddress: selectPrimaryAddress,
+    searchAddresses: searchPrimaryAddresses,
     cleanup: primaryAddressCleanup,
     openMenu: openPrimaryMenu,
     closeMenu: closePrimaryMenu
 } = useAddressLookup({
-  addressFields: {
-    address,
-    city,
-    province,
-    postalCode
-  },
+    addressFields: {
+        address,
+        city,
+        province,
+        postalCode
+    },
 });
 
-const { 
-    suggestions: secondaryAddressSuggestions, 
-    loading: secondaryAddressLoading, 
+const {
+    suggestions: secondaryAddressSuggestions,
+    loading: secondaryAddressLoading,
     isMenuOpen: secondaryAddressMenuOpen,
-    selectAddress: selectSecondaryAddress, 
-    searchAddresses: searchSecondaryAddresses, 
+    selectAddress: selectSecondaryAddress,
+    searchAddresses: searchSecondaryAddresses,
     cleanup: secondaryAddressCleanup,
     openMenu: openSecondaryMenu,
     closeMenu: closeSecondaryMenu
 } = useAddressLookup({
-  addressFields: {
-    address: address2,
-    city: city2,
-    province: province2,
-    postalCode: postalCode2
-  },
+    addressFields: {
+        address: address2,
+        city: city2,
+        province: province2,
+        postalCode: postalCode2
+    },
 });
 
 onUnmounted(() => {
-  // Cleanup timeouts when component is destroyed
-  primaryAddressCleanup();
-  secondaryAddressCleanup();
+    // Cleanup timeouts when component is destroyed
+    primaryAddressCleanup();
+    secondaryAddressCleanup();
 });
 
 // Clear contact banner when either field is filled
 watch([emailAddress, phoneNumber], ([newEmail, newPhone]) => {
-  if ((newEmail && newEmail !== '') || (newPhone && newPhone !== '')) {
-    contactError.value = false;
-    contactErrorDismiss.value = false;
-  }
+    if ((newEmail && newEmail !== '') || (newPhone && newPhone !== '')) {
+        contactError.value = false;
+        contactErrorDismiss.value = false;
+    }
 });
 
 // Reset manual password when inputs change so computed can re-derive
 watch([dateOfBirth, phoneNumber, profileType], () => {
-  manualPassword.value = '';
+    manualPassword.value = '';
 });
 
 const isGenerateBtnDisabled = computed(() => {
-  return libraryCardBarcode.value !== '' && libraryCardBarcode.value.length === 14;
+    return libraryCardBarcode.value !== '' && libraryCardBarcode.value.length === 14;
 });
 
 const onPostalCodeInput = (event: any) => {
-      let value = event.target.value || '';
-      // Convert the value to uppercase and remove spaces
-      value = value.replace(/\s/g, '').toUpperCase();
+    let value = event.target.value || '';
+    // Convert the value to uppercase and remove spaces
+    value = value.replace(/\s/g, '').toUpperCase();
 
-      // Automatically prepend 'T' if it's not already there
-      if (value.length === 0 || value[0] !== 'T') {
-          value = 'T' + value;
-      }
+    // Automatically prepend 'T' if it's not already there
+    if (value.length === 0 || value[0] !== 'T') {
+        value = 'T' + value;
+    }
 
-      // Only accept up to 6 characters (postal code length)
-      if (value.length > 6) {
-          value = value.slice(0, 6);
-      }
+    // Only accept up to 6 characters (postal code length)
+    if (value.length > 6) {
+        value = value.slice(0, 6);
+    }
 
-      // Add space after the first 3 characters for formatting (e.g., T1A 1A1)
-      if (value.length > 3) {
-          value = value.slice(0, 3) + ' ' + value.slice(3, 6);
-      }
+    // Add space after the first 3 characters for formatting (e.g., T1A 1A1)
+    if (value.length > 3) {
+        value = value.slice(0, 3) + ' ' + value.slice(3, 6);
+    }
 
-      postalCode.value = value.trim().toUpperCase();
-      if (useSecondaryAddress.value) {
+    postalCode.value = value.trim().toUpperCase();
+    if (useSecondaryAddress.value) {
         postalCode2.value = value.trim().toUpperCase();
-      }
-      event.target.value = value;
+    }
+    event.target.value = value;
 };
 
 const clearForm = () => {
-  form.value.reset();
+    form.value.reset();
 }
 
 const phoneRules = [
-  (value: string) => {
-    // Allow empty values (optional)
-    if (!value || value.length === 0) return true
-    
-    // Check format
-    const phoneRegex = /^\d{3}-\d{3}-\d{4}$/
-    if (!phoneRegex.test(value)) {
-      return 'Phone number must follow format: ###-###-####'
+    (value: string) => {
+        // Allow empty values (optional)
+        if (!value || value.length === 0) return true
+
+        // Check format
+        const phoneRegex = /^\d{3}-\d{3}-\d{4}$/
+        if (!phoneRegex.test(value)) {
+            return 'Phone number must follow format: ###-###-####'
+        }
+
+        return true
     }
-    
-    return true
-  }
 ]
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>
