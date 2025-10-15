@@ -159,6 +159,7 @@ export const apiService = {
       try {
         const access_token = getCookie('access_token');
         const formattedDateOfBirth = dateFormat(payload.dateOfBirth);
+        console.log('payload: ', payload);
         const response = await fetch('/api/registration', {
             method: 'POST',
             headers: {
@@ -194,7 +195,7 @@ export const apiService = {
               postalcode2: payload?.postalCode2,  
               barcode: payload?.libraryCardBarcode,
               category1: payload?.selectedIndigenousStatus,
-              source: 'CRP'
+              source: payload?.source || 'CRP'
           }),
           credentials: 'include',
         });
@@ -202,6 +203,7 @@ export const apiService = {
         //     throw new Error(`HTTP error! status: ${response.status}`);
         // }
         const data = await response.json();
+        console.log('data: ', data);
         if (data?.conflict && data?.status === 409) {
           console.log('Conflicting record:', data);
           return data;

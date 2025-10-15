@@ -8,11 +8,12 @@ import { ref, watchEffect } from 'vue'
 import { useRouter } from 'vue-router'
 
 const config = useRuntimeConfig()
-
+const isMain = computed(() => config.public.IS_MAINTENANCE)
 const router = useRouter()
-const isMaintenance = ref(config.public.IS_MAINTENANCE)
+const isMaintenance = ref(false)
 
 watchEffect(() => {
+  console.log('isMaintenance', isMain)
   if (isMaintenance.value) {
     router.push('/maintenance')
   }

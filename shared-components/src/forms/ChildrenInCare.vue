@@ -1,13 +1,22 @@
 <template>
   <v-container fluid="true">
+  
     <v-row>
-      <v-col cols="12">
-        <h1 class="text-h3 font-weight-bold">Children in Care</h1>
-      </v-col>
-    </v-row>
-    <v-row>
-      <v-col cols="3">
-        <div class="bg-primary h-100 w-100"></div>
+      <v-col cols="3" class="bg-primary p-4">
+        <div class=" h-100 w-100">
+          <h3 class="text-white text-center text-h4 font-weight-bold">Children in Care</h3>
+          <v-list class="bg-primary">
+            <v-list-item>
+              <v-list-item-title class="d-flex align-center ">
+                <v-icon>mdi-home</v-icon>
+                <nuxt-link to="/" class="ml-3">
+                  Online Registration
+                </nuxt-link>
+              </v-list-item-title>
+            </v-list-item>
+           
+          </v-list>
+        </div>
       </v-col>
       <v-col cols="9">
         <v-stepper v-model="currentStep" class="mt-4" flat>
@@ -69,9 +78,9 @@
               <v-row>
                 <v-col cols="12" md="4" sm="6">
                   <v-text-field 
-                    v-model="formData.firstname" 
+                    v-model="firstname" 
                     label="First Name *" 
-                    :rules="[props.rules.required, props.rules.firstname]"
+                    :rules="[rules.required, rules.firstname]"
                     density="compact"
                     variant="outlined"
                     :maxlength="25"
@@ -79,9 +88,9 @@
                 </v-col>
                 <v-col cols="12" md="4" sm="6">
                   <v-text-field 
-                    v-model="formData.lastname" 
+                    v-model="lastname" 
                     label="Last Name *" 
-                    :rules="[props.rules.required, props.rules.lastname]"
+                    :rules="[rules.required, rules.lastname]"
                     density="compact"
                     variant="outlined"
                     :maxlength="25"
@@ -89,19 +98,19 @@
                 </v-col>
                 <v-col cols="12" md="4" sm="6">
                   <v-text-field 
-                    v-model="formData.email" 
+                    v-model="email" 
                     label="Email *" 
-                    :rules="[props.rules.required, props.rules.email]"
+                    :rules="[rules.required, rules.email]"
                     density="compact"
                     variant="outlined"
                   />
                 </v-col>
                 <v-col cols="12" md="4" sm="6">
                   <v-text-field 
-                    v-model="formData.phone" 
+                    v-model="phone" 
                     label="Phone Number *" 
                     v-maska="'###-###-####'"
-                    :rules="[props.rules.required, props.rules.phone]"
+                    :rules="[rules.required, rules.phone]"
                     density="compact"
                     variant="outlined"
                   />
@@ -138,7 +147,7 @@
                     :items="['Edmonton', 'Enoch']"
                     v-model="city" 
                     variant="outlined"
-                    :rules="[props.rules.city]"
+                    :rules="[rules.city]"
                     required
                     density="compact"
                     prepend-inner-icon="mdi-city"
@@ -148,7 +157,7 @@
                   <v-text-field 
                     v-model="province" 
                     label="Province *" 
-                    :rules="[props.rules.required, props.rules.province]"
+                    :rules="[rules.required, rules.province]"
                     density="compact"
                     variant="outlined"
                     readonly
@@ -158,7 +167,7 @@
                   <v-text-field 
                     v-model="postalCode" 
                     label="Postal Code *" 
-                    :rules="[props.rules.required, props.rules.postalCode]"
+                    :rules="[rules.required, rules.postalCode]"
                     density="compact"
                     variant="outlined"
                     :maxLength="7"
@@ -179,14 +188,17 @@
             <v-card-text>
               <v-row>
                 <v-col cols="12" md="6">
-                  <v-combobox 
+                  <v-select 
                     label="Profile *"
                     :items="[
-                      { value: 'EPL_JUV', text: '40' }, 
                       { value: 'EPL_JUV01', text: '1' }, 
                       { value: 'EPL_JUV05', text: '5' }, 
-                      { value: 'EPL_JUV10', text: '10' }
+                      { value: 'EPL_JUV10', text: '10' },
+                      { value: 'EPL_JUV', text: '40' }
                     ]"
+                    item-title="text"
+                    item-value="value"
+                    :return-object="false"
                     v-model="profile"
                     density="compact"
                     variant="outlined"
@@ -196,9 +208,9 @@
               <v-row>
                 <v-col cols="12" md="6">
                   <v-text-field 
-                    v-model="formData.minorFirstname" 
+                    v-model="minorFirstname" 
                     label="First Name *" 
-                    :rules="[props.rules.required, props.rules.firstname]"
+                    :rules="[rules.required, rules.firstname]"
                     density="compact"
                     variant="outlined"
                     :maxlength="25"
@@ -206,17 +218,17 @@
                 </v-col>  
                 <v-col cols="12" md="6">
                   <v-text-field 
-                    v-model="formData.minorLastname" 
+                    v-model="minorLastname" 
                     label="Last Name *" 
                     density="compact"
-                    :rules="[props.rules.required, props.rules.lastname]"
+                    :rules="[rules.required, rules.lastname]"
                     variant="outlined"
                     :maxlength="25"
                   />
                 </v-col>    
                 <v-col cols="12" md="6">
                   <v-text-field 
-                    v-model="formData.minorMiddlename" 
+                    v-model="minorMiddlename" 
                     label="Middle Name"
                     density="compact"
                     :rules="[(v: string) => /^[a-zA-Z]*$/.test(v) || 'Only alphabetic characters are allowed']"
@@ -240,7 +252,7 @@
                       />
                     </template>
                     <v-date-picker
-                      v-model="formData.minorDateOfBirth"
+                      v-model="minorDateOfBirth"
                       @update:model-value="isMenuOpen = false"
                       hide-actions
                       :min="minDate"
@@ -250,10 +262,10 @@
                 </v-col> 
                 <v-col cols="12" md="6">
                   <v-text-field
-                    v-model="formData.minorPassword"
+                    v-model="password"
                     label="Password *"        
                     variant="outlined"
-                    :rules="[props.rules.required, props.rules.password]"
+                    :rules="[rules.required, rules.password]"
                     type="password"
                     density="compact"
                     hint="Password must be 6-20 characters long, no space or special characters allowed."
@@ -264,10 +276,10 @@
                 </v-col>
                 <v-col cols="12" md="6">
                   <v-text-field
-                    v-model="formData.minorConfirmPassword"
+                    v-model="confirmPassword"
                     label="Confirm Password *"
                     variant="outlined"
-                    :rules="[props.rules.required, props.rules.password, confirmPinRules]"
+                    :rules="[rules.required, rules.password, confirmPinRules]"
                     type="password"
                     hint="Password must be 6-20 characters long, no space or special characters allowed."
                     persistent-hint
@@ -395,6 +407,8 @@
     </v-row>
     
   </v-container>
+  <ErrorPrompt :is-active="showErrorDialog" @close="closeErrorDialog" />
+  <SystemError :is-active="showSystemErrorDialog" @close="closeErrorDialog" />
 </template>
 
 <script setup lang="ts">
@@ -406,6 +420,10 @@ import { dateFormat } from '../composables/dateFormat';
 import { useRegistrationStore } from '../store/registration-store';
 import { useAddressLookup } from '../composables/useAddressLookup';
 import { apiService } from '../services/api-service';
+import { useRouter } from 'vue-router'
+import { navigateTo } from 'nuxt/app';
+import ErrorPrompt from './ErrorPrompt.vue';
+import SystemError from './SystemError.vue';
 
 interface Minor {
     id: number;
@@ -415,7 +433,6 @@ interface Minor {
     dateOfBirth: string;
     password: string;
     confirmPassword: string;
-
     address: string;
     city: string;
     province: string;
@@ -423,45 +440,56 @@ interface Minor {
     email: string;
     phone: string;
     careof: string;
-  }
-
+    profile: string;
+    library: string;
+}
+const showErrorDialog = ref(false);
+const showSystemErrorDialog = ref(false);
 const userRegistration = useRegistrationStore();
+const closeErrorDialog = async () => {
+    showErrorDialog.value = false;
+    showSystemErrorDialog.value = false;
+    await navigateTo('https://epl.bibliocommons.com/locations', {
+        external: true
+    })
+};
 let minorId = 0;
-const props = defineProps({
-  formData: {
-    type: Object,
-    default: () => ({
-      firstname: '',
-      lastname: '',
-      email: '',
-      phone: '',
-      minorFirstname: '',
-      minorLastname: '',
-      minorMiddlename: '',
-      minorDateOfBirth: '',
-      minorPassword: '',
-      minorConfirmPassword: '',
-    })
-  },
-  rules: {
-    type: Object,
-    default: () => ({
-      required: (value: any) => !!value || 'This field is required',
-      firstname: (value: string) => !value || /^[a-zA-Z\s\-\']+$/.test(value) || 'Invalid characters in first name',
-      lastname: (value: string) => !value || /^[a-zA-Z\s\-\']+$/.test(value) || 'Invalid characters in last name',
-      email: (value: string) => !value || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value) || 'Invalid email format',
-      phone: (value: string) => !value || /^\d{3}-\d{3}-\d{4}$/.test(value) || 'Phone number must be in format XXX-XXX-XXXX',
-      alphanumericRule: (value: string) => !value || /^[a-zA-Z0-9\s\-\'\/#]*$/.test(value) || 'Invalid characters',
-      city: (value: any) => !!value || 'City is required',
-      province: (value: any) => !!value || 'Province is required',
-      postalCode: (value: string) => !value || /^[A-Za-z]\d[A-Za-z][ -]?\d[A-Za-z]\d$/.test(value) || 'Invalid postal code format',
-      password: (value: string) => !value || /^[a-zA-Z0-9]{6,20}$/.test(value) || 'Password must be 6-20 characters long, no space or special characters allowed'
-    })
-  }
-});
-
+// const props = defineProps({
+//   formData: {
+//     type: Object,
+//     default: () => ({
+//       firstname: '',
+//       lastname: '',
+//       email: '',
+//       phone: '',
+//       minorFirstname: '',
+//       minorLastname: '',
+//       minorMiddlename: '',
+//       minorDateOfBirth: '',
+//       minorPassword: '',
+//       minorConfirmPassword: '',
+//     })
+//   },
+//   rules: {
+//     type: Object,
+//     default: () => ({
+//       required: (value: any) => !!value || 'This field is required',
+//       firstname: (value: string) => !value || /^[a-zA-Z\s\-\']+$/.test(value) || 'Invalid characters in first name',
+//       lastname: (value: string) => !value || /^[a-zA-Z\s\-\']+$/.test(value) || 'Invalid characters in last name',
+//       email: (value: string) => !value || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value) || 'Invalid email format',
+//       phone: (value: string) => !value || /^\d{3}-\d{3}-\d{4}$/.test(value) || 'Phone number must be in format XXX-XXX-XXXX',
+//       alphanumericRule: (value: string) => !value || /^[a-zA-Z0-9\s\-\'\/#]*$/.test(value) || 'Invalid characters',
+//       city: (value: any) => !!value || 'City is required',
+//       province: (value: any) => !!value || 'Province is required',
+//       postalCode: (value: string) => !value || /^[A-Za-z]\d[A-Za-z][ -]?\d[A-Za-z]\d$/.test(value) || 'Invalid postal code format',
+//       password: (value: string) => !value || /^[a-zA-Z0-9]{6,20}$/.test(value) || 'Password must be 6-20 characters long, no space or special characters allowed'
+//     })
+//   }
+// });
+const router = useRouter();
 const cardNumber = ref('');
 const password = ref('');
+const confirmPassword = ref('');
 const validationRules = ref([]);
 const loader = ref(false);
 const showSuccessMessage = ref(false);
@@ -475,9 +503,29 @@ const city = ref('Edmonton');
 const province = ref('Alberta');
 const postalCode = ref('');
 const profile = ref('');
+const firstname = ref('');
+const lastname = ref('');
+const email = ref('');
+const phone = ref('');
+const minorFirstname = ref('');
+const minorLastname = ref('');
+const minorMiddlename = ref('');
+const minorDateOfBirth = ref('');
+
+const rules = ref({
+  required: (value: any) => !!value || 'This field is required',
+  firstname: (value: string) => !value || /^[a-zA-Z\s\-\']+$/.test(value) || 'Invalid characters in first name',
+  lastname: (value: string) => !value || /^[a-zA-Z\s\-\']+$/.test(value) || 'Invalid characters in last name',
+  email: (value: string) => !value || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value) || 'Invalid email format',
+  phone: (value: string) => !value || /^\d{3}-\d{3}-\d{4}$/.test(value) || 'Phone number must be in format XXX-XXX-XXXX',
+  city: (value: any) => !!value || 'City is required',
+  province: (value: any) => !!value || 'Province is required',
+  postalCode: (value: string) => !value || /^[A-Za-z]\d[A-Za-z][ -]?\d[A-Za-z]\d$/.test(value) || 'Invalid postal code format',
+  password: (value: string) => !value || /^[a-zA-Z0-9]{6,20}$/.test(value) || 'Password must be 6-20 characters long, no space or special characters allowed'
+});
 
 // Use props.formData directly instead of creating a separate ref
-const formData = ref(props.formData);
+//const formData = ref(props.formData);
 
 const handleSuccess = (data: any) => {
   if(data.error) {
@@ -535,21 +583,21 @@ const isMinorInvalid = ref(true);
 // Watch for changes in minor form fields to validate them
 watch(
   [
-    () => formData.value.minorFirstname,
-    () => formData.value.minorLastname,
-    () => formData.value.minorDateOfBirth,
-    () => formData.value.minorPassword,
-    () => formData.value.minorConfirmPassword
+    () => minorFirstname.value,
+    () => minorLastname.value,
+    () => minorDateOfBirth.value,
+    () => password.value,
+    () => confirmPassword.value
   ],
   () => {
     // Check if all required fields are valid
-    const isFirstNameValid = formData.value.minorFirstname && props.rules.firstname(formData.value.minorFirstname) === true;
-    const isLastNameValid = formData.value.minorLastname && props.rules.lastname(formData.value.minorLastname) === true;
-    const isDateOfBirthValid = !!formData.value.minorDateOfBirth;
-    const isPasswordValid = formData.value.minorPassword && props.rules.password(formData.value.minorPassword) === true;
-    const isConfirmPasswordValid = formData.value.minorConfirmPassword && 
-      props.rules.password(formData.value.minorConfirmPassword) === true &&
-      formData.value.minorConfirmPassword === formData.value.minorPassword;
+    const isFirstNameValid = minorFirstname.value && rules.value.firstname(minorFirstname.value) === true;
+      const isLastNameValid = minorLastname.value && rules.value.lastname(minorLastname.value) === true;
+    const isDateOfBirthValid = !!minorDateOfBirth.value;
+    const isPasswordValid = password.value && rules.value.password(password.value) === true;
+    const isConfirmPasswordValid = confirmPassword.value && 
+      rules.value.password(confirmPassword.value) === true &&
+      confirmPassword.value === password.value;
 
     // Set isMinorInvalid to false only when all fields are valid
     isMinorInvalid.value = !(isFirstNameValid && isLastNameValid && isDateOfBirthValid && isPasswordValid && isConfirmPasswordValid);
@@ -558,8 +606,8 @@ watch(
 );
 
 const formattedDate = computed(() => {
-    if (!formData.value.minorDateOfBirth) return '';
-    const date = new Date(formData.value.minorDateOfBirth);
+    if (!minorDateOfBirth.value) return '';
+    const date = new Date(minorDateOfBirth.value);
     return new Intl.DateTimeFormat('en-US', {
         month: 'long',
         day: 'numeric',
@@ -579,7 +627,7 @@ const isClicked = ref(false);
 const isReadonly = ref(true);
 const isMenuOpen = ref(false);
 const confirmPinRules = computed(() => {
-  return formData.value.minorConfirmPassword !== formData.value.minorPassword ? 'Pins do not match' : true;
+  return confirmPassword.value !== password.value ? 'Pins do not match' : true;
 });
 
 // Validation for stepper navigation
@@ -594,29 +642,22 @@ const canProceedToNextStep = computed(() => {
     case 2:
       // Check if all required fields are filled
       const step2Valid = !!(
-        formData.value.firstname && 
-        formData.value.lastname && 
-        formData.value.email && 
-        formData.value.phone && 
+        firstname.value && 
+        lastname.value && 
+        email.value && 
+        phone.value && 
         address.value && 
         city.value && 
         province.value && 
         postalCode.value
       );
-      console.log('Step 2 validation:', {
-        firstname: formData.value.firstname,
-        lastname: formData.value.lastname,
-        email: formData.value.email,
-        phone: formData.value.phone,
-        street: address.value,
-        city: city.value,
-        province: province.value,
-        postal: postalCode.value,
-        valid: step2Valid
-      });
+      
       return step2Valid;
     case 3:
       // For step 3, we don't need to validate as it's the final step
+      // I need to reset the password and confirm password
+      password.value = '';
+      confirmPassword.value = '';
       console.log('Step 3 - always valid');
       return true;
     default:
@@ -630,29 +671,31 @@ const addMinor = () => {
       }
       minors.value.push({
         id: ++minorId,
-        firstname: formData.value.minorFirstname,
-        lastname: formData.value.minorLastname,
-        middlename: formData.value.minorMiddlename,
-        dateOfBirth: dateFormat(formData.value.minorDateOfBirth || ''),
-        password: formData.value.minorPassword,
-        confirmPassword: formData.value.minorConfirmPassword,
+        firstname: minorFirstname.value,
+        lastname: minorLastname.value,
+        middlename: minorMiddlename.value,
+        dateOfBirth: dateFormat(minorDateOfBirth.value || ''),
+        password: password.value,
+        confirmPassword: confirmPassword.value,
         address: address.value,
         city: city.value,
         province: province.value,
         postalCode: postalCode.value,
-        email: formData.value.email,
-        phone: formData.value.phone,
-        careof: formData.value.firstname + ' ' + formData.value.lastname,
+        email: email.value,
+        phone: phone.value,
+        careof: firstname.value + ' ' + lastname.value,
+        profile: profile.value,
+        library: 'EPLMNA',
       });
 
       userRegistration.setAdditionalMinor(true);
     
-      formData.value.minorFirstname = '';
-      formData.value.minorLastname = '';
-      formData.value.minorMiddlename = '';
-      formData.value.minorDateOfBirth = null;
-      formData.value.minorPassword = '';
-      formData.value.minorConfirmPassword = '';
+      minorFirstname.value = '';
+      minorLastname.value = '';
+      minorMiddlename.value = '';
+      minorDateOfBirth.value = '';
+      password.value = '';
+      confirmPassword.value = '';
       minorsContact.value = false;
       isClicked.value = false;
   };
@@ -668,12 +711,12 @@ const addMinor = () => {
       const lastMinor = minors.value[minors.value.length - 1];
 
       // Populate the form with the last minor's details
-      formData.value.minorFirstname = lastMinor.firstname;
-      formData.value.minorLastname = lastMinor.lastname;
-      formData.value.minorMiddlename = lastMinor.middlename;
-      formData.value.minorDateOfBirth = new Date(lastMinor.dateOfBirth);
-      formData.value.minorPassword = lastMinor.password;
-      formData.value.minorConfirmPassword = lastMinor.confirmPassword;
+      minorFirstname.value = lastMinor.firstname;
+      minorLastname.value = lastMinor.lastname;
+      minorMiddlename.value = lastMinor.middlename;
+      minorDateOfBirth.value = new Date(lastMinor.dateOfBirth).toISOString().split('T')[0];
+      password.value = lastMinor.password;
+      confirmPassword.value = lastMinor.confirmPassword;
 
       // Delete the last minor from the list
       deleteMinor(lastMinor.id);
@@ -687,37 +730,89 @@ const addMinor = () => {
       await new Promise(resolve => setTimeout(resolve, 1000));
       showSuccessMessage.value = true;
       const payload = {
-        firstname: formData.value.firstname,
-        lastname: formData.value.lastname,
-        middlename: formData.value.middlename,
-        dateOfBirth: dateFormat(formData.value.minorDateOfBirth || ''),
-        library: formData.value.library,
+        firstName: minorFirstname.value,
+        lastName: minorLastname.value,
+        middleName: minorMiddlename.value,
+        dateOfBirth: dateFormat(minorDateOfBirth.value || ''),
         address: address.value,
         city: city.value,
         province: province.value,
         postalCode: postalCode.value,
-        email: formData.value.email,
-        phone: formData.value.phone,
-        careof: formData.value.firstname + ' ' + formData.value.lastname,
-        password: formData.value.minorPassword,
-        confirmPassword: formData.value.minorConfirmPassword,
+        email: email.value,
+        phone: phone.value,
+        careOf: firstname.value + ' ' + lastname.value,
+        password: password.value,
+        confirmPassword: confirmPassword.value,
         profile: profile.value,
-       
+        library: 'EPLMNA',
+        source: 'CIC'
       }
       // iterate over minors and submit each minor
       if(minors.value.length > 0) {
         minors.value.forEach(async (minor) => {
-          console.log('Minor submitted:', minor);
+          
+          const response = await apiService.postUserData({
+            firstName: minor.firstname,
+            lastName: minor.lastname,
+            middleName: minor.middlename,
+            dateOfBirth: minor.dateOfBirth,
+            address: minor.address,
+            city: minor.city,
+            province: minor.province,
+            postalCode: minor.postalCode,
+            email: minor.email,
+            phone: minor.phone,
+            careOf: minor.careof,
+            password: minor.password,
+            confirmPassword: minor.confirmPassword,
+            profile: minor.profile,
+            library: 'EPLMNA',
+            source: 'CIC'
+          });
+          if (response?.message === "Record added successfully.") {
+            userRegistration.setSuccessResponse({
+                name: response?.data?.firstName + ' ' + response?.data?.lastName,
+                barcode: response?.data?.barcode,
+                programType: 'CIC',
+            });
+            router.push('/success-page');
+          }
+          else if (response?.error === 'HTTP error! status: 409' || response?.error === 'Posting to ILS failed 409') {
+            showErrorDialog.value = true;
+          }
+          else {
+            showSystemErrorDialog.value = true;
+          }
         });
       }
       const response = await apiService.postUserData(payload);
-      console.log('Form submitted:', response);
+      if (response?.message === "Record added successfully.") {
+        userRegistration.setSuccessResponse({
+            name: response?.data?.firstName + ' ' + response?.data?.lastName,
+            barcode: response?.data?.barcode,
+            programType: 'CIC',
+        });
+        router.push('/success-page');
+      }
+      else if (response?.error === 'HTTP error! status: 409' || response?.error === 'Posting to ILS failed 409') {
+        showErrorDialog.value = true;
+      }
+      else {
+        showSystemErrorDialog.value = true;
+      }
    
       setTimeout(() => {
         showSuccessMessage.value = false;
+       
       }, 3000);
     } catch (error) {
       console.error('Error saving changes:', error);
+      if( error === 'HTTP error! status: 409' || error === 'Posting to ILS failed 409') {
+        showErrorDialog.value = true;
+      }
+      else {
+        showSystemErrorDialog.value = true;
+      }
     } finally {
       loader.value = false;
     }
