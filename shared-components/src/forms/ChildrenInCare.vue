@@ -888,9 +888,11 @@ const addMinor = () => {
         }
       }
       
-      // If we have successful submissions, redirect to success page with the first one
+      // If we have successful submissions, store all responses and redirect to success page
       if (successfulSubmissions.length > 0) {
-        userRegistration.setSuccessResponse(successfulSubmissions[0]);
+        for (const submission of successfulSubmissions) {
+          await userRegistration.setSuccessResponse(submission);
+        }
         router.push('/success-page');
       }
    
