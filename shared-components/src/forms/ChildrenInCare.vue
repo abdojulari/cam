@@ -358,11 +358,7 @@
                 </v-card>
               </v-row>
             </v-card-text>
-            <v-row v-if="showSuccessMessage" class="mt-2">
-              <v-col cols="12">
-                <span class="text-green-darken-4 font-italic font-weight-medium">Record saved successfully!</span>
-              </v-col>
-            </v-row>  
+            
            
           </v-card>
         </v-stepper-window-item>
@@ -492,7 +488,6 @@ const password = ref('');
 const confirmPassword = ref('');
 const validationRules = ref([]);
 const loader = ref(false);
-const showSuccessMessage = ref(false);
 const loggedIn = ref(false);
 const minors = ref<Minor[]>([]);
 const minorsContact = ref(false);
@@ -547,7 +542,6 @@ onMounted(async () => {
   try {
     await apiService.initializeToken();
     await apiService.sanctumToken();
-    console.log('Tokens initialized successfully');
   } catch (error) {
     console.error('Failed to initialize tokens:', error);
   }
@@ -559,9 +553,9 @@ onUnmounted(() => {
 
 // Navigation methods
 const goToNextStep = () => {
-  console.log('goToNextStep called');
-  console.log('canProceedToNextStep:', canProceedToNextStep.value);
-  console.log('currentStep:', currentStep.value);
+  // I need to reset the password and confirm password
+  password.value = '';
+  confirmPassword.value = '';
   
   if (canProceedToNextStep.value && currentStep.value < 3) {
     currentStep.value++;
@@ -570,9 +564,7 @@ const goToNextStep = () => {
 };
 
 const goToPreviousStep = () => {
-  console.log('goToPreviousStep called');
-  console.log('currentStep:', currentStep.value);
-  
+
   if (currentStep.value > 1) {
     currentStep.value--;
     console.log('Went back to step:', currentStep.value);
@@ -654,11 +646,6 @@ const canProceedToNextStep = computed(() => {
       
       return step2Valid;
     case 3:
-      // For step 3, we don't need to validate as it's the final step
-      // I need to reset the password and confirm password
-      password.value = '';
-      confirmPassword.value = '';
-      console.log('Step 3 - always valid');
       return true;
     default:
       console.log('Default case - not valid');
@@ -725,33 +712,135 @@ const addMinor = () => {
   };
 
   const submitForm = async () => {
+    // Validation before submission
+    const validationErrors: string[] = [];
+
+    // Check if there's at least one child to submit
+    const hasCurrentChild = minorFirstname.value && minorLastname.value && minorDateOfBirth.value && password.value;
+    const hasMinorsInList = minors.value.length > 0;
+
+    if (!hasCurrentChild && !hasMinorsInList) {
+      alert('Please add at least one child before submitting.');
+      return;
+    }
+
+    // Validate current child form if fields are filled
+    if (hasCurrentChild) {
+      // Validate profile
+      if (!profile.value) {
+        validationErrors.push('Profile selection is required');
+      }
+
+      // Validate first name
+      if (!minorFirstname.value) {
+        validationErrors.push('Child first name is required');
+      } else if (rules.value.firstname(minorFirstname.value) !== true) {
+        validationErrors.push('Invalid characters in child first name');
+      }
+
+      // Validate last name
+      if (!minorLastname.value) {
+        validationErrors.push('Child last name is required');
+      } else if (rules.value.lastname(minorLastname.value) !== true) {
+        validationErrors.push('Invalid characters in child last name');
+      }
+
+      // Validate middle name if provided
+      if (minorMiddlename.value && !/^[a-zA-Z]*$/.test(minorMiddlename.value)) {
+        validationErrors.push('Only alphabetic characters are allowed in middle name');
+      }
+
+      // Validate date of birth
+      if (!minorDateOfBirth.value) {
+        validationErrors.push('Child date of birth is required');
+      }
+
+      // Validate password
+      if (!password.value) {
+        validationErrors.push('Password is required');
+      } else if (rules.value.password(password.value) !== true) {
+        validationErrors.push('Password must be 6-20 characters long, no space or special characters allowed');
+      }
+
+      // Validate confirm password
+      if (!confirmPassword.value) {
+        validationErrors.push('Password confirmation is required');
+      } else if (confirmPassword.value !== password.value) {
+        validationErrors.push('Passwords do not match');
+      }
+
+      // Validate adult information (guardian)
+      if (!firstname.value) {
+        validationErrors.push('Guardian first name is required');
+      }
+      if (!lastname.value) {
+        validationErrors.push('Guardian last name is required');
+      }
+      if (!address.value) {
+        validationErrors.push('Address is required');
+      }
+      if (!city.value) {
+        validationErrors.push('City is required');
+      }
+      if (!province.value) {
+        validationErrors.push('Province is required');
+      }
+      if (!postalCode.value) {
+        validationErrors.push('Postal code is required');
+      } else if (rules.value.postalCode(postalCode.value) !== true) {
+        validationErrors.push('Invalid postal code format');
+      }
+      if (!email.value) {
+        validationErrors.push('Email is required');
+      } else if (rules.value.email(email.value) !== true) {
+        validationErrors.push('Invalid email format');
+      }
+      if (!phone.value) {
+        validationErrors.push('Phone number is required');
+      } else if (rules.value.phone(phone.value) !== true) {
+        validationErrors.push('Phone number must be in format XXX-XXX-XXXX');
+      }
+    }
+
+    // Display validation errors if any
+    if (validationErrors.length > 0) {
+      alert('Please fix the following errors:\n\n' + validationErrors.join('\n'));
+      return;
+    }
+
     loader.value = true;
     try {
       await new Promise(resolve => setTimeout(resolve, 1000));
-      showSuccessMessage.value = true;
-      const payload = {
-        firstName: minorFirstname.value,
-        lastName: minorLastname.value,
-        middleName: minorMiddlename.value,
-        dateOfBirth: dateFormat(minorDateOfBirth.value || ''),
-        address: address.value,
-        city: city.value,
-        province: province.value,
-        postalCode: postalCode.value,
-        email: email.value,
-        phone: phone.value,
-        careOf: firstname.value + ' ' + lastname.value,
-        password: password.value,
-        confirmPassword: confirmPassword.value,
-        profile: profile.value,
-        library: 'EPLMNA',
-        source: 'CIC'
+      
+      // Only create payload if current child form is filled
+      let payload = null;
+      if (hasCurrentChild) {
+        payload = {
+          firstName: minorFirstname.value,
+          lastName: minorLastname.value,
+          middleName: minorMiddlename.value,
+          dateOfBirth: dateFormat(minorDateOfBirth.value || ''),
+          address: address.value,
+          city: city.value,
+          province: province.value,
+          postalCode: postalCode.value,
+          email: email.value,
+          phone: phone.value,
+          careOf: firstname.value + ' ' + lastname.value,
+          password: password.value,
+          confirmPassword: confirmPassword.value,
+          profile: profile.value,
+          library: 'EPLMNA',
+          source: 'CIC'
+        };
       }
-      // iterate over minors and submit each minor
-      if(minors.value.length > 0) {
-        minors.value.forEach(async (minor) => {
-          
-          const response = await apiService.postUserData({
+      // Collect all submissions (minors list + current form)
+      const allSubmissions = [];
+      
+      // Add minors from the list
+      if (minors.value.length > 0) {
+        for (const minor of minors.value) {
+          allSubmissions.push({
             firstName: minor.firstname,
             lastName: minor.lastname,
             middleName: minor.middlename,
@@ -769,42 +858,42 @@ const addMinor = () => {
             library: 'EPLMNA',
             source: 'CIC'
           });
-          if (response?.message === "Record added successfully.") {
-            userRegistration.setSuccessResponse({
-                name: response?.data?.firstName + ' ' + response?.data?.lastName,
-                barcode: response?.data?.barcode,
-                programType: 'CIC',
-            });
-            router.push('/success-page');
-          }
-          else if (response?.error === 'HTTP error! status: 409' || response?.error === 'Posting to ILS failed 409') {
-            showErrorDialog.value = true;
-          }
-          else {
-            showSystemErrorDialog.value = true;
-          }
-        });
+        }
       }
-      const response = await apiService.postUserData(payload);
-      if (response?.message === "Record added successfully.") {
-        userRegistration.setSuccessResponse({
+      
+      // Add current form if filled
+      if (payload) {
+        allSubmissions.push(payload);
+      }
+      
+      // Submit all children
+      const successfulSubmissions = [];
+      for (const submission of allSubmissions) {
+        const response = await apiService.postUserData(submission);
+        
+        if (response?.message === "Record added successfully.") {
+          successfulSubmissions.push({
             name: response?.data?.firstName + ' ' + response?.data?.lastName,
             barcode: response?.data?.barcode,
             programType: 'CIC',
-        });
+          });
+        }
+        else if (response?.error === 'HTTP error! status: 409' || response?.error === 'Posting to ILS failed 409') {
+          showErrorDialog.value = true;
+          return; // Exit on error
+        }
+        else {
+          showSystemErrorDialog.value = true;
+          return; // Exit on error
+        }
+      }
+      
+      // If we have successful submissions, redirect to success page with the first one
+      if (successfulSubmissions.length > 0) {
+        userRegistration.setSuccessResponse(successfulSubmissions[0]);
         router.push('/success-page');
       }
-      else if (response?.error === 'HTTP error! status: 409' || response?.error === 'Posting to ILS failed 409') {
-        showErrorDialog.value = true;
-      }
-      else {
-        showSystemErrorDialog.value = true;
-      }
    
-      setTimeout(() => {
-        showSuccessMessage.value = false;
-       
-      }, 3000);
     } catch (error) {
       console.error('Error saving changes:', error);
       if( error === 'HTTP error! status: 409' || error === 'Posting to ILS failed 409') {
