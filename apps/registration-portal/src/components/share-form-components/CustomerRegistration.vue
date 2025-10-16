@@ -14,7 +14,7 @@
         :duplicateRecord="duplicateRecord"
     />
     <div v-if="!isClient">
-        <v-skeleton-loader type="card" class="mt-15 mx-5 rounded-lg" />
+        <v-skeleton-loader type="card" class="mt-20 mx-5 rounded-lg" />
     </div>
     <v-form ref="form" v-else class="px-10">
         <!-- Add New Adult Customer -->
