@@ -28,10 +28,10 @@ const onSubmit = async (payload: any) => {
                 programType: 'CRP',
               });
             }
-            else if (response?.conflict && response?.status === 409) {
+            else if (response?.status === 409 || response?.message === 'Duplicate record found with fuzzy logic.') {
               userRegistration.setFailedResponse({
                 message: 'User already exists!',
-                duplicate: response?.data?.duplicate,
+                duplicate: response?.data?.duplicate || response?.duplicate,
               });
             }
           } catch (error) {
@@ -57,10 +57,10 @@ const onSubmit = async (payload: any) => {
           programType: 'CRP',
         });
       }
-      else if (response?.conflict && response?.status === 409) {
+      else if (response?.status === 409 || response?.message === 'Duplicate record found with fuzzy logic.') {
         userRegistration.setFailedResponse({
           message: 'User already exists!',
-          duplicate: response?.data?.duplicate,
+          duplicate: response?.data?.duplicate || response?.duplicate,
         });
       }
     } catch (error) {

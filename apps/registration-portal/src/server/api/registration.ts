@@ -29,6 +29,7 @@ export default defineEventHandler(async (event: H3Event<EventHandlerRequest>) =>
             },
             body: JSON.stringify(body)
         });
+        
         if (!response.ok) {
             // Handle 409 conflict - return the conflicting record
             if (response.status === 409) {

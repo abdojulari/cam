@@ -24,19 +24,15 @@ const onSubmit = async(payload: any) => {
   
     try {
       const response = await apiService.postUserData(payload.form);
-      console.log('response', response);
-      console.log('response status:', response?.status);
       if (response?.message === "Record added successfully.") {
         userRegistration.setSuccessResponse({
             name: response?.data?.firstName + ' ' + response?.data?.lastName,
             barcode: response?.data?.barcode,
             programType: 'CRP',
         });
-        // after success, clear the form
-        clearForm();
+      
       }
       else if (response?.status === 409 || response?.message === 'Duplicate record found with fuzzy logic.') {
-        console.log('response error adult:', response);
         userRegistration.setFailedResponse({
           message: 'User already exists!',
           duplicate: response?.data?.duplicate || response?.duplicate,
