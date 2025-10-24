@@ -34,7 +34,8 @@ const onSubmit = async(payload: any) => {
         // after success, clear the form
         clearForm();
       }
-      else if (response?.conflict && response?.status === 409) {
+      else if (response?.status === 409) {
+        console.log('response error adult:', response);
         userRegistration.setFailedResponse({
           message: 'User already exists!',
           duplicate: response?.data?.duplicate,
