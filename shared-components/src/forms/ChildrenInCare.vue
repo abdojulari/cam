@@ -204,6 +204,22 @@
                     variant="outlined"
                   />
                 </v-col>
+                <v-col cols="12" md="6">
+                  <v-select
+                    label="Home Branch *"
+                    :items="homeBranch"
+                    v-model="library"
+                    item-title="name"
+                    item-value="value"
+                    :return-object="false"
+                    variant="outlined"
+                    :rules="[rules.required]"
+                    required
+                    density="compact"
+                  >
+               
+                  </v-select>
+                </v-col>
               </v-row>
               <v-row>
                 <v-col cols="12" md="6">
@@ -420,6 +436,7 @@ import { useRouter } from 'vue-router'
 import { navigateTo } from 'nuxt/app';
 import ErrorPrompt from './ErrorPrompt.vue';
 import SystemError from './SystemError.vue';
+import { homeBranch } from '../constants/home-branch';
 
 interface Minor {
     id: number;
@@ -506,6 +523,7 @@ const minorFirstname = ref('');
 const minorLastname = ref('');
 const minorMiddlename = ref('');
 const minorDateOfBirth = ref('');
+const library = ref('');
 
 const rules = ref({
   required: (value: any) => !!value || 'This field is required',
@@ -672,7 +690,7 @@ const addMinor = () => {
         phone: phone.value,
         careof: firstname.value + ' ' + lastname.value,
         profile: profile.value,
-        library: 'EPLMNA',
+        library: library.value,
       });
 
       userRegistration.setAdditionalMinor(true);
@@ -830,7 +848,7 @@ const addMinor = () => {
           password: password.value,
           confirmPassword: confirmPassword.value,
           profile: profile.value,
-          library: 'EPLMNA',
+          library: library.value,
           source: 'CIC'
         };
       }
@@ -855,7 +873,7 @@ const addMinor = () => {
             password: minor.password,
             confirmPassword: minor.confirmPassword,
             profile: minor.profile,
-            library: 'EPLMNA',
+            library: library.value,
             source: 'CIC'
           });
         }

@@ -884,14 +884,14 @@ const password = computed<string>({
         if (manualPassword.value) return manualPassword.value;
         if (!dateOfBirth?.value) return '';
 
-        if (profileType.value === 'Child') {
-            return dateOfBirth?.value?.getFullYear().toString();
-        }
+        // if (profileType.value === 'Child') {
+        //     return dateOfBirth?.value?.getFullYear().toString();
+        // }
 
-        const phone = phoneNumber.value ? phoneNumber.value.replace(/\D/g, '') : '';
-        if (phone.length >= 4) {
-            return phone.slice(-4);
-        }
+        // const phone = phoneNumber.value ? phoneNumber.value.replace(/\D/g, '') : '';
+        // if (phone.length >= 4) {
+        //     return phone.slice(-4);
+        // }
 
         return dateOfBirth?.value?.getFullYear().toString();
     },
