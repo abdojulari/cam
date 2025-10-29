@@ -25,14 +25,14 @@
           :complete="currentStep > 1"
           :value="1"
           title="Login"
-          subtitle="Authenticate with your library card"
+          subtitle="Authenticate as a Practitioner"
         ></v-stepper-item>
         <v-divider></v-divider>
         <v-stepper-item
           :complete="currentStep > 2"
           :value="2"
-          title="Adult Details"
-          subtitle="Personal information"
+          title="Practitioner Details"
+          subtitle="Practitioner information"
         ></v-stepper-item>
         <v-divider></v-divider>
         <v-stepper-item
@@ -49,14 +49,14 @@
             <v-card-text>
               <v-row>
                 <v-col cols="12" md="6">
-                  <img src="https://media.istockphoto.com/id/544351338/photo/storytime-at-nursery.jpg?s=612x612&w=0&k=20&c=g7K9wv5eh7wsbFq1mxX1X_es-m7oNsiJuQnpkImi1zY=" alt="Children in Care" class="img-fluid" />
+                  <img src="../public/images/children.png" alt="Children in Care" class="img-fluid" />
                 </v-col>
                 <v-col cols="12" md="6">
                   <LibraryCardAuth
                     v-model:barcode="cardNumber"
                     v-model:pin="password"
                     :rules="validationRules"
-                    title="Login to your EPL account"
+                    title="Login as a Practitioner"
                     success-message="Authentication successful!"
                     @authentication-success="handleSuccess"
                     @authentication-error="handleError"
@@ -393,7 +393,7 @@
         <v-spacer v-else></v-spacer>
         
         <v-btn
-          v-if="currentStep < 3"
+          v-if="currentStep < 3 && currentStep !== 1"
           color="primary"
           variant="flat"
           @click="goToNextStep"
