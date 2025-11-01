@@ -80,12 +80,36 @@
                     density="compact" />
             </v-col>
         </v-row>
-        
+        <v-row>
+            <v-col cols="12" sm="6" md="4">
+                <v-text-field 
+                    label="Password" 
+                    v-model="password" 
+                    variant="outlined" 
+                    hide-details="auto"
+                    density="compact" 
+                    :type="showPassword ? 'text' : 'password'"
+                    :rules="[v => !!v || 'Password is required']" 
+                />
+            </v-col>
+            <v-col cols="12" sm="6" md="4" class="d-flex align-center">
+                <v-checkbox v-model="showPassword" label="Show password" hide-details="auto" density="compact" />
+            </v-col>
+        </v-row>
          <!-- School -->
          <v-row v-if="profileType === 'Child'">
             <v-col cols="12" sm="6" md="4">
-                <v-combobox label="School" :items="schools" v-model="selectedSchool" item-title="text"
-                    item-value="value" variant="outlined" hide-details="auto" density="compact" />
+                <v-select 
+                    label="School" 
+                    :items="schools" 
+                    v-model="selectedSchool" 
+                    item-title="text"
+                    item-value="value"
+                    :return-object="false"
+                    variant="outlined" 
+                    hide-details="auto" 
+                    density="compact" 
+                />
             </v-col>
         </v-row>
         <!-- Library Card Barcode/Provide a digital card Number -->
@@ -127,23 +151,13 @@
             </v-col>
         </v-row>
         <ChildrenList 
-        v-if="profileType === 'Child' && minors.length > 0" 
-        :minors="minors" 
-        :deleteMinor="deleteMinor" 
-        
+            v-if="profileType === 'Child' && minors.length > 0" 
+            :minors="minors" 
+            :deleteMinor="deleteMinor" 
         />
         
         
-        <v-row>
-            <v-col cols="12" sm="6" md="4">
-                <v-text-field label="Password" v-model="password" variant="outlined" hide-details="auto"
-                    density="compact" :type="showPassword ? 'text' : 'password'"
-                    :rules="[v => !!v || 'Password is required']" />
-            </v-col>
-            <v-col cols="12" sm="6" md="4" class="d-flex align-center">
-                <v-checkbox v-model="showPassword" label="Show password" hide-details="auto" density="compact" />
-            </v-col>
-        </v-row>
+        
 
         <!-- Customer Contact Information -->
         <v-row class="mt-4">
@@ -487,6 +501,7 @@ const router = useRouter();
 const manualPassword = ref('');
 const showPassword = ref(false);
 const selectedIndigenousStatus = ref('');
+const isPasswordManuallyEdited = ref(false);
 
 // create a validation rules for the form
 const form = ref(null);
@@ -517,6 +532,7 @@ const addMinor = () => {
         library: selectedCustomer.value,
         emailAddress: emailAddress.value,
         phoneNumber: phoneNumber.value,
+        password: password.value,
     });
     // clear the fields when successfully added
     firstName.value = '';
@@ -529,6 +545,7 @@ const addMinor = () => {
     selectedSchool.value = null;
     emailAddress.value = '';
     phoneNumber.value = '';
+    password.value = '';
 }
 
 const deleteMinor = (id: number) => {
@@ -800,8 +817,8 @@ watch(selectedEmailConsent, (newValue, oldValue) => {
                     minor.province2 = typeof province2.value === 'string' ? province2.value : (province2.value && typeof province2.value === 'object' ? (province2.value as any).value : '');
                     minor.postalCode2 = postalCode2.value;
                     minor.emailAddress = emailAddress.value;
-                    minor.password = dateOfBirth.value.getFullYear().toString().slice(-2);
-                    minor.confirmPassword = dateOfBirth.value.getFullYear().toString().slice(-2);
+                    minor.password =  password.value; //dateOfBirth.value.getFullYear().toString().slice(-2);
+                    minor.confirmPassword = password.value; //dateOfBirth.value.getFullYear().toString().slice(-2);
                     minor.selectedEmailConsent = newValue;
                     minor.selectedIndigenousStatus = selectedIndigenousStatus.value;
                     minor.useSecondaryAddress = useSecondaryAddress.value;
@@ -881,21 +898,20 @@ const handleSubmit = async () => {
 
 const password = computed<string>({
     get() {
-        if (manualPassword.value) return manualPassword.value;
+        // If password has been manually edited, always return manualPassword (even if empty)
+        if (isPasswordManuallyEdited.value) {
+            return manualPassword.value;
+        }
+        // Otherwise, auto-populate from date of birth year
         if (!dateOfBirth?.value) return '';
-
-        // if (profileType.value === 'Child') {
-        //     return dateOfBirth?.value?.getFullYear().toString();
-        // }
-
-        // const phone = phoneNumber.value ? phoneNumber.value.replace(/\D/g, '') : '';
-        // if (phone.length >= 4) {
-        //     return phone.slice(-4);
-        // }
 
         return dateOfBirth?.value?.getFullYear().toString();
     },
     set(value: string) {
+        // Mark as manually edited when user types
+        if (value !== null && value !== undefined) {
+            isPasswordManuallyEdited.value = true;
+        }
         manualPassword.value = value || '';
     }
 });
@@ -952,8 +968,11 @@ watch([emailAddress, phoneNumber], ([newEmail, newPhone]) => {
 });
 
 // Reset manual password when inputs change so computed can re-derive
+// Only reset if password hasn't been manually edited
 watch([dateOfBirth, phoneNumber, profileType], () => {
-    manualPassword.value = '';
+    if (!isPasswordManuallyEdited.value) {
+        manualPassword.value = '';
+    }
 });
 
 const isGenerateBtnDisabled = computed(() => {

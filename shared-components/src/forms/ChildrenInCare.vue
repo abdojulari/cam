@@ -56,7 +56,7 @@
                     v-model:barcode="cardNumber"
                     v-model:pin="password"
                     :rules="validationRules"
-                    title="Login as a Practitioner"
+                    title="Log in to create EPL card"
                     success-message="Authentication successful!"
                     @authentication-success="handleSuccess"
                     @authentication-error="handleError"
@@ -71,7 +71,7 @@
         <v-stepper-window-item :value="2">
           <v-card flat>
             <v-card-title>
-              <h4>Details of Adult responsible for the child(ren)</h4>
+              <h4>Details of Practioner Responsible for the Child(ren)</h4>
               <span class="text-body-1 font-weight-light">Fields marked with an asterisk (*) are required</span>
             </v-card-title>
             <v-card-text>
@@ -189,7 +189,7 @@
               <v-row>
                 <v-col cols="12" md="6">
                   <v-select 
-                    label="Profile *"
+                    label="Borrowing Limit *"
                     :items="[
                       { value: 'EPL_JUV01', text: '1' }, 
                       { value: 'EPL_JUV05', text: '5' }, 
@@ -282,27 +282,17 @@
                     label="Password *"        
                     variant="outlined"
                     :rules="[rules.required, rules.password]"
-                    type="password"
+                    :type="showPassword ? 'text' : 'password'"
                     density="compact"
-                    hint="Password must be 6-20 characters long, no space or special characters allowed."
+                    hint="Password must be 4-20 characters long, no space or special characters allowed."
                     persistent-hint
-                    :minlength="6"
+                    :minlength="4"
                     :maxlength="20"
                   />
                 </v-col>
                 <v-col cols="12" md="6">
-                  <v-text-field
-                    v-model="confirmPassword"
-                    label="Confirm Password *"
-                    variant="outlined"
-                    :rules="[rules.required, rules.password, confirmPinRules]"
-                    type="password"
-                    hint="Password must be 6-20 characters long, no space or special characters allowed."
-                    persistent-hint
-                    density="compact"
-                    :minlength="6"
-                    :maxlength="20"   
-                  />
+                 
+                  <v-checkbox v-model="showPassword" label="Show password" hide-details="auto" density="compact" />
                 </v-col>   
                 <v-col cols="12" md="6">
                   <v-btn
@@ -524,7 +514,7 @@ const minorLastname = ref('');
 const minorMiddlename = ref('');
 const minorDateOfBirth = ref('');
 const library = ref('');
-
+const showPassword = ref(false);
 const rules = ref({
   required: (value: any) => !!value || 'This field is required',
   firstname: (value: string) => !value || /^[a-zA-Z\s\-\']+$/.test(value) || 'Invalid characters in first name',
@@ -534,7 +524,7 @@ const rules = ref({
   city: (value: any) => !!value || 'City is required',
   province: (value: any) => !!value || 'Province is required',
   postalCode: (value: string) => !value || /^[A-Za-z]\d[A-Za-z][ -]?\d[A-Za-z]\d$/.test(value) || 'Invalid postal code format',
-  password: (value: string) => !value || /^[a-zA-Z0-9]{6,20}$/.test(value) || 'Password must be 6-20 characters long, no space or special characters allowed'
+  password: (value: string) => !value || /^[a-zA-Z0-9]{4,20}$/.test(value) || 'Password must be 4-20 characters long, no space or special characters allowed'
 });
 
 // Use props.formData directly instead of creating a separate ref
@@ -596,8 +586,7 @@ watch(
     () => minorFirstname.value,
     () => minorLastname.value,
     () => minorDateOfBirth.value,
-    () => password.value,
-    () => confirmPassword.value
+    () => password.value
   ],
   () => {
     // Check if all required fields are valid
@@ -605,12 +594,9 @@ watch(
       const isLastNameValid = minorLastname.value && rules.value.lastname(minorLastname.value) === true;
     const isDateOfBirthValid = !!minorDateOfBirth.value;
     const isPasswordValid = password.value && rules.value.password(password.value) === true;
-    const isConfirmPasswordValid = confirmPassword.value && 
-      rules.value.password(confirmPassword.value) === true &&
-      confirmPassword.value === password.value;
 
     // Set isMinorInvalid to false only when all fields are valid
-    isMinorInvalid.value = !(isFirstNameValid && isLastNameValid && isDateOfBirthValid && isPasswordValid && isConfirmPasswordValid);
+    isMinorInvalid.value = !(isFirstNameValid && isLastNameValid && isDateOfBirthValid && isPasswordValid);
   },
   { immediate: true }
 );
@@ -636,9 +622,26 @@ const formattedDate = computed(() => {
 const isClicked = ref(false);
 const isReadonly = ref(true);
 const isMenuOpen = ref(false);
-const confirmPinRules = computed(() => {
-  return confirmPassword.value !== password.value ? 'Pins do not match' : true;
-});
+// const confirmPinRules = computed(() => {
+//   return confirmPassword.value !== password.value ? 'Pins do not match' : true;
+// });
+
+// Auto-fill child's password with birth year and mirror to confirmPassword
+watch(
+  () => minorDateOfBirth.value,
+  (newDob) => {
+    if (!newDob) return;
+    const year = new Date(newDob).getFullYear().toString();
+    password.value = year;
+  }
+);
+
+watch(
+  () => password.value,
+  (newPassword) => {
+    confirmPassword.value = newPassword || '';
+  }
+);
 
 // Validation for stepper navigation
 const canProceedToNextStep = computed(() => {
@@ -681,7 +684,7 @@ const addMinor = () => {
         middlename: minorMiddlename.value,
         dateOfBirth: dateFormat(minorDateOfBirth.value || ''),
         password: password.value,
-        confirmPassword: confirmPassword.value,
+        confirmPassword: password.value,
         address: address.value,
         city: city.value,
         province: province.value,
@@ -780,12 +783,7 @@ const addMinor = () => {
         validationErrors.push('Password must be 6-20 characters long, no space or special characters allowed');
       }
 
-      // Validate confirm password
-      if (!confirmPassword.value) {
-        validationErrors.push('Password confirmation is required');
-      } else if (confirmPassword.value !== password.value) {
-        validationErrors.push('Passwords do not match');
-      }
+      // No confirm password field; it mirrors the password automatically
 
       // Validate adult information (guardian)
       if (!firstname.value) {
@@ -943,4 +941,6 @@ const addMinor = () => {
     postalCode
   },
 });
+
+// Removed unused minorPassword computed; password is derived via watchers above
 </script>
