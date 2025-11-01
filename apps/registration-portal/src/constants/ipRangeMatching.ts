@@ -32,7 +32,7 @@ const ipRanges: IPRange[] = [
     { scopeId: '10.2.60.0', name: 'EPLMNA', status: 'Active', start: '10.2.60.10', end: '10.2.61.250', subnet: '255.255.254.0' },
     { scopeId: '10.2.62.0', name: 'EPLMNA', status: 'Active', start: '10.2.62.10', end: '10.2.63.250', subnet: '255.255.254.0' },
     
-  ];
+];
   
   /**
    * Converts an IP address string to a number for comparison

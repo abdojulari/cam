@@ -62,7 +62,7 @@
             </v-col>
             <v-col cols="12" sm="6" md="4">
                 <v-date-input label="Date of Birth" v-model="dateOfBirth"
-                    :max="profileType === 'Adult' ? maxChildDate : undefined"
+                    :max="profileType === 'Adult' ? maxAdultDate : maxChildDateWithToday"
                     :min="profileType === 'Child' ? minAdultDate : undefined" prepend-icon=""
                     prepend-inner-icon="$calendar" hide-details="auto" variant="outlined" density="compact"
                     :rules="[v => !!v || 'Date of Birth is required']" required />
@@ -142,7 +142,7 @@
             </v-col>
             <v-col cols="12" md="4">
                 <v-btn variant="flat" color="primary" text="Add another child" @click="addMinor" size="small"
-                    prepend-icon="mdi-plus-circle" class="w-100 ">
+                    prepend-icon="mdi-plus-circle" class="w-100 " :disabled="!isLibraryCardBarcodeValid">
                 </v-btn>
             </v-col>
             <v-col cols="12" md="4">
@@ -545,7 +545,10 @@ const addMinor = () => {
     selectedSchool.value = null;
     emailAddress.value = '';
     phoneNumber.value = '';
-    password.value = '';
+    // Reset password manual edit flag so password can auto-populate from dateOfBirth
+    // Don't set password.value = '' as it triggers the setter and marks as manually edited
+    isPasswordManuallyEdited.value = false;
+    manualPassword.value = '';
 }
 
 const deleteMinor = (id: number) => {
@@ -565,6 +568,7 @@ const resetMinorForm = () => {
         selectedSchool.value = lastMinor.selectedSchool;
         emailAddress.value = lastMinor.emailAddress;
         phoneNumber.value = lastMinor.phoneNumber;
+        password.value = lastMinor.password;
         deleteMinor(lastMinor.id);
     }
 }
@@ -608,6 +612,19 @@ const maxChildDate = computed(() => {
     // Max date for child: must be less than 18 years old (so up to 17 years, 364 days)
     today.setFullYear(today.getFullYear() - 18);
     today.setDate(today.getDate() + 1); // allow up to the day before 18th birthday
+    return today.toISOString().split('T')[0];
+});
+
+const maxChildDateWithToday = computed(() => {
+    const today = new Date();
+    // For child: maximum date is today (prevent future dates)
+    // The min constraint already ensures they are less than 18 years old
+    return today.toISOString().split('T')[0];
+});
+
+const maxAdultDate = computed(() => {
+    const today = new Date();
+    // Max date for adult: today (prevent future dates)
     return today.toISOString().split('T')[0];
 });
 
@@ -817,8 +834,8 @@ watch(selectedEmailConsent, (newValue, oldValue) => {
                     minor.province2 = typeof province2.value === 'string' ? province2.value : (province2.value && typeof province2.value === 'object' ? (province2.value as any).value : '');
                     minor.postalCode2 = postalCode2.value;
                     minor.emailAddress = emailAddress.value;
-                    minor.password =  password.value; //dateOfBirth.value.getFullYear().toString().slice(-2);
-                    minor.confirmPassword = password.value; //dateOfBirth.value.getFullYear().toString().slice(-2);
+                   // minor.password =  password.value; //dateOfBirth.value.getFullYear().toString().slice(-2);
+                    // minor.confirmPassword = password.value; //dateOfBirth.value.getFullYear().toString().slice(-2);
                     minor.selectedEmailConsent = newValue;
                     minor.selectedIndigenousStatus = selectedIndigenousStatus.value;
                     minor.useSecondaryAddress = useSecondaryAddress.value;
@@ -969,14 +986,34 @@ watch([emailAddress, phoneNumber], ([newEmail, newPhone]) => {
 
 // Reset manual password when inputs change so computed can re-derive
 // Only reset if password hasn't been manually edited
-watch([dateOfBirth, phoneNumber, profileType], () => {
+watch([phoneNumber, profileType], () => {
     if (!isPasswordManuallyEdited.value) {
         manualPassword.value = '';
     }
 });
 
+// Watch dateOfBirth specifically to ensure password auto-populates for Child profiles
+// This is needed to ensure reactivity when dateOfBirth is entered after "Add another child"
+watch(dateOfBirth, (newDateOfBirth, oldDateOfBirth) => {
+    // Only auto-populate for Child profiles when password hasn't been manually edited
+    if (profileType.value === 'Child' && !isPasswordManuallyEdited.value) {
+        if (newDateOfBirth) {
+            // Ensure manualPassword is cleared so computed property uses dateOfBirth
+            // The computed property will automatically return the year from dateOfBirth
+            manualPassword.value = '';
+        } else if (!newDateOfBirth) {
+            // Clear password when dateOfBirth is cleared
+            manualPassword.value = '';
+        }
+    }
+}, { immediate: true });
+
 const isGenerateBtnDisabled = computed(() => {
     return libraryCardBarcode.value !== '' && libraryCardBarcode.value.length === 14;
+});
+
+const isLibraryCardBarcodeValid = computed(() => {
+    return libraryCardBarcode.value && libraryCardBarcode.value.length === 14;
 });
 
 const onPostalCodeInput = (event: any) => {

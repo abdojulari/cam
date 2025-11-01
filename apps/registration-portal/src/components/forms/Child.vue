@@ -21,7 +21,7 @@ const onSubmit = async (payload: any) => {
           const response = await apiService.postUserData(minor);
           try {
             if (response?.message === "Record added successfully.") {
-              console.log('Child form submitted successfully', response);
+              console.log('Minor form submitted successfully', response);
               userRegistration.setSuccessResponse({
                 name: response?.data?.firstName + ' ' + response?.data?.lastName,
                 barcode: response?.data?.barcode,
