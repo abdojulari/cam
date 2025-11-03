@@ -61,11 +61,20 @@
                     density="compact" :rules="[v => !!v || 'Last Name is required']" required />
             </v-col>
             <v-col cols="12" sm="6" md="4">
-                <v-date-input label="Date of Birth" v-model="dateOfBirth"
-                    :max="profileType === 'Adult' ? maxAdultDate : maxChildDateWithToday"
-                    :min="profileType === 'Child' ? minAdultDate : undefined" prepend-icon=""
-                    prepend-inner-icon="$calendar" hide-details="auto" variant="outlined" density="compact"
-                    :rules="[v => !!v || 'Date of Birth is required']" required />
+                <v-date-input
+                    label="Date of Birth"
+                    v-model="dateOfBirth"
+                    :max="profileType === 'Adult' ? maxChildDate : new Date().toISOString().split('T')[0]"
+                    :min="profileType === 'Child' ? minAdultDate : undefined"
+                    prepend-icon=""
+                    prepend-inner-icon="$calendar"
+                    hide-details="auto"
+                    variant="outlined"
+                    density="compact"
+                    :rules="[v => !!v || 'Date of Birth is required']"
+                    required
+                />
+
             </v-col>
         </v-row>
 
@@ -607,35 +616,33 @@ watch(indigenousStatus, (newValue, oldValue) => {
   }
 });
 
+
 const maxChildDate = computed(() => {
-    const today = new Date();
-    // Max date for child: must be less than 18 years old (so up to 17 years, 364 days)
-    today.setFullYear(today.getFullYear() - 18);
-    today.setDate(today.getDate() + 1); // allow up to the day before 18th birthday
-    return today.toISOString().split('T')[0];
+  const today = new Date();
+
+  // Calculate the latest date for a child (under 18)
+  const maxUnder18 = new Date();
+  maxUnder18.setFullYear(maxUnder18.getFullYear() - 18 );
+  maxUnder18.setDate(maxUnder18.getDate() + 1); // allow up to day before 18th birthday
+
+  // Choose whichever is earlier: today (no future births) or the under-18 limit
+  const maxDate = maxUnder18 < today ? maxUnder18 : today;
+  console.log('maxDate', maxDate);
+  return maxDate.toISOString().split('T')[0];
 });
 
-const maxChildDateWithToday = computed(() => {
-    const today = new Date();
-    // For child: maximum date is today (prevent future dates)
-    // The min constraint already ensures they are less than 18 years old
-    return today.toISOString().split('T')[0];
-});
 
-const maxAdultDate = computed(() => {
-    const today = new Date();
-    // Max date for adult: today (prevent future dates)
-    return today.toISOString().split('T')[0];
-});
-
-const minAdultDate = computed(() => {
-    const today = new Date();
+const minAdultDate = computed(() => { 
     // Min date for adult: must be at least 18 years old
-    today.setFullYear(today.getFullYear() - 18);
-    return today.toISOString().split('T')[0];
+    const minDate = new Date();
+    const minUnder18 = new Date();
+    minUnder18.setFullYear(minUnder18.getFullYear() - 18);
+    // Choose whichever is earlier: today (no future births) or the under-18 limit
+    const newDate = minDate < minUnder18 ? minDate : minUnder18;
+  
+    return newDate.toISOString().split('T')[0];
 });
 
-// Add computed property for barcode error
 const barcodeLengthError = computed(
     () => barcode.value !== '' && barcode.value.length > 0 && barcode.value.length < 14
 );
