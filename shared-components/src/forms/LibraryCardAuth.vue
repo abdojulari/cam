@@ -77,6 +77,8 @@ interface Props {
   disabled?: boolean;
   minAge?: number; // Minimum age requirement for guardian
   allowedProfiles?: string[]; // Allowed library profiles
+  source?: string;
+  allowedBarcodes?: string[];
 }
 
 interface Emits {
@@ -96,6 +98,8 @@ const props = withDefaults(defineProps<Props>(), {
   showAlert: false,
   disabled: false,
   minAge: 18,
+  source: '',
+  allowedBarcodes: () => [],
   allowedProfiles: () => [
     'EPL_ADULT', 
     'EPL_ACCESS', 
@@ -107,7 +111,8 @@ const props = withDefaults(defineProps<Props>(), {
     'EPL_ONLIN',
     'EPL_SELF',
     'EPL_VISITR',
-    'EPL_TRESID'
+    'EPL_TRESID',
+    'EPL_ERCS'
   ] // Default allowed profiles
 });
 
@@ -177,11 +182,23 @@ const handleAuthentication = async () => {
   
 
   try {
+    const barcode = typeof localBarcode.value === 'string'  
+    && props.source === 'CIC' 
+    ? localBarcode.value.toUpperCase().trim() 
+    : localBarcode.value.trim();
     // Prepare request body
     const body = {
-      barcode: localBarcode.value,
+      barcode: barcode,
       password: localPin.value,
     };
+
+    // check if the source is CIC and if the barcode is in the allowedBarcodes array
+    if (props.source === 'CIC' && !props.allowedBarcodes.includes(barcode)) {
+      errorMessage.value = 'This library card number is not eligible to be a practitioner!';
+      loading.value = false;
+      emit('authentication-error', errorMessage.value);
+      return;
+    }
 
     // Authenticate the user
     const data = await apiService.authenticate(body);

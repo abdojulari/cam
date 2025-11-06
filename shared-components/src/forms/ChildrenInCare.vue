@@ -53,6 +53,8 @@
                 </v-col>
                 <v-col cols="12" md="6">
                   <LibraryCardAuth
+                    source="CIC"
+                    :allowedBarcodes="allowedBarcodes"
                     v-model:barcode="cardNumber"
                     v-model:pin="password"
                     :rules="validationRules"
@@ -457,38 +459,7 @@ const closeErrorDialog = async () => {
     })
 };
 let minorId = 0;
-// const props = defineProps({
-//   formData: {
-//     type: Object,
-//     default: () => ({
-//       firstname: '',
-//       lastname: '',
-//       email: '',
-//       phone: '',
-//       minorFirstname: '',
-//       minorLastname: '',
-//       minorMiddlename: '',
-//       minorDateOfBirth: '',
-//       minorPassword: '',
-//       minorConfirmPassword: '',
-//     })
-//   },
-//   rules: {
-//     type: Object,
-//     default: () => ({
-//       required: (value: any) => !!value || 'This field is required',
-//       firstname: (value: string) => !value || /^[a-zA-Z\s\-\']+$/.test(value) || 'Invalid characters in first name',
-//       lastname: (value: string) => !value || /^[a-zA-Z\s\-\']+$/.test(value) || 'Invalid characters in last name',
-//       email: (value: string) => !value || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value) || 'Invalid email format',
-//       phone: (value: string) => !value || /^\d{3}-\d{3}-\d{4}$/.test(value) || 'Phone number must be in format XXX-XXX-XXXX',
-//       alphanumericRule: (value: string) => !value || /^[a-zA-Z0-9\s\-\'\/#]*$/.test(value) || 'Invalid characters',
-//       city: (value: any) => !!value || 'City is required',
-//       province: (value: any) => !!value || 'Province is required',
-//       postalCode: (value: string) => !value || /^[A-Za-z]\d[A-Za-z][ -]?\d[A-Za-z]\d$/.test(value) || 'Invalid postal code format',
-//       password: (value: string) => !value || /^[a-zA-Z0-9]{6,20}$/.test(value) || 'Password must be 6-20 characters long, no space or special characters allowed'
-//     })
-//   }
-// });
+
 const router = useRouter();
 const cardNumber = ref('');
 const password = ref('');
@@ -535,7 +506,7 @@ const handleSuccess = (data: any) => {
     loggedIn.value = false;
     return;
   }
-  
+  console.log("Check the Data" ,data);
   loggedIn.value = true;
   currentStep.value = 2; // Automatically advance to step 2 after successful login
   
@@ -622,9 +593,7 @@ const formattedDate = computed(() => {
 const isClicked = ref(false);
 const isReadonly = ref(true);
 const isMenuOpen = ref(false);
-// const confirmPinRules = computed(() => {
-//   return confirmPassword.value !== password.value ? 'Pins do not match' : true;
-// });
+
 
 // Auto-fill child's password with birth year and mirror to confirmPassword
 watch(
@@ -643,37 +612,37 @@ watch(
   }
 );
 
-// Validation for stepper navigation
-const canProceedToNextStep = computed(() => {
-  console.log('Validating step:', currentStep.value);
-  
-  switch (currentStep.value) {
-    case 1:
-      const step1Valid = loggedIn.value;
-      console.log('Step 1 - loggedIn:', loggedIn.value, 'valid:', step1Valid);
-      return step1Valid;
-    case 2:
-      // Check if all required fields are filled
-      const step2Valid = !!(
-        firstname.value && 
-        lastname.value && 
-        email.value && 
-        phone.value && 
-        address.value && 
-        city.value && 
-        province.value && 
-        postalCode.value
-      );
-      
-      return step2Valid;
-    case 3:
-      return true;
-    default:
-      console.log('Default case - not valid');
-      return false;
-  }
-});
-const addMinor = () => {
+  // Validation for stepper navigation
+  const canProceedToNextStep = computed(() => {
+    console.log('Validating step:', currentStep.value);
+    
+    switch (currentStep.value) {
+      case 1:
+        const step1Valid = loggedIn.value;
+        console.log('Step 1 - loggedIn:', loggedIn.value, 'valid:', step1Valid);
+        return step1Valid;
+      case 2:
+        // Check if all required fields are filled
+        const step2Valid = !!(
+          firstname.value && 
+          lastname.value && 
+          email.value && 
+          phone.value && 
+          address.value && 
+          city.value && 
+          province.value && 
+          postalCode.value
+        );
+        
+        return step2Valid;
+      case 3:
+        return true;
+      default:
+        console.log('Default case - not valid');
+        return false;
+    }
+  });
+  const addMinor = () => {
       if (isMinorInvalid.value) {
           return;
       }
@@ -707,12 +676,13 @@ const addMinor = () => {
       minorsContact.value = false;
       isClicked.value = false;
   };
+
  // Delete minor from the list
  const deleteMinor = (id: any) => {
     minors.value = minors.value.filter(minor => minor.id !== id);
   };
   const resetMinorForm = () => {
-      // Check if minors array is not empty
+    // Check if minors array is not empty
     isReadonly.value = false;
     if (minors.value.length > 0) {
       // Get the last minor record
@@ -924,6 +894,7 @@ const addMinor = () => {
       loader.value = false;
     }
   };
+
   const { 
     suggestions: primaryAddressSuggestions, 
     loading: primaryAddressLoading, 
@@ -941,6 +912,29 @@ const addMinor = () => {
     postalCode
   },
 });
-
+const allowedBarcodes = ref([
+  "21221020520463",
+  "21221024596097",
+  "YYC-EMERALDHOUSE",
+  "YYC-WATERTON",
+  "YYC-PYRAMID",
+  "MCMAN-STRATHEARN",
+  "CHIMO-2",
+  "CHIMO-7",
+  "CHIMO-8",
+  "CHIMO-10",
+  "CHIMO-11",
+  "KATERI",
+  "YESS_SP",
+  "GORETTI",
+  "ANGELUS",
+  "HOPEHOUSE",
+  "PROSPERITY",
+  "FAITHHOUSE",
+  "ASPEN",
+  "CONNECT",
+  "CASPIAN",
+  "FALABELLA"
+]);
 // Removed unused minorPassword computed; password is derived via watchers above
 </script>
