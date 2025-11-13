@@ -1,115 +1,135 @@
 export const homeBranch = [
     {
         id: 1,
-        name: 'EPLMLW',
-        value: 'EPLMLW'
+        name: 'Abbottsfield - Penny McKee',
+        value: 'EPLABB',
+        link:'https://staffweb.epl.ca/groups/branches/abb'
     },
     {
         id: 2,
-        name: 'EPLCPL',
-        value: 'EPLCPL'
+        name: 'Calder',
+        value: 'EPLCAL',
+        link:'https://staffweb.epl.ca/groups/branches/cal'
     },
     {
         id: 3,
-        name: 'EPLCSD',
-        value: 'EPLCSD'
+        name: 'Capilano',
+        value: 'EPLCPL',
+        link:'https://staffweb.epl.ca/groups/branches/cap'
     },
     {
         id: 4,
-        name: 'EPLCLV',
-        value: 'EPLCLV'
+        name: 'Castle Downs',
+        value: 'EPLCSD',
+        link:'https://staffweb.epl.ca/groups/branches/csd'
     },
     {
         id: 5,
-        name: 'EPLHIG',
-        value: 'EPLHIG'
+        name: 'Clareview',
+        value: 'EPLCLV',
+        link:'https://staffweb.epl.ca/groups/branches/clv'
     },
     {
         id: 6,
-        name: 'EPLJPL',
-        value: 'EPLJPL'
+        name: 'Heritage Valley',
+        value: 'EPLHVY',
+        link:'https://staffweb.epl.ca/groups/branches/hvy'
     },
     {
         id: 7,
-        name: 'EPLMEA',
-        value: 'EPLMEA'
+        name: 'Highlands',
+        value: 'EPLHIG',
+        link:'https://staffweb.epl.ca/groups/branches/hig'
     },
     {
         id: 8,
-        name: 'EPLABB',
-        value: 'EPLABB'
+        name: 'Idylwylde (Bonnie Doon)',
+        value: 'EPLIDY',
+        link:'https://staffweb.epl.ca/groups/branches/idy'
     },
     {
         id: 9,
-        name: 'EPLWHP',
-        value: 'EPLWHP'
+        name: 'Jasper Place',
+        value: 'EPLJPL',
+        link:'https://staffweb.epl.ca/groups/branches/jpl'
     },
     {
         id: 10,
-        name: 'EPLRIV',
-        value: 'EPLRIV'
+        name: 'Lois Hole (Callingwood)',
+        value: 'EPLLHL',
+        link:'https://staffweb.epl.ca/groups/branches/lhl'
     },
     {
         id: 11,
-        name: 'EPLSTR',
-        value: 'EPLSTR'
+        name: 'Londonderry',
+        value: 'EPLLON',
+        link:'https://staffweb.epl.ca/groups/branches/lon'
     },
     {
         id: 12,
-        name: 'EPLSPW',
-        value: 'EPLSPW'
+        name: 'McConachie',
+        value: 'EPLMCN',
+        link:'https://staffweb.epl.ca/groups/branches/mcn'
     },
     {
         id: 13,
-        name: 'EPLWMC',
-        value: 'EPLWMC'
+        name: 'Meadows',
+        value: 'EPLMEA',
+        link:'https://staffweb.epl.ca/groups/branches/mea'
     },
     {
         id: 14,
-        name: 'EPLWOO',
-        value: 'EPLWOO'
+        name: 'Mill Woods',
+        value: 'EPLMLW',
+        link:'https://staffweb.epl.ca/groups/branches/mlw'
     },
     {
         id: 15,
-        name: 'EPLLHL',
-        value: 'EPLLHL'
+        name: 'Riverbend',
+        value: 'EPLRIV',
+        link:'https://staffweb.epl.ca/groups/branches/riv'
     },
     {
         id: 16,
-        name: 'EPLIDY',
-        value: 'EPLIDY'
+        name: 'Shelley Milner Children\'s Library',
+        value: 'EPLMNJ',
+        link:'https://staffweb.epl.ca/groups/branches/mnj'
     },
     {
         id: 17,
-        name: 'EPLMCN',
-        value: 'EPLMCN'
+        name: 'Sprucewood',
+        value: 'EPLSPW',
+        link:'https://staffweb.epl.ca/groups/branches/spw'
     },
     {
         id: 18,
-        name: 'VPN_EPL-Corp',
-        value: 'VPN_EPL-Corp'
+        name: 'Stanley A. Milner Library',
+        value: 'EPLMNA',
+        link:'https://staffweb.epl.ca/groups/branches/mna'
     },
     {
         id: 19,
-        name: 'EPLLON',
-        value: 'EPLLON'
+        name: 'Strathcona',
+        value: 'EPLSTR',
+        link:'https://staffweb.epl.ca/groups/branches/str'
     },
     {
         id: 20,
-        name: 'EPLCAL',
-        value: 'EPLCAL'
+        name: 'West Henday Promenade (Lewis Estates)',
+        value: 'EPLWHP',
+        link:'https://staffweb.epl.ca/groups/branches/whp'
     },
     {
         id: 21,
-        name: 'EPLHVY',
-        value: 'EPLHVY'
+        name: 'Whitemud Crossing',
+        value: 'EPLWMC',
+        link:'https://staffweb.epl.ca/groups/branches/wmc'
     },
     {
         id: 22,
-        name: 'EPLMNA',
-        value: 'EPLMNA'
+        name: 'Woodcroft (Westmount)',
+        value: 'EPLWOO',
+        link:'https://staffweb.epl.ca/groups/branches/woo'
     }
-
-    
 ]
 

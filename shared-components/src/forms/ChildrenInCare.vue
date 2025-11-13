@@ -281,12 +281,12 @@
                 <v-col cols="12" md="6">
                   <v-text-field
                     v-model="password"
-                    label="Password *"        
+                    label="Pin *"        
                     variant="outlined"
                     :rules="[rules.required, rules.password]"
                     :type="showPassword ? 'text' : 'password'"
                     density="compact"
-                    hint="Password must be 4-20 characters long, no space or special characters allowed."
+                    hint="Pin must be 4-20 characters long, no space or special characters allowed."
                     persistent-hint
                     :minlength="4"
                     :maxlength="20"
@@ -294,7 +294,7 @@
                 </v-col>
                 <v-col cols="12" md="6">
                  
-                  <v-checkbox v-model="showPassword" label="Show password" hide-details="auto" density="compact" />
+                  <v-checkbox v-model="showPassword" label="Show Pin" hide-details="auto" density="compact" />
                 </v-col>   
                 <v-col cols="12" md="6">
                   <v-btn
@@ -447,6 +447,8 @@ interface Minor {
     careof: string;
     profile: string;
     library: string;
+    homeBranchName: string;
+    homeBranchLink: string;
 }
 const showErrorDialog = ref(false);
 const showSystemErrorDialog = ref(false);
@@ -486,6 +488,8 @@ const minorMiddlename = ref('');
 const minorDateOfBirth = ref('');
 const library = ref('');
 const showPassword = ref(false);
+const homeBranchLink = ref('');
+const homeBranchName = ref('');
 const rules = ref({
   required: (value: any) => !!value || 'This field is required',
   firstname: (value: string) => !value || /^[a-zA-Z\s\-\']+$/.test(value) || 'Invalid characters in first name',
@@ -612,6 +616,23 @@ watch(
   }
 );
 
+// Watch for library selection to populate homeBranchName and homeBranchLink
+watch(
+  () => library.value,
+  (selectedValue) => {
+    if (selectedValue) {
+      const selectedBranch = homeBranch.find(branch => branch.value === selectedValue);
+      if (selectedBranch) {
+        homeBranchName.value = selectedBranch.name;
+        homeBranchLink.value = selectedBranch.link;
+      }
+    } else {
+      homeBranchName.value = '';
+      homeBranchLink.value = '';
+    }
+  }
+);
+
   // Validation for stepper navigation
   const canProceedToNextStep = computed(() => {
     console.log('Validating step:', currentStep.value);
@@ -663,6 +684,8 @@ watch(
         careof: firstname.value + ' ' + lastname.value,
         profile: profile.value,
         library: library.value,
+        homeBranchName: homeBranchName.value,
+        homeBranchLink: homeBranchLink.value,
       });
 
       userRegistration.setAdditionalMinor(true);
@@ -673,6 +696,9 @@ watch(
       minorDateOfBirth.value = '';
       password.value = '';
       confirmPassword.value = '';
+      homeBranchName.value = '';
+      homeBranchLink.value = '';
+      library.value = '';
       minorsContact.value = false;
       isClicked.value = false;
   };
@@ -695,7 +721,9 @@ watch(
       minorDateOfBirth.value = new Date(lastMinor.dateOfBirth).toISOString().split('T')[0];
       password.value = lastMinor.password;
       confirmPassword.value = lastMinor.confirmPassword;
-
+      homeBranchName.value = lastMinor.homeBranchName;
+      homeBranchLink.value = lastMinor.homeBranchLink;
+      library.value = lastMinor.library;
       // Delete the last minor from the list
       deleteMinor(lastMinor.id);
       isReadonly.value = true;
@@ -817,6 +845,8 @@ watch(
           confirmPassword: confirmPassword.value,
           profile: profile.value,
           library: library.value,
+          homeBranchName: homeBranchName.value,
+          homeBranchLink: homeBranchLink.value,
           source: 'CIC'
         };
       }
@@ -841,7 +871,9 @@ watch(
             password: minor.password,
             confirmPassword: minor.confirmPassword,
             profile: minor.profile,
-            library: library.value,
+            library: minor.library,
+            homeBranchName: minor.homeBranchName,
+            homeBranchLink: minor.homeBranchLink,
             source: 'CIC'
           });
         }

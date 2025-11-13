@@ -195,6 +195,8 @@ export const apiService = {
               postalcode2: payload?.postalCode2,  
               barcode: payload?.libraryCardBarcode,
               category1: payload?.selectedIndigenousStatus,
+              homebranch: payload?.homeBranchName,
+              homebranchlink: payload?.homeBranchLink,
               source: payload?.source || 'CRP'
           }),
           credentials: 'include',
