@@ -838,8 +838,8 @@ watch(
           city: city.value,
           province: province.value,
           postalCode: postalCode.value,
-          email: email.value,
-          phone: phone.value,
+          emailAddress: email.value,
+          phoneNumber: phone.value,
           careOf: firstname.value + ' ' + lastname.value,
           password: password.value,
           confirmPassword: confirmPassword.value,
@@ -865,8 +865,8 @@ watch(
             city: minor.city,
             province: minor.province,
             postalCode: minor.postalCode,
-            email: minor.email,
-            phone: minor.phone,
+            emailAddress: minor.email,
+            phoneNumber: minor.phone,
             careOf: minor.careof,
             password: minor.password,
             confirmPassword: minor.confirmPassword,
@@ -887,6 +887,7 @@ watch(
       // Submit all children
       const successfulSubmissions = [];
       for (const submission of allSubmissions) {
+        console.log('submission for children in care: ', submission);
         const response = await apiService.postUserData(submission);
         
         if (response?.message === "Record added successfully.") {

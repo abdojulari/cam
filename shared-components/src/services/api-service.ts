@@ -159,7 +159,7 @@ export const apiService = {
       try {
         const access_token = getCookie('access_token');
         const formattedDateOfBirth = dateFormat(payload.dateOfBirth);
-        console.log('payload: ', payload);
+       
         const response = await fetch('/api/registration', {
             method: 'POST',
             headers: {
@@ -188,22 +188,19 @@ export const apiService = {
               preferredname: payload?.preferredName,
               usepreferredname: payload?.usePreferredName,
               emailconsent: payload?.selectedEmailConsent,
-              // indigenousstatus: payload?.selectedIndigenousStatus,
               address2: payload?.address2,
               city2: payload?.city2,
               province2: payload?.province2,
               postalcode2: payload?.postalCode2,  
               barcode: payload?.libraryCardBarcode,
               category1: payload?.selectedIndigenousStatus,
-              homebranch: payload?.homeBranchName,
-              homebranchlink: payload?.homeBranchLink,
+              homeBranchName: payload?.homeBranchName,
+              homeBranchLink: payload?.homeBranchLink,
               source: payload?.source || 'CRP'
           }),
           credentials: 'include',
         });
-        // if (!response.ok) {
-        //     throw new Error(`HTTP error! status: ${response.status}`);
-        // }
+      
         const data = await response.json();
         console.log('data: ', data);
         if (data?.conflict && data?.status === 409) {
