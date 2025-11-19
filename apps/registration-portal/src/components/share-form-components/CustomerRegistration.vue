@@ -1,10 +1,21 @@
 <template>
-    <v-overlay :model-value="isLoading" class="d-flex align-center justify-center" persistent>
+    <v-overlay 
+        :model-value="isLoading" 
+        class="d-flex align-center justify-center" 
+        persistent
+    >
         <v-progress-circular color="primary" indeterminate size="48" width="4" />
     </v-overlay>
     <!-- Duplicate found-->
-    <DuplicateAlert :dialog="dialog" @update:dialog="(val: boolean) => dialog = val"
-        :duplicateRecord="duplicateRecord" />
+    <DuplicateAlert 
+        :dialog="dialog" 
+        @update:dialog="(val: boolean) => dialog = val"
+        :duplicateRecord="duplicateRecord" 
+    />
+    <NoDuplicateAlert
+        :dialog="showNoDuplicateDialog"
+        @update:dialog="(val: boolean) => showNoDuplicateDialog = val"
+    />
     <div v-if="!isClient">
         <v-skeleton-loader type="card" class="mt-20 mx-5 rounded-lg" />
     </div>
@@ -24,8 +35,17 @@
                     :rules="[v => !!v || 'Profile is required']" required />
             </v-col>
             <v-col cols="12" sm="6" md="4">
-                <v-combobox label="Home Branch" :items="uniqueCustomers" v-model="selectedCustomer" variant="outlined"
-                    hide-details="auto" density="compact" :rules="[v => !!v || 'Home Branch is required']" required />
+                <v-combobox label="Home Branch" 
+                    :items="uniqueCustomers" 
+                    v-model="selectedCustomer" 
+                    item-title="title"
+                    item-value="value"
+                    :return-object="false"
+                    variant="outlined"
+                    hide-details="auto" 
+                    density="compact" :rules="[v => !!v || 'Home Branch is required']" 
+                    required 
+                />
             </v-col>
         </v-row>
         <!-- Customer Information -->
@@ -184,8 +204,17 @@
                     :error-messages="barcodeLengthError ? 'Barcode must be 14 characters' : ''" />
             </v-col>
             <v-col cols="12" sm="6" md="4">
-                <v-text-field label="Care/Of" v-model="careOf" append-inner-icon="mdi-account-supervisor"
-                    variant="outlined" hide-details="auto" density="compact" />
+                <v-text-field 
+                    label="Care/Of" 
+                    v-model="careOf" 
+                    append-inner-icon="mdi-account-supervisor"
+                    variant="outlined" 
+                    hide-details="auto" 
+                    density="compact" 
+                    :rules="[v => !!v || 'Care/Of is required']"
+                    required
+                    @update:model-value="careOf = $event.toUpperCase()"
+                />
             </v-col>
         </v-row>
         <!-- To display error if barcode is not found-->
@@ -413,6 +442,7 @@ import {
     watch
 } from 'vue';
 import DuplicateAlert from '../notification/DuplicateAlert.vue';
+import NoDuplicateAlert from '../notification/NoDuplicateAlert.vue';
 import { apiService } from '@cam/shared-components/services/api-service';
 import ChildrenList from '../notification/ChildrenList.vue';
 import { useRouter } from 'vue-router';
@@ -511,6 +541,11 @@ const manualPassword = ref('');
 const showPassword = ref(false);
 const selectedIndigenousStatus = ref('');
 const isPasswordManuallyEdited = ref(false);
+const showNoDuplicateDialog = ref(false);
+
+const updateNoDuplicateDialog = (val: boolean) => {
+    showNoDuplicateDialog.value = val;
+};
 
 // create a validation rules for the form
 const form = ref(null);
@@ -648,7 +683,15 @@ const barcodeLengthError = computed(
 );
 
 const uniqueCustomers = computed(() => {
-    return [...new Set(customers.value)];
+    const unique = [...new Set(customers.value)];
+    return unique.map(customer => {
+        // Remove "EPL" prefix for display, but keep full value
+        const displayName = customer.startsWith('EPL') ? customer.substring(3) : customer;
+        return {
+            title: displayName,
+            value: customer
+        };
+    });
 });
 
 const handleAsyncWatch = async (
@@ -684,6 +727,11 @@ const handleAsyncWatch = async (
         : [];
         dialog.value = true;
     }
+    else {
+        console.log('No duplicate found');
+        showNoDuplicateDialog.value = true;
+        
+    }
 }
 
     // --- Barcode logic ---
@@ -710,7 +758,7 @@ const handleAsyncWatch = async (
             if (age < 18) { 
                 return;
             } else {
-                careOf.value = item.firstname + ' ' + item.lastname || '';
+                careOf.value = (item.firstname + ' ' + item.lastname || '').toUpperCase();
                 address.value = item.address || '';
                 address2.value = item.address2 || '';
                 city.value = item.city || '';
@@ -808,7 +856,7 @@ watch(
             console.log('Network Name:', newNetworkName);
 
             // Pre-select the branch if it exists in the list
-            if (uniqueCustomers.value.includes(newNetworkName)) {
+            if (uniqueCustomers.value.some(customer => customer.value === newNetworkName)) {
                 selectedCustomer.value = newNetworkName;
             }
         }
