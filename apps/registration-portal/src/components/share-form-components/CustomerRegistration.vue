@@ -543,9 +543,6 @@ const selectedIndigenousStatus = ref('');
 const isPasswordManuallyEdited = ref(false);
 const showNoDuplicateDialog = ref(false);
 
-const updateNoDuplicateDialog = (val: boolean) => {
-    showNoDuplicateDialog.value = val;
-};
 
 // create a validation rules for the form
 const form = ref(null);
@@ -721,10 +718,15 @@ const handleAsyncWatch = async (
     // @ts-ignore
     if (response?.match) {
         // @ts-ignore
-        duplicateRecord.value = response.matched_record
-        // @ts-ignore
-        ? [response.matched_record]
-        : [];
+        if (response.matched_records && Array.isArray(response.matched_records)) {
+            duplicateRecord.value = [];
+            // @ts-ignore
+            response.matched_records.forEach((record: any) => {
+                duplicateRecord.value.push(record);
+            });
+        } else {
+            duplicateRecord.value = [];
+        }
         dialog.value = true;
     }
     else {
