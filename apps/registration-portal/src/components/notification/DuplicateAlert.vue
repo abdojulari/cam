@@ -116,6 +116,7 @@
       { key: 'barcode', title: 'Barcode' },
       { key: 'fullname', title: 'Full Name' },
       { key: 'dateofbirth', title: 'DOB' },
+      { key: 'careof', title: 'Care/Of' },
       { key: 'email', title: 'Email' },
       { key: 'phone', title: 'Phone Number' },
       { key: 'address', title: 'Address' },

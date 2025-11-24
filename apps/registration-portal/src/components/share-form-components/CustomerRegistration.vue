@@ -213,7 +213,6 @@
                     density="compact" 
                     :rules="[v => !!v || 'Care/Of is required']"
                     required
-                    @update:model-value="careOf = $event.toUpperCase()"
                 />
             </v-col>
         </v-row>
@@ -648,6 +647,13 @@ watch(indigenousStatus, (newValue, oldValue) => {
   }
 });
 
+// create watch for careOf to convert to uppercase
+watch(careOf, (newValue) => {
+  if (newValue && typeof newValue === 'string' && newValue !== newValue.toUpperCase()) {
+    careOf.value = newValue.toUpperCase();
+  }
+});
+
 
 const maxChildDate = computed(() => {
   const today = new Date();
@@ -760,7 +766,7 @@ const handleAsyncWatch = async (
             if (age < 18) { 
                 return;
             } else {
-                careOf.value = (item.firstname + ' ' + item.lastname || '').toUpperCase();
+                careOf.value = ((item.firstname || '') + ' ' + (item.lastname || '')).trim().toUpperCase();
                 address.value = item.address || '';
                 address2.value = item.address2 || '';
                 city.value = item.city || '';

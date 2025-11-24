@@ -239,6 +239,7 @@ const duplicateHeaders = [
   { title: 'Address', key: 'address' },
   { title: 'Phone', key: 'phone' },
   { title: 'Email', key: 'email' },
+  { title: 'Care/Of', key: 'careof' },
  
 ]
 </script>
