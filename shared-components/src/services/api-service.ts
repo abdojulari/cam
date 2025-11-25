@@ -193,7 +193,7 @@ export const apiService = {
               province2: payload?.province2,
               postalcode2: payload?.postalCode2,  
               barcode: payload?.libraryCardBarcode,
-              category1: payload?.selectedIndigenousStatus,
+              category1: payload?.source === 'CIC' ? 'ERCS' : payload?.selectedIndigenousStatus,
               homeBranchName: payload?.homeBranchName || '',
               homeBranchLink: payload?.homeBranchLink || '',
               source: payload?.source || 'CRP'

@@ -583,7 +583,6 @@ const addMinor = () => {
     usePreferredName.value = false;
     preferredName.value = '';
     selectedSchool.value = null;
-
     // Reset password manual edit flag so password can auto-populate from dateOfBirth
     // Don't set password.value = '' as it triggers the setter and marks as manually edited
     isPasswordManuallyEdited.value = false;

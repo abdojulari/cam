@@ -14,6 +14,7 @@
             density="compact"
             variant="outlined"
             @input="handleInput('barcode', $event.target.value)"
+            @keyup.enter="handleAuthentication"
           />
         </v-col>
         <v-col cols="12" sm="6">
@@ -25,6 +26,7 @@
             variant="outlined"
             type="password"
             @input="handleInput('pin', $event.target.value)"
+            @keyup.enter="handleAuthentication"
           />
         </v-col>
         <v-col cols="12" v-if="errorMessage" class="mt-n10">

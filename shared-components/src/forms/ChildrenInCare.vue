@@ -502,7 +502,7 @@ const rules = ref({
   province: (value: any) => !!value || 'Province is required',
   postalCode: (value: string) => !value || /^[A-Za-z]\d[A-Za-z][ -]?\d[A-Za-z]\d$/.test(value) || 'Invalid postal code format',
   password: (value: string) => !value || /^[a-zA-Z0-9]{4,20}$/.test(value) || 'Password must be 4-20 characters long, no space or special characters allowed',
-  profile: (value: string) => !!value || 'Profile is required',
+  profile: (value: string) => !!value || 'Borrowing Limit is required',
   library: (value: string) => !!value || 'Library is required',
 });
 
@@ -751,7 +751,7 @@ watch(
     if (hasCurrentChild) {
       // Validate profile
       if (!profile.value || rules.value.profile(profile.value) !== true) {
-        validationErrors.push('Profile selection is required');
+        validationErrors.push('Borrowing Limit is required');
       }
 
       // Validate library
@@ -854,6 +854,7 @@ watch(
           confirmPassword: confirmPassword.value,
           profileType: profile.value,
           library: library.value,
+          category1: 'ERCS',
           homeBranchName: homeBranchName.value,
           homeBranchLink: homeBranchLink.value,
           source: 'CIC'
