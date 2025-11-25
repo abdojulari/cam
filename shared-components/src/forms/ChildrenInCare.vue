@@ -204,6 +204,8 @@
                     v-model="profile"
                     density="compact"
                     variant="outlined"
+                    :rules="[rules.required]"
+                    required
                   />
                 </v-col>
                 <v-col cols="12" md="6">
@@ -499,7 +501,9 @@ const rules = ref({
   city: (value: any) => !!value || 'City is required',
   province: (value: any) => !!value || 'Province is required',
   postalCode: (value: string) => !value || /^[A-Za-z]\d[A-Za-z][ -]?\d[A-Za-z]\d$/.test(value) || 'Invalid postal code format',
-  password: (value: string) => !value || /^[a-zA-Z0-9]{4,20}$/.test(value) || 'Password must be 4-20 characters long, no space or special characters allowed'
+  password: (value: string) => !value || /^[a-zA-Z0-9]{4,20}$/.test(value) || 'Password must be 4-20 characters long, no space or special characters allowed',
+  profile: (value: string) => !!value || 'Profile is required',
+  library: (value: string) => !!value || 'Library is required',
 });
 
 // Use props.formData directly instead of creating a separate ref
@@ -746,8 +750,13 @@ watch(
     // Validate current child form if fields are filled
     if (hasCurrentChild) {
       // Validate profile
-      if (!profile.value) {
+      if (!profile.value || rules.value.profile(profile.value) !== true) {
         validationErrors.push('Profile selection is required');
+      }
+
+      // Validate library
+      if (!library.value || rules.value.library(library.value) !== true) {
+        validationErrors.push('Library selection is required');
       }
 
       // Validate first name

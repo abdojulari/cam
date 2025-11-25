@@ -1,14 +1,11 @@
 export const profileNames = {
     "Adult": [
-      "EPL_ACCESS",
       "EPL_ADULT",
       "EPL_ADU01",
       "EPL_ADU05",
       "EPL_ADU10",
-      "EPL_CORP",
       "EPL_NOVIDG",
       "EPL_ONLIN",
-      "EPL_SELF",
       "EPL_VISITR",
       "EPL_TRESID"
     ],
@@ -18,9 +15,7 @@ export const profileNames = {
       "EPL_JUV",
       "EPL_JUV01",
       "EPL_JUV05",
-      "EPL_JUV10",
-      "EPL_JUVIND",
-      "EPL_SELFJ"
+      "EPL_JUV10"
     ],
     "epl2you": [
       "EPL_HOME",

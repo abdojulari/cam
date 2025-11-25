@@ -20,7 +20,6 @@ const ipRanges: IPRange[] = [
     { scopeId: '10.2.16.0', name: 'EPLLHL', status: 'Active', start: '10.2.16.110', end: '10.2.16.240', subnet: '255.255.255.0' },
     { scopeId: '10.2.17.0', name: 'EPLIDY', status: 'Active', start: '10.2.17.110', end: '10.2.17.209', subnet: '255.255.255.0' },
     { scopeId: '10.2.19.0', name: 'EPLMCN', status: 'Active', start: '10.2.19.110', end: '10.2.19.209', subnet: '255.255.255.0' },
-    { scopeId: '10.2.28.0', name: 'VPN_EPL-Corp', status: 'Active', start: '10.2.28.10', end: '10.2.28.254', subnet: '255.255.255.0' },
     { scopeId: '10.2.30.0', name: 'EPLLON', status: 'Active', start: '10.2.30.10', end: '10.2.30.250', subnet: '255.255.255.0' },
     { scopeId: '10.2.41.0', name: 'EPLCAL', status: 'Active', start: '10.2.41.10', end: '10.2.41.254', subnet: '255.255.255.0' },
     { scopeId: '10.2.44.0', name: 'EPLHVY', status: 'Active', start: '10.2.44.10', end: '10.2.44.250', subnet: '255.255.255.0' },
